@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "474910118931",
+    "project_id": "vagali-8385f",
+    "storage_bucket": "vagali-8385f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474910118931:android:8c2dbb26b862216bbb9be6",
+        "android_client_info": {
+          "package_name": "com.vagali.vagali"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDS2JyhWQVIgrgDJtOxSz4xocz-dLGqBRE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

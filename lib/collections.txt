@@ -1,0 +1,36 @@
+- users (coleção)
+  - user_id_1 (documento)
+    - name: "Nome do Usuário"
+    - email: "email@example.com"
+    - ...
+    - vehicles (subcoleção)
+      - vehicle_id_1 (documento)
+        - make: "Marca do Veículo"
+        - model: "Modelo do Veículo"
+        - ...
+    - addresses (subcoleção)
+      - address_id_1 (documento)
+        - street: "Rua do Endereço"
+        - city: "Cidade do Endereço"
+        - ...
+    - ratings (subcoleção)
+      - rating_id_1 (documento)
+        - rating: 4.5
+        - comments: "Comentários da Avaliação"
+        - ...
+
+- parkings (coleção)
+  - parking_id_1 (documento)
+    - name: "Nome do Estacionamento"
+    - location: "Localização do Estacionamento"
+    - ...
+    - addresses (subcoleção)
+      - address_id_1 (documento)
+        - street: "Rua do Endereço"
+        - city: "Cidade do Endereço"
+        - ...
+    - ratings (subcoleção)
+      - rating_id_1 (documento)
+        - rating: 4.0
+        - comments: "Comentários da Avaliação"
+        - ...
