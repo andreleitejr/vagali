@@ -48,6 +48,8 @@ class AuthRepository {
   Future<AuthStatus> _performSignIn(
       Future<auth.UserCredential> Function() signInFunction) async {
     try {
+
+      print('################################# PHONE SIGN IN sdffdsdssd');
       final userCredential = await signInFunction();
       final user = userCredential.user;
 
@@ -167,15 +169,19 @@ class AuthRepository {
   }
 
   Future<AuthStatus> verifySmsCode(String smsCode) async {
+
+    print('################################# PHONE SIGN IN  ${smsCode}');
     Future<auth.UserCredential> phoneSignIn() async {
       final auth.AuthCredential credential = auth.PhoneAuthProvider.credential(
         verificationId: _verificationId,
         smsCode: smsCode,
       );
 
+      print('################################# PHONE SIGN IN 2  ${smsCode}');
       return await _auth.signInWithCredential(credential);
     }
 
+    print('################################# PHONE SIGN IN 3  ${smsCode}');
     return await _performSignIn(phoneSignIn);
   }
 
@@ -195,9 +201,13 @@ class AuthRepository {
         },
         codeSent: (String verificationId, [int? forceResendingToken]) {
           _verificationId = verificationId;
+          print('################################# ${_verificationId}');
           authStatus = AuthStatus.verifying;
         },
         codeAutoRetrievalTimeout: (String verificationId) {
+
+          _verificationId = verificationId;
+          print('################################# 2 ${_verificationId}');
           authStatus = AuthStatus.timeout;
         },
         timeout: const Duration(seconds: 60),

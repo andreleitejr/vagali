@@ -68,9 +68,6 @@ class _UserEditViewState extends State<UserEditView> {
   }
 
   void _navigateToEditView() {
-    print('###################################');
-    print('######### _NAVIGATE TO TARGE HERE  ###########');
-    print('###################################');
     final targetView = _controller.type == UserType.tenant
         ? const VehicleEditView()
         : const ParkingEditView();
