@@ -1,24 +1,20 @@
+import 'package:vagali/features/parking/models/price.dart';
+
 class PriceService {
-  static const _hourBasePrice = 10;
-  static const _sixHoursBasePrice = 15;
-  static const _twelveHoursBasePrice = 20;
-  static const _twentyFourHoursBasePrice = 25;
-  static const _monthBasePrice = 200;
+  static const _hourBasePrice = 5;
+  static const _sixHoursBasePrice = 10;
+  static const _twelveHoursBasePrice = 16;
+  static const _twentyFourHoursBasePrice = 20;
+  static const _monthBasePrice = 150;
 
-  static Map<String, double> calculateSuggestedPrices(double pricePerHour) {
-    final Map<String, double> suggestedPrices = {};
-
-    suggestedPrices['hourly'] = pricePerHour;
-    suggestedPrices['6_hours'] =
-        (pricePerHour * _sixHoursBasePrice) / _hourBasePrice;
-    suggestedPrices['12_hours'] =
-        (pricePerHour * _twelveHoursBasePrice) / _hourBasePrice;
-    suggestedPrices['24_hours'] =
-        (pricePerHour * _twentyFourHoursBasePrice) / _hourBasePrice;
-    suggestedPrices['monthly'] =
-        (pricePerHour * _monthBasePrice) / _hourBasePrice;
-
-    return suggestedPrices;
+  static Price calculateSuggestedPrices(double pricePerHour) {
+    return Price(
+      hour: pricePerHour,
+      sixHours: (pricePerHour * _sixHoursBasePrice) / _hourBasePrice,
+      twelveHours: (pricePerHour * _twelveHoursBasePrice) / _hourBasePrice,
+      day: (pricePerHour * _twentyFourHoursBasePrice) / _hourBasePrice,
+      month: (pricePerHour * _monthBasePrice) / _hourBasePrice,
+    );
   }
 
   static double calculatePrice(DateTime startDateTime, DateTime endDateTime) {

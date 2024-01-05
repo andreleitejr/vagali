@@ -12,7 +12,9 @@ import 'package:vagali/features/parking/models/opening_hours.dart';
 import 'package:vagali/features/parking/models/parking.dart';
 import 'package:vagali/features/parking/models/parking_type.dart';
 import 'package:vagali/features/parking/models/parking_tag.dart';
+import 'package:vagali/features/parking/models/price.dart';
 import 'package:vagali/features/parking/repositories/parking_repository.dart';
+import 'package:vagali/features/reservation/models/reservation_type.dart';
 import 'package:vagali/features/vehicle/models/vehicle_type.dart';
 import 'package:vagali/models/image_blurhash.dart';
 import 'package:vagali/services/address_service.dart';
@@ -49,7 +51,7 @@ class ParkingEditController extends GetxController {
   final TextEditingController complementController = TextEditingController();
 
   // final List<File> imageFiles = <File>[];
-  final Rx<ParkingType?> parkingType = Rx<ParkingType?>(null);
+  final parkingType = Rx<ParkingType?>(null);
   final parkingTags = <ParkingTag>[].obs;
   final gateHeight = 3.0.obs;
   final gateWidth = 3.0.obs;
@@ -57,7 +59,21 @@ class ParkingEditController extends GetxController {
   final isAutomaticController = RxBool(false);
   final compatibleCarTypes = <VehicleType>[].obs;
 
-  final priceController = 8.0.obs;
+  final reservationTypeController =
+      Rx<TextEditingController>(TextEditingController());
+
+  final isFlexible = false.obs;
+
+  final pricePerHourController =
+      Rx<TextEditingController>(TextEditingController());
+  final pricePerSixHoursController =
+      Rx<TextEditingController>(TextEditingController());
+  final pricePerTwelveHoursController =
+      Rx<TextEditingController>(TextEditingController());
+  final pricePerDayController =
+      Rx<TextEditingController>(TextEditingController());
+  final pricePerMonthController =
+      Rx<TextEditingController>(TextEditingController());
 
   final nameError = RxString('');
   final tagsError = RxString('');
@@ -105,11 +121,18 @@ class ParkingEditController extends GetxController {
     stateController.addListener(() => validateState());
     countryController.addListener(() => validateCountry());
     complementController.addListener(() => validateComplement());
+    pricePerHourController.value.addListener(() => calculateSuggestedPrices());
+    reservationTypeController.value.addListener(() {
+      if (reservationTypeController.value.text == 'Flexível') {
+        isFlexible.value = true;
+      } else {
+        isFlexible.value = false;
+      }
+    });
 
     ever(gateHeight, (_) => updateCompatibleCarTypes());
     ever(gateWidth, (_) => updateCompatibleCarTypes());
     ever(garageDepth, (_) => updateCompatibleCarTypes());
-    ever(priceController, (_) => calculateSuggestedPrices());
   }
 
   bool validateCurrentStep(int currentStep) {
@@ -252,7 +275,7 @@ class ParkingEditController extends GetxController {
     if (selectedImagesBlurhash.isEmpty) return;
 
     final name = nameController.text;
-    final price = priceController.value;
+    final price = double.parse(pricePerHourController.value.text);
     final description = descriptionController.text;
     final postalCode = postalCodeController.text;
     final street = streetController.text;
@@ -276,7 +299,9 @@ class ParkingEditController extends GetxController {
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
       name: name,
-      pricePerHour: price,
+      price: Price(
+        month: 0,
+      ),
       isAvailable: true,
       tags: parkingTags,
       description: description,
@@ -299,6 +324,7 @@ class ParkingEditController extends GetxController {
       garageDepth: garageDepth.value,
       isAutomatic: isAutomatic,
       isOpen: false,
+      reservationType: reservationTypeController.value.text,
     );
 
     // await _authController.registerUserType();
@@ -346,9 +372,13 @@ class ParkingEditController extends GetxController {
   }
 
   bool validatePrice() {
-    final isValid = priceController >= 7;
-    priceError.value = isValid ? '' : 'Preço inválido';
-    return true;
+    final price = double.tryParse(pricePerHourController.value.text);
+    if (price != null) {
+      final isValid = price >= 7;
+      priceError.value = isValid ? '' : 'Preço inválido';
+      return isValid;
+    }
+    return false;
   }
 
   bool validateDescription() {
@@ -458,10 +488,18 @@ class ParkingEditController extends GetxController {
     return true;
   }
 
-  final RxMap<String, double> suggestedPrices = <String, double>{}.obs;
-
   void calculateSuggestedPrices() {
-    suggestedPrices.value =
-        PriceService.calculateSuggestedPrices(priceController.value);
+    print(
+        ' HUSHSADUHSDAUSDAHUSDAHASHASDUHSDUSDHAUSDA ${pricePerHourController.value.text}');
+    final price = double.tryParse(pricePerHourController.value.text);
+    if (price != null) {
+      final suggestedPrices = PriceService.calculateSuggestedPrices(price);
+      pricePerSixHoursController.value.text =
+          suggestedPrices.sixHours.toString();
+      pricePerTwelveHoursController.value.text =
+          suggestedPrices.twelveHours.toString();
+      pricePerDayController.value.text = suggestedPrices.day.toString();
+      pricePerMonthController.value.text = suggestedPrices.month.toString();
+    }
   }
 }

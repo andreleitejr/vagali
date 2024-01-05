@@ -7,7 +7,6 @@ import 'package:vagali/features/reservation/views/reservation_edit_view.dart';
 import 'package:vagali/services/share_service.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/widgets/carousel_image_slider.dart';
 import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/loader.dart';
@@ -160,7 +159,7 @@ class ParkingDetailsView extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        'R\$${parking.pricePerHour.toStringAsFixed(2)}',
+                        'R\$${parking.price.hour?.toStringAsFixed(2)}',
                         style: ThemeTypography.semiBold22,
                       ),
                       const Text(

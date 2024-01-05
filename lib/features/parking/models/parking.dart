@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:vagali/features/address/models/address.dart';
 import 'package:vagali/features/landlord/models/landlord.dart';
 import 'package:vagali/features/parking/models/parking_tag.dart';
+import 'package:vagali/features/parking/models/price.dart';
 import 'package:vagali/features/rating/models/rating.dart';
 import 'package:vagali/models/base_model.dart';
 import 'package:vagali/models/image_blurhash.dart';
@@ -11,7 +12,7 @@ import 'package:vagali/services/location_service.dart';
 
 class Parking extends BaseModel {
   final String name;
-  final double pricePerHour;
+  final Price price;
   final bool isAvailable;
   final List<ParkingTag> tags;
   final String description;
@@ -19,6 +20,7 @@ class Parking extends BaseModel {
   Landlord? owner;
   final String ownerId;
   final String type;
+  final String reservationType;
 
   // final OperatingHours operatingHours;
   final GeoPoint location;
@@ -36,19 +38,15 @@ class Parking extends BaseModel {
     /// APENAS PARA TESTES
     final userCoordinates = _locationService.userLocation;
 
-    /// APENAS PARA TESTES
-    // if (userCoordinates == null) {
-    //   return 0.0;
-    // }
+    if (userCoordinates == null) {
+      return 0.0;
+    }
 
     return Geolocator.distanceBetween(
       location.latitude,
       location.longitude,
-      // userCoordinates.latitude,
-      // userCoordinates.longitude,
-      -23.5488823, -46.6461734,
-
-      /// APENAS PARA TESTES
+      userCoordinates.latitude,
+      userCoordinates.longitude,
     );
   }
 
@@ -56,7 +54,7 @@ class Parking extends BaseModel {
     required DateTime createdAt,
     required DateTime updatedAt,
     required this.name,
-    required this.pricePerHour,
+    required this.price,
     required this.isAvailable,
     required this.tags,
     required this.description,
@@ -71,6 +69,7 @@ class Parking extends BaseModel {
     required this.garageDepth,
     required this.isAutomatic,
     required this.isOpen,
+    required this.reservationType,
   }) : super(
           createdAt: createdAt,
           updatedAt: updatedAt,
@@ -80,7 +79,7 @@ class Parking extends BaseModel {
   Map<String, dynamic> toMap() {
     return {
       'name': name,
-      'pricePerHour': pricePerHour,
+      'price': price.toMap(),
       'isAvailable': isAvailable,
       'tags': tags.map((tag) => tag.name).toList(),
       'description': description,
@@ -95,13 +94,14 @@ class Parking extends BaseModel {
       'garageDepth': garageDepth,
       'isAutomatic': isAutomatic,
       'isOpen': isOpen,
+      'reservationType': reservationType,
       ...super.toMap(),
     };
   }
 
   Parking.fromDocument(DocumentSnapshot document)
       : name = document['name'],
-        pricePerHour = document['pricePerHour'],
+        price = Price.fromMap(document['price']),
         isAvailable = document['isAvailable'],
         tags = (document['tags'] as List<dynamic>)
             .map((tagName) => ParkingTag(name: tagName))
@@ -120,5 +120,6 @@ class Parking extends BaseModel {
         garageDepth = document['garageDepth'],
         isOpen = document['isOpen'],
         isAutomatic = document['isAutomatic'],
+        reservationType = document['reservationType'],
         super.fromDocument(document);
 }

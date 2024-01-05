@@ -25,19 +25,12 @@ class ReservationEditController extends GetxController {
   final vehicles = Get.find<List<Vehicle>>(tag: 'vehicles');
 
   final _repository = Get.put(ReservationRepository());
-  final _tenantRepository = Get.put(TenantRepository());
   final vehicleEditController = Get.put(VehicleEditController());
   final reservation = Rx<Reservation?>(null);
 
-  void navigateToPaymentView() {
-    Get.toNamed('/payment');
-  }
-
   final Parking parking;
 
-  bool userHasVehicle() {
-    return vehicles.isNotEmpty;
-  }
+  bool userHasVehicle() => vehicles.isNotEmpty;
 
   ReservationEditController({required this.parking});
 
@@ -88,7 +81,7 @@ class ReservationEditController extends GetxController {
 
     if (start != null && end != null) {
       if (end.isAfter(start) && end.difference(start).inHours >= 1) {
-        final pricePerHour = parking.pricePerHour;
+        final pricePerHour = parking.price.hour!;
         final durationInHours = end.difference(start).inHours;
         final totalCostValue = pricePerHour * durationInHours.toDouble();
         totalCost.value = totalCostValue;

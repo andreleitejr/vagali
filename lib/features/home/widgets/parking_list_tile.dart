@@ -141,7 +141,7 @@ class ParkingListTile extends StatelessWidget {
                               ),
                               const SizedBox(width: 8),
                               Text(
-                                'R\$${parking.pricePerHour.toStringAsFixed(0)}',
+                                'R\$${parking.price.hour?.toStringAsFixed(0)}',
                                 style: ThemeTypography.semiBold14,
                               ),
                               const SizedBox(width: 4),

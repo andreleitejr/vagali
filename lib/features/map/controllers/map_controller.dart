@@ -140,9 +140,7 @@ class MapController extends GetxController {
         ),
         onTap: () => selectedParking(filteredParkings[i]),
         icon: parkingMarkerIcon,
-        infoWindow: InfoWindow(
-          title: '\$${filteredParkings[i].pricePerHour}', // Exibe o preço
-        ),
+        infoWindow: InfoWindow(title: '\$${filteredParkings[i].price}'),
       );
       markers.add(marker);
     }
