@@ -1,6 +1,6 @@
 import 'package:vagali/theme/images.dart';
 
-enum VehicleTypeEnum { hatch, sedan, suv, truck, motorcycle, none }
+enum VehicleTypeEnum { motorcycle, hatch, sedan, suv, pickup, van, truck }
 
 class VehicleType {
   final String title;
@@ -55,6 +55,22 @@ final vehicleTypes = <VehicleType>[
   ),
   VehicleType(
     title: 'Caminhonete',
+    type: VehicleTypeEnum.pickup,
+    height: 1,
+    width: 1,
+    depth: 1.5,
+    image: Images.pickup,
+  ),
+  VehicleType(
+    title: 'Van',
+    type: VehicleTypeEnum.van,
+    height: 1,
+    width: 1,
+    depth: 1.5,
+    image: Images.van,
+  ),
+  VehicleType(
+    title: 'Caminhão',
     type: VehicleTypeEnum.truck,
     height: 1,
     width: 1,

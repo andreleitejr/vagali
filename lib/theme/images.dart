@@ -11,5 +11,7 @@ class Images {
   static const hatch = 'images/vehicles/hatch.jpg';
   static const sedan = 'images/vehicles/sedan.jpg';
   static const suv = 'images/vehicles/suv.jpg';
+  static const pickup = 'images/vehicles/pickup.jpg';
   static const truck = 'images/vehicles/truck.jpg';
+  static const van = 'images/vehicles/van.jpg';
 }

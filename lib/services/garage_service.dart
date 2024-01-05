@@ -19,29 +19,40 @@ class GarageService {
     final suv = vehicleTypes
         .firstWhere((vehicle) => vehicle.type == VehicleTypeEnum.suv);
 
+    final pickup = vehicleTypes
+        .firstWhere((vehicle) => vehicle.type == VehicleTypeEnum.pickup);
+
+    final van = vehicleTypes
+        .firstWhere((vehicle) => vehicle.type == VehicleTypeEnum.van);
+
     // final truck = vehicleTypes
     //     .firstWhere((vehicle) => vehicle.type == VehicleTypeEnum.truck);
 
-    if (height >= 4 && width >= 4 && depth >= 6) {
+    if (height >= 7 && width >= 6 && depth >= 14) {
       carTypes.addAll(vehicleTypes);
-    } else if (height >= 4 && width >= 3 && depth >= 5) {
+    } else if (height >= 5 && width >= 4 && depth >= 6) {
+      carTypes.add(van);
+      carTypes.add(pickup);
       carTypes.add(suv);
       carTypes.add(sedan);
       carTypes.add(hatch);
       carTypes.add(motorcycle);
-    } else if (height >=3  && width >= 3 && depth >= 4) {
+    } else if (height >= 4 && width >= 3 && depth >= 5) {
+
+      carTypes.add(pickup);
+      carTypes.add(suv);
       carTypes.add(sedan);
       carTypes.add(hatch);
       carTypes.add(motorcycle);
-    } else if (height >= 2  && width >= 2 && depth >= 3) {
+    } else if (height >= 2 && width >= 2 && depth >= 4) {
+      carTypes.add(sedan);
       carTypes.add(hatch);
       carTypes.add(motorcycle);
-    } else if (height >= 2  && width >= 1 && depth >= 2) {
+    } else if (height >= 2 && width >= 2 && depth >= 3) {
+      carTypes.add(hatch);
       carTypes.add(motorcycle);
-    } else {
-      final none = vehicleTypes
-          .firstWhere((vehicle) => vehicle.type == VehicleTypeEnum.none);
-      carTypes.add(none);
+    } else if (height >= 2 && width >= 1 && depth >= 2) {
+      carTypes.add(motorcycle);
     }
 
     return carTypes;

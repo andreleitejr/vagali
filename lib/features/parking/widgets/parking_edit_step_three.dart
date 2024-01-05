@@ -63,20 +63,21 @@ class StepThreeWidget extends StatelessWidget {
           GradientSlider(
             value: controller.gateWidth,
             min: 2,
-            max: 50,
+            max: 10,
             onChanged: controller.gateWidth,
             label: 'Largura do Portão',
           ),
           GradientSlider(
             value: controller.garageDepth,
             min: 2,
-            max: 100,
+            max: 20,
             onChanged: controller.garageDepth,
             label: 'Profundidade da Garagem',
           ),
           const SizedBox(height: 16),
           const Text(
-            'Carros compativeis:',
+            'Veículos compativeis:',
+            style: ThemeTypography.semiBold16,
           ),
           Obx(
             () => Expanded(
