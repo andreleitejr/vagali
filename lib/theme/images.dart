@@ -7,4 +7,9 @@ class Images {
   static const marker = 'images/marker.png';
   static const disconnected = 'images/draw/disconnected.jpg';
   static const userMarker = 'images/user_marker.png';
+  static const motorcycle = 'images/vehicles/motorcycle.jpg';
+  static const hatch = 'images/vehicles/hatch.jpg';
+  static const sedan = 'images/vehicles/sedan.jpg';
+  static const suv = 'images/vehicles/suv.jpg';
+  static const truck = 'images/vehicles/truck.jpg';
 }

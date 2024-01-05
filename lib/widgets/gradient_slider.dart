@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
+import 'package:get/get.dart';
+import 'package:vagali/theme/theme_typography.dart';
 
 class GradientSlider extends StatelessWidget {
-  final double value;
+  final RxDouble value;
   final double min;
   final double max;
   final ValueChanged<double> onChanged;
@@ -22,12 +24,24 @@ class GradientSlider extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: const TextStyle(fontSize: 16),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                label,
+                style: ThemeTypography.semiBold16,
+              ),
+            ),
+            Obx(
+              () => Text(
+                '${value.toStringAsFixed(0)} metros',
+                style: const TextStyle(fontSize: 16),
+              ),
+            ),
+          ],
         ),
         FlutterSlider(
-          values: [value],
+          values: [value.value],
           min: min,
           max: max,
           onDragging: (handlerIndex, lowerValue, upperValue) {
@@ -36,7 +50,7 @@ class GradientSlider extends StatelessWidget {
           tooltip: FlutterSliderTooltip(
             custom: (value) {
               return Text(
-                ' ',
+                '${value.toStringAsFixed(0)}m',
                 style: const TextStyle(fontSize: 14),
               );
             },

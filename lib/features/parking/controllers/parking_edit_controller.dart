@@ -55,7 +55,7 @@ class ParkingEditController extends GetxController {
   final gateWidth = 4.0.obs;
   final garageDepth = 6.0.obs;
   final isAutomaticController = RxBool(false);
-  final compatibleCarTypes = <VehicleTypeEnum>[].obs;
+  final compatibleCarTypes = <VehicleType>[].obs;
 
   final priceController = 8.0.obs;
 

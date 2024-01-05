@@ -6,6 +6,7 @@ import 'package:vagali/features/parking/controllers/parking_edit_controller.dart
 import 'package:vagali/features/parking/models/parking_tag.dart';
 import 'package:vagali/features/vehicle/models/vehicle_type.dart';
 import 'package:vagali/services/garage_service.dart';
+import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/chip_selector.dart';
 import 'package:vagali/widgets/gradient_slider.dart';
 import 'package:vagali/widgets/input.dart';
@@ -20,10 +21,6 @@ class StepThreeWidget extends StatelessWidget {
 
   const StepThreeWidget({super.key, required this.controller});
 
-  final double minHeight = 1.0;
-  final double maxWidth = 10.0;
-  final int divisions = 90;
-
   final Color activeBackgroundColor = const Color(0xFF0077B6);
   final Color inactiveBackgroundColor = const Color(0xFFBDBDBD);
 
@@ -36,10 +33,10 @@ class StepThreeWidget extends StatelessWidget {
         children: [
           const SizedBox(height: 56),
           const Text(
-            'Informações da vaga',
+            'Informações do Portão',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 24),
           Row(
             children: [
               const Expanded(
@@ -55,27 +52,27 @@ class StepThreeWidget extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 32),
           GradientSlider(
-            value: controller.gateHeight.value,
-            min: minHeight,
-            max: maxWidth,
+            value: controller.gateHeight,
+            min: 2,
+            max: 10,
             onChanged: controller.gateHeight,
-            label: 'Altura do Portão (m)',
+            label: 'Altura do Portão',
           ),
           GradientSlider(
-            value: controller.gateWidth.value,
-            min: minHeight,
-            max: maxWidth,
+            value: controller.gateWidth,
+            min: 2,
+            max: 50,
             onChanged: controller.gateWidth,
-            label: 'Largura do Portão (m)',
+            label: 'Largura do Portão',
           ),
           GradientSlider(
-            value: controller.garageDepth.value,
-            min: minHeight,
-            max: maxWidth,
+            value: controller.garageDepth,
+            min: 2,
+            max: 100,
             onChanged: controller.garageDepth,
-            label: 'Profundidade da Garagem (m)',
+            label: 'Profundidade da Garagem',
           ),
           const SizedBox(height: 16),
           const Text(
@@ -101,16 +98,12 @@ class StepThreeWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
-                          carTypeToImageAsset(carType),
+                          carType.image,
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          carTypeToString(carType),
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          controller.compatibleCarTypes[index].title,
+                          style: ThemeTypography.semiBold16,
                         ),
                       ],
                     ),
@@ -122,62 +115,5 @@ class StepThreeWidget extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Widget _buildSlider(RxDouble value, String label) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Slider(
-          value: value.value,
-          onChanged: (newValue) {
-            value(newValue);
-          },
-          min: minHeight,
-          max: maxWidth,
-          divisions: divisions,
-          label: (value.value > 10.0)
-              ? 'Mais que 10 m'
-              : '${value.value.toStringAsFixed(2)} m',
-        ),
-      ],
-    );
-  }
-
-  String carTypeToString(VehicleTypeEnum carType) {
-    switch (carType) {
-      case VehicleTypeEnum.hatch:
-        return 'Carro Hatch';
-      case VehicleTypeEnum.sedan:
-        return 'Carro Sedan';
-      case VehicleTypeEnum.suv:
-        return 'Carro SUV';
-      case VehicleTypeEnum.truck:
-        return 'Caminhao';
-      default:
-        return 'Nenhum';
-    }
-  }
-
-  String carTypeToImageAsset(VehicleTypeEnum carType) {
-    switch (carType) {
-      case VehicleTypeEnum.hatch:
-        return 'images/vehicles/hatch.jpg';
-      case VehicleTypeEnum.sedan:
-        return 'images/vehicles/sedan.jpg';
-      case VehicleTypeEnum.suv:
-        return 'images/vehicles/suv.jpg';
-      case VehicleTypeEnum.truck:
-        return 'images/vehicles/truck.jpg';
-      default:
-        return 'images/vehicles/hatch.jpg';
-    }
   }
 }

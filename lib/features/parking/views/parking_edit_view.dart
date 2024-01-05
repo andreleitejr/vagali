@@ -98,10 +98,10 @@ class _ParkingEditViewState extends State<ParkingEditView> {
                 // Etapa 2: Selecionar Fotos da Garagem
                 StepTwoWidget(controller: _controller),
 
-                // Etapa 3: Horários de Funcionamento
+                // Etapa 3: Informações do Portão
                 StepThreeWidget(controller: _controller),
 
-                // Etapa 4: Tags do Portão
+                // Etapa 4: Tags da vaga
                 StepFourWidget(controller: _controller),
 
                 // Etapa 5: Informações do Portão

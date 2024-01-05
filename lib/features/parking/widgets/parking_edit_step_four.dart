@@ -22,7 +22,7 @@ class StepFourWidget extends StatelessWidget {
           Obx(
             () => ChipSelector<ParkingTag>(
               items: parkingTags,
-              labelText: 'Selecione as Tags',
+              labelText: 'Outras informações',
               onSelectionChanged: (selectedItems) =>
                   controller.parkingTags(selectedItems),
               error: controller.getError(controller.tagsError),

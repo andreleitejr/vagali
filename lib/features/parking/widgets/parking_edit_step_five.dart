@@ -19,7 +19,7 @@ class StepFiveWidget extends StatelessWidget {
         children: [
           const SizedBox(height: 56),
           const Text(
-            'Informações Gerais',
+            'Informações de Faturamento',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -28,7 +28,7 @@ class StepFiveWidget extends StatelessWidget {
           const SizedBox(height: 16),
           Obx(
             () => GradientSlider(
-              value: controller.priceController.value,
+              value: controller.priceController,
               min: 8,
               max: 100,
               onChanged: controller.priceController,
