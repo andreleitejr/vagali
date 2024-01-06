@@ -35,6 +35,7 @@ class AddressEditWidget extends StatelessWidget {
               controller: postalCodeController,
               value: controller.postalCode.value,
               hintText: 'CEP',
+              error: controller.getError(controller.postalCodeError),
               keyboardType: TextInputType.number,
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
@@ -54,6 +55,7 @@ class AddressEditWidget extends StatelessWidget {
             value: controller.street.value,
             keyboardType: TextInputType.streetAddress,
             hintText: 'Rua',
+            error: controller.getError(controller.streetError),
             currentFocusNode: streetFocus,
             nextFocusNode: numberFocus,
             onChanged: controller.street,
@@ -65,6 +67,7 @@ class AddressEditWidget extends StatelessWidget {
             controller: numberController,
             value: controller.number.value,
             hintText: 'Número',
+            error: controller.getError(controller.numberError),
             currentFocusNode: numberFocus,
             nextFocusNode: complementFocus,
             onChanged: controller.number,

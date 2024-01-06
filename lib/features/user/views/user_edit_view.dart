@@ -38,6 +38,7 @@ class _UserEditViewState extends State<UserEditView> {
 
     if (isValidStep) {
       if (_currentPage < 1) {
+        _controller.showErrors(false);
         _navigateToNextPage();
       } else {
         await _handleNavigationOnValidStep();

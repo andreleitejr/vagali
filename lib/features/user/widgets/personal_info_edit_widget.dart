@@ -64,7 +64,6 @@ class PersonalInfoEditWidget extends StatelessWidget {
           ),
         ),
         Obx(() {
-          print('############### ${controller.isPersonalInfoValid}');
           if (controller.imageBlurhash.value != null) {
             return Container();
           }
@@ -74,23 +73,16 @@ class PersonalInfoEditWidget extends StatelessWidget {
               Text(
                 'Tire uma foto',
                 style: ThemeTypography.regular14.apply(
-                  color: ThemeColors.grey4,
+                  color: controller.isImageValid.isTrue ||
+                          controller.showErrors.isFalse
+                      ? ThemeColors.primary
+                      : ThemeColors.red,
                 ),
               ),
             ],
           );
         }),
         const SizedBox(height: 32),
-        Obx(() {
-          if (controller.showErrors.isTrue &&
-              controller.imageError.isNotEmpty) {
-            return Text(
-              controller.imageError.value,
-              style: const TextStyle(color: Colors.red),
-            );
-          }
-          return Container();
-        }),
         Obx(
           () => Input2(
             controller: firstNameController,
@@ -193,8 +185,6 @@ class PersonalInfoEditWidget extends StatelessWidget {
         title: 'Qual seu gênero?',
         onItemSelected: (selectedItem) async {
           controller.gender.value = selectedItem;
-          print(
-              ' sahudhuasdhusadhuhauhuhudhasdhusduasdhuah ${controller.gender.value}');
           focus.unfocus();
 
           await Future.delayed(const Duration(milliseconds: 100));

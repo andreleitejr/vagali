@@ -40,18 +40,49 @@ class UserEditController extends GetxController {
   final country = ''.obs;
   final complement = ''.obs;
 
-  final firstNameError = RxString('');
-  final lastNameError = RxString('');
-  final emailError = RxString('');
-  final documentError = RxString('');
+  RxString get postalCodeClean =>
+      postalCode.replaceAll('.', '').replaceAll('-', '').obs;
 
-  // final phoneError = RxString('');
-  final birthdayError = RxString('');
-  final postalCodeError = RxString('');
-  final cityError = RxString('');
-  final stateError = RxString('');
-  final streetError = RxString('');
-  final imageError = RxString('');
+  final emailRegExp = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
+
+  RxString get imageError => (isImageValid.isTrue ? '' : 'Insira uma foto').obs;
+
+  RxString get firstNameError =>
+      (isFirstNameValid.isTrue ? '' : 'O primeiro nome não pode estar vazio')
+          .obs;
+
+  RxString get lastNameError =>
+      (isLastNameValid.isTrue ? '' : 'Sobrenome não pode estar vazio').obs;
+
+  RxString get documentError =>
+      (isDocumentValid.isTrue ? '' : 'CPF inválido').obs;
+
+  RxString get emailError {
+    if (email.isEmpty) {
+      return 'Email não pode estar vazio'.obs;
+    } else if (!emailRegExp.hasMatch(email.value)) {
+      return 'Email inválido'.obs;
+    } else {
+      return ''.obs;
+    }
+  }
+
+  RxString get birthdayError =>
+      (isBirthdayValid.isTrue ? '' : 'Data de aniversário inválida').obs;
+
+  RxString get postalCodeError =>
+      (isPostalCodeValid.isTrue ? '' : 'Insira um CEP').obs;
+
+  RxString get streetError =>
+      (isStreetValid.isTrue ? '' : 'Insira o nome da rua').obs;
+
+  RxString get numberError =>
+      (isNumberValid.isTrue ? '' : 'Insira o número').obs;
+
+  RxString get cityError => (isCityValid.isTrue ? '' : 'Insira uma cidade').obs;
+
+  RxString get stateError =>
+      (isStateValid.isTrue ? '' : 'Insira um estado').obs;
 
   var loading = RxBool(false);
 
@@ -62,6 +93,84 @@ class UserEditController extends GetxController {
       return error.value;
     }
     return '';
+  }
+
+  bool isValid() => isPersonalInfoValid.isTrue && isAddressValid.isTrue;
+
+  RxBool get isPersonalInfoValid => (isImageValid.isTrue &&
+          isFirstNameValid.isTrue &&
+          isLastNameValid.isTrue &&
+          isDocumentValid.isTrue &&
+          isEmailValid.isTrue &&
+          isBirthdayValid.isTrue)
+      .obs;
+
+  RxBool get isAddressValid => (isPostalCodeValid.isTrue &&
+          isNumberValid.isTrue &&
+          isStreetValid.isTrue &&
+          isCityValid.isTrue &&
+          isStateValid.isTrue)
+      .obs;
+
+  RxBool get isImageValid {
+    return (imageFile.value != null && imageFile.value!.path.isNotEmpty).obs;
+  }
+
+  RxBool get isFirstNameValid => firstName.isNotEmpty.obs;
+
+  RxBool get isLastNameValid => lastName.isNotEmpty.obs;
+
+  RxBool get isDocumentValid {
+    final cpf = document.replaceAll(RegExp(r'[^\d]'), '');
+
+    return (cpf.isNotEmpty && cpf.length == 11 && GetUtils.isCpf(cpf)).obs;
+  }
+
+  RxBool get isEmailValid {
+    return (email.isNotEmpty && emailRegExp.hasMatch(email.value)).obs;
+  }
+
+  RxBool get isBirthdayValid => (birthdayDate.value != null).obs;
+
+  RxBool get isPostalCodeValid =>
+      (postalCodeClean.isNotEmpty && postalCodeClean.value.length >= 8).obs;
+
+  Future<void> fetchAddressDetails() async {
+    if (isPostalCodeValid.isTrue) {
+      final addressDetails =
+          await _addressService.getAddressDetails(postalCodeClean.value);
+      if (addressDetails != null) {
+        street.value = addressDetails['logradouro'] ?? '';
+        city.value = addressDetails['localidade'] ?? '';
+        state.value = addressDetails['uf'] ?? '';
+        country.value = 'Brasil';
+      }
+    }
+  }
+
+  RxBool get isStreetValid => street.isNotEmpty.obs;
+
+  RxBool get isNumberValid => number.isNotEmpty.obs;
+
+  RxBool get isCityValid {
+    // cityError.value = isValid ? '' : 'Insira uma cidade';
+    return city.isNotEmpty.obs;
+  }
+
+  RxBool get isStateValid {
+    // stateError.value = isValid ? '' : 'Escolha um estado';
+    return state.isNotEmpty.obs;
+  }
+
+  RxBool validateCurrentStep(int stepIndex) {
+    switch (stepIndex) {
+      case 0:
+        return isPersonalInfoValid;
+      case 1:
+        return isAddressValid;
+      default:
+        return true.obs;
+    }
   }
 
   Future<void> pickImage(ImageSource source) async {
@@ -85,38 +194,6 @@ class UserEditController extends GetxController {
     }
 
     return image;
-  }
-
-  RxString get postalCodeClean =>
-      postalCode.replaceAll('.', '').replaceAll('-', '').obs;
-
-  Future<void> fetchAddressDetails() async {
-    if (validatePostalCode.isTrue) {
-      final addressDetails =
-          await _addressService.getAddressDetails(postalCodeClean.value);
-      if (addressDetails != null) {
-        street.value = addressDetails['logradouro'] ?? '';
-        city.value = addressDetails['localidade'] ?? '';
-        state.value = addressDetails['uf'] ?? '';
-        country.value = 'Brasil';
-      }
-    }
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  RxBool validateCurrentStep(int stepIndex) {
-    switch (stepIndex) {
-      case 0:
-        return isPersonalInfoValid;
-      case 1:
-        return isAddressValid;
-      default:
-        return true.obs;
-    }
   }
 
   Future<SaveResult?> save() async {
@@ -165,98 +242,6 @@ class UserEditController extends GetxController {
     }
     loading(false);
     return SaveResult.failed;
-  }
-
-  bool isValid() {
-    return isPersonalInfoValid.isTrue && isAddressValid.isTrue;
-  }
-
-  RxBool get isPersonalInfoValid => (validateImage.isTrue &&
-          validateFirstName.isTrue &&
-          validateLastName.isTrue &&
-          validateDocument.isTrue &&
-          validateEmail.isTrue &&
-          validateBirthday.isTrue)
-      .obs;
-
-  RxBool get isAddressValid => (validatePostalCode.isTrue &&
-          validateNumber.isTrue &&
-          validateStreet.isTrue &&
-          validateCity.isTrue &&
-          validateState.isTrue)
-      .obs;
-
-  RxBool get validateImage {
-    // imageError.value = isValid ? '' : 'Selecione uma imagem';
-    return (imageFile.value != null && imageFile.value!.path.isNotEmpty).obs;
-  }
-
-  RxBool get validateFirstName {
-    // firstNameError.value = isValid ? '' : 'Nome não pode estar vazio';
-    return firstName.isNotEmpty.obs;
-  }
-
-  RxBool get validateLastName {
-    // lastNameError.value = isValid ? '' : 'Sobrenome não pode estar vazio';
-    return lastName.isNotEmpty.obs;
-  }
-
-  RxBool get validateDocument {
-    final cpf = document.replaceAll(RegExp(r'[^\d]'), '');
-    // if (cpf.isEmpty || cpf.length != 11 || !GetUtils.isCpf(cpf)) {
-    //   // documentError.value = 'CPF inválido';
-    //   return false.obs;
-    // }
-    //
-    // documentError.value = '';
-    // return true.obs;
-
-    return (cpf.isNotEmpty && cpf.length == 11 && GetUtils.isCpf(cpf)).obs;
-  }
-
-  RxBool get validateEmail {
-    final emailRegExp = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
-    if (email.isEmpty) {
-      emailError.value = 'Email não pode estar vazio';
-      return false.obs;
-    } else if (!emailRegExp.hasMatch(email.value)) {
-      emailError.value = 'Email inválido';
-      return false.obs;
-    } else {
-      emailError.value = '';
-      return true.obs;
-    }
-  }
-
-  RxBool get validateBirthday {
-    // birthdayError.value = isValid ? '' : 'Data de aniversário inválida';
-    return (birthdayDate.value != null).obs;
-  }
-
-  RxBool get validatePostalCode {
-    // postalCodeError.value = isValid ? '' : 'Insira um CEP';
-    return (postalCodeClean.isNotEmpty && postalCodeClean.value.length >= 8)
-        .obs;
-  }
-
-  RxBool get validateStreet {
-    // streetError.value = isValid ? '' : 'Insira o nome da rua';
-    return street.isNotEmpty.obs;
-  }
-
-  RxBool get validateNumber {
-    // streetError.value = isValid ? '' : 'Insira o nome da rua';
-    return number.isNotEmpty.obs;
-  }
-
-  RxBool get validateCity {
-    // cityError.value = isValid ? '' : 'Insira uma cidade';
-    return city.isNotEmpty.obs;
-  }
-
-  RxBool get validateState {
-    // stateError.value = isValid ? '' : 'Escolha um estado';
-    return state.isNotEmpty.obs;
   }
 
   @override
