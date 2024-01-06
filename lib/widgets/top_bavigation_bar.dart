@@ -7,12 +7,14 @@ class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final List<Widget> actions;
   final bool showLeading;
+  final VoidCallback? onLeadingPressed;
 
   TopNavigationBar({
     super.key,
     required this.title,
     this.actions = const [],
     this.showLeading = true,
+    this.onLeadingPressed,
   });
 
   @override
@@ -20,9 +22,16 @@ class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
-      leading: showLeading
+      leading: showLeading || onLeadingPressed != null
           ? IconButton(
-              onPressed: () => Get.back(),
+              onPressed: () {
+                print('sdahauasduhsdauhduhasduasd jesus');
+                if (onLeadingPressed != null) {
+                  onLeadingPressed!();
+                } else {
+                  Get.back();
+                }
+              },
               icon: const Icon(
                 Icons.arrow_back,
                 color: ThemeColors.grey4,

@@ -31,17 +31,12 @@ class StepThreeWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 56),
-          const Text(
-            'Informações do Portão',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 24),
           Row(
             children: [
               const Expanded(
                 child: Text(
                   'O seu portão é automático?',
+                  style: ThemeTypography.semiBold16,
                 ),
               ),
               Obx(

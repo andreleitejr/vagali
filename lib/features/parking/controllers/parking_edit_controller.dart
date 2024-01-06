@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,6 +11,7 @@ import 'package:vagali/features/parking/models/parking_type.dart';
 import 'package:vagali/features/parking/models/parking_tag.dart';
 import 'package:vagali/features/parking/models/price.dart';
 import 'package:vagali/features/parking/repositories/parking_repository.dart';
+import 'package:vagali/features/reservation/models/reservation_type.dart';
 import 'package:vagali/features/vehicle/models/vehicle_type.dart';
 import 'package:vagali/models/image_blurhash.dart';
 import 'package:vagali/services/address_service.dart';
@@ -52,14 +55,14 @@ class ParkingEditController extends GetxController {
   final isAutomaticController = RxBool(false);
   final compatibleCarTypes = <VehicleType>[].obs;
 
-  final reservationTypeController = TextEditingController().obs;
-  final isFlexible = false.obs;
+  final reservationTypeController = ''.obs;
+  final isFlexible = true.obs;
 
-  final pricePerHourController = TextEditingController().obs;
-  final pricePerSixHoursController = TextEditingController().obs;
-  final pricePerTwelveHoursController = TextEditingController().obs;
-  final pricePerDayController = TextEditingController().obs;
-  final pricePerMonthController = TextEditingController().obs;
+  final pricePerHour = ''.obs;
+  final pricePerSixHours = ''.obs;
+  final pricePerTwelveHours = ''.obs;
+  final pricePerDay = ''.obs;
+  final pricePerMonth = ''.obs;
 
   RxString get imageError =>
       (isImageValid.isTrue ? '' : 'Selecione uma imagem').obs;
@@ -99,20 +102,10 @@ class ParkingEditController extends GetxController {
   void onInit() {
     super.onInit();
     fillAddressFromLandlord();
-
-    /// Modificar em versoes posteriores
     selectType(parkingTypes[1]); // Casas
     updateCompatibleCarTypes();
 
-    pricePerHourController.value.addListener(() => calculateSuggestedPrices());
-    reservationTypeController.value.addListener(() {
-      if (reservationTypeController.value.text == 'Flexível') {
-        isFlexible.value = true;
-      } else {
-        isFlexible.value = false;
-      }
-    });
-
+    ever(pricePerHour, (_) => calculateSuggestedPrices());
     ever(gateHeight, (_) => updateCompatibleCarTypes());
     ever(gateWidth, (_) => updateCompatibleCarTypes());
     ever(garageDepth, (_) => updateCompatibleCarTypes());
@@ -121,34 +114,18 @@ class ParkingEditController extends GetxController {
   RxBool validateCurrentStep(int currentStep) {
     switch (currentStep) {
       case 0:
-        return validateStepOne().obs;
+        return (isNameValid.isTrue && isDescriptionValid.isTrue).obs;
       case 1:
-        return validateStepTwo().obs;
+        return isImageValid;
       case 2:
-        return validateStepThree().obs;
+        return isGateValid;
       case 3:
-        return validateStepFour().obs;
+        return isTagsValid;
       case 4:
-        return validateStepFive().obs;
+        return isPriceValid;
       default:
         return false.obs;
     }
-  }
-
-  bool validateStepOne() => isNameValid.value && isDescriptionValid.value;
-
-  bool validateStepTwo() => isImageValid.value;
-
-  bool validateStepThree() {
-    return true; // validateOperatingHours();
-  }
-
-  bool validateStepFour() {
-    return isTagsValid.value;
-  }
-
-  bool validateStepFive() {
-    return isPriceValid.value;
   }
 
   bool isTypeSelected(ParkingType type) {
@@ -173,9 +150,9 @@ class ParkingEditController extends GetxController {
   RxBool get isTagsValid => parkingTags.isNotEmpty.obs;
 
   RxBool get isPriceValid {
-    final price = double.tryParse(pricePerHourController.value.text);
+    final price = double.tryParse(pricePerHour.value);
     if (price != null) {
-      return (price >= 7).obs;
+      return (price >= 2).obs;
     }
     return false.obs;
   }
@@ -200,6 +177,7 @@ class ParkingEditController extends GetxController {
   //   operatingHoursError.value = '';
   //   return true;
   // }
+
   RxBool get isCoordinatesValid => coordinates.value.isNotEmpty.obs;
 
   RxBool get isPostalCodeValid => postalCode.value.isNotEmpty.obs;
@@ -217,35 +195,6 @@ class ParkingEditController extends GetxController {
   RxBool get isComplementValid => complement.value.isNotEmpty.obs;
 
   RxBool get isGateValid {
-    // final gateHeightText = gateHeightController.text;
-    // final gateWidthText = gateWidthController.text;
-    // final garageDepthText = garageDepthController.text;
-    //
-    // final isHeightValid =
-    //     gateHeightText.isNotEmpty && double.tryParse(gateHeightText) != null;
-    // final isWidthValid =
-    //     gateWidthText.isNotEmpty && double.tryParse(gateWidthText) != null;
-    // final isDepthValid =
-    //     garageDepthText.isNotEmpty && double.tryParse(gateWidthText) != null;
-    //
-    // if (!isHeightValid) {
-    //   gateHeightError.value = 'Altura do portão inválida';
-    // } else {
-    //   gateHeightError.value = '';
-    // }
-    //
-    // if (!isWidthValid) {
-    //   gateWidthError.value = 'Largura do portão inválida';
-    // } else {
-    //   gateWidthError.value = '';
-    // }
-    //
-    // if (!isDepthValid) {
-    //   garageDepthError.value = 'Profundidade da vaga inválida';
-    // } else {
-    //   garageDepthError.value = '';
-    // }
-
     return true.obs;
   }
 
@@ -261,7 +210,24 @@ class ParkingEditController extends GetxController {
     complement.value = landlordAddress.complement ?? '';
   }
 
-  Future<void> getGalleryImages() async {
+  Future<void> pickImages(ImageSource source) async {
+    if (source == ImageSource.camera) {
+      await _pickImageFromCamera();
+    } else {
+      await pickImagesFromGallery();
+    }
+  }
+
+  Future<void> _pickImageFromCamera() async {
+    final file = await _imageService.pickImage(ImageSource.camera);
+
+    if (file != null) {
+      final xFile = XFile(file.path);
+      selectedGalleryImages.add(xFile);
+    }
+  }
+
+  Future<void> pickImagesFromGallery() async {
     if (selectedGalleryImages.isEmpty) {
       final files = await _imageService.pickImages();
 
@@ -297,9 +263,8 @@ class ParkingEditController extends GetxController {
   //   selectedImages.add(image);
   // }
   //
-  // void removeSelectedImage(File image) {
-  //   selectedImages.remove(image);
-  // }
+
+  void removeSelectedImage(XFile image) => selectedGalleryImages.remove(image);
 
   void fetchAddressDetails() async {
     if (postalCode.isNotEmpty) {
@@ -334,15 +299,15 @@ class ParkingEditController extends GetxController {
   }
 
   void calculateSuggestedPrices() {
-    final price = double.tryParse(pricePerHourController.value.text);
+    print('sdajudsaidasjdasijsdaijidjasdij jesus!');
+    final price = double.tryParse(pricePerHour.value);
     if (price != null) {
       final suggestedPrices = PriceService.calculateSuggestedPrices(price);
-      pricePerSixHoursController.value.text =
-          suggestedPrices.sixHours.toString();
-      pricePerTwelveHoursController.value.text =
+      pricePerSixHours.value = suggestedPrices.sixHours.toString();
+      pricePerTwelveHours.value =
           suggestedPrices.twelveHours.toString();
-      pricePerDayController.value.text = suggestedPrices.day.toString();
-      pricePerMonthController.value.text = suggestedPrices.month.toString();
+      pricePerDay.value = suggestedPrices.day.toString();
+      pricePerMonth.value = suggestedPrices.month.toString();
     }
   }
 
@@ -353,16 +318,6 @@ class ParkingEditController extends GetxController {
 
     if (selectedImagesBlurhash.isEmpty) return;
 
-    // final name = nameController.text;
-    // final price = double.parse(pricePerHourController.value.text);
-    // final description = descriptionController.text;
-    // final postalCode = postalCodeController.text;
-    // final street = streetController.text;
-    // final number = numberController.text;
-    // final city = cityController.text;
-    // final state = stateController.text;
-    // final country = countryController.text;
-    // final complement = complementController.text;
     final address = getAddressFromFields();
     final location = await _addressService.getCoordinatesFromAddress(address);
 
@@ -403,7 +358,8 @@ class ParkingEditController extends GetxController {
       garageDepth: garageDepth.value,
       isAutomatic: isAutomatic,
       isOpen: false,
-      reservationType: reservationTypeController.value.text,
+      // reservationType: reservationTypeController.value,
+      reservationType: ReservationType.flex,
     );
 
     // await _authController.registerUserType();

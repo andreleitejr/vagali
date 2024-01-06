@@ -35,12 +35,12 @@ class _ParkingEditViewState extends State<ParkingEditView> {
           curve: Curves.easeInOut,
         );
 
-        if (_currentPage == 0) {
-          await _controller.getGalleryImages();
-        }
         setState(() {
           _currentPage++;
         });
+        if (_currentPage == 1) {
+          await _controller.pickImagesFromGallery();
+        }
       } else {
         await _controller.save();
 
@@ -55,8 +55,19 @@ class _ParkingEditViewState extends State<ParkingEditView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopNavigationBar(
-        showLeading: false,
+        // showLeading: false,
         title: 'Editar Usuário',
+        onLeadingPressed: () {
+          print('sadhushsuahasduhdsaushuhuhsdau $_currentPage}');
+          _pageController.previousPage(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+          );
+
+          setState(() {
+            _currentPage--;
+          });
+        },
         actions: [
           Obx(
             () => TextButton(

@@ -6,8 +6,13 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/dashboard/views/dashboard_view.dart';
 import 'package:vagali/features/parking/controllers/parking_edit_controller.dart';
+import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/widgets/flat_button.dart';
+import 'package:vagali/widgets/image_picker_bottom_sheet.dart';
+import 'package:vagali/widgets/over_image_button.dart';
+import 'package:vagali/widgets/warning_dialog.dart';
 
 class StepTwoWidget extends StatelessWidget {
   final ParkingEditController controller;
@@ -19,30 +24,42 @@ class StepTwoWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 56),
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              const Expanded(
-                child: const Text(
-                  'Imagens da vaga',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+        Obx(() {
+          if (controller.selectedGalleryImages.isNotEmpty) {
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      '${controller.selectedGalleryImages.length} imagens',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
+                  TextButton(
+                    onPressed: () async {
+                      final source = await showImagePickerBottomSheet(context);
+
+                      if (source != null) {
+                        await controller.pickImages(source);
+                      }
+                    },
+                    child: Text(
+                      'Adicionar imagens',
+                      style: ThemeTypography.medium16.apply(
+                        color: ThemeColors.primary,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              IconButton(
-                onPressed: () => controller.getGalleryImages(),
-                icon: const Icon(
-                  Icons.add,
-                  color: ThemeColors.primary,
-                ),
-              ),
-            ],
-          ),
-        ),
+            );
+          }
+          return Container();
+        }),
         Expanded(
           child: GalleryImageSelectionPage(),
         ),
@@ -61,7 +78,30 @@ class GalleryImageSelectionPage extends StatelessWidget {
         final galleryImages = controller.selectedGalleryImages;
 
         if (galleryImages.isEmpty) {
-          return Center(child: Text('Erro ao carregar imagens da galeria.'));
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Nenhuma imagem selecionada.\nPor favor, selecione imagens de sua vaga.',
+                  style: ThemeTypography.medium16,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                FlatButton(
+                  onPressed: () async {
+                    final source = await showImagePickerBottomSheet(context);
+
+                    if (source != null) {
+                      await controller.pickImages(source);
+                    }
+                  },
+                  actionText: 'Selecionar imagem',
+                ),
+              ],
+            ),
+          );
         }
 
         return GridView.builder(
@@ -72,30 +112,30 @@ class GalleryImageSelectionPage extends StatelessWidget {
             final image = galleryImages[index];
             final isSelected = controller.selectedGalleryImages.contains(image);
 
-            return GestureDetector(
-              onTap: () {
-                // if (isSelected) {
-                //   controller.removeSelectedImage(File(image.path));
-                // } else {
-                //   controller.addSelectedImage(File(image.path));
-                // }
-              },
-              child: Stack(
-                alignment: Alignment.topRight,
-                children: [
-                  Image.file(
-                    File(image.path),
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: double.infinity,
-                  ),
-                  if (isSelected)
-                    Icon(
-                      Icons.check_circle,
-                      color: Colors.green,
+            return Stack(
+              alignment: Alignment.topRight,
+              children: [
+                Image.file(
+                  File(image.path),
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
+                ),
+                if (isSelected)
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: OverImageButton(
+                      icon: Coolicons.trashFull,
+                      onTap: () => showWarningDialog(
+                        context,
+                        title: 'Deletar a imagem',
+                        description:
+                            'Tem certeza que gostaria de deletar a imagem?',
+                        onConfirm: () => controller.removeSelectedImage(image),
+                      ),
                     ),
-                ],
-              ),
+                  ),
+              ],
             );
           },
         );

@@ -19,7 +19,7 @@ class SelectionChip extends StatelessWidget {
             color: isSelected ? Colors.white : Colors.grey,
           ),
         ),
-        backgroundColor: isSelected ? ThemeColors.intermediary : ThemeColors.grey2,
+        backgroundColor: isSelected ? ThemeColors.primary : ThemeColors.grey2,
       ),
     );
   }

@@ -18,13 +18,18 @@ class StepFourWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 56),
           Obx(
             () => ChipSelector<ParkingTag>(
               items: parkingTags,
-              labelText: 'Outras informações',
-              onSelectionChanged: (selectedItems) =>
-                  controller.parkingTags(selectedItems),
+              onSelectionChanged: (selectedItems) {
+                if (selectedItems.isNotEmpty) {
+                  for (final item in selectedItems) {
+                    controller.parkingTags.add(item);
+                  }
+                } else {
+                  controller.parkingTags.clear();
+                }
+              },
               error: controller.getError(controller.tagsError),
             ),
           ),
@@ -44,4 +49,3 @@ class StepFourWidget extends StatelessWidget {
     );
   }
 }
-

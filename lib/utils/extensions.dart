@@ -123,13 +123,16 @@ extension StringExtensions on String {
       return 'Outros';
     }
   }
+
   String get toReadableReservationType {
     if (this == 'month') {
       return 'Mensal';
-    }  else {
+    } else {
       return 'Flexível';
     }
   }
+
+  String toMonetaryString() => 'R\$${this}';
 
   String get clean => removeDiacritics(toLowerCase()).removeDots.removeHyphen;
 

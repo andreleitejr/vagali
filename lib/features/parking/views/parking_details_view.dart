@@ -10,6 +10,7 @@ import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/carousel_image_slider.dart';
 import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/loader.dart';
+import 'package:vagali/widgets/over_image_button.dart';
 import 'package:vagali/widgets/rounded_gradient_button.dart';
 import 'package:vagali/widgets/tag_list.dart';
 import 'package:vagali/widgets/user_card.dart';
@@ -187,21 +188,6 @@ class ParkingDetailsView extends StatelessWidget {
   }
 
   Widget _appBarButtons({required String icon, required VoidCallback onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 42,
-        width: 42,
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.75),
-          borderRadius: BorderRadius.circular(48),
-        ),
-        child: Coolicon(
-          icon: icon,
-          color: Colors.black.withOpacity(0.78),
-          scale: 1.1,
-        ),
-      ),
-    );
+    return OverImageButton(icon: icon, onTap: onTap);
   }
 }
