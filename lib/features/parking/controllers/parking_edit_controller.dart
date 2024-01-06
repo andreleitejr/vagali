@@ -74,7 +74,24 @@ class ParkingEditController extends GetxController {
   RxString get tagsError =>
       (isTagsValid.isTrue ? '' : 'Selecione pelo menos uma tag').obs;
 
-  RxString get priceError => (isPriceValid.isTrue ? '' : 'Preço inválido').obs;
+  RxString get priceError {
+    if (!isPricePerHourValid.isTrue) {
+      return 'O preço por hora deve ser maior ou igual a R\$3,00'.obs;
+    } else if (!isPricePerSixHoursValid.isTrue) {
+      return 'O preço por 6 horas deve ser maior ou igual a R\$8,00 e superar o preço por hora'
+          .obs;
+    } else if (!isPricePerTwelveHoursValid.isTrue) {
+      return 'O preço por 12 horas deve ser maior ou igual a R\$12,00 e superar o preço por 6 horas'
+          .obs;
+    } else if (!isPricePerDayValid.isTrue) {
+      return 'O preço por dia deve ser maior ou igual a R\$15,00 e superar o preço por 12 horas'
+          .obs;
+    } else if (!isPricePerMonthValid.isTrue) {
+      return 'O preço por mês deve ser maior ou igual a R\$90,00'.obs;
+    } else {
+      return ''.obs;
+    }
+  }
 
   RxString get descriptionError =>
       (isDescriptionValid.isTrue ? '' : 'Descrição não pode estar vazia').obs;
@@ -104,6 +121,8 @@ class ParkingEditController extends GetxController {
     fillAddressFromLandlord();
     selectType(parkingTypes[1]); // Casas
     updateCompatibleCarTypes();
+
+    pricePerHour.value = '5';
 
     ever(pricePerHour, (_) => calculateSuggestedPrices());
     ever(gateHeight, (_) => updateCompatibleCarTypes());
@@ -149,12 +168,38 @@ class ParkingEditController extends GetxController {
 
   RxBool get isTagsValid => parkingTags.isNotEmpty.obs;
 
-  RxBool get isPriceValid {
-    final price = double.tryParse(pricePerHour.value);
-    if (price != null) {
-      return (price >= 2).obs;
-    }
-    return false.obs;
+  RxBool get isPriceValid => (isPricePerHourValid.isTrue &&
+          isPricePerSixHoursValid.isTrue &&
+          isPricePerTwelveHoursValid.isTrue &&
+          isPricePerDayValid.isTrue &&
+          isPricePerMonthValid.isTrue)
+      .obs;
+
+  RxBool get isPricePerHourValid => _isValidPrice(pricePerHour, 3);
+
+  RxBool get isPricePerSixHoursValid =>
+      _isValidPrice(pricePerSixHours, double.tryParse(pricePerHour.value) ?? 0,
+          minDifference: 6, minValue: 6);
+
+  RxBool get isPricePerTwelveHoursValid => _isValidPrice(
+      pricePerTwelveHours, double.tryParse(pricePerSixHours.value) ?? 0,
+      minDifference: 6, minValue: 9);
+
+  RxBool get isPricePerDayValid => _isValidPrice(
+      pricePerDay, double.tryParse(pricePerTwelveHours.value) ?? 0,
+      minDifference: 9, minValue: 12);
+
+  RxBool get isPricePerMonthValid =>
+      _isValidPrice(pricePerMonth, 0, minValue: 90);
+
+  RxBool _isValidPrice(RxString price, double previousPrice,
+      {double minDifference = 0, double minValue = 0}) {
+    final value = double.tryParse(price.value) ?? 0;
+    return (price.isNotEmpty &&
+            value >= previousPrice &&
+            value >= minDifference)
+        ? (value >= minValue).obs
+        : false.obs;
   }
 
   RxBool get isDescriptionValid => description.value.isNotEmpty.obs;
@@ -299,13 +344,11 @@ class ParkingEditController extends GetxController {
   }
 
   void calculateSuggestedPrices() {
-    print('sdajudsaidasjdasijsdaijidjasdij jesus!');
     final price = double.tryParse(pricePerHour.value);
     if (price != null) {
       final suggestedPrices = PriceService.calculateSuggestedPrices(price);
       pricePerSixHours.value = suggestedPrices.sixHours.toString();
-      pricePerTwelveHours.value =
-          suggestedPrices.twelveHours.toString();
+      pricePerTwelveHours.value = suggestedPrices.twelveHours.toString();
       pricePerDay.value = suggestedPrices.day.toString();
       pricePerMonth.value = suggestedPrices.month.toString();
     }
@@ -334,7 +377,11 @@ class ParkingEditController extends GetxController {
       updatedAt: DateTime.now(),
       name: name.value,
       price: Price(
-        month: 0,
+        hour: double.parse(pricePerHour.value),
+        sixHours: double.parse(pricePerSixHours.value),
+        twelveHours: double.parse(pricePerTwelveHours.value),
+        day: double.parse(pricePerDay.value),
+        month: double.parse(pricePerMonth.value),
       ),
       isAvailable: true,
       tags: parkingTags,

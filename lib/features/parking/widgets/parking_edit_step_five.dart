@@ -37,14 +37,25 @@ class StepFiveWidget extends StatelessWidget {
           //     onTap: () => _showReservationTypeBottomSheet(context),
           //   ),
           // ),
-          // const SizedBox(height: 16),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Aviso: Os preços são apenas sugestões da plataforma.',
+                style: ThemeTypography.regular14.apply(
+                  color: ThemeColors.grey4,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
           Obx(
             () => PriceInput(
               value: controller.pricePerHour.value,
               controller: pricePerHourController,
               hintText: 'Preco por hora',
               keyboardType: TextInputType.number,
-              error: controller.getError(controller.priceError),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
@@ -58,7 +69,6 @@ class StepFiveWidget extends StatelessWidget {
               controller: pricePerSixHoursController,
               hintText: 'Preco por 6 horas',
               keyboardType: TextInputType.number,
-              error: controller.getError(controller.priceError),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
@@ -72,7 +82,6 @@ class StepFiveWidget extends StatelessWidget {
               controller: pricePerTwelveHoursController,
               hintText: 'Preco por 12 horas',
               keyboardType: TextInputType.number,
-              error: controller.getError(controller.priceError),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
@@ -86,7 +95,6 @@ class StepFiveWidget extends StatelessWidget {
               controller: pricePerDayController,
               hintText: 'Preco por diária',
               keyboardType: TextInputType.number,
-              error: controller.getError(controller.priceError),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
@@ -100,7 +108,6 @@ class StepFiveWidget extends StatelessWidget {
               controller: pricePerMonthController,
               hintText: 'Preco por mês',
               keyboardType: TextInputType.number,
-              error: controller.getError(controller.priceError),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
@@ -108,17 +115,22 @@ class StepFiveWidget extends StatelessWidget {
             );
           }),
           const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Aviso: Os preços são apenas sugestões da plataforma.',
-                style: ThemeTypography.regular14.apply(
-                  color: ThemeColors.grey4,
-                ),
-              ),
-            ],
-          )
+          Obx(() {
+            if (controller.showErrors.isTrue) {
+              return Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      controller.getError(controller.priceError),
+                      style: ThemeTypography.semiBold14
+                          .apply(color: ThemeColors.red),
+                    ),
+                  ),
+                ],
+              );
+            }
+            return Container();
+          }),
         ],
       ),
     );
