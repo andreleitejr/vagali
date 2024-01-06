@@ -8,6 +8,8 @@ import 'package:vagali/features/user/widgets/address_edit_widget.dart';
 import 'package:vagali/features/user/widgets/personal_info_edit_widget.dart';
 import 'package:vagali/features/vehicle/views/vehicle_edit_view.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
+import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/rounded_gradient_button.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
@@ -32,7 +34,7 @@ class _UserEditViewState extends State<UserEditView> {
   }
 
   Future<void> _validateAndNavigateNext() async {
-    final isValidStep = _controller.validateCurrentStep(_currentPage);
+    final isValidStep = _controller.validateCurrentStep(_currentPage).value;
 
     if (isValidStep) {
       if (_currentPage < 1) {
@@ -80,6 +82,21 @@ class _UserEditViewState extends State<UserEditView> {
       appBar: TopNavigationBar(
         showLeading: false,
         title: 'Editar Usuário',
+        actions: [
+          Obx(
+            () => TextButton(
+              onPressed: () => _validateAndNavigateNext(),
+              child: Text(
+                'Avancar',
+                style: ThemeTypography.semiBold16.apply(
+                  color: _controller.validateCurrentStep(_currentPage).isTrue
+                      ? ThemeColors.primary
+                      : ThemeColors.grey3,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: Container(
         color: Colors.white,
@@ -95,16 +112,6 @@ class _UserEditViewState extends State<UserEditView> {
             PersonalInfoEditWidget(controller: _controller),
             AddressEditWidget(controller: _controller),
           ],
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Obx(
-          () => RoundedGradientButton(
-            actionText: 'Avançar',
-            onPressed: () => _validateAndNavigateNext(),
-            loading: _controller.loading.value,
-          ),
         ),
       ),
     );

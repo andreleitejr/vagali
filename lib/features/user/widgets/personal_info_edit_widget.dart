@@ -28,6 +28,13 @@ class PersonalInfoEditWidget extends StatelessWidget {
   final FocusNode genderFocus = FocusNode();
   final FocusNode birthdayFocus = FocusNode();
 
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final documentController = TextEditingController();
+  final emailController = TextEditingController();
+  final genderController = TextEditingController();
+  final birthdayController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final focus = FocusScope.of(context);
@@ -39,7 +46,7 @@ class PersonalInfoEditWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ImageButton(
-                imageUrl: controller.imageFileController.value?.path,
+                imageUrl: controller.imageFile.value?.path,
                 imageSize: 100.0,
                 imageDataSource: ImageDataSource.asset,
                 onPressed: () async {
@@ -57,6 +64,7 @@ class PersonalInfoEditWidget extends StatelessWidget {
           ),
         ),
         Obx(() {
+          print('############### ${controller.isPersonalInfoValid}');
           if (controller.imageBlurhash.value != null) {
             return Container();
           }
@@ -84,30 +92,35 @@ class PersonalInfoEditWidget extends StatelessWidget {
           return Container();
         }),
         Obx(
-          () => Input(
-            controller: controller.firstNameController,
+          () => Input2(
+            controller: firstNameController,
+            value: controller.firstName.value,
             hintText: 'Nome',
             keyboardType: TextInputType.name,
             error: controller.getError(controller.firstNameError),
             currentFocusNode: firstNameFocus,
             nextFocusNode: lastNameFocus,
+            onChanged: controller.firstName,
           ),
         ),
         const SizedBox(height: 16),
         Obx(
-          () => Input(
-            controller: controller.lastNameController,
+          () => Input2(
+            controller: lastNameController,
+            value: controller.lastName.value,
             hintText: 'Sobrenome',
             keyboardType: TextInputType.name,
             error: controller.getError(controller.lastNameError),
             currentFocusNode: lastNameFocus,
             nextFocusNode: documentFocus,
+            onChanged: controller.lastName,
           ),
         ),
         const SizedBox(height: 16),
         Obx(
-          () => Input(
-            controller: controller.documentController,
+          () => Input2(
+            controller: documentController,
+            value: controller.document.value,
             hintText: 'Document',
             keyboardType: TextInputType.number,
             error: controller.getError(controller.documentError),
@@ -117,12 +130,14 @@ class PersonalInfoEditWidget extends StatelessWidget {
             ],
             currentFocusNode: documentFocus,
             nextFocusNode: emailFocus,
+            onChanged: controller.document,
           ),
         ),
         const SizedBox(height: 16),
         Obx(
-          () => Input(
-            controller: controller.emailController,
+          () => Input2(
+            controller: emailController,
+            value: controller.email.value,
             hintText: 'Email',
             keyboardType: TextInputType.emailAddress,
             error: controller.getError(controller.emailError),
@@ -131,29 +146,38 @@ class PersonalInfoEditWidget extends StatelessWidget {
               emailFocus.unfocus();
               _showGenderBottomSheet(context);
             },
+            onChanged: controller.email,
           ),
         ),
         const SizedBox(height: 16),
-        InputButton(
-          controller: controller.genderController,
-          hintText: 'Qual seu gênero?',
-          onTap: () => _showGenderBottomSheet(context),
+        Obx(
+          () => InputButton2(
+            controller: genderController,
+            value: controller.gender.value,
+            hintText: 'Qual seu gênero?',
+            onTap: () => _showGenderBottomSheet(context),
+            onSelected: controller.gender,
+          ),
         ),
         const SizedBox(height: 16),
         Obx(
-          () => Input(
+          () => Input2(
+            controller: birthdayController,
             enabled: false,
-            controller: controller.birthdayController,
+            value: controller.birthday.value,
             keyboardType: TextInputType.datetime,
             hintText: 'Data de aniversário',
-            onTap: () {
-              selectDateTime(
+            onTap: () async {
+              final birthday = await selectDateTime(
                 context,
                 DateInputType.birthday,
               );
+              controller.birthday.value = birthday.toString();
+
               FocusScope.of(context).requestFocus(FocusNode());
             },
             error: controller.getError(controller.birthdayError),
+            onChanged: controller.birthday,
           ),
         ),
       ],
@@ -168,7 +192,9 @@ class PersonalInfoEditWidget extends StatelessWidget {
         items: genders.map((gender) => gender.toReadableGender).toList(),
         title: 'Qual seu gênero?',
         onItemSelected: (selectedItem) async {
-          controller.genderController.text = selectedItem;
+          controller.gender.value = selectedItem;
+          print(
+              ' sahudhuasdhusadhuhauhuhudhasdhusduasdhuah ${controller.gender.value}');
           focus.unfocus();
 
           await Future.delayed(const Duration(milliseconds: 100));
@@ -179,7 +205,7 @@ class PersonalInfoEditWidget extends StatelessWidget {
             showTime: false,
           );
           if (birthday != null) {
-            controller.birthdayController.text =
+            controller.birthday.value =
                 birthday.toMonthlyAndYearFormattedString();
             controller.birthdayDate(birthday);
           }
