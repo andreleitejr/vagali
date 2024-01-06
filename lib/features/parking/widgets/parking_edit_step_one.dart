@@ -10,7 +10,10 @@ import 'package:vagali/widgets/input.dart';
 class StepOneWidget extends StatelessWidget {
   final ParkingEditController controller;
 
-  const StepOneWidget({Key? key, required this.controller}) : super(key: key);
+  StepOneWidget({Key? key, required this.controller}) : super(key: key);
+
+  final nameController = TextEditingController();
+  final descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,31 +23,26 @@ class StepOneWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 56),
-            const Text(
-              'Informações Gerais',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 24),
             Obx(() {
-              return Input(
-                controller: controller.nameController,
+              return Input2(
+                controller: nameController,
+                value: controller.name.value,
                 hintText: 'Nome da Vaga',
                 required: true,
-                error: controller.nameError.value,
+                error: controller.getError(controller.nameError),
+                onChanged: controller.name,
               );
             }),
             const SizedBox(height: 16),
             Obx(
-              () => Input(
-                controller: controller.descriptionController,
+              () => Input2(
+                value: controller.description.value,
+                controller: descriptionController,
                 hintText: 'Descrição da Vaga',
                 required: true,
                 error: controller.getError(controller.descriptionError),
                 maxLines: 3,
+                onChanged: controller.description,
               ),
             ),
             const SizedBox(height: 16.0),

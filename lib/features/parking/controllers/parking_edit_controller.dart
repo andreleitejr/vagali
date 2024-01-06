@@ -1,20 +1,14 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vagali/features/address/models/address.dart';
-import 'package:vagali/features/auth/controllers/auth_controller.dart';
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/landlord/models/landlord.dart';
-import 'package:vagali/features/parking/models/gate.dart';
-import 'package:vagali/features/parking/models/opening_hours.dart';
 import 'package:vagali/features/parking/models/parking.dart';
 import 'package:vagali/features/parking/models/parking_type.dart';
 import 'package:vagali/features/parking/models/parking_tag.dart';
 import 'package:vagali/features/parking/models/price.dart';
 import 'package:vagali/features/parking/repositories/parking_repository.dart';
-import 'package:vagali/features/reservation/models/reservation_type.dart';
 import 'package:vagali/features/vehicle/models/vehicle_type.dart';
 import 'package:vagali/models/image_blurhash.dart';
 import 'package:vagali/services/address_service.dart';
@@ -28,27 +22,26 @@ class ParkingEditController extends GetxController {
   final ParkingRepository _repository = ParkingRepository();
   final AuthRepository _authRepository = Get.find();
 
-  final ImageService _imageService = ImageService();
-  final AddressService _addressService = AddressService();
+  final _imageService = ImageService();
+  final _addressService = AddressService();
+  final _garageService = GarageService();
+  final scheduleService = ScheduleService();
 
-  final GarageService _garageService = GarageService();
-
-  final ScheduleService scheduleService = ScheduleService();
-  final RxInt currentStep = 0.obs;
+  final currentStep = 0.obs;
   final selectedGalleryImages = <XFile>[].obs;
   final selectedImagesBlurhash = <ImageBlurHash>[].obs;
 
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
+  final name = ''.obs;
+  final description = ''.obs;
 
-  final TextEditingController coordinatesController = TextEditingController();
-  final TextEditingController postalCodeController = TextEditingController();
-  final TextEditingController streetController = TextEditingController();
-  final TextEditingController numberController = TextEditingController();
-  final TextEditingController cityController = TextEditingController();
-  final TextEditingController stateController = TextEditingController();
-  final TextEditingController countryController = TextEditingController();
-  final TextEditingController complementController = TextEditingController();
+  final coordinates = ''.obs;
+  final postalCode = ''.obs;
+  final street = ''.obs;
+  final number = ''.obs;
+  final city = ''.obs;
+  final state = ''.obs;
+  final country = ''.obs;
+  final complement = ''.obs;
 
   // final List<File> imageFiles = <File>[];
   final parkingType = Rx<ParkingType?>(null);
@@ -59,46 +52,48 @@ class ParkingEditController extends GetxController {
   final isAutomaticController = RxBool(false);
   final compatibleCarTypes = <VehicleType>[].obs;
 
-  final reservationTypeController =
-      Rx<TextEditingController>(TextEditingController());
-
+  final reservationTypeController = TextEditingController().obs;
   final isFlexible = false.obs;
 
-  final pricePerHourController =
-      Rx<TextEditingController>(TextEditingController());
-  final pricePerSixHoursController =
-      Rx<TextEditingController>(TextEditingController());
-  final pricePerTwelveHoursController =
-      Rx<TextEditingController>(TextEditingController());
-  final pricePerDayController =
-      Rx<TextEditingController>(TextEditingController());
-  final pricePerMonthController =
-      Rx<TextEditingController>(TextEditingController());
+  final pricePerHourController = TextEditingController().obs;
+  final pricePerSixHoursController = TextEditingController().obs;
+  final pricePerTwelveHoursController = TextEditingController().obs;
+  final pricePerDayController = TextEditingController().obs;
+  final pricePerMonthController = TextEditingController().obs;
 
-  final nameError = RxString('');
-  final tagsError = RxString('');
-  final priceError = RxString('');
-  final descriptionError = RxString('');
+  RxString get imageError =>
+      (isImageValid.isTrue ? '' : 'Selecione uma imagem').obs;
+
+  RxString get nameError =>
+      (isNameValid.isTrue ? '' : 'Nome do estacionamento não pode estar vazio')
+          .obs;
+
+  RxString get tagsError =>
+      (isTagsValid.isTrue ? '' : 'Selecione pelo menos uma tag').obs;
+
+  RxString get priceError => (isPriceValid.isTrue ? '' : 'Preço inválido').obs;
+
+  RxString get descriptionError =>
+      (isDescriptionValid.isTrue ? '' : 'Descrição não pode estar vazia').obs;
 
   // final operatingHoursError = RxString('');
-  final coordinatesError = RxString('');
-  final postalCodeError = RxString('');
-  final streetError = RxString('');
-  final numberError = RxString('');
-  final cityError = RxString('');
-  final stateError = RxString('');
-  final countryError = RxString('');
-  final complementError = RxString('');
-  final imageError = RxString('');
-  final addressError = RxString('');
-  final gateHeightError = RxString('');
-  final gateWidthError = RxString('');
-  final garageDepthError = RxString('');
+  RxString get coordinatesError =>
+      (isCoordinatesValid.isTrue ? '' : 'Coordenadas não podem estar vazias')
+          .obs;
+
+  RxString get addressError =>
+      (isGateValid.isTrue ? '' : 'Erro no endereço').obs;
+
+  RxString get gateHeightError => ''.obs;
+
+  RxString get gateWidthError => ''.obs;
+
+  RxString get garageDepthError => ''.obs;
 
   final showErrors = false.obs;
   final loading = false.obs;
 
-  int get totalSteps => 5;
+  final totalSteps = 5;
 
   @override
   void onInit() {
@@ -108,19 +103,7 @@ class ParkingEditController extends GetxController {
     /// Modificar em versoes posteriores
     selectType(parkingTypes[1]); // Casas
     updateCompatibleCarTypes();
-    nameController.addListener(() => validateName());
-    descriptionController.addListener(() => validateDescription());
-    coordinatesController.addListener(() => validateCoordinates());
-    postalCodeController.addListener(() {
-      validatePostalCode();
-      fetchAddressDetails();
-    });
-    streetController.addListener(() => validateStreet());
-    numberController.addListener(() => validateNumber());
-    cityController.addListener(() => validateCity());
-    stateController.addListener(() => validateState());
-    countryController.addListener(() => validateCountry());
-    complementController.addListener(() => validateComplement());
+
     pricePerHourController.value.addListener(() => calculateSuggestedPrices());
     reservationTypeController.value.addListener(() {
       if (reservationTypeController.value.text == 'Flexível') {
@@ -135,56 +118,147 @@ class ParkingEditController extends GetxController {
     ever(garageDepth, (_) => updateCompatibleCarTypes());
   }
 
-  bool validateCurrentStep(int currentStep) {
+  RxBool validateCurrentStep(int currentStep) {
     switch (currentStep) {
       case 0:
-        return validateStepOne();
+        return validateStepOne().obs;
       case 1:
-        return validateStepTwo();
+        return validateStepTwo().obs;
       case 2:
-        return validateStepThree();
+        return validateStepThree().obs;
       case 3:
-        return validateStepFour();
+        return validateStepFour().obs;
       case 4:
-        return validateStepFive();
+        return validateStepFive().obs;
       default:
-        return false;
+        return false.obs;
     }
   }
 
-  bool validateStepOne() {
-    final isNameValid = validateName();
-    final isDescriptionValid = validateDescription();
-    return isNameValid && isDescriptionValid;
-  }
+  bool validateStepOne() => isNameValid.value && isDescriptionValid.value;
 
-  bool validateStepTwo() {
-    return validateImage();
-  }
+  bool validateStepTwo() => isImageValid.value;
 
   bool validateStepThree() {
     return true; // validateOperatingHours();
   }
 
   bool validateStepFour() {
-    return validateTags();
+    return isTagsValid.value;
   }
 
   bool validateStepFive() {
-    final isPriceValid = validatePrice();
-    return isPriceValid;
+    return isPriceValid.value;
+  }
+
+  bool isTypeSelected(ParkingType type) {
+    return parkingType.value == type;
+  }
+
+  void selectType(ParkingType type) {
+    parkingType.value = type;
+  }
+
+  String getError(RxString error) {
+    if (showErrors.isTrue) {
+      return error.value;
+    }
+    return '';
+  }
+
+  RxBool get isImageValid => selectedGalleryImages.isNotEmpty.obs;
+
+  RxBool get isNameValid => name.isNotEmpty.obs;
+
+  RxBool get isTagsValid => parkingTags.isNotEmpty.obs;
+
+  RxBool get isPriceValid {
+    final price = double.tryParse(pricePerHourController.value.text);
+    if (price != null) {
+      return (price >= 7).obs;
+    }
+    return false.obs;
+  }
+
+  RxBool get isDescriptionValid => description.value.isNotEmpty.obs;
+
+  // bool validateOperatingHours() {
+  //   if (selectedOperatingHours.isEmpty) {
+  //     operatingHoursError.value =
+  //         'Selecione pelo menos um dia de funcionamento';
+  //     return false;
+  //   }
+  //
+  //   for (final day in selectedOperatingHours.keys) {
+  //     final hours = selectedOperatingHours[day]!;
+  //     if (hours.isEmpty) {
+  //       operatingHoursError.value = 'Selecione pelo menos uma hora para $day';
+  //       return false;
+  //     }
+  //   }
+  //
+  //   operatingHoursError.value = '';
+  //   return true;
+  // }
+  RxBool get isCoordinatesValid => coordinates.value.isNotEmpty.obs;
+
+  RxBool get isPostalCodeValid => postalCode.value.isNotEmpty.obs;
+
+  RxBool get isStreetValid => street.value.isNotEmpty.obs;
+
+  RxBool get isNumberValid => number.value.isNotEmpty.obs;
+
+  RxBool get isCityValid => city.value.isNotEmpty.obs;
+
+  RxBool get isStateValid => state.value.isNotEmpty.obs;
+
+  RxBool get isCountryValid => country.value.isNotEmpty.obs;
+
+  RxBool get isComplementValid => complement.value.isNotEmpty.obs;
+
+  RxBool get isGateValid {
+    // final gateHeightText = gateHeightController.text;
+    // final gateWidthText = gateWidthController.text;
+    // final garageDepthText = garageDepthController.text;
+    //
+    // final isHeightValid =
+    //     gateHeightText.isNotEmpty && double.tryParse(gateHeightText) != null;
+    // final isWidthValid =
+    //     gateWidthText.isNotEmpty && double.tryParse(gateWidthText) != null;
+    // final isDepthValid =
+    //     garageDepthText.isNotEmpty && double.tryParse(gateWidthText) != null;
+    //
+    // if (!isHeightValid) {
+    //   gateHeightError.value = 'Altura do portão inválida';
+    // } else {
+    //   gateHeightError.value = '';
+    // }
+    //
+    // if (!isWidthValid) {
+    //   gateWidthError.value = 'Largura do portão inválida';
+    // } else {
+    //   gateWidthError.value = '';
+    // }
+    //
+    // if (!isDepthValid) {
+    //   garageDepthError.value = 'Profundidade da vaga inválida';
+    // } else {
+    //   garageDepthError.value = '';
+    // }
+
+    return true.obs;
   }
 
   void fillAddressFromLandlord() {
     final landlordAddress = landlord.address;
 
-    postalCodeController.text = landlordAddress.postalCode ?? '';
-    streetController.text = landlordAddress.street ?? '';
-    numberController.text = landlordAddress.number ?? '';
-    cityController.text = landlordAddress.city ?? '';
-    stateController.text = landlordAddress.state ?? '';
-    countryController.text = landlordAddress.country ?? '';
-    complementController.text = landlordAddress.complement ?? '';
+    postalCode.value = landlordAddress.postalCode ?? '';
+    street.value = landlordAddress.street ?? '';
+    number.value = landlordAddress.number ?? '';
+    city.value = landlordAddress.city ?? '';
+    state.value = landlordAddress.state ?? '';
+    country.value = landlordAddress.country ?? '';
+    complement.value = landlordAddress.complement ?? '';
   }
 
   Future<void> getGalleryImages() async {
@@ -228,34 +302,26 @@ class ParkingEditController extends GetxController {
   // }
 
   void fetchAddressDetails() async {
-    final postalCode = postalCodeController.text;
     if (postalCode.isNotEmpty) {
       final addressDetails =
-          await _addressService.getAddressDetails(postalCode);
+          await _addressService.getAddressDetails(postalCode.value);
       if (addressDetails != null) {
-        streetController.text = addressDetails['logradouro'] ?? '';
-        cityController.text = addressDetails['localidade'] ?? '';
-        stateController.text = addressDetails['uf'] ?? '';
-        countryController.text = 'Brasil';
+        street.value = addressDetails['logradouro'] ?? '';
+        city.value = addressDetails['localidade'] ?? '';
+        state.value = addressDetails['uf'] ?? '';
+        country.value = 'Brasil';
       }
     }
   }
 
   Address getAddressFromFields() {
-    final postalCode = postalCodeController.text;
-    final street = streetController.text;
-    final number = numberController.text;
-    final city = cityController.text;
-    final state = stateController.text;
-    final country = countryController.text;
-
     return Address(
-      postalCode: postalCode,
-      street: street,
-      number: number,
-      city: city,
-      state: state,
-      country: country,
+      postalCode: postalCode.value,
+      street: street.value,
+      number: number.value,
+      city: city.value,
+      state: state.value,
+      country: country.value,
     );
   }
 
@@ -267,6 +333,19 @@ class ParkingEditController extends GetxController {
     );
   }
 
+  void calculateSuggestedPrices() {
+    final price = double.tryParse(pricePerHourController.value.text);
+    if (price != null) {
+      final suggestedPrices = PriceService.calculateSuggestedPrices(price);
+      pricePerSixHoursController.value.text =
+          suggestedPrices.sixHours.toString();
+      pricePerTwelveHoursController.value.text =
+          suggestedPrices.twelveHours.toString();
+      pricePerDayController.value.text = suggestedPrices.day.toString();
+      pricePerMonthController.value.text = suggestedPrices.month.toString();
+    }
+  }
+
   Future<void> save() async {
     loading(true);
 
@@ -274,16 +353,16 @@ class ParkingEditController extends GetxController {
 
     if (selectedImagesBlurhash.isEmpty) return;
 
-    final name = nameController.text;
-    final price = double.parse(pricePerHourController.value.text);
-    final description = descriptionController.text;
-    final postalCode = postalCodeController.text;
-    final street = streetController.text;
-    final number = numberController.text;
-    final city = cityController.text;
-    final state = stateController.text;
-    final country = countryController.text;
-    final complement = complementController.text;
+    // final name = nameController.text;
+    // final price = double.parse(pricePerHourController.value.text);
+    // final description = descriptionController.text;
+    // final postalCode = postalCodeController.text;
+    // final street = streetController.text;
+    // final number = numberController.text;
+    // final city = cityController.text;
+    // final state = stateController.text;
+    // final country = countryController.text;
+    // final complement = complementController.text;
     final address = getAddressFromFields();
     final location = await _addressService.getCoordinatesFromAddress(address);
 
@@ -298,26 +377,26 @@ class ParkingEditController extends GetxController {
     final parking = Parking(
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
-      name: name,
+      name: name.value,
       price: Price(
         month: 0,
       ),
       isAvailable: true,
       tags: parkingTags,
-      description: description,
+      description: description.value,
       images: selectedImagesBlurhash,
       ownerId: _authRepository.authUser!.uid,
       type: parkingType.value!.name,
       // operatingHours: OperatingHours(daysAndHours: selectedOperatingHours),
       location: location,
       address: Address(
-        postalCode: postalCode,
-        street: street,
-        number: number,
-        city: city,
-        state: state,
-        country: country,
-        complement: complement,
+        postalCode: postalCode.value,
+        street: street.value,
+        number: number.value,
+        city: city.value,
+        state: state.value,
+        country: country.value,
+        complement: complement.value,
       ),
       gateHeight: gateHeight.value,
       gateWidth: gateWidth.value,
@@ -335,171 +414,5 @@ class ParkingEditController extends GetxController {
     await _repository.save(parking);
 
     loading(false);
-  }
-
-  bool isTypeSelected(ParkingType type) {
-    return parkingType.value == type;
-  }
-
-  void selectType(ParkingType type) {
-    parkingType.value = type;
-  }
-
-  String getError(RxString error) {
-    if (showErrors.isTrue) {
-      return error.value;
-    }
-    return '';
-  }
-
-  bool validateImage() {
-    final isValid = selectedGalleryImages.isNotEmpty;
-    imageError.value = isValid ? '' : 'Selecione uma imagem';
-    return isValid;
-  }
-
-  bool validateTags() {
-    final isValid = parkingTags.isNotEmpty;
-    tagsError.value = isValid ? '' : 'Selecione pelo menos uma tag';
-    return isValid;
-  }
-
-  bool validateName() {
-    final isValid = nameController.text.isNotEmpty;
-    nameError.value =
-        isValid ? '' : 'Nome do estacionamento não pode estar vazio';
-    return isValid;
-  }
-
-  bool validatePrice() {
-    final price = double.tryParse(pricePerHourController.value.text);
-    if (price != null) {
-      final isValid = price >= 7;
-      priceError.value = isValid ? '' : 'Preço inválido';
-      return isValid;
-    }
-    return false;
-  }
-
-  bool validateDescription() {
-    final isValid = descriptionController.text.isNotEmpty;
-    descriptionError.value = isValid ? '' : 'Descrição não pode estar vazia';
-    return isValid;
-  }
-
-  // bool validateOperatingHours() {
-  //   if (selectedOperatingHours.isEmpty) {
-  //     operatingHoursError.value =
-  //         'Selecione pelo menos um dia de funcionamento';
-  //     return false;
-  //   }
-  //
-  //   for (final day in selectedOperatingHours.keys) {
-  //     final hours = selectedOperatingHours[day]!;
-  //     if (hours.isEmpty) {
-  //       operatingHoursError.value = 'Selecione pelo menos uma hora para $day';
-  //       return false;
-  //     }
-  //   }
-  //
-  //   operatingHoursError.value = '';
-  //   return true;
-  // }
-
-  bool validateCoordinates() {
-    final isValid = coordinatesController.text.isNotEmpty;
-    coordinatesError.value =
-        isValid ? '' : 'Coordenadas não podem estar vazias';
-    return true;
-  }
-
-  bool validatePostalCode() {
-    final isValid = postalCodeController.text.isNotEmpty;
-    postalCodeError.value = isValid ? '' : 'CEP não pode estar vazio';
-    return isValid;
-  }
-
-  bool validateStreet() {
-    final isValid = streetController.text.isNotEmpty;
-    streetError.value = isValid ? '' : 'Rua não pode estar vazia';
-    return isValid;
-  }
-
-  bool validateNumber() {
-    final isValid = numberController.text.isNotEmpty;
-    numberError.value = isValid ? '' : 'Número não pode estar vazio';
-    return isValid;
-  }
-
-  bool validateCity() {
-    final isValid = cityController.text.isNotEmpty;
-    cityError.value = isValid ? '' : 'Cidade não pode estar vazia';
-    return isValid;
-  }
-
-  bool validateState() {
-    final isValid = stateController.text.isNotEmpty;
-    stateError.value = isValid ? '' : 'Estado não pode estar vazio';
-    return isValid;
-  }
-
-  bool validateCountry() {
-    final isValid = countryController.text.isNotEmpty;
-    countryError.value = isValid ? '' : 'País não pode estar vazio';
-    return isValid;
-  }
-
-  bool validateComplement() {
-    final isValid = complementController.text.isNotEmpty;
-    complementError.value = isValid ? '' : 'Complemento não pode estar vazio';
-    return isValid;
-  }
-
-  bool validateGate() {
-    // final gateHeightText = gateHeightController.text;
-    // final gateWidthText = gateWidthController.text;
-    // final garageDepthText = garageDepthController.text;
-    //
-    // final isHeightValid =
-    //     gateHeightText.isNotEmpty && double.tryParse(gateHeightText) != null;
-    // final isWidthValid =
-    //     gateWidthText.isNotEmpty && double.tryParse(gateWidthText) != null;
-    // final isDepthValid =
-    //     garageDepthText.isNotEmpty && double.tryParse(gateWidthText) != null;
-    //
-    // if (!isHeightValid) {
-    //   gateHeightError.value = 'Altura do portão inválida';
-    // } else {
-    //   gateHeightError.value = '';
-    // }
-    //
-    // if (!isWidthValid) {
-    //   gateWidthError.value = 'Largura do portão inválida';
-    // } else {
-    //   gateWidthError.value = '';
-    // }
-    //
-    // if (!isDepthValid) {
-    //   garageDepthError.value = 'Profundidade da vaga inválida';
-    // } else {
-    //   garageDepthError.value = '';
-    // }
-
-    return true;
-  }
-
-  void calculateSuggestedPrices() {
-    print(
-        ' HUSHSADUHSDAUSDAHUSDAHASHASDUHSDUSDHAUSDA ${pricePerHourController.value.text}');
-    final price = double.tryParse(pricePerHourController.value.text);
-    if (price != null) {
-      final suggestedPrices = PriceService.calculateSuggestedPrices(price);
-      pricePerSixHoursController.value.text =
-          suggestedPrices.sixHours.toString();
-      pricePerTwelveHoursController.value.text =
-          suggestedPrices.twelveHours.toString();
-      pricePerDayController.value.text = suggestedPrices.day.toString();
-      pricePerMonthController.value.text = suggestedPrices.month.toString();
-    }
   }
 }

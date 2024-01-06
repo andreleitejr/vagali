@@ -8,10 +8,12 @@ import 'package:vagali/features/parking/widgets/parking_edit_step_four.dart';
 import 'package:vagali/features/parking/widgets/parking_edit_step_one.dart';
 import 'package:vagali/features/parking/widgets/parking_edit_step_three.dart';
 import 'package:vagali/features/parking/widgets/parking_edit_step_two.dart';
+import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/logo.dart';
 
 import 'package:vagali/widgets/rounded_gradient_button.dart';
+import 'package:vagali/widgets/top_bavigation_bar.dart';
 
 class ParkingEditView extends StatefulWidget {
   const ParkingEditView({Key? key}) : super(key: key);
@@ -26,7 +28,7 @@ class _ParkingEditViewState extends State<ParkingEditView> {
   int _currentPage = 0;
 
   Future<void> _validateAndNavigateNext() async {
-    if (_controller.validateCurrentStep(_currentPage)) {
+    if (_controller.validateCurrentStep(_currentPage).isTrue) {
       if (_currentPage < _controller.totalSteps - 1) {
         _pageController.nextPage(
           duration: const Duration(milliseconds: 500),
@@ -52,6 +54,25 @@ class _ParkingEditViewState extends State<ParkingEditView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: TopNavigationBar(
+        showLeading: false,
+        title: 'Editar Usuário',
+        actions: [
+          Obx(
+            () => TextButton(
+              onPressed: () => _validateAndNavigateNext(),
+              child: Text(
+                'Avancar',
+                style: ThemeTypography.semiBold16.apply(
+                  color: _controller.validateCurrentStep(_currentPage).isTrue
+                      ? ThemeColors.primary
+                      : ThemeColors.grey3,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
       body: Obx(() => _controller.loading.isTrue
           ? Container(
               decoration: const BoxDecoration(
@@ -108,19 +129,6 @@ class _ParkingEditViewState extends State<ParkingEditView> {
                 StepFiveWidget(controller: _controller),
               ],
             )),
-      bottomNavigationBar: Obx(
-        () => _controller.loading.isTrue
-            ? const SizedBox(height: 0)
-            : Padding(
-                padding: const EdgeInsets.all(24),
-                child: RoundedGradientButton(
-                  actionText: _currentPage < _controller.totalSteps - 1
-                      ? 'Avançar'
-                      : 'Salvar',
-                  onPressed: _validateAndNavigateNext,
-                ),
-              ),
-      ),
     );
   }
 }
