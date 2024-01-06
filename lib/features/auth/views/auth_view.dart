@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:vagali/features/auth/controllers/auth_controller.dart';
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/auth/views/code_verification_view.dart';
-import 'package:vagali/features/auth/views/loading_view.dart';
+import 'package:vagali/widgets/loading_view.dart';
 import 'package:vagali/features/auth/views/location_denied_view.dart';
 import 'package:vagali/features/auth/views/login_error_view.dart';
 import 'package:vagali/features/auth/views/select_type_view.dart';
@@ -35,7 +35,7 @@ class AuthView extends StatelessWidget {
           } else if (authStatus == AuthStatus.codeSent) {
             return CodeVerificationView(controller: _controller);
           } else if (authStatus == AuthStatus.verifying) {
-            return LoadingView();
+            return LoadingView(message: 'Verificando informações de usuário');
           } else if (authStatus == AuthStatus.unregistered) {
             return SelectTypeView();
           } else if (authStatus == AuthStatus.authenticatedAsTenant) {

@@ -10,6 +10,7 @@ import 'package:vagali/features/vehicle/views/vehicle_edit_view.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
+import 'package:vagali/widgets/loading_view.dart';
 import 'package:vagali/widgets/rounded_gradient_button.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
@@ -99,21 +100,25 @@ class _UserEditViewState extends State<UserEditView> {
           ),
         ],
       ),
-      body: Container(
-        color: Colors.white,
-        padding: const EdgeInsets.all(16),
-        child: PageView(
-          controller: _pageController,
-          onPageChanged: (index) {
-            setState(() {
-              _currentPage = index;
-            });
-          },
-          children: [
-            PersonalInfoEditWidget(controller: _controller),
-            AddressEditWidget(controller: _controller),
-          ],
-        ),
+      body: Obx(
+        () => _controller.loading.isTrue
+            ? LoadingView(message: 'Criando perfil de usuário')
+            : Container(
+                color: Colors.white,
+                padding: const EdgeInsets.all(16),
+                child: PageView(
+                  controller: _pageController,
+                  onPageChanged: (index) {
+                    setState(() {
+                      _currentPage = index;
+                    });
+                  },
+                  children: [
+                    PersonalInfoEditWidget(controller: _controller),
+                    AddressEditWidget(controller: _controller),
+                  ],
+                ),
+              ),
       ),
     );
   }

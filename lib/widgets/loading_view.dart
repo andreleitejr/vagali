@@ -5,25 +5,17 @@ import 'package:vagali/widgets/gradient_text.dart';
 import 'package:vagali/widgets/loader.dart';
 
 class LoadingView extends StatefulWidget {
-  // const LoadingView({super.key, required this.controller});
-  //
-  // final AuthController controller;
+  final String message;
+
+  const LoadingView({super.key, required this.message});
 
   @override
   State<LoadingView> createState() => _LoadingViewState();
 }
 
 class _LoadingViewState extends State<LoadingView> {
-  // late RiveAnimationController openController;
-  //
-  // final String animation = 'open';
-
   @override
   void initState() {
-    // openController = OneShotAnimation(
-    //   animation,
-    //   autoplay: true,
-    // );
     super.initState();
   }
 
@@ -37,7 +29,7 @@ class _LoadingViewState extends State<LoadingView> {
             Loader(),
             const SizedBox(height: 16),
             GradientText(
-              'Verificando informações de usuário',
+              widget.message,
               style: ThemeTypography.semiBold14,
             )
           ],
