@@ -153,23 +153,28 @@ class PersonalInfoEditWidget extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Obx(
-          () => Input2(
-            controller: birthdayController,
-            enabled: false,
+          () => DateInput(
             value: controller.birthday.value,
-            keyboardType: TextInputType.datetime,
+            controller: birthdayController,
+            // enabled: false,
+            dateInputType: DateInputType.birthday,
+            // value: controller.birthday.value,
+            // keyboardType: TextInputType.datetime,
             hintText: 'Data de aniversário',
-            onTap: () async {
-              final birthday = await selectDateTime(
-                context,
-                DateInputType.birthday,
-              );
-              controller.birthday.value = birthday.toString();
-
-              FocusScope.of(context).requestFocus(FocusNode());
-            },
+            // onTap: () async {
+            //   final birthday = await selectDateTime(
+            //     context,
+            //     DateInputType.birthday,
+            //   );
+            //   controller.birthday.value = birthday.toString();
+            //
+            //   FocusScope.of(context).requestFocus(FocusNode());
+            // },
             error: controller.getError(controller.birthdayError),
-            onChanged: controller.birthday,
+            // onChanged: controller.birthday,
+            onDateSelected: (date){
+              controller.birthday(date.toString());
+            }
           ),
         ),
       ],

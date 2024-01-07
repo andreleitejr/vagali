@@ -72,6 +72,7 @@ class _UserEditViewState extends State<UserEditView> {
   }
 
   void _navigateToEditView() {
+    FocusScope.of(context).unfocus();
     final targetView = _controller.type == UserType.tenant
         ? const VehicleEditView()
         : const ParkingEditView();

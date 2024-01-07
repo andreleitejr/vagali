@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:vagali/features/dashboard/controllers/dashboard_controller.dart';
+import 'package:vagali/features/home/landlord/controllers/dashboard_controller.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/features/vehicle/widgets/vehicle_info_widget.dart';
-import 'package:vagali/utils/extensions.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/rounded_gradient_button.dart';
 import 'package:vagali/widgets/user_card.dart';

@@ -28,6 +28,7 @@ class AddressEditWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    postalCodeFocus.requestFocus();
     return ListView(
       children: [
         Obx(

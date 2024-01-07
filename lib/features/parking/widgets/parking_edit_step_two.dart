@@ -1,10 +1,8 @@
 import 'dart:io';
 
-import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:vagali/features/dashboard/views/dashboard_view.dart';
 import 'package:vagali/features/parking/controllers/parking_edit_controller.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_typography.dart';

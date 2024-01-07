@@ -85,8 +85,9 @@ Future<DateTime?> selectDateTime(
   return pickedDateTime;
 }
 
-class DateInput extends StatefulWidget {
-  final TextEditingController? controller;
+class DateInput extends StatelessWidget {
+  final String value;
+  final TextEditingController controller;
   final String hintText;
   final Function(DateTime) onDateSelected;
   final String? error;
@@ -96,50 +97,39 @@ class DateInput extends StatefulWidget {
   final bool enabled;
   final bool openDatePicker;
 
-  const DateInput({
-    Key? key,
-    this.controller,
+  DateInput({
+    super.key,
+    required this.value,
+    required this.controller,
     required this.hintText,
     required this.onDateSelected,
     this.error,
     required this.dateInputType,
-    this.showTime = false,
+    this.showTime = true,
     this.initialDate,
     this.enabled = true,
-    this.openDatePicker = false,
-  }) : super(key: key);
-
-  @override
-  _DateInputState createState() => _DateInputState();
-}
-
-class _DateInputState extends State<DateInput> {
-  final TextEditingController _dateTimeController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
+    this.openDatePicker = true,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Input(
-      enabled: widget.enabled,
-      controller: widget.controller ?? _dateTimeController,
+    return Input2(
+      value: value,
+      enabled: enabled,
+      controller: controller,
       keyboardType: TextInputType.datetime,
-      hintText: widget.hintText,
+      hintText: hintText,
       onTap: () {
         selectDateTime(
           context,
-          widget.dateInputType,
-          showTime: widget.showTime,
-          initialDate: widget.initialDate,
+          dateInputType,
+          showTime: showTime,
+          initialDate: initialDate,
         );
         FocusScope.of(context).requestFocus(FocusNode());
       },
-      error: widget.error != null && widget.error!.isNotEmpty
-          ? widget.error
-          : null,
+      error: error != null && error!.isNotEmpty ? error : null,
+      onChanged: (String) {},
     );
   }
 }

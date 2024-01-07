@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vagali/features/home/controllers/home_controller.dart';
-import 'package:vagali/features/home/widgets/parking_list_item.dart';
-import 'package:vagali/features/home/widgets/parking_list_tile.dart';
+import 'package:vagali/features/home/tenant/controllers/home_controller.dart';
+import 'package:vagali/features/home/tenant/widgets/parking_list_item.dart';
+import 'package:vagali/features/home/tenant/widgets/parking_list_tile.dart';
 import 'package:vagali/features/parking/models/parking_type.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_typography.dart';

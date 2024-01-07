@@ -24,6 +24,7 @@ class SelectTypeView extends StatelessWidget {
           padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Expanded(
                 child: Center(
@@ -32,7 +33,7 @@ class SelectTypeView extends StatelessWidget {
               ),
               const GradientText(
                 'Celular confirmado',
-                style: ThemeTypography.semiBold32,
+                style: ThemeTypography.semiBold22,
               ),
               const SizedBox(height: 4),
               const Text(

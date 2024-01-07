@@ -37,8 +37,7 @@ class GarageService {
       carTypes.add(sedan);
       carTypes.add(hatch);
       carTypes.add(motorcycle);
-    } else if (height >= 4 && width >= 3 && depth >= 5) {
-
+    } else if (height >= 3 && width >= 3 && depth >= 5) {
       carTypes.add(pickup);
       carTypes.add(suv);
       carTypes.add(sedan);

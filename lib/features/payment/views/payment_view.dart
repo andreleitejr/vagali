@@ -2,12 +2,10 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:flutter_credit_card/flutter_credit_card.dart';
-import 'package:vagali/features/home/views/base_view.dart';
+import 'package:vagali/features/home/tenant/views/base_view.dart';
 import 'package:vagali/features/payment/controllers/payment_controller.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/widgets/input.dart';
 import 'package:vagali/widgets/rounded_gradient_button.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
@@ -30,7 +28,7 @@ class PaymentView extends GetView<PaymentController> {
       body: Column(
         children: [
           Expanded(
-            child:ListView(
+            child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
                 Obx(() {
