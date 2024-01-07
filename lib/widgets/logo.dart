@@ -6,12 +6,12 @@ class Logo extends StatelessWidget {
 
   final bool hasDarkBackground;
 
-  const Logo({super.key, this.width = 96, this.hasDarkBackground = false});
+  const Logo({super.key, this.width = 80, this.hasDarkBackground = false});
 
   @override
   Widget build(BuildContext context) {
     return Image.asset(
-     hasDarkBackground ? Images.logoWhite :  Images.logo,
+      hasDarkBackground ? Images.logoWhite : Images.logo,
       width: width,
     );
   }

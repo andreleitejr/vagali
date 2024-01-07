@@ -18,16 +18,19 @@ class CodeVerificationView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Center(
-                child: const Logo(),
+              Expanded(
+                child: Center(
+                  child: const Logo(),
+                ),
               ),
               const SizedBox(
                 height: 64,
               ),
               CodeWidget(
-                controller: controller.smsController,
+                value: controller.sms.value,
                 onSubmit: () async => await controller.verifySmsCode(),
-                phoneNumber: controller.phoneNumberController.text,
+                phoneNumber: controller.phone.value,
+                onChanged: controller.sms,
               ),
               RoundedGradientButton(
                 actionText: 'Verificar Código',

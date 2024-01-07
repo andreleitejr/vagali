@@ -11,15 +11,41 @@ class AuthController extends GetxController {
   final _authRepository = Get.put(AuthRepository());
   final _userRepository = Get.put(UserRepository());
 
-  final phoneNumberController = TextEditingController();
-  final smsController = TextEditingController();
-  final phoneNumberError = RxString('');
-  final smsError = RxString('');
+  final phone = ''.obs;
+  final sms = ''.obs;
+  final termsAndConditions = false.obs;
+
+  String get inputError {
+    if (isPhoneValid.isFalse) {
+      return 'Insira um telefone válido';
+    } else if (termsAndConditions.isFalse) {
+      return 'Para utilizar nossa plataforma, é preciso aceitar nossos Termos e Condições.';
+    } else if (isSmsValid.isFalse) {
+      return 'SMS inválido';
+    } else {
+      return 'Algum campo necessita de atenção';
+    }
+  }
+
+  //
+  // RxString get phoneError =>
+  //     (isPhoneValid.isTrue ? '' : 'Insira um telefone válido').obs;
+  //
+  // RxString get smsError => (isSmsValid.isTrue ? '' : 'SMS inválido').obs;
+  //
+  // RxString get termsAndConditionsError => (termsAndConditions.isFalse
+  //         ? ''
+  //         : 'Para utilizar nossa plataforma, é preciso aceitar nossos Termos e Condições.')
+  //     .obs;
 
   final authStatus = AuthStatus.uninitialized.obs;
   final error = ''.obs;
   final userType = ''.obs;
   final loading = false.obs;
+
+  RxBool get isValid => (isPhoneValid.isTrue && termsAndConditions.isTrue).obs;
+
+  final showErrors = RxBool(false);
 
   @override
   Future<void> onInit() async {
@@ -32,31 +58,16 @@ class AuthController extends GetxController {
     Get.put(UserRepository());
 
     await checkCurrentUser();
-
-    phoneNumberController.addListener(() {
-      validatePhoneNumber();
-    });
-    smsController.addListener(() {
-      validateSms();
-    });
   }
 
-  bool validatePhoneNumber() {
-    final isValid = phoneNumberController.text.isNotEmpty;
-    phoneNumberError.value = isValid ? '' : 'Insira um telefone válido';
-    return isValid;
-  }
+  RxBool get isPhoneValid => phone.isNotEmpty.obs;
 
-  bool validateSms() {
-    final isValid = smsController.text.isNotEmpty;
-    smsError.value = isValid ? '' : 'SMS inválido';
-    return isValid;
-  }
+  RxBool get isSmsValid => sms.isNotEmpty.obs;
 
   Future<void> sendVerificationCode() async {
     try {
-      final newAuthStatus = await _authRepository
-          .sendVerificationCode('+55${phoneNumberController.text}');
+      final newAuthStatus =
+          await _authRepository.sendVerificationCode('+55${phone.value}');
       authStatus.value = newAuthStatus;
     } catch (e) {
       debugPrint('Verification code: $error');
@@ -68,8 +79,8 @@ class AuthController extends GetxController {
     try {
       loading(true);
       authStatus.value = AuthStatus.verifying;
-      var newAuthStatus =
-          await _authRepository.verifySmsCode(smsController.text);
+
+      var newAuthStatus = await _authRepository.verifySmsCode(sms.value);
 
       if (newAuthStatus == AuthStatus.authenticated) {
         newAuthStatus = await _checkUserInFirestore();

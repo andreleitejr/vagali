@@ -5,20 +5,26 @@ import 'package:vagali/theme/images.dart';
 import 'package:vagali/theme/theme_colors.dart';
 
 class PhoneInput extends StatelessWidget {
-  final TextEditingController controller;
+  final String value;
   final String? error;
   final bool required;
   final VoidCallback? onSubmit;
+  final Function(String) onChanged;
 
   PhoneInput({
-    required this.controller,
+    required this.value,
     this.error,
     this.required = false,
     this.onSubmit,
+    required this.onChanged,
   });
+
+  final controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    controller.text = value;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -78,6 +84,7 @@ class PhoneInput extends StatelessWidget {
             fillColor: ThemeColors.grey1,
             filled: true,
           ),
+          onChanged: onChanged,
         ),
         if (error != null && error!.isNotEmpty) ...[
           Text(

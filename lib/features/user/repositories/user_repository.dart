@@ -19,10 +19,12 @@ class UserRepository extends FirestoreRepository<User> {
 
   @override
   Future<User?> get(String documentId) async {
+    print(' HAUHASUHSADUASHDUADHSDDASHUDASHDASUHDASUHASDU JESUS $collectionName');
     try {
+
       final document =
           await firestore.collection(collectionName).doc(documentId).get();
-
+ print('DAFDDHSSAUHSAA FIRESTORE DOCUMENT ${collectionName} $document');
       final user = fromDocument(document);
 
       if (user.type == UserType.tenant) {

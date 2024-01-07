@@ -4,25 +4,31 @@ import 'package:vagali/widgets/gradient_text.dart';
 import 'package:vagali/widgets/pin_input.dart';
 
 class CodeWidget extends StatelessWidget {
-  final TextEditingController controller;
+  final String value;
   final VoidCallback onSubmit;
   final String phoneNumber;
+  final Function(String) onChanged;
 
   CodeWidget({
     super.key,
-    required this.controller,
+    required this.value,
     required this.onSubmit,
     required this.phoneNumber,
+    required this.onChanged,
   });
 
   final FocusNode _pinFocusNode = FocusNode();
 
+  final controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    controller.text = value;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).requestFocus(_pinFocusNode);
     });
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Verificação',
@@ -43,7 +49,7 @@ class CodeWidget extends StatelessWidget {
         PinInput(
           controller: controller,
           focusNode: _pinFocusNode,
-          onChanged: (pin) {},
+          onChanged: onChanged,
           onSubmit: (_) => onSubmit(),
         ),
         const SizedBox(height: 16),

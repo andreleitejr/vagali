@@ -1,5 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:vagali/features/auth/controllers/auth_controller.dart';
+import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/gradient_text.dart';
 import 'package:vagali/widgets/logo.dart';
@@ -19,16 +22,16 @@ class LoginView extends StatelessWidget {
           padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(
-                child: const Logo(),
-              ),
-              const SizedBox(
-                height: 64,
+              Expanded(
+                child: Center(
+                  child: const Logo(),
+                ),
               ),
               const GradientText(
-                'Bem-vindo',
-                style: ThemeTypography.semiBold32,
+                'Bem-vindo,',
+                style: ThemeTypography.semiBold22,
               ),
               const SizedBox(height: 4),
               const Text(
@@ -37,14 +40,64 @@ class LoginView extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               PhoneInput(
-                controller: controller.phoneNumberController,
+                value: controller.phone.value,
                 onSubmit: () async => await controller.sendVerificationCode(),
+                onChanged: controller.phone,
               ),
               const SizedBox(height: 16),
-              RoundedGradientButton(
-                actionText: 'Enviar',
-                onPressed: () async => await controller.sendVerificationCode(),
+              Row(
+                children: [
+                  Obx(
+                    () => Checkbox(
+                      activeColor: ThemeColors.primary,
+                      value: controller.termsAndConditions.value,
+                      onChanged: controller.termsAndConditions,
+                    ),
+                  ),
+                  Expanded(
+                    child: RichText(
+                      text: TextSpan(
+                        text:
+                            'Ao clicar em enviar, você concorda com os nossos ',
+                        style: ThemeTypography.regular14.apply(
+                          color: ThemeColors.grey4,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: 'Termos e Condições',
+                            style: ThemeTypography.semiBold14.apply(
+                              color: ThemeColors.primary,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                // Adicione aqui a lógica para abrir os Termos e Condições
+                                print('Abrir Termos e Condições');
+                              },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
+              const SizedBox(height: 16),
+              Obx(
+                () => RoundedGradientButton(
+                  actionText: 'Enviar',
+                  onPressed: () async {
+                    if (controller.isValid.isTrue) {
+                      await controller.sendVerificationCode();
+                    } else {
+                      Get.snackbar(
+                        'Erro de autenticação',
+                        controller.inputError,
+                      );
+                    }
+                  },
+                  isValid: controller.isValid.value,
+                ),
+              ),
+              Expanded(child: Container()),
             ],
           ),
         ),
