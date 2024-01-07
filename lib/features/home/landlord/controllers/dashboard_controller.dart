@@ -18,7 +18,7 @@ import 'package:vagali/features/vehicle/repositories/vehicle_repository.dart';
 import 'package:vagali/services/location_service.dart';
 import 'package:vagali/theme/images.dart';
 
-class DashboardController extends GetxController {
+class LandlordHomeController extends GetxController {
   final Landlord landlord = Get.find();
   final locationService = Get.put(LocationService());
   final _reservationRepository = Get.put(ReservationRepository());

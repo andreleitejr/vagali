@@ -10,7 +10,7 @@ import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/user_card.dart';
 
 class ConfirmationWidget extends StatelessWidget {
-  final DashboardController controller;
+  final LandlordHomeController controller;
 
   const ConfirmationWidget({super.key, required this.controller});
 

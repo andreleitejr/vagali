@@ -9,7 +9,7 @@ import 'package:vagali/widgets/rounded_gradient_button.dart';
 import 'package:vagali/widgets/user_card.dart';
 
 class TrackingLocation extends StatelessWidget {
-  final DashboardController controller;
+  final LandlordHomeController controller;
 
   const TrackingLocation({super.key, required this.controller});
 

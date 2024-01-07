@@ -1,9 +1,9 @@
 class Price {
-  final double? hour;
-  final double? sixHours;
-  final double? twelveHours;
-  final double? day;
-  final double month;
+  final num? hour;
+  final num? sixHours;
+  final num? twelveHours;
+  final num? day;
+  final num month;
 
   Price({
     this.hour,
@@ -15,11 +15,11 @@ class Price {
 
   static Price fromMap(Map<String, dynamic> map) {
     return Price(
+      day: map['day'],
       hour: map['hour'],
+      month: map['month'],
       sixHours: map['sixHours'],
       twelveHours: map['twelveHours'],
-      day: map['day'],
-      month: map['month'],
     );
   }
 

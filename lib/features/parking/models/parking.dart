@@ -38,6 +38,7 @@ class Parking extends BaseModel {
     /// APENAS PARA TESTES
     final userCoordinates = _locationService.userLocation;
 
+    print(' JUSASADJISADHUSAHDUSHADUHASDU USER LOCATION HERE HEHEHEH  ${userCoordinates?.latitude}');
     if (userCoordinates == null) {
       return 0.0;
     }

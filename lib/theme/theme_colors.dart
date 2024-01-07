@@ -8,6 +8,8 @@ class ThemeColors {
   static const intermediary = Color(0xFF01A9A3);
   static const primary = Color(0xFF02C39A);
   static const secondary = Color(0xFFE8E8E8);
+  static const lightGreen = Color(0xFFCCFFF4);
+  static const lightBlue = Color(0xFFCCEDFF);
   static const shade700 = Color(0xFF2E3A59);
   static const blue = Color(0xFF0077B6);
   static const red = Color(0xFFD80032);

@@ -7,12 +7,13 @@ import 'package:vagali/features/parking/repositories/parking_repository.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/repositories/reservation_repository.dart';
 import 'package:vagali/features/tenant/models/tenant.dart';
+import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/features/vehicle/models/vehicle.dart';
 import 'package:vagali/features/vehicle/repositories/vehicle_repository.dart';
 import 'package:vagali/services/location_service.dart';
 
 class ReservationListController extends GetxController {
-  final tenant = Get.find<Tenant>();
+  final tenant = Get.find<User>();
   final _parkingRepository = Get.find<ParkingRepository>();
   final locationService = Get.find<LocationService>();
 

@@ -8,7 +8,7 @@ import 'package:vagali/widgets/loader.dart';
 import 'package:vagali/widgets/user_app_bar.dart';
 
 class LandlordHomeView extends StatelessWidget {
-  final _controller = Get.put(DashboardController());
+  final _controller = Get.put(LandlordHomeController());
 
   LandlordHomeView({super.key});
 

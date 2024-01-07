@@ -23,11 +23,12 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
   @override
   Stream<List<Reservation>> streamAll() {
     try {
-      final Tenant tenant = Get.find();
+      final User user = Get.find();
 
       final collection = firestore.collection(collectionName);
 
-      final query = collection.where('tenantId', isEqualTo: tenant.id);
+      final query = collection.where(user.isTenant ? 'tenantId' : 'landlordId',
+          isEqualTo: user.id);
 
       final stream = query.snapshots().map((querySnapshot) =>
           querySnapshot.docs.map((doc) => fromDocument(doc)).toList());
@@ -38,6 +39,7 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
       return Stream.value([]);
     }
   }
+
   @override
   Stream<List<Reservation>> streamAllReservationsForLandlord() {
     try {
