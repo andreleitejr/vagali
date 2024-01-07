@@ -139,6 +139,7 @@ extension StringExtensions on String {
   String get removeDots => replaceAll('.', '');
 
   String get removeHyphen => replaceAll('-', '');
+  String get removeParenthesis => replaceAll(')', '').replaceAll('(', '');
 }
 
 extension DoubleExtension on double {

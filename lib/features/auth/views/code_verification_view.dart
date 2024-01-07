@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:vagali/features/auth/controllers/auth_controller.dart';
 import 'package:vagali/features/auth/widgets/code_widget.dart';
 import 'package:vagali/widgets/logo.dart';
@@ -32,9 +33,21 @@ class CodeVerificationView extends StatelessWidget {
                 phoneNumber: controller.phone.value,
                 onChanged: controller.sms,
               ),
-              RoundedGradientButton(
-                actionText: 'Verificar Código',
-                onPressed: () async => await controller.verifySmsCode(),
+              Obx(
+                () => RoundedGradientButton(
+                  actionText: 'Verificar Código',
+                  onPressed: () async {
+                    if (controller.isValid.isTrue) {
+                      await controller.verifySmsCode();
+                    } else {
+                      Get.snackbar(
+                        'Erro com SMS',
+                        controller.inputError,
+                      );
+                    }
+                  },
+                  isValid: controller.isSmsValid.value,
+                ),
               ),
             ],
           ),

@@ -10,6 +10,7 @@ class PhoneInput extends StatelessWidget {
   final bool required;
   final VoidCallback? onSubmit;
   final Function(String) onChanged;
+  final FocusNode? focus;
 
   PhoneInput({
     required this.value,
@@ -17,6 +18,7 @@ class PhoneInput extends StatelessWidget {
     this.required = false,
     this.onSubmit,
     required this.onChanged,
+    this.focus,
   });
 
   final controller = TextEditingController();
@@ -31,6 +33,7 @@ class PhoneInput extends StatelessWidget {
         TextFormField(
           controller: controller,
           keyboardType: TextInputType.phone,
+          focusNode: focus,
           onEditingComplete: onSubmit,
           style: TextStyle(
             fontSize: 16,

@@ -37,8 +37,8 @@ class RoundedGradientButton extends StatelessWidget {
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
                 colors: [
-                  ThemeColors.grey3,
-                  ThemeColors.grey3,
+                  ThemeColors.grey2,
+                  ThemeColors.grey2,
                 ], // Cores do degradê
               ),
       ),

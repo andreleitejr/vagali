@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/auth/controllers/auth_controller.dart';
+import 'package:vagali/features/legal/terms_and_conditions.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/gradient_text.dart';
@@ -14,8 +15,11 @@ class LoginView extends StatelessWidget {
 
   LoginView({super.key, required this.controller});
 
+  final focus = FocusNode();
+
   @override
   Widget build(BuildContext context) {
+    focus.requestFocus();
     return Scaffold(
       body: Center(
         child: Padding(
@@ -40,6 +44,7 @@ class LoginView extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               PhoneInput(
+                focus: focus,
                 value: controller.phone.value,
                 onSubmit: () async => await controller.sendVerificationCode(),
                 onChanged: controller.phone,
@@ -69,10 +74,9 @@ class LoginView extends StatelessWidget {
                               color: ThemeColors.primary,
                             ),
                             recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                // Adicione aqui a lógica para abrir os Termos e Condições
-                                print('Abrir Termos e Condições');
-                              },
+                              ..onTap = () => Get.to(
+                                    () => TermsAndConditions(),
+                                  ),
                           ),
                         ],
                       ),
@@ -85,7 +89,7 @@ class LoginView extends StatelessWidget {
                 () => RoundedGradientButton(
                   actionText: 'Enviar',
                   onPressed: () async {
-                    if (controller.isValid.isTrue) {
+                    if (controller.isLoginValid.isTrue) {
                       await controller.sendVerificationCode();
                     } else {
                       Get.snackbar(
@@ -94,10 +98,10 @@ class LoginView extends StatelessWidget {
                       );
                     }
                   },
-                  isValid: controller.isValid.value,
+                  isValid: controller.isLoginValid.value,
                 ),
               ),
-              Expanded(child: Container()),
+              // Expanded(child: Container()),
             ],
           ),
         ),

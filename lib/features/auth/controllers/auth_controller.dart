@@ -6,6 +6,7 @@ import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/landlord/models/landlord.dart';
 import 'package:vagali/features/tenant/models/tenant.dart';
 import 'package:vagali/features/user/repositories/user_repository.dart';
+import 'package:vagali/utils/extensions.dart';
 
 class AuthController extends GetxController {
   final _authRepository = Get.put(AuthRepository());
@@ -43,8 +44,6 @@ class AuthController extends GetxController {
   final userType = ''.obs;
   final loading = false.obs;
 
-  RxBool get isValid => (isPhoneValid.isTrue && termsAndConditions.isTrue).obs;
-
   final showErrors = RxBool(false);
 
   @override
@@ -60,9 +59,24 @@ class AuthController extends GetxController {
     await checkCurrentUser();
   }
 
-  RxBool get isPhoneValid => phone.isNotEmpty.obs;
 
-  RxBool get isSmsValid => sms.isNotEmpty.obs;
+  RxBool get isValid =>
+      (isPhoneValid.isTrue && termsAndConditions.isTrue && isSmsValid.isTrue)
+          .obs;
+
+
+  RxBool get isLoginValid =>
+      (isPhoneValid.isTrue && termsAndConditions.isTrue)
+          .obs;
+
+  RxBool get isPhoneValid {
+    final cleanPhone = phone.value.clean.removeParenthesis.removeAllWhitespace;
+
+    print('${cleanPhone.length == 11}');
+    return (cleanPhone.length == 11).obs;
+  }
+
+  RxBool get isSmsValid => (sms.isNotEmpty && sms.value.length == 6).obs;
 
   Future<void> sendVerificationCode() async {
     try {
