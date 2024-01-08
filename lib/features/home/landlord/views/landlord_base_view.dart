@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/auth/views/auth_view.dart';
+import 'package:vagali/features/calendar/views/calendar_view.dart';
 import 'package:vagali/features/dashboard/views/dashboard_view.dart';
 import 'package:vagali/features/home/landlord/views/landlord_home_view.dart';
 import 'package:vagali/theme/theme_colors.dart';
@@ -19,9 +20,7 @@ class _LandlordBaseViewState extends State<LandlordBaseView> {
   final List<Widget> _pages = [
     LandlordHomeView(),
     DashboardView(),
-    Container(
-      child: Text('Reservas'),
-    ),
+    CalendarView(),
     Column(
       children: [
         Expanded(child: Container()),

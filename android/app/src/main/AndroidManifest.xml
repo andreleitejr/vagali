@@ -6,7 +6,7 @@
 
     <application
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher_icon"
         android:label="Vagali"
         tools:replace="android:label">
 
@@ -33,7 +33,10 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
 
+            </intent-filter>
+            <intent-filter>
                 <data android:scheme="${applicationId}.braintree" />
+
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

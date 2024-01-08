@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/dashboard/controllers/dashboard_controller.dart';
+import 'package:vagali/features/reservation/widgets/reservation_statistics_widget.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/utils/extensions.dart';
 import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/widgets/date_card.dart';
 import 'package:vagali/widgets/loader.dart';
 import 'package:vagali/widgets/shimmer_box.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
@@ -175,9 +177,7 @@ class DashboardView extends StatelessWidget {
                 ),
               ],
             ),
-
             SizedBox(height: 16),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -215,19 +215,7 @@ class DashboardView extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          reservation.startDate.monthAbbreviation,
-                          style: ThemeTypography.regular12.apply(
-                            color: ThemeColors.primary,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          reservation.startDate.day.toString(),
-                          style: ThemeTypography.semiBold22.apply(
-                            color: ThemeColors.grey4,
-                          ),
-                        ),
+                        DateCard(date: reservation.startDate),
                       ],
                     ),
                   ),
