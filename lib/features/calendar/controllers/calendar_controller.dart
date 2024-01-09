@@ -26,6 +26,7 @@ class CalendarController extends GetxController {
         selectedReservations.add(reservation);
       }
     }
+    selectedReservations.sort((a, b) => a.startDate.compareTo(b.startDate));
   }
 
   List<DateTime> getAllReservationDates() {

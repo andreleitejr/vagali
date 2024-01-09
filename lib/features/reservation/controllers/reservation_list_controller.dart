@@ -22,6 +22,7 @@ class ReservationListController extends GetxController {
   final _vehicleRepository = Get.put(VehicleRepository());
 
   // final currentReservation = Rx<Reservation?>(null);
+  final allReservations = <Reservation>[].obs;
   final reservationsInProgress = <Reservation>[].obs;
   final reservationsDone = <Reservation>[].obs;
   final landlords = <Landlord>[].obs;
@@ -63,6 +64,8 @@ class ReservationListController extends GetxController {
       reservation.parking = parkings
           .firstWhereOrNull((parking) => parking.id! == reservation.parkingId);
     }
+    allReservations.addAll(reservations);
+
     final inProgress =
         reservations.where((reservation) => reservation.isInProgress);
     reservationsInProgress.assignAll(inProgress);

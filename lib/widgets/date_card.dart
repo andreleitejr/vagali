@@ -29,3 +29,30 @@ class DateCard extends StatelessWidget {
     );
   }
 }
+
+class HourCard extends StatelessWidget {
+  final DateTime date;
+
+  const HourCard({super.key, required this.date});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          date.hour.toString(),
+          style: ThemeTypography.semiBold22.apply(
+            color: ThemeColors.primary,
+          ),
+        ),
+        SizedBox(height: 4),
+        Text(
+          'hrs',
+          style: ThemeTypography.regular12.apply(
+            color: ThemeColors.grey4,
+          ),
+        )
+      ],
+    );
+  }
+}

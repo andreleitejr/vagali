@@ -133,6 +133,36 @@ extension DateTimeExtensions on DateTime {
         return '';
     }
   }
+  String get monthName {
+    switch (month) {
+      case 1:
+        return 'Janeiro de $year';
+      case 2:
+        return 'Fevereiro de $year';
+      case 3:
+        return 'Março de $year';
+      case 4:
+        return 'Abril de $year';
+      case 5:
+        return 'Maio de $year';
+      case 6:
+        return 'Junho de $year';
+      case 7:
+        return 'Julho de $year';
+      case 8:
+        return 'Agosto de $year';
+      case 9:
+        return 'Setembro de $year';
+      case 10:
+        return 'Outubro de $year';
+      case 11:
+        return 'Novembro de $year';
+      case 12:
+        return 'Dezembro de $year';
+      default:
+        return '';
+    }
+  }
 }
 
 extension StringExtensions on String {
@@ -183,6 +213,7 @@ extension DoubleExtension on double {
       return '${distanceInKm.toStringAsFixed(1)} km';
     }
   }
+  String toMonetaryString() => 'R\$${this}';
 }
 
 extension ReservationStatusExtension on ReservationStatus {

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:vagali/features/reservation/controllers/reservation_list_controller.dart';
+import 'package:vagali/features/reservation/models/reservation.dart';
 
 class DashboardController extends GetxController {
   final reservationListController = Get.put(ReservationListController());
@@ -38,5 +39,17 @@ class DashboardController extends GetxController {
     }
 
     return totalTime;
+  }
+
+  List<Reservation> getReservationsForCurrentWeek() {
+    final now = DateTime.now();
+    final startOfWeek =
+        DateTime(now.year, now.month, now.day - now.weekday + 1);
+    final endOfWeek = DateTime(now.year, now.month, now.day - now.weekday + 7);
+
+    return reservationListController.allReservations.where((reservation) {
+      return reservation.startDate.isAfter(startOfWeek) &&
+          reservation.startDate.isBefore(endOfWeek);
+    }).toList();
   }
 }
