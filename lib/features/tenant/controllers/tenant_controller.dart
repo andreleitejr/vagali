@@ -27,7 +27,7 @@ class TenantController extends GetxController {
         debugPrint('Successful got vehicles for Tenant.');
       }
     } catch (error) {
-      debugPrint('Error fetching nearby parkings: $error');
+      debugPrint('Error fetching tenant vehicles: $error');
     }
   }
 

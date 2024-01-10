@@ -6,6 +6,7 @@ import 'package:vagali/features/calendar/views/calendar_view.dart';
 import 'package:vagali/features/dashboard/views/dashboard_view.dart';
 import 'package:vagali/features/home/landlord/controllers/dashboard_controller.dart';
 import 'package:vagali/features/home/landlord/views/landlord_home_view.dart';
+import 'package:vagali/features/landlord/views/landlord_view.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/widgets/avatar.dart';
@@ -27,35 +28,8 @@ class _LandlordBaseViewState extends State<LandlordBaseView> {
     LandlordHomeView(),
     DashboardView(),
     CalendarView(),
-    Column(
-      children: [
-        Expanded(child: Container()),
-        Text('Pagina de Profile'),
-        Expanded(child: Container()),
-        TextButton(
-          onPressed: () async {
-            final AuthRepository _authRepository = Get.find();
-            await _authRepository.signOut();
-            Get.to(() => AuthView());
-          },
-          child: Text(
-            'Sair da conta',
-            style: TextStyle(
-              color: Colors.red,
-            ),
-          ),
-        )
-      ],
-    ),
+    LandlordView(),
   ];
-
-  late int _selectedIndex;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedIndex = widget.selectedIndex;
-  }
 
   @override
   Widget build(BuildContext context) {
