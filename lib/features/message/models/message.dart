@@ -42,5 +42,9 @@ class Message extends BaseModel {
 
   final User user = Get.find();
 
-  bool get isSender => user.id == from;
+  bool get isSender {
+    print(' HUAHAUHASDUHASDUHAUSDHU ${user.id} $from $message');
+
+    return user.id == from;
+  }
 }

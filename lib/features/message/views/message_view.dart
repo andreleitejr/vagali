@@ -11,16 +11,16 @@ import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/input.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
-class MessageView extends StatefulWidget {
+class ChatView extends StatefulWidget {
   final Reservation reservation;
 
-  const MessageView({super.key, required this.reservation});
+  const ChatView({super.key, required this.reservation});
 
   @override
-  _MessageViewState createState() => _MessageViewState();
+  _ChatViewState createState() => _ChatViewState();
 }
 
-class _MessageViewState extends State<MessageView> {
+class _ChatViewState extends State<ChatView> {
   late MessageController controller;
 
   @override

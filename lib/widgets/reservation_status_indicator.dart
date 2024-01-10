@@ -154,7 +154,7 @@ class ReservationStatusIndicator extends StatelessWidget {
       buttons.add(
         _buildFlatButton(
           'Conversar com locatário',
-          () => Get.to(() => MessageView(reservation: reservation)),
+          () => Get.to(() => ChatView(reservation: reservation)),
           ThemeColors.blue,
         ),
       );

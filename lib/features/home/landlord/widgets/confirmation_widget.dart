@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/home/landlord/controllers/dashboard_controller.dart';
+import 'package:vagali/features/message/views/message_view.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/features/vehicle/widgets/vehicle_info_widget.dart';
@@ -82,12 +83,25 @@ class ConfirmationWidget extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          FlatButton(
-            actionText: _getButtonText(reservation),
-            onPressed: () => controller.verifyStatusAndUpdateReservation(),
-            backgroundColor: _getButtonColor(reservation),
-            icon: _getButtonIcon(reservation),
-          ),
+          if (controller.currentReservation.value!.isConfirmed) ...[
+            FlatButton(
+              actionText: _getButtonText(reservation),
+              onPressed: () => Get.to(
+                () => ChatView(
+                  reservation: controller.currentReservation.value!,
+                ),
+              ),
+              backgroundColor: _getButtonColor(reservation),
+              icon: _getButtonIcon(reservation),
+            ),
+          ] else ...[
+            FlatButton(
+              actionText: _getButtonText(reservation),
+              onPressed: () => controller.verifyStatusAndUpdateReservation(),
+              backgroundColor: _getButtonColor(reservation),
+              icon: _getButtonIcon(reservation),
+            ),
+          ]
         ],
       ),
     );
