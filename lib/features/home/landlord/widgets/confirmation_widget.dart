@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:vagali/features/home/landlord/controllers/dashboard_controller.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/features/vehicle/widgets/vehicle_info_widget.dart';
+import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/utils/extensions.dart';
+import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/user_card.dart';
 
@@ -21,16 +24,10 @@ class ConfirmationWidget extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        gradient: LinearGradient(
-          colors: [
-            ThemeColors.primary.withOpacity(0.15),
-            ThemeColors.blue.withOpacity(0.15),
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-      ),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: ThemeColors.grey2,
+          )),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,14 +35,13 @@ class ConfirmationWidget extends StatelessWidget {
           const SizedBox(height: 8),
           const Text(
             'Você tem uma nova reserva',
-            style: ThemeTypography.medium16,
+            style: ThemeTypography.semiBold14,
           ),
           const SizedBox(height: 8),
           Row(
             children: [
-              const Icon(
-                Icons.access_time,
-                size: 20,
+              Coolicon(
+                icon: Coolicons.clock,
               ),
               const SizedBox(width: 4),
               Text(

@@ -60,7 +60,7 @@ class ReservationDetailsView extends StatelessWidget {
               const Coolicon(
                 icon: Coolicons.starFilled,
                 color: ThemeColors.primary,
-                scale: 1.25,
+
               ),
               const SizedBox(width: 4),
               const Text(

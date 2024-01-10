@@ -22,7 +22,6 @@ class ConfigListTile extends StatelessWidget {
       ),
       trailing: Coolicon(
         icon: Coolicons.chevronRight,
-        scale: 1.25,
       ),
       onTap: onTap,
     );

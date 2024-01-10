@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/auth/controllers/auth_controller.dart';
 import 'package:vagali/features/legal/terms_and_conditions.dart';
+import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
+import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/gradient_text.dart';
 import 'package:vagali/widgets/logo.dart';
 import 'package:vagali/widgets/phone_input.dart';
 import 'package:vagali/widgets/rounded_gradient_button.dart';
+import 'package:vagali/widgets/snackbar.dart';
 
 class LoginView extends StatelessWidget {
   final AuthController controller;
@@ -35,12 +39,12 @@ class LoginView extends StatelessWidget {
               ),
               const GradientText(
                 'Bem-vindo,',
-                style: ThemeTypography.semiBold22,
+                style: ThemeTypography.semiBold16,
               ),
               const SizedBox(height: 4),
               const Text(
                 'Entre com seu número de celular',
-                style: ThemeTypography.medium16,
+                style: ThemeTypography.regular14,
               ),
               const SizedBox(height: 16),
               PhoneInput(
@@ -64,13 +68,13 @@ class LoginView extends StatelessWidget {
                       text: TextSpan(
                         text:
                             'Ao clicar em enviar, você concorda com os nossos ',
-                        style: ThemeTypography.regular14.apply(
+                        style: ThemeTypography.regular12.apply(
                           color: ThemeColors.grey4,
                         ),
                         children: [
                           TextSpan(
                             text: 'Termos e Condições',
-                            style: ThemeTypography.semiBold14.apply(
+                            style: ThemeTypography.semiBold12.apply(
                               color: ThemeColors.primary,
                             ),
                             recognizer: TapGestureRecognizer()
@@ -86,15 +90,19 @@ class LoginView extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Obx(
-                () => RoundedGradientButton(
+                () => FlatButton(
                   actionText: 'Enviar',
                   onPressed: () async {
                     if (controller.isLoginValid.isTrue) {
                       await controller.sendVerificationCode();
                     } else {
-                      Get.snackbar(
+                      snackBar(
                         'Erro de autenticação',
                         controller.inputError,
+                        icon: Coolicon(
+                          icon: Coolicons.squareWarning,
+                          color: Colors.white,
+                        ),
                       );
                     }
                   },

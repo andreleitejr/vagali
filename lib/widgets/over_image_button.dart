@@ -21,7 +21,7 @@ class OverImageButton extends StatelessWidget {
         child: Coolicon(
           icon: icon,
           color: Colors.black.withOpacity(0.78),
-          scale: 1.1,
+
         ),
       ),
     );

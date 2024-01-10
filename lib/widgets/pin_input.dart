@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
 
 class PinInput extends StatelessWidget {
   final TextEditingController controller;
@@ -21,6 +23,8 @@ class PinInput extends StatelessWidget {
       pinLength: 6,
       keyboardType: TextInputType.number,
       decoration: BoxLooseDecoration(
+
+        textStyle: ThemeTypography.medium22.apply(color: ThemeColors.primary),
         strokeColorBuilder: PinListenColorBuilder(
           ThemeColors.grey2,
           Colors.grey,

@@ -65,7 +65,6 @@ class ParkingListItem extends StatelessWidget {
                     const Coolicon(
                       icon: Coolicons.mapPin,
                       color: Colors.white,
-                      scale: 1.5,
                     ),
                     const SizedBox(width: 4),
                     Text(
@@ -111,7 +110,7 @@ class ParkingListItem extends StatelessWidget {
                       const Coolicon(
                         icon: Coolicons.starFilled,
                         color: ThemeColors.primary,
-                        scale: 1.75,
+
                       ),
                       const SizedBox(width: 4),
                       Text(

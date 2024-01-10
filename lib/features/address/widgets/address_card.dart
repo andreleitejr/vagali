@@ -54,7 +54,7 @@ class _AddressCardState extends State<AddressCard> {
           children: [
             const Coolicon(
               icon: Coolicons.mapPin,
-              scale: 1.4,
+
             ),
             const SizedBox(width: 4),
             Expanded(

@@ -59,7 +59,7 @@ class _SearchInputState extends State<SearchInput> {
                   child: Coolicon(
                     icon: Coolicons.search,
                     color: ThemeColors.grey3,
-                    scale: 1.2,
+
                   ),
                 ),
                 suffix: widget.searchText.isNotEmpty

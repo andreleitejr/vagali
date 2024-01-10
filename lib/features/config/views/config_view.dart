@@ -79,7 +79,7 @@ class ConfigView extends StatelessWidget {
             ),
             trailing: Coolicon(
               icon: Coolicons.logOut,
-              scale: 1.25,
+
             ),
             onTap: () async {
               await controller.signOut();

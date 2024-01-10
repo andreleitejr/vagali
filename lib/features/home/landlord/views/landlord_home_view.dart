@@ -28,49 +28,15 @@ class LandlordHomeView extends StatelessWidget {
             const SizedBox(height: 24),
             Obx(() {
               if (_controller.hasOpenReservation) {
-                if (_controller
-                    .currentLandlordReservation.value!.isUserOnTheWay) {
-                  return TrackingLocation(controller: _controller);
-                } else {
-                  return ConfirmationWidget(
-                    controller: _controller,
-                  );
-                }
+
+                return ConfirmationWidget(
+                  controller: _controller,
+                );
               }
               return Container();
             }),
             const SizedBox(height: 16),
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 16),
-            //   child: Row(
-            //     children: [
-            //       const Expanded(
-            //         child: Text(
-            //           'Minhas vagas',
-            //           style: TypographyStyle.medium16,
-            //         ),
-            //       ),
-            //       TextButton(
-            //         onPressed: () {},
-            //         child: const Text(
-            //           'Ver todos',
-            //           style: TypographyStyle.medium16,
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // const SizedBox(height: 16),
-            // Expanded(
-            //   child: ListView.builder(
-            //     itemCount: _controller.parkings.length,
-            //     itemBuilder: (context, index) {
-            //       final parking = _controller.parkings[index];
-            //
-            //       return ParkingListTile(parking: parking);
-            //     },
-            //   ),
-            // ),
+
           ],
         );
       }),

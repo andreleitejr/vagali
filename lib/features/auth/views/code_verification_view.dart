@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/auth/controllers/auth_controller.dart';
 import 'package:vagali/features/auth/widgets/code_widget.dart';
+import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/logo.dart';
 import 'package:vagali/widgets/rounded_gradient_button.dart';
 
@@ -34,7 +35,7 @@ class CodeVerificationView extends StatelessWidget {
                 onChanged: controller.sms,
               ),
               Obx(
-                () => RoundedGradientButton(
+                () => FlatButton(
                   actionText: 'Verificar Código',
                   onPressed: () async {
                     if (controller.isValid.isTrue) {

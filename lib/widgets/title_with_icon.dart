@@ -15,7 +15,6 @@ class TitleWithIcon extends StatelessWidget {
         if (icon != null)
           Coolicon(
             icon: icon!,
-            scale: 1.35,
             color: Colors.black,
           ),
         const SizedBox(width: 4),

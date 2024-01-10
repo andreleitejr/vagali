@@ -52,6 +52,7 @@ class Input extends StatelessWidget {
             color: ThemeColors.intermediary,
           ),
           decoration: InputDecoration(
+            contentPadding: EdgeInsets.zero,
             hintText: '$hintText${required ? ' *' : ''}',
             hintStyle: ThemeTypography.regular16.apply(
               color: ThemeColors.grey4,
@@ -112,6 +113,7 @@ class Input2 extends StatelessWidget {
   final Function(String) onChanged;
 
   final TextEditingController controller;
+
   Input2({
     super.key,
     required this.value,
@@ -128,9 +130,8 @@ class Input2 extends StatelessWidget {
     this.nextFocusNode,
     this.onSubmit,
     required this.onChanged,
-   required this.controller,
+    required this.controller,
   });
-
 
   @override
   Widget build(BuildContext context) {

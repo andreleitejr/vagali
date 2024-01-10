@@ -4,17 +4,19 @@ import 'package:vagali/theme/theme_colors.dart';
 class Coolicon extends StatelessWidget {
   final String icon;
   final Color color;
-  final double scale;
   final VoidCallback? onTap;
   final EdgeInsetsGeometry padding;
+  final double width;
+  final double height;
 
   const Coolicon({
     super.key,
     required this.icon,
     this.color = ThemeColors.grey4,
-    this.scale = 1,
     this.onTap,
     this.padding = const EdgeInsets.all(0),
+    this.width = 24,
+    this.height = 24,
   });
 
   @override
@@ -30,7 +32,8 @@ class Coolicon extends StatelessWidget {
           ),
           child: Image.asset(
             icon,
-            scale: scale,
+            width: width,
+            height: height,
           ),
         ),
       ),

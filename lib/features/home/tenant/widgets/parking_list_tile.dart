@@ -75,7 +75,6 @@ class ParkingListTile extends StatelessWidget {
                               children: [
                                 const Coolicon(
                                   icon: Coolicons.mapPin,
-                                  scale: 1.5,
                                   color: ThemeColors.primary,
                                 ),
                                 const SizedBox(width: 4),
@@ -123,7 +122,6 @@ class ParkingListTile extends StatelessWidget {
                               const Coolicon(
                                 icon: Coolicons.starFilled,
                                 color: ThemeColors.primary,
-                                scale: 1.75,
                               ),
                               const SizedBox(width: 4),
                               const Text(

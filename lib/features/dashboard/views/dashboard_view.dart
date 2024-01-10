@@ -38,7 +38,6 @@ class DashboardView extends StatelessWidget {
                   children: [
                     Coolicon(
                       icon: Coolicons.creditCard,
-                      scale: 1.2,
                     ),
                     SizedBox(width: 8),
                     Text(
@@ -99,7 +98,6 @@ class DashboardView extends StatelessWidget {
                             children: [
                               Coolicon(
                                 icon: Coolicons.circleCheckOutline,
-                                scale: 1.2,
                                 color: Colors.white,
                               ),
                               const SizedBox(width: 8),
@@ -136,7 +134,6 @@ class DashboardView extends StatelessWidget {
                             children: [
                               Coolicon(
                                 icon: Coolicons.calendar,
-                                scale: 1.2,
                                 color: Colors.white,
                               ),
                               SizedBox(width: 8.0),

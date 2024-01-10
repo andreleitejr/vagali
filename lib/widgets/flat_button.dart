@@ -7,6 +7,7 @@ class FlatButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Color backgroundColor;
   final Widget icon;
+  final bool isValid;
 
   const FlatButton({
     super.key,
@@ -14,6 +15,7 @@ class FlatButton extends StatelessWidget {
     required this.onPressed,
     this.icon = const SizedBox(),
     this.backgroundColor = ThemeColors.primary,
+    this.isValid = true,
   });
 
   @override
@@ -24,7 +26,7 @@ class FlatButton extends StatelessWidget {
       child: TextButton(
           onPressed: onPressed,
           style: TextButton.styleFrom(
-            backgroundColor: backgroundColor,
+            backgroundColor: isValid ? backgroundColor : ThemeColors.grey2,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),

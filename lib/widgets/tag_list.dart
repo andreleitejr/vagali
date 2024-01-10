@@ -31,7 +31,7 @@ class TagList extends StatelessWidget {
                       children: [
                         Coolicon(
                           icon: icon,
-                          scale: 1.3,
+
                         ),
                         const SizedBox(width: 8),
                         Text(

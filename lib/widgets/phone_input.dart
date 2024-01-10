@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vagali/theme/images.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
 
 class PhoneInput extends StatelessWidget {
   final String value;
@@ -35,22 +36,17 @@ class PhoneInput extends StatelessWidget {
           keyboardType: TextInputType.phone,
           focusNode: focus,
           onEditingComplete: onSubmit,
-          style: TextStyle(
-            fontSize: 16,
-            color: Color(0xFF01A9A3),
-            fontWeight: FontWeight.w600,
-          ),
+          style: ThemeTypography.medium14.apply(color: ThemeColors.primary),
           inputFormatters: [
             // obrigatório
             FilteringTextInputFormatter.digitsOnly,
             TelefoneInputFormatter(),
           ],
           decoration: InputDecoration(
+            contentPadding: EdgeInsets.zero,
             hintText: '(11) 99000-0000',
-            hintStyle: TextStyle(
-              fontSize: 16,
-              color: Color(0xFFBDBDBD), // Cor do hint
-            ),
+            hintStyle:
+                ThemeTypography.regular14.apply(color: ThemeColors.grey4),
             prefixIcon: Row(
               mainAxisSize: MainAxisSize.min,
               children: [

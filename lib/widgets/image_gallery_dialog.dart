@@ -28,7 +28,7 @@ class ImageGalleryDialog extends StatelessWidget {
                   onTap: () => Get.back(),
                   icon: Coolicons.close,
                   color: Colors.white,
-                  scale: 0.8,
+
                 ),
               ),
             ],
