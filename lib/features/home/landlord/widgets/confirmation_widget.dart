@@ -13,13 +13,17 @@ import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/user_card.dart';
 
 class ConfirmationWidget extends StatelessWidget {
-  final LandlordHomeController controller;
+  final Reservation reservation;
+  final VoidCallback onReservationUpdate;
 
-  const ConfirmationWidget({super.key, required this.controller});
+  const ConfirmationWidget({
+    super.key,
+    required this.reservation,
+    required this.onReservationUpdate,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final reservation = controller.currentReservation.value!;
     return Container(
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -56,12 +60,11 @@ class ConfirmationWidget extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           UserCard(
-            user: controller.currentReservation.value!.tenant as User,
+            user: reservation.tenant as User,
             message: reservation.reservationMessage,
           ),
           const SizedBox(height: 16),
-          VehicleInfoWidget(
-              vehicle: controller.currentReservation.value!.vehicle!),
+          VehicleInfoWidget(vehicle: reservation.vehicle!),
           const SizedBox(height: 16),
           Row(
             children: [
@@ -78,25 +81,14 @@ class ConfirmationWidget extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(
-            height: 16,
+          const SizedBox(height: 16),
+          FlatButton(
+            actionText: _getButtonText(reservation),
+            onPressed: onReservationUpdate,
+            backgroundColor: _getButtonColor(reservation),
+            icon: _getButtonIcon(reservation),
           ),
-          if (reservation.isPaymentApproved) ...[
-            FlatButton(
-              actionText: _getButtonText(reservation),
-              onPressed: () => controller.verifyStatusAndUpdateReservation(),
-              backgroundColor: _getButtonColor(reservation),
-              icon: _getButtonIcon(reservation),
-            ),
-          ] else if (reservation.isConfirmed) ...[
-            FlatButton(
-              actionText: _getButtonText(reservation),
-              onPressed: () => controller.verifyStatusAndUpdateReservation(),
-              backgroundColor: _getButtonColor(reservation),
-              icon: _getButtonIcon(reservation),
-            ),
-          ],
-          const SizedBox(height: 8),
+
         ],
       ),
     );

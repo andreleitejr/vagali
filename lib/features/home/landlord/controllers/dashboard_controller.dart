@@ -26,6 +26,8 @@ class LandlordHomeController extends GetxController {
   final reservations = <Reservation>[].obs;
   final currentReservation = Rx<Reservation?>(null);
 
+  final scheduledReservations = <Reservation>[].obs;
+
   final Rx<Marker?> marker = Rx<Marker?>(null);
   late BitmapDescriptor carMarkerIcon;
 
@@ -59,6 +61,8 @@ class LandlordHomeController extends GetxController {
   Future<void> _handleReservationsUpdate(List<Reservation> dataList) async {
     reservations.assignAll(dataList);
 
+    _getScheduledReservation();
+
     for (final reservation in reservations) {
       reservation.tenant ??=
           await _tenantRepository.get(reservation.tenantId) as Tenant;
@@ -76,6 +80,11 @@ class LandlordHomeController extends GetxController {
 
     currentReservation.value = reservations
         .firstWhereOrNull((reservation) => reservation.isInProgress);
+  }
+
+  void _getScheduledReservation() {
+    scheduledReservations.value =
+        reservations.where((reservation) => reservation.isScheduled).toList();
   }
 
   Future<void> _handleVehicleUpdate(Reservation reservation) async {

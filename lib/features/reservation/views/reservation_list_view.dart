@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/reservation/controllers/reservation_list_controller.dart';
-import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/widgets/reservation_history_item.dart';
 import 'package:vagali/features/reservation/widgets/last_reservation_widget.dart';
+import 'package:vagali/features/reservation/widgets/reservation_item.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/theme/theme_colors.dart';
-import 'package:vagali/widgets/carousel_image_slider.dart';
 import 'package:vagali/widgets/loader.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
@@ -15,11 +14,6 @@ class ReservationListView extends StatelessWidget {
       Get.put(ReservationListController());
 
   ReservationListView({super.key});
-
-  // final pages = <Widget>[
-  //   inProgress(),
-  //   done(),
-  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +76,6 @@ class ReservationListView extends StatelessWidget {
 
   Widget inProgress() {
     return ListView.builder(
-      // padding: const EdgeInsets.only(top: 16),
       itemCount: _controller.reservationsInProgress.length,
       itemBuilder: (BuildContext context, int index) {
         final reservation = _controller.reservationsInProgress[index];
@@ -109,7 +102,7 @@ class ReservationListView extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         final reservation = _controller.reservationsDone[index];
 
-        return ReservationHistoryItem(reservation: reservation);
+        return ReservationItem(reservation: reservation);
       },
     );
   }
