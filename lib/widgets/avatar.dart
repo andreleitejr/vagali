@@ -10,25 +10,28 @@ class Avatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 48,
-      width: 48,
-      padding: const EdgeInsets.all(3),
+      height: 42,
+      width: 42,
+      padding: const EdgeInsets.all(1.5),
       decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [
-              Color(0xFF02C39A),
-              Color(0xFF0077B6),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-          borderRadius: BorderRadius.circular(100)),
+        gradient: const LinearGradient(
+          colors: [
+            Color(0xFF02C39A),
+            Color(0xFF0077B6),
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+        borderRadius: BorderRadius.circular(100),
+      ),
       child: Container(
-        height: 48,
-        width: 48,
+        height: 42,
+        width: 42,
         padding: const EdgeInsets.all(2),
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(100)),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(100),
+        ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(100),
           child: BlurHash(

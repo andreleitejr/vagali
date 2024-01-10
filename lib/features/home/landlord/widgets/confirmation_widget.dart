@@ -24,10 +24,11 @@ class ConfirmationWidget extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(
-            color: ThemeColors.grey2,
-          )),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: ThemeColors.grey2,
+        ),
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,6 +43,7 @@ class ConfirmationWidget extends StatelessWidget {
             children: [
               Coolicon(
                 icon: Coolicons.clock,
+                width: 16,
               ),
               const SizedBox(width: 4),
               Text(
@@ -54,7 +56,7 @@ class ConfirmationWidget extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           UserCard(
-            user: controller.tenant.value as User,
+            user: controller.currentLandlordReservation.value!.tenant as User,
             message: reservation.reservationMessage,
           ),
           const SizedBox(height: 16),

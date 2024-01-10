@@ -4,11 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:vagali/features/landlord/models/landlord.dart';
 import 'package:vagali/features/landlord/repositories/landlord_repository.dart';
 import 'package:vagali/features/parking/models/parking.dart';
-import 'package:vagali/features/parking/repositories/parking_repository.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/repositories/reservation_repository.dart';
 import 'package:vagali/features/tenant/models/tenant.dart';
@@ -25,17 +23,21 @@ class LandlordHomeController extends GetxController {
   final _tenantRepository = TenantRepository();
   final _vehicleRepository = VehicleRepository();
   final landlordRepository = LandlordRepository();
-  final _parkingRepository = Get.put(ParkingRepository());
   GoogleMapController? _mapController;
 
   final parkings = <Parking>[].obs;
 
   final landlordReservations = <Reservation>[].obs;
   final currentLandlordReservation = Rx<Reservation?>(null);
+
   final tenant = Rx<Tenant?>(null);
   final vehicle = Rx<Vehicle?>(null);
+
   final Rx<Marker?> marker = Rx<Marker?>(null);
   late BitmapDescriptor carMarkerIcon;
+
+  var selectedIndex = 0.obs;
+
   var loading = false.obs;
   var loadingMap = false.obs;
 
@@ -48,93 +50,69 @@ class LandlordHomeController extends GetxController {
 
     loading(true);
 
-    await fetchParkings();
-    await _getCurrentLandlordLocation();
-    await _loadCarMarker();
+    try {
+      // await fetchParkings();
+      await _getCurrentLandlordLocation();
+      await _loadCarMarker();
 
-    stream.listen((dataList) async {
-      landlordReservations.assignAll(dataList);
-
-      var reservation = landlordReservations.firstWhereOrNull((r) => r.isInProgress);
-
-      if (reservation != null) {
-        currentLandlordReservation.value = reservation;
-        tenant.value ??=
-            await _tenantRepository.get(reservation.tenantId) as Tenant;
-
-        if (vehicle.value == null && tenant.value != null) {
-          final tenantId = tenant.value!.id!;
-          final vehicleId = reservation.vehicleId;
-          final vehicles =
-              await _vehicleRepository.getVehiclesFromTenant(tenantId);
-          vehicle.value =
-              vehicles?.firstWhereOrNull((vehicle) => vehicle.id == vehicleId);
-        }
-
-        if (reservation.isUserOnTheWay) {
-          _updateMarker();
-
-          await _mapController
-              ?.animateCamera(CameraUpdate.newLatLng(location.value));
-
-          estimatedArrivalTime.value =
-              await locationService.calculateEstimatedTime(
-                  location.value.latitude, location.value.longitude);
-          print('ARRIVAL TIME HERE: ${estimatedArrivalTime.value}');
-          await Future.delayed(const Duration(seconds: 1));
-
-          update();
-        }
+      await for (var dataList in stream) {
+        await _handleReservationsUpdate(dataList);
+        break;
       }
+    } finally {
+      print('${currentLandlordReservation.value?.tenant?.firstName}');
       loading(false);
-    });
+    }
   }
 
-  Future<void> fetchParkings() async {
-    try {
-      final parkings = await _parkingRepository.getAll(userId: landlord.id!);
+  Future<void> _handleReservationsUpdate(List<Reservation> dataList) async {
+    landlordReservations.assignAll(dataList);
 
-      parkings.sort((a, b) => a.distance.compareTo(b.distance));
+    for (final reservation in landlordReservations) {
+      reservation.tenant ??=
+          await _tenantRepository.get(reservation.tenantId) as Tenant;
 
-      parkings.assignAll(parkings);
+      await _handleVehicleUpdate(reservation);
 
-      Get.put<List<Parking>>(parkings, tag: 'parkings');
-    } catch (error) {
-      debugPrint('Error fetching nearby parkings: $error');
+      if (reservation.isUserOnTheWay) {
+        _updateMarker();
+        await _animateCameraToLocation();
+        await _calculateAndSetEstimatedArrivalTime();
+      }
+
+      update();
     }
+
+    currentLandlordReservation.value = landlordReservations
+        .firstWhereOrNull((reservation) => reservation.isInProgress);
+  }
+
+  Future<void> _handleVehicleUpdate(Reservation reservation) async {
+    if (reservation.vehicle == null && reservation.tenant != null) {
+      final tenantId = reservation.tenantId;
+      final vehicleId = reservation.vehicleId;
+      final vehicles = await _vehicleRepository.getVehiclesFromTenant(tenantId);
+      vehicle.value =
+          vehicles?.firstWhereOrNull((vehicle) => vehicle.id == vehicleId);
+    }
+  }
+
+  Future<void> _animateCameraToLocation() async {
+    await _mapController?.animateCamera(CameraUpdate.newLatLng(location.value));
+    await Future.delayed(const Duration(seconds: 1));
+  }
+
+  Future<void> _calculateAndSetEstimatedArrivalTime() async {
+    estimatedArrivalTime.value = await locationService.calculateEstimatedTime(
+        location.value.latitude, location.value.longitude);
   }
 
   bool get hasOpenReservation =>
       currentLandlordReservation.value != null &&
-      currentLandlordReservation.value!.isActive &&
-      tenant.value != null &&
-      vehicle.value != null;
+      currentLandlordReservation.value!.isActive;
 
   void onMapCreated(GoogleMapController controller) {
     _mapController = controller;
-  }
-
-  Future<void> fetchReservationsForUser() async {
-    final userReservations =
-        await _reservationRepository.fetchReservationsForUser(landlord.id!);
-    landlordReservations.value = userReservations;
-  }
-
-  // Future<void> fetchReservationById(String reservationId) async {
-  //   final reservation =
-  //       await _reservationRepository.getReservationWithEntities(reservationId);
-  //   currentLandlordReservation.value = reservation;
-  // }
-
-  Future<void> fetchTenants() async {
-    try {
-      final tenants = await _tenantRepository.getAll();
-
-      tenant.value = tenants.firstWhereOrNull(
-          (t) => t.id == currentLandlordReservation.value?.tenantId);
-    } catch (error) {
-      debugPrint('Error fetching nearby parkings: $error');
-    }
   }
 
   Future<void> verifyStatusAndUpdateReservation() async {

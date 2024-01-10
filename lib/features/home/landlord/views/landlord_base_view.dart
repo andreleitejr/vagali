@@ -4,8 +4,13 @@ import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/auth/views/auth_view.dart';
 import 'package:vagali/features/calendar/views/calendar_view.dart';
 import 'package:vagali/features/dashboard/views/dashboard_view.dart';
+import 'package:vagali/features/home/landlord/controllers/dashboard_controller.dart';
 import 'package:vagali/features/home/landlord/views/landlord_home_view.dart';
+import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/widgets/avatar.dart';
+import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/widgets/shimmer_box.dart';
 
 class LandlordBaseView extends StatefulWidget {
   final int selectedIndex;
@@ -17,6 +22,7 @@ class LandlordBaseView extends StatefulWidget {
 }
 
 class _LandlordBaseViewState extends State<LandlordBaseView> {
+  final controller = Get.put(LandlordHomeController());
   final List<Widget> _pages = [
     LandlordHomeView(),
     DashboardView(),
@@ -54,37 +60,62 @@ class _LandlordBaseViewState extends State<LandlordBaseView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map),
-            label: 'Carteira',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.pageview),
-            label: 'Reservas',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.pageview),
-            label: 'Perfil',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        unselectedItemColor: ThemeColors.grey3,
-        selectedItemColor: ThemeColors.primary,
-        onTap: _onItemTapped,
+      body: Obx(() => _pages[controller.selectedIndex.value]),
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          selectedFontSize: 0,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Coolicon(
+                icon: Coolicons.house,
+              ),
+              activeIcon: Coolicon(
+                icon: Coolicons.house,
+                color: ThemeColors.primary,
+              ),
+              label: '',
+            ),
+            const BottomNavigationBarItem(
+              icon: Coolicon(
+                icon: Coolicons.map,
+              ),
+              activeIcon: Coolicon(
+                icon: Coolicons.map,
+                color: ThemeColors.primary,
+              ),
+              label: '',
+            ),
+            const BottomNavigationBarItem(
+              icon: Coolicon(
+                icon: Coolicons.calendar,
+              ),
+              activeIcon: Coolicon(
+                icon: Coolicons.calendar,
+                color: ThemeColors.primary,
+              ),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: SizedBox(
+                height: 38,
+                width: 38,
+                child: Obx(
+                  () => ShimmerBox(
+                    loading: controller.loading.value,
+                    child: Avatar(image: controller.landlord.image),
+                  ),
+                ),
+              ),
+              label: '',
+            ),
+          ],
+          currentIndex: controller.selectedIndex.value,
+          unselectedItemColor: ThemeColors.grey3,
+          selectedItemColor: ThemeColors.primary,
+          onTap: (index) => controller.selectedIndex(index),
+        ),
       ),
     );
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
   }
 }

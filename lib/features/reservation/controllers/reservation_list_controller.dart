@@ -14,7 +14,7 @@ import 'package:vagali/services/location_service.dart';
 
 class ReservationListController extends GetxController {
   final tenant = Get.find<User>();
-  final _parkingRepository = Get.find<ParkingRepository>();
+  // final _parkingRepository = Get.find<ParkingRepository>();
   final locationService = Get.find<LocationService>();
 
   final _reservationRepository = Get.put(ReservationRepository());
@@ -41,7 +41,7 @@ class ReservationListController extends GetxController {
     loading(true);
 
     await fetchLandlords();
-    await fetchParkings();
+    // await fetchParkings();
     await fetchVehicles();
 
     _listenToReservationsStream();
@@ -104,14 +104,14 @@ class ReservationListController extends GetxController {
     }
   }
 
-  Future<void> fetchParkings() async {
-    try {
-      final parkingList = await _parkingRepository.getGroup();
-      parkings.assignAll(parkingList);
-    } catch (error) {
-      debugPrint('Error fetching nearby parkings: $error');
-    }
-  }
+  // Future<void> fetchParkings() async {
+  //   try {
+  //     final parkingList = await _parkingRepository.getGroup();
+  //     parkings.assignAll(parkingList);
+  //   } catch (error) {
+  //     debugPrint('Error fetching nearby parkings: $error');
+  //   }
+  // }
 
   Future<void> fetchVehicles() async {
     try {

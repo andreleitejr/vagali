@@ -15,8 +15,8 @@ class Coolicon extends StatelessWidget {
     this.color = ThemeColors.grey4,
     this.onTap,
     this.padding = const EdgeInsets.all(0),
-    this.width = 24,
-    this.height = 24,
+    this.width = 22,
+    this.height = 22,
   });
 
   @override

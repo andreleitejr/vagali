@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:vagali/features/user/models/user.dart';
+import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/widgets/avatar.dart';
+import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/gradient_text.dart';
 
 class UserAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -39,34 +41,35 @@ class UserAppBar extends StatelessWidget implements PreferredSizeWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    GradientText(
+                    Text(
                       'Bom dia, ${user.firstName}',
-                      style: ThemeTypography.semiBold16,
+                      style: ThemeTypography.semiBold14.apply(
+                        color: ThemeColors.primary,
+                      ),
                     ),
                     Text(
                       'Você tem uma nova reserva',
-                      style: ThemeTypography.regular12
-                          .apply(color: ThemeColors.grey4),
+                      style: ThemeTypography.regular12.apply(
+                        color: ThemeColors.grey4,
+                      ),
                     ),
                   ],
                 ),
               ),
               Row(children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.search,
-                    color: ThemeColors.grey4,
-                  ),
+                // IconButton(
+                //   onPressed: () {},
+                //   icon: const Icon(
+                //     Icons.search,
+                //     color: ThemeColors.grey4,
+                //   ),
+                // ),
+                Coolicon(
+                  onTap: () {},
+                  padding: const EdgeInsets.only(right: 16),
+                  icon: Coolicons.bell,
                 ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.notifications_none,
-                    color: ThemeColors.grey4,
-                  ),
-                ),
-              ])
+              ]),
             ],
           ),
         ],
