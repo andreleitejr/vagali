@@ -16,7 +16,7 @@ import 'package:vagali/widgets/title_with_icon.dart';
 import 'package:vagali/widgets/user_app_bar.dart';
 
 class LandlordHomeView extends StatelessWidget {
-  final _controller = Get.put(LandlordHomeController());
+  final controller = Get.put(LandlordHomeController());
 
   LandlordHomeView({super.key});
 
@@ -24,11 +24,11 @@ class LandlordHomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: UserAppBar(
-        user: _controller.landlord,
+        user: controller.landlord,
       ),
       body: Obx(
         () {
-          if (_controller.loading.value) {
+          if (controller.loading.value) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -46,11 +46,9 @@ class LandlordHomeView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Obx(() {
-                if (_controller.hasOpenReservation) {
+                if (controller.hasOpenReservation) {
                   return ConfirmationWidget(
-                    reservation: _controller.currentReservation.value!,
-                    onReservationUpdate: () =>
-                        _controller.verifyStatusAndUpdateReservation(),
+                    controller: controller,
                   );
                 }
                 return Container();
@@ -63,11 +61,11 @@ class LandlordHomeView extends StatelessWidget {
                 onActionPressed: () {},
               ),
               ListView.builder(
-                itemCount: _controller.scheduledReservations.length,
+                itemCount: controller.scheduledReservations.length,
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
-                  final reservation = _controller.scheduledReservations[index];
+                  final reservation = controller.scheduledReservations[index];
 
                   return ReservationItem(reservation: reservation);
                 },

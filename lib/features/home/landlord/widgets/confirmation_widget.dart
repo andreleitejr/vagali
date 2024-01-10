@@ -13,17 +13,17 @@ import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/user_card.dart';
 
 class ConfirmationWidget extends StatelessWidget {
-  final Reservation reservation;
-  final VoidCallback onReservationUpdate;
+  final LandlordHomeController controller;
 
   const ConfirmationWidget({
     super.key,
-    required this.reservation,
-    required this.onReservationUpdate,
+    required this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
+    final reservation = controller.currentReservation.value!;
+
     return Container(
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -84,11 +84,10 @@ class ConfirmationWidget extends StatelessWidget {
           const SizedBox(height: 16),
           FlatButton(
             actionText: _getButtonText(reservation),
-            onPressed: onReservationUpdate,
+            onPressed: () => controller.verifyStatusAndUpdateReservation(),
             backgroundColor: _getButtonColor(reservation),
             icon: _getButtonIcon(reservation),
           ),
-
         ],
       ),
     );

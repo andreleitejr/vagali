@@ -49,37 +49,37 @@ class LandlordHomeController extends GetxController {
       await _getCurrentLandlordLocation();
       await _loadCarMarker();
 
-      await for (var dataList in stream) {
-        await _handleReservationsUpdate(dataList);
-        break;
-      }
+      await _handleReservationsUpdate(stream);
     } finally {
       loading(false);
     }
   }
 
-  Future<void> _handleReservationsUpdate(List<Reservation> dataList) async {
-    reservations.assignAll(dataList);
+  Future<void> _handleReservationsUpdate(
+      Stream<List<Reservation>> stream) async {
+    stream.listen((event) async {
+      reservations.assignAll(event);
 
-    _getScheduledReservation();
+      _getScheduledReservation();
 
-    for (final reservation in reservations) {
-      reservation.tenant ??=
-          await _tenantRepository.get(reservation.tenantId) as Tenant;
+      for (final reservation in reservations) {
+        reservation.tenant ??=
+            await _tenantRepository.get(reservation.tenantId) as Tenant;
 
-      await _handleVehicleUpdate(reservation);
+        await _handleVehicleUpdate(reservation);
 
-      if (reservation.isUserOnTheWay) {
-        _updateMarker();
-        await _animateCameraToLocation();
-        await _calculateAndSetEstimatedArrivalTime();
+        if (reservation.isUserOnTheWay) {
+          _updateMarker();
+          await _animateCameraToLocation();
+          await _calculateAndSetEstimatedArrivalTime();
+        }
+
+        update();
       }
 
-      update();
-    }
-
-    currentReservation.value = reservations
-        .firstWhereOrNull((reservation) => reservation.isInProgress);
+      currentReservation.value = reservations
+          .firstWhereOrNull((reservation) => reservation.isInProgress);
+    });
   }
 
   void _getScheduledReservation() {
