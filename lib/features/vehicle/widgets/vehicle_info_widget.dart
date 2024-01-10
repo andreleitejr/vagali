@@ -16,9 +16,8 @@ class VehicleInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
         border: Border.all(
           color: ThemeColors.grey2,
         ),
@@ -31,13 +30,13 @@ class VehicleInfoWidget extends StatelessWidget {
             title: 'Detalhes do veículo',
             icon: Coolicons.car,
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                height: 48,
-                width: 48,
+                height: 42,
+                width: 42,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(96),
                   image: DecorationImage(
@@ -46,7 +45,7 @@ class VehicleInfoWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,41 +53,36 @@ class VehicleInfoWidget extends StatelessWidget {
                   children: [
                     Text(
                       vehicle.model,
-                      style: ThemeTypography.semiBold16,
+                      style: ThemeTypography.semiBold14,
                     ),
                     const SizedBox(height: 4),
                     Row(
                       children: [
                         Text(
                           'Placa: ${vehicle.licensePlate}',
-                          style: ThemeTypography.regular14,
+                          style: ThemeTypography.regular12,
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 6),
                         Container(
                           height: 4,
                           width: 4,
                           decoration: BoxDecoration(
-                              color: ThemeColors.grey4,
-                              borderRadius: BorderRadius.circular(4)),
+                            color: ThemeColors.grey4,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 6),
                         Text(
                           'Cor: ${vehicle.color}',
-                          style: ThemeTypography.regular14,
+                          style: ThemeTypography.regular12,
                         ),
                       ],
                     )
                   ],
                 ),
               ),
-              // const SizedBox(width: 16),
-              // IconButton(
-              //   onPressed: () => Get.to(()=>const VehicleEditView()),
-              //   icon: const Icon(Icons.edit),
-              // ),
             ],
           ),
-          const SizedBox(height: 16),
         ],
       ),
     );

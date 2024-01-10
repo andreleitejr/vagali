@@ -88,13 +88,13 @@ class TrackingLocation extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   UserCard(
-                    user: controller.tenant.value as User,
-                    message: controller
-                        .currentLandlordReservation.value!.reservationMessage,
+                    user: controller.currentReservation.value!.tenant as User,
+                    message:
+                        controller.currentReservation.value!.reservationMessage,
                   ),
                   const SizedBox(height: 16),
                   VehicleInfoWidget(
-                    vehicle: controller.vehicle.value!,
+                    vehicle: controller.currentReservation.value!.vehicle!,
                   ),
                   const SizedBox(height: 16),
                   RoundedGradientButton(

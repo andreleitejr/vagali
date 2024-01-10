@@ -16,11 +16,12 @@ class TitleWithIcon extends StatelessWidget {
           Coolicon(
             icon: icon!,
             color: Colors.black,
+            width: 18,
           ),
         const SizedBox(width: 4),
         Text(
           title,
-          style: ThemeTypography.semiBold16,
+          style: ThemeTypography.medium14,
         ),
       ],
     );

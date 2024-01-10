@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vagali/features/tenant/models/tenant.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/theme/coolicons.dart';
@@ -22,17 +23,8 @@ class UserCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: ThemeColors.grey2),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.35),
-            spreadRadius: -8,
-            blurRadius: 20,
-            offset: const Offset(0, 0),
-          ),
-        ],
       ),
       child: Column(
         children: [
@@ -40,22 +32,22 @@ class UserCard extends StatelessWidget {
             leading: Avatar(image: user.image),
             title: Text(
               '${user.firstName} ${user.lastName}',
-              style: ThemeTypography.semiBold16,
+              style: ThemeTypography.semiBold14,
             ),
             subtitle: Text(
               user is Tenant ? 'Locatário' : 'Locador',
               style: ThemeTypography.regular12,
             ),
             trailing: Coolicon(
-              onTap: () {},
+              onTap: () => _makePhoneCall(),
               padding: const EdgeInsets.all(8),
-              icon: Coolicons.userSquare,
+              icon: Coolicons.phoneOutline,
             ),
           ),
-          if (message != null) ...[
+          if (message != null && message!.isNotEmpty) ...[
             // const SizedBox(height: 16),
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(12),
               decoration: const BoxDecoration(
                 border: Border(
                   top: BorderSide(
@@ -67,7 +59,7 @@ class UserCard extends StatelessWidget {
                 children: [
                   const Text(
                     'Mensagem do usuário: ',
-                    style: ThemeTypography.semiBold14,
+                    style: ThemeTypography.medium14,
                   ),
                   Text(
                     message!,
@@ -80,5 +72,15 @@ class UserCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _makePhoneCall() async {
+    final url = Uri(scheme: 'tel', path: '${user.phone.replaceAll('+55', '')}');
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Não foi possível realizar a ligação para ${user.phone}';
+    }
   }
 }

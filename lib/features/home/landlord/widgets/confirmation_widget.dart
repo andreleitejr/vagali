@@ -19,7 +19,7 @@ class ConfirmationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final reservation = controller.currentLandlordReservation.value!;
+    final reservation = controller.currentReservation.value!;
     return Container(
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -56,33 +56,31 @@ class ConfirmationWidget extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           UserCard(
-            user: controller.currentLandlordReservation.value!.tenant as User,
+            user: controller.currentReservation.value!.tenant as User,
             message: reservation.reservationMessage,
           ),
           const SizedBox(height: 16),
-          VehicleInfoWidget(vehicle: controller.vehicle.value!),
-          const SizedBox(
-            height: 24,
-          ),
+          VehicleInfoWidget(
+              vehicle: controller.currentReservation.value!.vehicle!),
+          const SizedBox(height: 16),
           Row(
             children: [
-              const Icon(
-                Icons.monetization_on_outlined,
-                size: 20,
+              const Coolicon(
+                icon: Coolicons.creditCard,
+                width: 18,
               ),
               const SizedBox(width: 4),
               Text(
-                'Você receberá R\$${reservation.totalCost.toStringAsFixed(0)} pela reserva',
-                style: ThemeTypography.medium16,
+                'Você receberá R\$${reservation.totalCost.toStringAsFixed(2)} pela reserva',
+                style: ThemeTypography.regular14.apply(
+                  color: ThemeColors.grey4,
+                ),
               ),
             ],
           ),
           const SizedBox(
             height: 16,
           ),
-          // const Text('Localização do Usuário:'),
-          // if (reservation.locationHistory.isNotEmpty)
-          //   _buildLocationHistoryList(reservation.locationHistory),
           if (reservation.isPaymentApproved) ...[
             FlatButton(
               actionText: _getButtonText(reservation),
@@ -123,16 +121,14 @@ class ConfirmationWidget extends StatelessWidget {
 
   Widget _getButtonIcon(Reservation reservation) {
     if (reservation.isConfirmed) {
-      return const Icon(
-        Icons.chat_bubble_outline,
+      return Coolicon(
+        icon: Coolicons.chat,
         color: Colors.white,
-        size: 20,
       );
     }
-    return const Icon(
-      Icons.add_circle_outline,
+    return Coolicon(
+      icon: Coolicons.circleCheck,
       color: Colors.white,
-      size: 20,
     );
   }
 }

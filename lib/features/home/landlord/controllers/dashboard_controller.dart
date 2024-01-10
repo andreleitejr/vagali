@@ -6,12 +6,10 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:vagali/features/landlord/models/landlord.dart';
 import 'package:vagali/features/landlord/repositories/landlord_repository.dart';
-import 'package:vagali/features/parking/models/parking.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/repositories/reservation_repository.dart';
 import 'package:vagali/features/tenant/models/tenant.dart';
 import 'package:vagali/features/tenant/repositories/tenant_repository.dart';
-import 'package:vagali/features/vehicle/models/vehicle.dart';
 import 'package:vagali/features/vehicle/repositories/vehicle_repository.dart';
 import 'package:vagali/services/location_service.dart';
 import 'package:vagali/theme/images.dart';
@@ -25,13 +23,8 @@ class LandlordHomeController extends GetxController {
   final landlordRepository = LandlordRepository();
   GoogleMapController? _mapController;
 
-  final parkings = <Parking>[].obs;
-
-  final landlordReservations = <Reservation>[].obs;
-  final currentLandlordReservation = Rx<Reservation?>(null);
-
-  final tenant = Rx<Tenant?>(null);
-  final vehicle = Rx<Vehicle?>(null);
+  final reservations = <Reservation>[].obs;
+  final currentReservation = Rx<Reservation?>(null);
 
   final Rx<Marker?> marker = Rx<Marker?>(null);
   late BitmapDescriptor carMarkerIcon;
@@ -51,7 +44,6 @@ class LandlordHomeController extends GetxController {
     loading(true);
 
     try {
-      // await fetchParkings();
       await _getCurrentLandlordLocation();
       await _loadCarMarker();
 
@@ -60,15 +52,14 @@ class LandlordHomeController extends GetxController {
         break;
       }
     } finally {
-      print('${currentLandlordReservation.value?.tenant?.firstName}');
       loading(false);
     }
   }
 
   Future<void> _handleReservationsUpdate(List<Reservation> dataList) async {
-    landlordReservations.assignAll(dataList);
+    reservations.assignAll(dataList);
 
-    for (final reservation in landlordReservations) {
+    for (final reservation in reservations) {
       reservation.tenant ??=
           await _tenantRepository.get(reservation.tenantId) as Tenant;
 
@@ -83,7 +74,7 @@ class LandlordHomeController extends GetxController {
       update();
     }
 
-    currentLandlordReservation.value = landlordReservations
+    currentReservation.value = reservations
         .firstWhereOrNull((reservation) => reservation.isInProgress);
   }
 
@@ -92,7 +83,7 @@ class LandlordHomeController extends GetxController {
       final tenantId = reservation.tenantId;
       final vehicleId = reservation.vehicleId;
       final vehicles = await _vehicleRepository.getVehiclesFromTenant(tenantId);
-      vehicle.value =
+      reservation.vehicle =
           vehicles?.firstWhereOrNull((vehicle) => vehicle.id == vehicleId);
     }
   }
@@ -108,18 +99,16 @@ class LandlordHomeController extends GetxController {
   }
 
   bool get hasOpenReservation =>
-      currentLandlordReservation.value != null &&
-      currentLandlordReservation.value!.isActive;
+      currentReservation.value != null && currentReservation.value!.isActive;
 
   void onMapCreated(GoogleMapController controller) {
     _mapController = controller;
   }
 
   Future<void> verifyStatusAndUpdateReservation() async {
-    if (currentLandlordReservation.value?.status ==
-        ReservationStatus.paymentApproved) {
+    if (currentReservation.value?.status == ReservationStatus.paymentApproved) {
       await confirmReservation();
-    } else if (currentLandlordReservation.value?.status ==
+    } else if (currentReservation.value?.status ==
         ReservationStatus.userOnTheWay) {
       await confirmParkedVehicle();
     }
@@ -128,7 +117,7 @@ class LandlordHomeController extends GetxController {
   Future<void> confirmReservation() async {
     try {
       await _reservationRepository.updateReservationStatus(
-        currentLandlordReservation.value!.id!,
+        currentReservation.value!.id!,
         ReservationStatus.confirmed,
       );
     } catch (error) {
@@ -139,7 +128,7 @@ class LandlordHomeController extends GetxController {
   Future<void> confirmParkedVehicle() async {
     try {
       await _reservationRepository.updateReservationStatus(
-        currentLandlordReservation.value!.id!,
+        currentReservation.value!.id!,
         ReservationStatus.parked,
       );
     } catch (error) {
@@ -159,14 +148,14 @@ class LandlordHomeController extends GetxController {
 
   void _updateMarker() {
     location.value = LatLng(
-      currentLandlordReservation.value!.locationHistory.last.latitude,
-      currentLandlordReservation.value!.locationHistory.last.longitude,
+      currentReservation.value!.locationHistory.last.latitude,
+      currentReservation.value!.locationHistory.last.longitude,
     );
     marker.value = Marker(
       markerId: const MarkerId('userMarker'),
       position: location.value,
       icon: carMarkerIcon,
-      rotation: currentLandlordReservation.value!.locationHistory.last.heading,
+      rotation: currentReservation.value!.locationHistory.last.heading,
     );
   }
 
