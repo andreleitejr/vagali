@@ -77,6 +77,8 @@ class _CalendarViewState extends State<CalendarView> {
               controller.getReservationsWithinSelectedDate(selectedDay);
             },
             headerStyle: HeaderStyle(
+              leftChevronMargin: EdgeInsets.zero,
+              rightChevronMargin: EdgeInsets.zero,
               leftChevronIcon: Coolicon(
                 icon: Coolicons.chevronLeft,
               ),
@@ -93,6 +95,7 @@ class _CalendarViewState extends State<CalendarView> {
               ),
             ),
             calendarStyle: CalendarStyle(
+              tablePadding: EdgeInsets.symmetric(horizontal: 12),
               defaultTextStyle: ThemeTypography.regular12,
               todayDecoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -107,7 +110,7 @@ class _CalendarViewState extends State<CalendarView> {
               headerTitleBuilder: (context, day) {
                 return Text(
                   day.monthName,
-                  style: ThemeTypography.semiBold22,
+                  style: ThemeTypography.semiBold16,
                 );
               },
               defaultBuilder: (context, date, events) {
@@ -147,6 +150,18 @@ class _CalendarViewState extends State<CalendarView> {
                 );
               },
             ),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: Text(
+                  controller.activitiesTitle.value,
+                  style: ThemeTypography.medium16,
+                ),
+              ),
+            ],
           ),
           Expanded(
             child: ListView.builder(

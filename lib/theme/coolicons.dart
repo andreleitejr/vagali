@@ -41,6 +41,7 @@ class Coolicons {
   static const close = 'images/icons/close.png';
   static const compass = 'images/icons/compass.png';
   static const creditCard = 'images/icons/credit_card.png';
+  static const download = 'images/icons/download.png';
   static const expand = 'images/icons/expand.png';
   static const externalLink = 'images/icons/external_link.png';
   static const files = 'images/icons/files.png';

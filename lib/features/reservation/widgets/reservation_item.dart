@@ -14,9 +14,15 @@ class ReservationItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Container(
-        width: 44,
-        height: 44,
+        width: 50,
+        height: 50,
         alignment: Alignment.center,
+        padding: const EdgeInsets.all(2),
+        decoration: BoxDecoration(
+
+          color: ThemeColors.grey1,
+          borderRadius: BorderRadius.circular(8)
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

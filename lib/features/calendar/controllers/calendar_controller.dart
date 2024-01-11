@@ -18,7 +18,10 @@ class CalendarController extends GetxController {
 
   final selectedDates = <DateTime>[].obs;
 
+  final activitiesTitle = ''.obs;
+
   void getReservationsWithinSelectedDate(DateTime date) {
+    activitiesTitle.value = 'Reservas para o dia ${date.day}';
     selectedReservations.clear();
 
     for (var reservation in reservations) {
@@ -49,6 +52,7 @@ class CalendarController extends GetxController {
   @override
   Future<void> onInit() async {
     selectedDates.value = getAllReservationDates();
+    getReservationsWithinSelectedDate(DateTime.now());
     // multiDatePickerValueWithDefaultValue.addAll(getAllReservationDates());
     super.onInit();
   }
