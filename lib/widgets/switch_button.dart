@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vagali/theme/theme_colors.dart';
 
 class SwitchButton extends StatelessWidget {
   final bool value;
@@ -17,28 +18,19 @@ class SwitchButton extends StatelessWidget {
       },
       child: Container(
         width: 50,
-        height: 30,
+        height: 24,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15), // Borda circular
-          gradient: LinearGradient(
-            // Gradiente de cores
-            colors: [
-              value ? Color(0xFF02C39A) : Color(0xFFBDBDBD),
-              // Cores condicionais
-              value ? Color(0xFF0077B6) : Color(0xFFBDBDBD),
-              // Cores condicionais
-            ],
-          ),
+          color: value ? ThemeColors.primary : ThemeColors.grey2,
         ),
         child: Row(
-          mainAxisAlignment: value
-              ? MainAxisAlignment.end
-              : MainAxisAlignment.start, // Alinhamento do círculo
+          mainAxisAlignment:
+              value ? MainAxisAlignment.end : MainAxisAlignment.start,
           children: [
             Container(
-              width: 25, // Tamanho do círculo
-              height: 25, // Tamanho do círculo
-              margin: EdgeInsets.all(2), // Margem para espaçamento interno
+              width: 20,
+              height: 20,
+              margin: EdgeInsets.all(2),
               decoration: BoxDecoration(
                 shape: BoxShape.circle, // Forma circular
                 color: Colors.white, // Cor do círculo

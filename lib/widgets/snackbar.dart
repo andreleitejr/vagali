@@ -11,7 +11,7 @@ Future<void> snackBar(
   Get.snackbar(
     title,
     message,
-    backgroundColor: ThemeColors.secondaryGreen,
+    backgroundColor: ThemeColors.intermediary,
     colorText: ThemeColors.lightGreen,
     messageText: Text(
       message,

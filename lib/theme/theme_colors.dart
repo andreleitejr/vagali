@@ -7,7 +7,6 @@ class ThemeColors {
   static const grey4 = Color(0xFF666666);
   static const green = Color(0xFFb0ebde);
   static const darkGreen = Color(0xFF3f6159);
-  static const secondaryGreen = Color(0xFF00A985);
   static const intermediary = Color(0xFF01A9A3);
   static const primary = Color(0xFF02C39A);
   static const secondary = Color(0xFF0077B6);
