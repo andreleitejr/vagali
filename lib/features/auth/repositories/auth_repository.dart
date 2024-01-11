@@ -182,6 +182,7 @@ class AuthRepository {
   Future<AuthStatus> sendVerificationCode(
     String phoneNumber,
   ) async {
+
     try {
       var authStatus = AuthStatus.codeSent;
       await _auth.verifyPhoneNumber(

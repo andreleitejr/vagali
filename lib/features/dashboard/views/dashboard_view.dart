@@ -5,15 +5,11 @@ import 'package:get/get.dart';
 import 'package:vagali/features/dashboard/controllers/dashboard_controller.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/widgets/reservation_item.dart';
-import 'package:vagali/features/reservation/widgets/reservation_statistics_widget.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/utils/extensions.dart';
 import 'package:vagali/widgets/coolicon.dart';
-import 'package:vagali/widgets/date_card.dart';
-import 'package:vagali/widgets/loader.dart';
-import 'package:vagali/widgets/shimmer_box.dart';
 import 'package:vagali/widgets/title_with_action.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
@@ -264,7 +260,9 @@ class ChartWidget extends StatelessWidget {
                         // Converte graus para radianos
                         child: Text(
                           '${daysOfWeek[value.toInt()]}',
-                          style: ThemeTypography.regular10.apply(
+                          style: DateTime.now().weekday == value ? ThemeTypography.semiBold10.apply(
+                            color: ThemeColors.grey4,
+                          ) : ThemeTypography.regular10.apply(
                             color: ThemeColors.grey4,
                           ),
                         ),
@@ -290,7 +288,7 @@ class ChartWidget extends StatelessWidget {
                   BarChartRodData(
                     backDrawRodData: BackgroundBarChartRodData(
                       show: true,
-                      toY: 500,
+                      toY: 100,
                       color: ThemeColors.grey2,
                     ),
                     width: 16,

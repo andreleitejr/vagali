@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,6 +17,9 @@ class AuthController extends GetxController {
   final phone = ''.obs;
   final sms = ''.obs;
   final termsAndConditions = false.obs;
+  var minutes = 5.obs;
+  var seconds = 0.obs;
+  var isCountdownFinished = false.obs;
 
   String get inputError {
     if (isPhoneValid.isFalse) {
@@ -27,17 +32,6 @@ class AuthController extends GetxController {
       return 'Algum campo necessita de atenção';
     }
   }
-
-  //
-  // RxString get phoneError =>
-  //     (isPhoneValid.isTrue ? '' : 'Insira um telefone válido').obs;
-  //
-  // RxString get smsError => (isSmsValid.isTrue ? '' : 'SMS inválido').obs;
-  //
-  // RxString get termsAndConditionsError => (termsAndConditions.isFalse
-  //         ? ''
-  //         : 'Para utilizar nossa plataforma, é preciso aceitar nossos Termos e Condições.')
-  //     .obs;
 
   final authStatus = AuthStatus.uninitialized.obs;
   final error = ''.obs;
@@ -59,15 +53,12 @@ class AuthController extends GetxController {
     await checkCurrentUser();
   }
 
-
   RxBool get isValid =>
       (isPhoneValid.isTrue && termsAndConditions.isTrue && isSmsValid.isTrue)
           .obs;
 
-
   RxBool get isLoginValid =>
-      (isPhoneValid.isTrue && termsAndConditions.isTrue)
-          .obs;
+      (isPhoneValid.isTrue && termsAndConditions.isTrue).obs;
 
   RxBool get isPhoneValid {
     final cleanPhone = phone.value.clean.removeParenthesis.removeAllWhitespace;
@@ -83,10 +74,28 @@ class AuthController extends GetxController {
       final newAuthStatus =
           await _authRepository.sendVerificationCode('+55${phone.value}');
       authStatus.value = newAuthStatus;
+      startCountdown();
     } catch (e) {
       debugPrint('Verification code: $error');
       error(e.toString());
     }
+  }
+
+  void startCountdown() {
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      if (minutes.value == 0 && seconds.value == 0) {
+        timer.cancel();
+
+        isCountdownFinished.value = true;
+      } else {
+        if (seconds.value == 0) {
+          minutes.value--;
+          seconds.value = 59;
+        } else {
+          seconds.value--;
+        }
+      }
+    });
   }
 
   Future<AuthStatus?> verifySmsCode() async {

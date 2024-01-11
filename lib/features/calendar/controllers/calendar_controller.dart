@@ -6,9 +6,11 @@ import 'package:vagali/features/reservation/repositories/reservation_repository.
 final today = DateUtils.dateOnly(DateTime.now());
 
 class CalendarController extends GetxController {
-  final ReservationRepository _reservationRepository = Get.find();
+  CalendarController(this.reservations);
 
-  final reservations = <Reservation>[].obs;
+  // final ReservationRepository _reservationRepository = Get.find();
+
+  final List<Reservation> reservations;
 
   final reservationDates = <DateTime>[].obs;
 
@@ -46,7 +48,6 @@ class CalendarController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    reservations.value = await _reservationRepository.getAll();
     selectedDates.value = getAllReservationDates();
     // multiDatePickerValueWithDefaultValue.addAll(getAllReservationDates());
     super.onInit();

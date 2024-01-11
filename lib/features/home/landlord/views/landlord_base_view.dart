@@ -24,15 +24,17 @@ class LandlordBaseView extends StatefulWidget {
 
 class _LandlordBaseViewState extends State<LandlordBaseView> {
   final controller = Get.put(LandlordHomeController());
-  final List<Widget> _pages = [
-    LandlordHomeView(),
-    DashboardView(),
-    CalendarView(),
-    LandlordView(),
-  ];
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _pages = [
+      LandlordHomeView(),
+      DashboardView(),
+      CalendarView(
+        reservations: controller.reservations,
+      ),
+      LandlordView(),
+    ];
     return Scaffold(
       body: Obx(() => _pages[controller.selectedIndex.value]),
       bottomNavigationBar: Obx(
@@ -52,10 +54,10 @@ class _LandlordBaseViewState extends State<LandlordBaseView> {
             ),
             const BottomNavigationBarItem(
               icon: Coolicon(
-                icon: Coolicons.map,
+                icon: Coolicons.creditCard,
               ),
               activeIcon: Coolicon(
-                icon: Coolicons.map,
+                icon: Coolicons.creditCard,
                 color: ThemeColors.primary,
               ),
               label: '',

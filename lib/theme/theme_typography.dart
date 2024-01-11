@@ -53,6 +53,11 @@ class ThemeTypography {
     fontWeight: FontWeight.w400,
     fontFamily: 'Inter',
   );
+  static const semiBold10 = TextStyle(
+    fontSize: 10,
+    fontWeight: FontWeight.w600,
+    fontFamily: 'Inter',
+  );
   static const regular10 = TextStyle(
     fontSize: 10,
     fontWeight: FontWeight.w400,

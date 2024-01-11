@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:vagali/features/calendar/controllers/calendar_controller.dart';
+import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/widgets/reservation_history_item.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
@@ -12,22 +13,26 @@ import 'package:vagali/widgets/date_card.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
 class CalendarView extends StatefulWidget {
+  final List<Reservation> reservations;
+
+  const CalendarView({super.key, required this.reservations});
+
   @override
   _CalendarViewState createState() => _CalendarViewState();
 }
 
 class _CalendarViewState extends State<CalendarView> {
+  late CalendarController controller;
   late DateTime _focusedDay;
   late DateTime _firstDay;
   late DateTime _lastDay;
   late DateTime _selectedDay;
   late CalendarFormat _calendarFormat;
 
-  final CalendarController controller = Get.put(CalendarController());
-
   @override
   void initState() {
     super.initState();
+    controller = Get.put(CalendarController(widget.reservations));
     _focusedDay = DateTime.now();
     _firstDay = DateTime.now().subtract(const Duration(days: 1000));
     _lastDay = DateTime.now().add(const Duration(days: 1000));

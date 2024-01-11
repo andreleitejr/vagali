@@ -11,7 +11,7 @@ import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/gradient_text.dart';
 import 'package:vagali/widgets/logo.dart';
 import 'package:vagali/widgets/phone_input.dart';
-import 'package:vagali/widgets/rounded_gradient_button.dart';
+
 import 'package:vagali/widgets/snackbar.dart';
 
 class LoginView extends StatelessWidget {

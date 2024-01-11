@@ -18,7 +18,7 @@ import 'package:vagali/widgets/user_app_bar.dart';
 class LandlordHomeView extends StatelessWidget {
   final controller = Get.put(LandlordHomeController());
 
-  LandlordHomeView({super.key});
+  LandlordHomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +26,8 @@ class LandlordHomeView extends StatelessWidget {
       appBar: UserAppBar(
         user: controller.landlord,
       ),
-      body: Obx(
-        () {
+      body:  Obx(
+            () {
           if (controller.loading.value) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -42,35 +42,37 @@ class LandlordHomeView extends StatelessWidget {
               ],
             );
           }
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Obx(() {
-                if (controller.hasOpenReservation) {
-                  return ConfirmationWidget(
-                    controller: controller,
-                  );
-                }
-                return Container();
-              }),
-              const SizedBox(height: 16),
-              TitleWithAction(
-                title: 'Próximas reservas',
-                icon: Coolicons.calendar,
-                actionText: 'Ver tudo',
-                onActionPressed: () {},
-              ),
-              ListView.builder(
-                itemCount: controller.scheduledReservations.length,
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  final reservation = controller.scheduledReservations[index];
-
-                  return ReservationItem(reservation: reservation);
-                },
-              ),
-            ],
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 16),
+                Obx(() {
+                  if (controller.hasOpenReservation) {
+                    return ConfirmationWidget(
+                      controller: controller,
+                    );
+                  }
+                  return Container();
+                }),
+                const SizedBox(height: 16),
+                TitleWithAction(
+                  title: 'Próximas reservas',
+                  icon: Coolicons.calendar,
+                  actionText: 'Ver tudo',
+                  onActionPressed: () {},
+                ),
+                ListView.builder(
+                  itemCount: controller.scheduledReservations.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) {
+                    final reservation = controller.scheduledReservations[index];
+                    return ReservationItem(reservation: reservation);
+                  },
+                ),
+              ],
+            ),
           );
         },
       ),
