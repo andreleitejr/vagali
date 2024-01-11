@@ -73,6 +73,7 @@ class LandlordHomeController extends GetxController {
     stream.listen((event) async {
       reservations.assignAll(event);
 
+
       _getScheduledReservation();
 
       for (final reservation in reservations) {
@@ -91,14 +92,15 @@ class LandlordHomeController extends GetxController {
         update();
       }
 
-      currentReservation.value = reservations
-          .firstWhereOrNull((reservation) => reservation.isInProgress);
+      currentReservation.value = scheduledReservations.first;
     });
   }
 
   void _getScheduledReservation() {
     scheduledReservations.value =
         reservations.where((reservation) => reservation.isScheduled).toList();
+
+    scheduledReservations.sort((a, b)=>a.startDate.compareTo(b.startDate));
   }
 
   Future<void> _handleVehicleUpdate(Reservation reservation) async {
@@ -145,6 +147,17 @@ class LandlordHomeController extends GetxController {
       );
     } catch (error) {
       debugPrint('Erro ao confirmar a reserva: $error');
+    }
+  }
+
+  Future<void> denyReservation() async {
+    try {
+      await _reservationRepository.updateReservationStatus(
+        currentReservation.value!.id!,
+        ReservationStatus.canceled,
+      );
+    } catch (error) {
+      debugPrint('Erro ao cancelar a reserva: $error');
     }
   }
 

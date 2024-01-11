@@ -13,6 +13,7 @@ import 'package:vagali/utils/extensions.dart';
 import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/user_card.dart';
+import 'package:vagali/widgets/warning_dialog.dart';
 
 class ConfirmationWidget extends StatelessWidget {
   final LandlordHomeController controller;
@@ -102,6 +103,18 @@ class ConfirmationWidget extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           ..._buildButtonsBasedOnStatus(reservation),
+          if (reservation.isPaymentApproved) ...[
+            _buildFlatButton(
+              'Cancelar',
+              () => showWarningDialog(
+                context,
+                title: 'Cancelar reserva',
+                description: 'Tem certeza que gostaria de cancelar a reserva?',
+                onConfirm: () => controller.denyReservation(),
+              ),
+              ThemeColors.red,
+            ),
+          ]
         ],
       ),
     );
@@ -110,10 +123,10 @@ class ConfirmationWidget extends StatelessWidget {
   List<Widget> _buildButtonsBasedOnStatus(Reservation reservation) {
     List<Widget> buttons = [];
 
-    if (reservation.isConfirmed) {
+    if (reservation.isPaymentApproved) {
       buttons.add(
         _buildFlatButton(
-          'Estou à caminho',
+          'Aceitar',
           controller.verifyStatusAndUpdateReservation,
           ThemeColors.primary,
         ),
