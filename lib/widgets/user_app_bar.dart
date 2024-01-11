@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:vagali/features/home/landlord/controllers/dashboard_controller.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_typography.dart';
@@ -8,17 +10,21 @@ import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/gradient_text.dart';
 
 class UserAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final User user;
-  final List<Widget> actions;
+  // final User user;
+  // final List<Widget> actions;
+
+  final LandlordHomeController controller;
 
   UserAppBar({
     super.key,
-    required this.user,
-    this.actions = const [],
+    required this.controller,
+    // required this.user,
+    // this.actions = const [],
   });
 
   @override
   Widget build(BuildContext context) {
+    final user = controller.landlord;
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -42,34 +48,38 @@ class UserAppBar extends StatelessWidget implements PreferredSizeWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Bom dia, ${user.firstName}',
+                      '${controller.getGreeting()}, ${user.firstName}',
                       style: ThemeTypography.semiBold14.apply(
                         color: ThemeColors.primary,
                       ),
                     ),
-                    Text(
-                      'Você tem uma nova reserva',
-                      style: ThemeTypography.regular12.apply(
-                        color: ThemeColors.grey4,
+                    Obx(
+                      () => Text(
+                        controller.scheduledReservations.isNotEmpty
+                            ? 'Você tem ${controller.scheduledReservations.length} reservas agendadas'
+                            : 'Você não tem nenhuma reserva agendada',
+                        style: ThemeTypography.regular12.apply(
+                          color: ThemeColors.grey4,
+                        ),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),
-              Row(children: [
-                // IconButton(
-                //   onPressed: () {},
-                //   icon: const Icon(
-                //     Icons.search,
-                //     color: ThemeColors.grey4,
-                //   ),
-                // ),
-                Coolicon(
-                  onTap: () {},
-                  padding: const EdgeInsets.only(right: 16),
-                  icon: Coolicons.bell,
-                ),
-              ]),
+              // Row(children: [
+              //   // IconButton(
+              //   //   onPressed: () {},
+              //   //   icon: const Icon(
+              //   //     Icons.search,
+              //   //     color: ThemeColors.grey4,
+              //   //   ),
+              //   // ),
+              //   Coolicon(
+              //     onTap: () {},
+              //     padding: const EdgeInsets.only(right: 16),
+              //     icon: Coolicons.bell,
+              //   ),
+              // ]),
             ],
           ),
         ],

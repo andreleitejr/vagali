@@ -102,7 +102,6 @@ extension DateTimeExtensions on DateTime {
     }
   }
 
-
   String get monthAbbreviation {
     switch (month) {
       case 1:
@@ -133,6 +132,7 @@ extension DateTimeExtensions on DateTime {
         return '';
     }
   }
+
   String get monthName {
     switch (month) {
       case 1:
@@ -201,6 +201,7 @@ extension StringExtensions on String {
   String get removeDots => replaceAll('.', '');
 
   String get removeHyphen => replaceAll('-', '');
+
   String get removeParenthesis => replaceAll(')', '').replaceAll('(', '');
 }
 
@@ -213,7 +214,23 @@ extension DoubleExtension on double {
       return '${distanceInKm.toStringAsFixed(1)} km';
     }
   }
+
   String toMonetaryString() => 'R\$${this}';
+
+  String toFormattedTime() {
+    int hours = (this / 3600).floor();
+    int minutes = ((this % 3600) / 60).floor();
+
+    String formattedTime = '';
+    if (hours > 0) {
+      formattedTime += '$hours h ';
+    }
+    if (minutes > 0 || hours == 0) {
+      formattedTime += '$minutes min';
+    }
+
+    return formattedTime;
+  }
 }
 
 extension ReservationStatusExtension on ReservationStatus {
@@ -259,9 +276,9 @@ extension ReservationStatusExtension on ReservationStatus {
       case ReservationStatus.confirmed:
         return "Confirmado pelo locatário.";
       case ReservationStatus.userOnTheWay:
-        return "Estou à caminho.";
+        return "O locatário à caminho. Fique atento para abrir o portão.";
       case ReservationStatus.parked:
-        return "Veículo estacionado.";
+        return "O veículo está estacionado na vaga.";
       case ReservationStatus.concluded:
         return "Reserva concluída. Obrigado por utilizar o Vagali.";
       case ReservationStatus.error:

@@ -38,10 +38,17 @@ class UserCard extends StatelessWidget {
               user is Tenant ? 'Locatário' : 'Locador',
               style: ThemeTypography.regular12,
             ),
-            trailing: Coolicon(
-              onTap: () => _makePhoneCall(),
-              padding: const EdgeInsets.all(8),
-              icon: Coolicons.phoneOutline,
+            trailing: Container(
+              decoration: BoxDecoration(
+                color: ThemeColors.grey2,
+                borderRadius: BorderRadius.circular(50)
+              ),
+              child: Coolicon(
+                onTap: () => _makePhoneCall(),
+                padding: const EdgeInsets.all(8),
+                icon: Coolicons.phoneOutline,
+                width: 18,
+              ),
             ),
           ),
           if (message != null && message!.isNotEmpty) ...[

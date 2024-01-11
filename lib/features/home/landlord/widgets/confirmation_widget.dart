@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/home/landlord/controllers/dashboard_controller.dart';
+import 'package:vagali/features/home/landlord/widgets/tracking_location.dart';
 import 'package:vagali/features/message/views/message_view.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/user/models/user.dart';
@@ -31,7 +32,10 @@ class ConfirmationWidget extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: ThemeColors.grey2,
+          color: controller.currentReservation.value!.isUserOnTheWay
+              ? ThemeColors.primary
+              : ThemeColors.grey2,
+          width: controller.currentReservation.value!.isUserOnTheWay ? 1.5 : 1,
         ),
       ),
       child: Column(
@@ -39,9 +43,23 @@ class ConfirmationWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 8),
-          const Text(
-            'Você tem uma nova reserva',
-            style: ThemeTypography.semiBold14,
+          Row(
+            children: [
+              if (controller.currentReservation.value != null &&
+                  controller.currentReservation.value!.isUserOnTheWay) ...[
+                PulsatingWidget(),
+                const SizedBox(width: 4),
+              ],
+              Text(
+                reservation.status.title,
+                style: ThemeTypography.semiBold14,
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            reservation.status.message,
+            style: ThemeTypography.regular12,
           ),
           const SizedBox(height: 8),
           Row(
@@ -83,57 +101,130 @@ class ConfirmationWidget extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          if (controller.currentReservation.value!.isConfirmed) ...[
-            FlatButton(
-              actionText: _getButtonText(reservation),
-              onPressed: () => Get.to(
-                () => ChatView(
-                  reservation: controller.currentReservation.value!,
-                ),
-              ),
-              backgroundColor: _getButtonColor(reservation),
-              icon: _getButtonIcon(reservation),
-            ),
-          ] else ...[
-            FlatButton(
-              actionText: _getButtonText(reservation),
-              onPressed: () => controller.verifyStatusAndUpdateReservation(),
-              backgroundColor: _getButtonColor(reservation),
-              icon: _getButtonIcon(reservation),
-            ),
-          ]
+          ..._buildButtonsBasedOnStatus(reservation),
         ],
       ),
     );
   }
 
-  String _getButtonText(Reservation reservation) {
-    if (reservation.isPaymentApproved) {
-      return 'Confirmar Reserva';
-    } else if (reservation.isConfirmed) {
-      return 'Conversar com locatário';
-    } else {
-      return '';
-    }
-  }
+  List<Widget> _buildButtonsBasedOnStatus(Reservation reservation) {
+    List<Widget> buttons = [];
 
-  Color _getButtonColor(Reservation reservation) {
     if (reservation.isConfirmed) {
-      return ThemeColors.blue;
-    }
-    return ThemeColors.primary;
-  }
-
-  Widget _getButtonIcon(Reservation reservation) {
-    if (reservation.isConfirmed) {
-      return Coolicon(
-        icon: Coolicons.chat,
-        color: Colors.white,
+      buttons.add(
+        _buildFlatButton(
+          'Estou à caminho',
+          controller.verifyStatusAndUpdateReservation,
+          ThemeColors.primary,
+        ),
       );
     }
-    return Coolicon(
-      icon: Coolicons.circleCheck,
-      color: Colors.white,
+
+    if (reservation.isUserOnTheWay) {
+      buttons.add(
+        _buildFlatButton(
+          'Acompanhar veículo',
+          () => Get.to(
+            () => TrackingLocation(controller: controller),
+          ),
+          ThemeColors.primary,
+        ),
+      );
+    }
+
+    if (reservation.isParked) {
+      buttons.add(
+        _buildFlatButton(
+          'Concluir reserva',
+          () {},
+          ThemeColors.primary,
+        ),
+      );
+    }
+
+    if (reservation.isHandshakeMade) {
+      buttons.add(
+        _buildFlatButton(
+          'Conversar com locatário',
+          () => Get.to(() => ChatView(reservation: reservation)),
+          ThemeColors.blue,
+        ),
+      );
+    }
+
+    if (reservation.isConcluded) {
+      buttons.add(_buildFlatButton(
+        'Avaliar locatário',
+        () {},
+        ThemeColors.blue,
+      ));
+    }
+
+    return buttons;
+  }
+
+  Widget _buildFlatButton(
+      String text, VoidCallback onPressed, Color backgroundColor) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: FlatButton(
+        actionText: text,
+        onPressed: onPressed,
+        backgroundColor: backgroundColor,
+      ),
+    );
+  }
+}
+
+class PulsatingWidget extends StatefulWidget {
+  @override
+  _PulsatingWidgetState createState() => _PulsatingWidgetState();
+}
+
+class _PulsatingWidgetState extends State<PulsatingWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _opacityAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 1000),
+    );
+
+    _opacityAnimation = Tween<double>(begin: 0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+
+    _controller.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _opacityAnimation,
+      builder: (context, child) {
+        return Opacity(
+          opacity: _opacityAnimation.value,
+          child: Container(
+            width: 10,
+            height: 10,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: ThemeColors.primary,
+            ),
+          ),
+        );
+      },
     );
   }
 }

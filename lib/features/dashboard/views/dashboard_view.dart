@@ -257,7 +257,6 @@ class ChartWidget extends StatelessWidget {
                       margin: const EdgeInsets.only(top: 8),
                       child: Transform.rotate(
                         angle: -45 * (3.141592653589793 / 180),
-                        // Converte graus para radianos
                         child: Text(
                           '${daysOfWeek[value.toInt()]}',
                           style: DateTime.now().weekday == value ? ThemeTypography.semiBold10.apply(

@@ -24,7 +24,7 @@ class LandlordHomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: UserAppBar(
-        user: controller.landlord,
+        controller: controller,
       ),
       body:  Obx(
             () {

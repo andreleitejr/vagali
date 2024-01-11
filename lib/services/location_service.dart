@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:vagali/models/location_history.dart';
@@ -44,26 +45,20 @@ class LocationService {
       return false;
     }
   }
-// Variável para rastreamento ativo
+
   bool isTracking = false;
 
-// Função para iniciar o rastreamento e atualizar o banco de dados
   Future<void> startLocationTracking(Reservation reservation) async {
-    // Verifique as permissões de localização
     final hasPermission = await checkLocationPermission();
     if (!hasPermission) {
-      // Solicite permissão de localização se não estiver concedida
       final permissionGranted = await requestLocationPermission();
       if (!permissionGranted) {
-        // Trate o caso em que a permissão foi negada pelo usuário
         return;
       }
     }
 
-    // Defina o rastreamento como ativo
     isTracking = true;
 
-    // Inicie o rastreamento de localização em um loop
     while (isTracking) {
       if (!reservation.isUserOnTheWay) {
         break;
@@ -83,12 +78,10 @@ class LocationService {
           break;
         }
 
-        // Atualize o banco de dados com a localização do usuário
         await updateUserLocationInReservationDatabase(
             reservation, userLocation!);
       }
 
-      // Espere um tempo antes de obter a próxima atualização de localização
       await Future.delayed(const Duration(seconds: 5));
     }
   }
@@ -96,7 +89,6 @@ class LocationService {
   void stopLocationTracking() {
     isTracking = false;
   }
-
 
   Future<void> updateUserLocationInReservationDatabase(
       Reservation reservation, Position position) async {
@@ -109,10 +101,8 @@ class LocationService {
       );
       await _reservationRepository.updateReservationLocation(
           reservation.id!, locationHistory);
-      print(
-          'Atualizando localização no banco de dados - Lat: ${position.latitude}, Lon: ${position.longitude}');
     } catch (error) {
-      print('Erro ao atualizar localização no banco de dados: $error');
+      debugPrint('Erro ao atualizar localização no banco de dados: $error');
     }
   }
 
@@ -122,6 +112,8 @@ class LocationService {
     double originLatitude,
     double originLongitude,
   ) async {
+    await getUserLocation();
+
     try {
       final distanceInMeters = Geolocator.distanceBetween(
         _userLocation!.latitude,
@@ -130,16 +122,12 @@ class LocationService {
         originLongitude,
       );
 
-      print('MY SUPER MAPA SHDASDAASDUHS ${distanceInMeters}');
-      print('MY SUPER MAPA SHDASDAASDUsaHS ${distanceInMeters}');
-      print('MY SUPER MAPA SHDASDAAsaSDUHS ${distanceInMeters}');
-      print('MY SUPER MAPA SHDASDAAsaSDUHS ${distanceInMeters}');
       final double estimatedTimeInSeconds =
           distanceInMeters / averageSpeedMetersPerSecond;
 
       return estimatedTimeInSeconds;
     } catch (e) {
-      print('Erro ao calcular o tempo estimado: $e');
+      debugPrint('Erro ao calcular o tempo estimado: $e');
       return null;
     }
   }

@@ -55,6 +55,19 @@ class LandlordHomeController extends GetxController {
     }
   }
 
+  String getGreeting() {
+    final currentTime = DateTime.now();
+    final hour = currentTime.hour;
+
+    if (hour >= 6 && hour < 12) {
+      return 'Bom dia';
+    } else if (hour >= 12 && hour < 18) {
+      return 'Boa tarde';
+    } else {
+      return 'Boa noite';
+    }
+  }
+
   Future<void> _handleReservationsUpdate(
       Stream<List<Reservation>> stream) async {
     stream.listen((event) async {
@@ -68,7 +81,8 @@ class LandlordHomeController extends GetxController {
 
         await _handleVehicleUpdate(reservation);
 
-        if (reservation.isUserOnTheWay) {
+        if (currentReservation.value != null &&
+            currentReservation.value!.isUserOnTheWay) {
           _updateMarker();
           await _animateCameraToLocation();
           await _calculateAndSetEstimatedArrivalTime();
@@ -146,6 +160,7 @@ class LandlordHomeController extends GetxController {
   }
 
   Future<void> _getCurrentLandlordLocation() async {
+    await locationService.getUserLocation();
     final position = locationService.userLocation;
 
     if (position != null) {
@@ -157,14 +172,15 @@ class LandlordHomeController extends GetxController {
 
   void _updateMarker() {
     location.value = LatLng(
-      currentReservation.value!.locationHistory.last.latitude,
-      currentReservation.value!.locationHistory.last.longitude,
+      currentReservation.value!.locationHistory.last.latitude as double,
+      currentReservation.value!.locationHistory.last.longitude as double,
     );
     marker.value = Marker(
       markerId: const MarkerId('userMarker'),
       position: location.value,
       icon: carMarkerIcon,
-      rotation: currentReservation.value!.locationHistory.last.heading,
+      rotation:
+          currentReservation.value!.locationHistory.last.heading as double,
     );
   }
 
