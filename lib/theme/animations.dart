@@ -1,4 +1,4 @@
 class Animations {
 
-  static const logo = 'images/animations/logo.riv';
+  static const logo = 'images/animations/animation.riv';
 }

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:vagali/features/auth/controllers/auth_controller.dart';
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/auth/views/code_verification_view.dart';
+import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/widgets/loading_view.dart';
 import 'package:vagali/features/auth/views/location_denied_view.dart';
 import 'package:vagali/features/auth/views/login_error_view.dart';
@@ -14,7 +15,6 @@ import 'package:vagali/features/home/tenant/views/home_view.dart';
 import 'package:vagali/features/parking/views/parking_edit_view.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/features/user/views/user_edit_view.dart';
-
 
 import 'animation_view.dart';
 import 'login_view.dart';
@@ -29,6 +29,10 @@ class AuthView extends StatelessWidget {
     return Scaffold(
       body: Obx(
         () {
+          if (_controller.loading.isTrue) {
+            return AnimationView();
+          }
+
           final authStatus = _controller.authStatus.value;
 
           if (authStatus == AuthStatus.unauthenticated) {
@@ -50,7 +54,16 @@ class AuthView extends StatelessWidget {
           } else if (authStatus == AuthStatus.error) {
             return AuthErrorView();
           } else {
-            return AnimationView(controller: _controller);
+            return Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: (MediaQuery.of(context).size.height * 100) / 1152,
+              ),
+              decoration: BoxDecoration(
+                color: ThemeColors.primary,
+              ),
+              alignment: Alignment.center,
+              child: Image.asset('images/splash-logo.png'),
+            );
           }
         },
       ),

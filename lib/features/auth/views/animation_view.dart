@@ -3,12 +3,11 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:rive/rive.dart';
 import 'package:vagali/features/auth/controllers/auth_controller.dart';
 import 'package:vagali/theme/animations.dart';
+import 'package:vagali/theme/images.dart';
 import 'package:vagali/theme/theme_colors.dart';
 
 class AnimationView extends StatefulWidget {
-  const AnimationView({super.key, required this.controller});
-
-  final AuthController controller;
+  const AnimationView({super.key});
 
   @override
   State<AnimationView> createState() => _AnimationViewState();
@@ -17,38 +16,39 @@ class AnimationView extends StatefulWidget {
 class _AnimationViewState extends State<AnimationView> {
   late RiveAnimationController openController;
 
-  final String animation = 'open';
+  final open = 'open';
 
   @override
   void initState() {
     openController = OneShotAnimation(
-      animation,
+      open,
       autoplay: true,
     );
     super.initState();
   }
 
+  final focus = FocusNode();
+
   @override
   Widget build(BuildContext context) {
+    focus.unfocus();
     return Scaffold(
       body: Container(
+        padding: EdgeInsets.symmetric(
+            horizontal: (MediaQuery.of(context).size.height * 100) / 1152),
         decoration: BoxDecoration(
-          gradient: ThemeColors.gradient,
+          color: ThemeColors.primary,
         ),
-        child: Center(
-          child: SizedBox(
-            width: 95,
-            height: 120,
-            child: RiveAnimation.asset(
-              Animations.logo,
-              fit: BoxFit.fitWidth,
-              alignment: Alignment.topCenter,
-              animations: [animation],
-              controllers: [
-                openController,
-              ],
-            ),
-          ),
+        alignment: Alignment.center,
+        child: RiveAnimation.asset(
+          Animations.logo,
+          // fit: BoxFit.scaleDown,
+          alignment: Alignment.center,
+          useArtboardSize: true,
+          animations: [open],
+          controllers: [
+            openController,
+          ],
         ),
       ),
     );

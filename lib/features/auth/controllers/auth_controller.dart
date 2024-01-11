@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 
 // Features
@@ -45,12 +46,14 @@ class AuthController extends GetxController {
     super.onInit();
 
     loading(true);
-
-    await Future.delayed(const Duration(seconds: 1));
+    FlutterNativeSplash.remove();
 
     Get.put(UserRepository());
 
     await checkCurrentUser();
+
+    await Future.delayed(const Duration(milliseconds: 2800));
+    loading(false);
   }
 
   RxBool get isValid =>
@@ -100,7 +103,6 @@ class AuthController extends GetxController {
 
   Future<AuthStatus?> verifySmsCode() async {
     try {
-      loading(true);
       authStatus.value = AuthStatus.verifying;
 
       var newAuthStatus = await _authRepository.verifySmsCode(sms.value);
@@ -110,7 +112,6 @@ class AuthController extends GetxController {
       }
 
       authStatus.value = newAuthStatus;
-      loading(false);
 
       return authStatus.value;
     } catch (e) {

@@ -20,7 +20,8 @@ class App extends StatelessWidget {
     return GetMaterialApp(
       title: 'Vagali',
       theme: ThemeData(
-        primaryColor: Colors.red,
+        primaryColor: ThemeColors.primary,
+        // primarySwatch: ThemeColors.primary,
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
             foregroundColor: ThemeColors.primary,
