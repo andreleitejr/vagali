@@ -29,7 +29,9 @@ class _LandlordBaseViewState extends State<LandlordBaseView> {
   Widget build(BuildContext context) {
     final List<Widget> _pages = [
       LandlordHomeView(),
-      DashboardView(),
+      DashboardView(
+        reservations: controller.reservations,
+      ),
       CalendarView(
         reservations: controller.reservations,
       ),

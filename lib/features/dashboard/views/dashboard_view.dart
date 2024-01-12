@@ -14,10 +14,23 @@ import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/title_with_action.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
-class DashboardView extends StatelessWidget {
-  DashboardView({super.key});
+class DashboardView extends StatefulWidget {
+  final List<Reservation> reservations;
 
-  final _controller = Get.put(DashboardController());
+  DashboardView({super.key, required this.reservations});
+
+  @override
+  State<DashboardView> createState() => _DashboardViewState();
+}
+
+class _DashboardViewState extends State<DashboardView> {
+  late DashboardController _controller;
+
+  @override
+  void initState() {
+    _controller = Get.put(DashboardController(widget.reservations));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,13 +149,11 @@ class DashboardView extends StatelessWidget {
               onActionPressed: () {},
             ),
             ListView.builder(
-              itemCount:
-                  _controller.reservationListController.reservationsDone.length,
+              itemCount: _controller.doneReservations.length,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
-                final reservation = _controller
-                    .reservationListController.reservationsDone[index];
+                final reservation = _controller.doneReservations[index];
 
                 return ReservationItem(
                   reservation: reservation,

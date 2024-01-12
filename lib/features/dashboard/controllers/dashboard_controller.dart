@@ -3,10 +3,14 @@ import 'package:vagali/features/reservation/controllers/reservation_list_control
 import 'package:vagali/features/reservation/models/reservation.dart';
 
 class DashboardController extends GetxController {
-  final reservationListController = Get.put(ReservationListController());
+  DashboardController(this.reservations);
+
+  final List<Reservation> reservations;
+
+  final doneReservations = <Reservation>[].obs;
+  final openReservations = <Reservation>[].obs;
 
   double get balance {
-    final doneReservations = reservationListController.reservationsDone;
     double totalBalance = 0;
 
     for (final reservation in doneReservations) {
@@ -17,7 +21,6 @@ class DashboardController extends GetxController {
   }
 
   double get income {
-    final openReservations = reservationListController.reservationsInProgress;
     double totalBalance = 0;
 
     for (final reservation in openReservations) {
@@ -28,7 +31,6 @@ class DashboardController extends GetxController {
   }
 
   Duration get totalTime {
-    final openReservations = reservationListController.reservationsInProgress;
 
     Duration totalTime = Duration.zero;
 
@@ -47,9 +49,20 @@ class DashboardController extends GetxController {
         DateTime(now.year, now.month, now.day - now.weekday + 1);
     final endOfWeek = DateTime(now.year, now.month, now.day - now.weekday + 7);
 
-    return reservationListController.allReservations.where((reservation) {
+    return reservations.where((reservation) {
       return reservation.startDate.isAfter(startOfWeek) &&
           reservation.startDate.isBefore(endOfWeek);
     }).toList();
+  }
+
+  @override
+  void onInit() {
+
+    doneReservations.value =
+        reservations.where((reservation) => reservation.isDone).toList();
+
+    openReservations.value =
+        reservations.where((reservation) => reservation.isInProgress).toList();
+    super.onInit();
   }
 }
