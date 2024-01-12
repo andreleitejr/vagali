@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/landlord/models/landlord.dart';
-import 'package:vagali/features/message/models/message.dart';
-import 'package:vagali/features/message/repositories/message_repository.dart';
+import 'package:vagali/features/chat/models/message.dart';
+import 'package:vagali/features/chat/repositories/chat_repository.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
 
-class MessageController extends GetxController {
-  MessageController(this.reservation) {
-    _repository = Get.put(MessageRepository(reservation.id!));
+class ChatController extends GetxController {
+  ChatController(this.reservation) {
+    _repository = Get.put(ChatRepository(reservation.id!));
   }
   final User user = Get.find();
   final messages = <Message>[].obs;
   final Reservation reservation;
 
-  late MessageRepository _repository;
+  late ChatRepository _repository;
 
   final messageController = TextEditingController();
 

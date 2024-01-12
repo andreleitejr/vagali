@@ -86,7 +86,7 @@ class LastReservationWidget extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () => Get.to(
-                  () => ReservationDetailsView(
+                  () => ReservationView(
                       reservation: reservation,
                       onReservationChanged: onReservationChanged),
                 ),

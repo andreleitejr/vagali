@@ -1,6 +1,8 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
+import 'package:vagali/features/reservation/views/reservation_details_view.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/utils/extensions.dart';
@@ -19,6 +21,7 @@ class ReservationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () => Get.to(() => ReservationView(reservation: reservation)),
       leading: Container(
         width: 50,
         height: 50,

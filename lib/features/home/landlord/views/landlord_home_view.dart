@@ -41,9 +41,7 @@ class LandlordHomeView extends StatelessWidget {
           }
 
           if (controller.scheduledReservations.isEmpty) {
-            return Center(
-              child: EmptyList(),
-            );
+            return Center(child: EmptyList());
           }
 
           return SingleChildScrollView(

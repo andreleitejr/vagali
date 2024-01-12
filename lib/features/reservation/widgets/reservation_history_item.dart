@@ -22,7 +22,7 @@ class ReservationHistoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => Get.to(
-        () => ReservationDetailsView(
+        () => ReservationView(
           reservation: reservation,
           onReservationChanged: onReservationChanged,
         ),

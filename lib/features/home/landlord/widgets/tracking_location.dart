@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:vagali/features/home/landlord/controllers/dashboard_controller.dart';
-import 'package:vagali/features/message/views/message_view.dart';
+import 'package:vagali/features/chat/views/chat_view.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/features/vehicle/widgets/vehicle_info_widget.dart';
 import 'package:vagali/theme/coolicons.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/home/landlord/controllers/dashboard_controller.dart';
 import 'package:vagali/features/home/landlord/widgets/tracking_location.dart';
-import 'package:vagali/features/message/views/message_view.dart';
+import 'package:vagali/features/chat/views/chat_view.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/features/vehicle/widgets/vehicle_info_widget.dart';
@@ -102,6 +102,7 @@ class ConfirmationWidget extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
+          /// JUNTAR COM O RESERVATION DETAILS VIEW
           ..._buildButtonsBasedOnStatus(reservation),
           if (reservation.isPaymentApproved) ...[
             _buildFlatButton(

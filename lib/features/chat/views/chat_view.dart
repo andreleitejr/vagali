@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vagali/features/message/controllers/message_controller.dart';
-import 'package:vagali/features/message/models/message.dart';
+import 'package:vagali/features/chat/controllers/chat_controller.dart';
+import 'package:vagali/features/chat/models/message.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
@@ -21,11 +21,11 @@ class ChatView extends StatefulWidget {
 }
 
 class _ChatViewState extends State<ChatView> {
-  late MessageController controller;
+  late ChatController controller;
 
   @override
   void initState() {
-    controller = Get.put(MessageController(widget.reservation));
+    controller = Get.put(ChatController(widget.reservation));
     super.initState();
   }
 
