@@ -73,12 +73,11 @@ class TrackingLocation extends StatelessWidget {
                 ),
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(36),
-                    topRight: Radius.circular(36),
-                  )
-                ),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(36),
+                      topRight: Radius.circular(36),
+                    )),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -96,11 +95,12 @@ class TrackingLocation extends StatelessWidget {
                             style: ThemeTypography.medium14,
                           ),
                         ),
-                        Text(
-                          controller.estimatedArrivalTime.value!
-                              .toFormattedTime(),
-                          style: ThemeTypography.medium14,
-                        ),
+                        if (controller.estimatedArrivalTime.value != null)
+                          Text(
+                            controller.estimatedArrivalTime.value!
+                                .toFormattedTime(),
+                            style: ThemeTypography.medium14,
+                          ),
                       ],
                     ),
                     Expanded(

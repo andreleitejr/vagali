@@ -14,7 +14,7 @@ import 'package:vagali/services/location_service.dart';
 
 class ReservationListController extends GetxController {
   final tenant = Get.find<User>();
-  // final _parkingRepository = Get.find<ParkingRepository>();
+  final _parkingRepository = Get.find<ParkingRepository>();
   final locationService = Get.find<LocationService>();
 
   final _reservationRepository = Get.put(ReservationRepository());
@@ -41,7 +41,7 @@ class ReservationListController extends GetxController {
     loading(true);
 
     await fetchLandlords();
-    // await fetchParkings();
+    await fetchParkings();
     await fetchVehicles();
 
     _listenToReservationsStream();
@@ -61,20 +61,31 @@ class ReservationListController extends GetxController {
           (landlord) => landlord.id! == reservation.landlordId);
       reservation.vehicle = vehicles
           .firstWhereOrNull((vehicle) => vehicle.id == reservation.vehicleId);
+      print(' HUASDHUSDHDSUAHSDAUHDUHDUHSDAH ${parkings.length}');
       reservation.parking = parkings
           .firstWhereOrNull((parking) => parking.id! == reservation.parkingId);
+
+      if (reservation.landlord != null &&
+          reservation.vehicle != null &&
+          reservation.parking != null) {
+        allReservations.add(reservation);
+      }
     }
-    allReservations.addAll(reservations);
 
     final inProgress =
-        reservations.where((reservation) => reservation.isInProgress);
+        allReservations.where((reservation) => reservation.isInProgress);
+
     reservationsInProgress.assignAll(inProgress);
 
-    final done = reservations.where((reservation) => reservation.isDone);
+    final done = allReservations.where((reservation) => reservation.isDone);
     reservationsDone.assignAll(done);
 
     reservationsInProgress.sort((b, a) => a.createdAt.compareTo(b.createdAt));
 
+    for (final res in reservationsInProgress) {
+      if (res.parking == null)
+        print('asdhusdahuhsaduhdsauhuah parking id ${res.parkingId}');
+    }
     // currentReservation.value =
     //     reservationsInProgress.firstWhereOrNull((r) => !r.isConcluded || !r.isCanceled);
     //
@@ -104,14 +115,14 @@ class ReservationListController extends GetxController {
     }
   }
 
-  // Future<void> fetchParkings() async {
-  //   try {
-  //     final parkingList = await _parkingRepository.getGroup();
-  //     parkings.assignAll(parkingList);
-  //   } catch (error) {
-  //     debugPrint('Error fetching nearby parkings: $error');
-  //   }
-  // }
+  Future<void> fetchParkings() async {
+    try {
+      final parkingList = await _parkingRepository.getGroup();
+      parkings.assignAll(parkingList);
+    } catch (error) {
+      debugPrint('Error fetching nearby parkings: $error');
+    }
+  }
 
   Future<void> fetchVehicles() async {
     try {

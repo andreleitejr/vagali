@@ -50,9 +50,9 @@ class LandlordHomeController extends GetxController {
       await _loadCarMarker();
 
       await _handleReservationsUpdate(stream);
-      await Future.delayed(const Duration(seconds: 2));
-    } finally {
-      loading(false);
+      // await Future.delayed(const Duration(seconds: 3));
+    } catch(e){
+      debugPrint('Erro ao buscar os dados do Locador.');
     }
   }
 
@@ -92,6 +92,7 @@ class LandlordHomeController extends GetxController {
 
       _getScheduledReservation();
       currentReservation.value = scheduledReservations.first;
+      loading(false);
     });
   }
 
