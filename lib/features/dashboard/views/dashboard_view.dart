@@ -109,7 +109,7 @@ class DashboardView extends StatelessWidget {
                         iconColor: Colors.white,
                         title: "Reservas futuras",
                         content: "${_controller.totalTime.inHours} horas",
-                        cardColor: Colors.blue,
+                        cardColor: ThemeColors.secondary,
                         contentColor: ThemeColors.lightBlue,
                       ),
                     ],
@@ -132,7 +132,7 @@ class DashboardView extends StatelessWidget {
             TitleWithAction(
               title: 'Meu extrato',
               icon: Coolicons.calendar,
-              actionText: 'Ver tudo',
+              actionText: '',
               onActionPressed: () {},
             ),
             ListView.builder(
@@ -144,7 +144,10 @@ class DashboardView extends StatelessWidget {
                 final reservation = _controller
                     .reservationListController.reservationsDone[index];
 
-                return ReservationItem(reservation: reservation);
+                return ReservationItem(
+                  reservation: reservation,
+                  isMonetary: true,
+                );
               },
             ),
           ],

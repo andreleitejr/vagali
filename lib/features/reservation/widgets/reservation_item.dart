@@ -1,3 +1,4 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/theme/theme_colors.dart';
@@ -7,8 +8,13 @@ import 'package:vagali/widgets/date_card.dart';
 
 class ReservationItem extends StatelessWidget {
   final Reservation reservation;
+  final bool isMonetary;
 
-  const ReservationItem({super.key, required this.reservation});
+  const ReservationItem({
+    super.key,
+    required this.reservation,
+    this.isMonetary = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +25,7 @@ class ReservationItem extends StatelessWidget {
         alignment: Alignment.center,
         padding: const EdgeInsets.all(2),
         decoration: BoxDecoration(
-
-          color: ThemeColors.grey1,
-          borderRadius: BorderRadius.circular(8)
-        ),
+            color: ThemeColors.grey1, borderRadius: BorderRadius.circular(8)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -39,9 +42,12 @@ class ReservationItem extends StatelessWidget {
                 style: ThemeTypography.medium14),
           ),
           Text(
-            '+${reservation.totalCost.toMonetaryString()}',
-            style: ThemeTypography.medium14.apply(
-              color: ThemeColors.primary,
+            isMonetary
+                ? '${!reservation.isCanceled ? '+' : '-'}'
+                    '${UtilBrasilFields.obterReal(reservation.totalCost)}'
+                : reservation.status.title,
+            style: ThemeTypography.semiBold14.apply(
+              color: reservation.status.color,
             ),
           ),
         ],

@@ -37,9 +37,11 @@ class LoginView extends StatelessWidget {
                   child: const Logo(),
                 ),
               ),
-              const GradientText(
+              Text(
                 'Bem-vindo,',
-                style: ThemeTypography.semiBold16,
+                style: ThemeTypography.semiBold16.apply(
+                  color: ThemeColors.primary,
+                ),
               ),
               const SizedBox(height: 4),
               const Text(

@@ -50,6 +50,7 @@ class LandlordHomeController extends GetxController {
       await _loadCarMarker();
 
       await _handleReservationsUpdate(stream);
+      await Future.delayed(const Duration(seconds: 2));
     } finally {
       loading(false);
     }
@@ -73,9 +74,6 @@ class LandlordHomeController extends GetxController {
     stream.listen((event) async {
       reservations.assignAll(event);
 
-
-      _getScheduledReservation();
-
       for (final reservation in reservations) {
         reservation.tenant ??=
             await _tenantRepository.get(reservation.tenantId) as Tenant;
@@ -92,6 +90,7 @@ class LandlordHomeController extends GetxController {
         update();
       }
 
+      _getScheduledReservation();
       currentReservation.value = scheduledReservations.first;
     });
   }
@@ -100,7 +99,7 @@ class LandlordHomeController extends GetxController {
     scheduledReservations.value =
         reservations.where((reservation) => reservation.isScheduled).toList();
 
-    scheduledReservations.sort((a, b)=>a.startDate.compareTo(b.startDate));
+    scheduledReservations.sort((a, b) => a.startDate.compareTo(b.startDate));
   }
 
   Future<void> _handleVehicleUpdate(Reservation reservation) async {

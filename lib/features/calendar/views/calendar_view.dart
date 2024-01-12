@@ -4,12 +4,15 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:vagali/features/calendar/controllers/calendar_controller.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/widgets/reservation_history_item.dart';
+import 'package:vagali/features/reservation/widgets/reservation_item.dart';
 import 'package:vagali/theme/coolicons.dart';
+import 'package:vagali/theme/images.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/utils/extensions.dart';
 import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/date_card.dart';
+import 'package:vagali/widgets/empty_list.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
 class CalendarView extends StatefulWidget {
@@ -152,60 +155,37 @@ class _CalendarViewState extends State<CalendarView> {
             ),
           ),
           const SizedBox(height: 16),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: Text(
-                  controller.activitiesTitle.value,
-                  style: ThemeTypography.medium16,
+          if (controller.selectedReservations.isNotEmpty) ...[
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: Text(
+                    controller.activitiesTitle.value,
+                    style: ThemeTypography.medium14,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: controller.selectedReservations.length,
-              itemBuilder: (BuildContext context, int index) {
-                final reservation = controller.selectedReservations[index];
-
-                return ListTile(
-                  leading: Container(
-                    width: 44,
-                    height: 44,
-                    alignment: Alignment.center,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        HourCard(date: reservation.startDate),
-                      ],
-                    ),
-                  ),
-                  title: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                            "${reservation.tenant?.firstName ?? 'Teste'}"
-                            " ${reservation.tenant?.lastName ?? 'Teste'}",
-                            style: ThemeTypography.medium14),
-                      ),
-                      Text(
-                        '+${reservation.totalCost.toMonetaryString()}',
-                        style: ThemeTypography.medium14.apply(
-                          color: ThemeColors.primary,
-                        ),
-                      ),
-                    ],
-                  ),
-                  subtitle: Text(
-                    "${reservation.startDate.toFriendlyDateTimeString()}"
-                    " até ${reservation.endDate.toFriendlyDateTimeString()}",
-                    style: ThemeTypography.regular10,
-                  ),
-                );
-              },
+              ],
             ),
-          ),
+          ] else ...[
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: EmptyList(),
+              ),
+            ),
+          ],
+          if (controller.selectedReservations.isNotEmpty)
+            Expanded(
+              child: ListView.builder(
+                itemCount: controller.selectedReservations.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final reservation = controller.selectedReservations[index];
+
+                  return ReservationItem(reservation: reservation);
+                },
+              ),
+            ),
         ],
       ),
     );

@@ -39,7 +39,7 @@ class DashboardCard extends StatelessWidget {
                   const SizedBox(width: 4),
                   Text(
                     title,
-                    style: ThemeTypography.semiBold12.apply(
+                    style: ThemeTypography.regular12.apply(
                       color: Colors.white,
                     ),
                   ),
