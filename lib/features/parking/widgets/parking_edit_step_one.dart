@@ -12,9 +12,6 @@ class StepOneWidget extends StatelessWidget {
 
   StepOneWidget({Key? key, required this.controller}) : super(key: key);
 
-  final nameController = TextEditingController();
-  final descriptionController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -24,25 +21,21 @@ class StepOneWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Obx(() {
-              return Input2(
-                controller: nameController,
-                value: controller.name.value,
+              return Input(
+                controller: controller.nameController.value,
                 hintText: 'Nome da Vaga',
                 required: true,
                 error: controller.getError(controller.nameError),
-                onChanged: controller.name,
               );
             }),
             const SizedBox(height: 16),
             Obx(
-              () => Input2(
-                value: controller.description.value,
-                controller: descriptionController,
+              () => Input(
+                controller: controller.descriptionController.value,
                 hintText: 'Descrição da Vaga',
                 required: true,
                 error: controller.getError(controller.descriptionError),
                 maxLines: 3,
-                onChanged: controller.description,
               ),
             ),
             const SizedBox(height: 16.0),

@@ -5,7 +5,6 @@ import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/utils/extensions.dart';
 
 class PriceInput extends StatelessWidget {
-  final String value;
   final TextInputType keyboardType;
   final String hintText;
   final bool obscureText;
@@ -18,13 +17,10 @@ class PriceInput extends StatelessWidget {
   final FocusNode? currentFocusNode;
   final FocusNode? nextFocusNode;
   final VoidCallback? onSubmit;
-  final Function(String) onChanged;
-
   final TextEditingController controller;
 
   PriceInput({
     super.key,
-    required this.value,
     this.keyboardType = TextInputType.text,
     required this.hintText,
     this.obscureText = false,
@@ -37,14 +33,11 @@ class PriceInput extends StatelessWidget {
     this.currentFocusNode,
     this.nextFocusNode,
     this.onSubmit,
-    required this.onChanged,
     required this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
-    controller.text = value.toMonetaryString();
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -101,11 +94,6 @@ class PriceInput extends StatelessWidget {
                   fillColor: ThemeColors.grey1,
                   filled: true,
                 ),
-                onChanged: (text) {
-                  print(text);
-                  onChanged(text);
-                  // controller.text = text;
-                },
                 onTap: onTap,
                 onEditingComplete: () {
                   if (onSubmit != null) {

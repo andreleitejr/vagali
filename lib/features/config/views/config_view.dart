@@ -59,24 +59,19 @@ class ConfigView extends StatelessWidget {
               () => PersonalInfoEditView(user: controller.user),
             ),
           ),
+          divider(),
           ConfigListTile(
             title: 'Endereço',
             onTap: () => Get.to(
               () => AddressEditView(user: controller.user),
             ),
           ),
-          Divider(
-            color: Color(0xFFE8E8E8),
-            thickness: 1,
-          ),
+          divider(),
           ConfigListTile(
             title: 'Termos e Condições',
             onTap: () {},
           ),
-          Divider(
-            color: Color(0xFFE8E8E8),
-            thickness: 1,
-          ),
+          divider(),
           ListTile(
             title: Text(
               'Sair do aplicativo',
@@ -93,6 +88,7 @@ class ConfigView extends StatelessWidget {
               Get.offAll(() => LoginView(controller: authController));
             },
           ),
+          divider(),
           Expanded(child: Container()),
           Obx(
             () => Text(
@@ -107,4 +103,9 @@ class ConfigView extends StatelessWidget {
       ),
     );
   }
+
+  Widget divider() => Divider(
+        color: ThemeColors.grey2,
+        thickness: 1,
+      );
 }

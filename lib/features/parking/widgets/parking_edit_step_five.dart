@@ -52,66 +52,61 @@ class StepFiveWidget extends StatelessWidget {
           const SizedBox(height: 16),
           Obx(
             () => PriceInput(
-              value: controller.pricePerHour.value,
-              controller: pricePerHourController,
+              controller: controller.pricePerHourController,
               hintText: 'Preco por hora',
               keyboardType: TextInputType.number,
+              error: controller.getError(controller.priceError),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
-              onChanged: controller.pricePerHour,
             ),
           ),
           const SizedBox(height: 16),
           Obx(
             () => PriceInput(
-              value: controller.pricePerSixHours.value,
-              controller: pricePerSixHoursController,
+              controller: controller.pricePerSixHoursController,
               hintText: 'Preco por 6 horas',
               keyboardType: TextInputType.number,
+              error: controller.getError(controller.priceError),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
-              onChanged: controller.pricePerSixHours,
             ),
           ),
           const SizedBox(height: 16),
           Obx(
             () => PriceInput(
-              value: controller.pricePerTwelveHours.value,
-              controller: pricePerTwelveHoursController,
+              controller: controller.pricePerTwelveHoursController,
               hintText: 'Preco por 12 horas',
               keyboardType: TextInputType.number,
+              error: controller.getError(controller.priceError),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
-              onChanged: controller.pricePerTwelveHours,
             ),
           ),
           const SizedBox(height: 16),
           Obx(
             () => PriceInput(
-              value: controller.pricePerDay.value,
-              controller: pricePerDayController,
+              controller: controller.pricePerDayController,
               hintText: 'Preco por diária',
               keyboardType: TextInputType.number,
+              error: controller.getError(controller.priceError),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
-              onChanged: controller.pricePerDay,
             ),
           ),
           const SizedBox(height: 16),
           Obx(() {
             return PriceInput(
-              value: controller.pricePerMonth.value,
-              controller: pricePerMonthController,
+              controller: controller.pricePerMonthController,
               hintText: 'Preco por mês',
               keyboardType: TextInputType.number,
+              error: controller.getError(controller.priceError),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
-              onChanged: controller.pricePerMonth,
             );
           }),
           const SizedBox(height: 16),

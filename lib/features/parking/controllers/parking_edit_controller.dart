@@ -34,21 +34,21 @@ class ParkingEditController extends GetxController {
   final selectedGalleryImages = <XFile>[].obs;
   final selectedImagesBlurhash = <ImageBlurHash>[].obs;
 
-  final name = ''.obs;
-  final description = ''.obs;
+  final nameController = Rx<TextEditingController>(TextEditingController());
+  final descriptionController =
+      Rx<TextEditingController>(TextEditingController());
 
-  final coordinates = ''.obs;
-  final postalCode = ''.obs;
-  final street = ''.obs;
-  final number = ''.obs;
-  final city = ''.obs;
-  final state = ''.obs;
-  final country = ''.obs;
-  final complement = ''.obs;
+  final coordinatesController = TextEditingController();
+  final postalCodeController = TextEditingController();
+  final streetController = TextEditingController();
+  final numberController = TextEditingController();
+  final cityController = TextEditingController();
+  final stateController = TextEditingController();
+  final countryController = TextEditingController();
+  final complementController = TextEditingController();
 
-  // final List<File> imageFiles = <File>[];
   final parkingType = Rx<ParkingType?>(null);
-  final parkingTags = <ParkingTag>[].obs;
+  final parkingTags = <ParkingTag>[];
   final gateHeight = 3.0.obs;
   final gateWidth = 3.0.obs;
   final garageDepth = 6.0.obs;
@@ -58,11 +58,11 @@ class ParkingEditController extends GetxController {
   final reservationTypeController = ''.obs;
   final isFlexible = true.obs;
 
-  final pricePerHour = ''.obs;
-  final pricePerSixHours = ''.obs;
-  final pricePerTwelveHours = ''.obs;
-  final pricePerDay = ''.obs;
-  final pricePerMonth = ''.obs;
+  final pricePerHourController = TextEditingController();
+  final pricePerSixHoursController = TextEditingController();
+  final pricePerTwelveHoursController = TextEditingController();
+  final pricePerDayController = TextEditingController();
+  final pricePerMonthController = TextEditingController();
 
   RxString get imageError =>
       (isImageValid.isTrue ? '' : 'Selecione uma imagem').obs;
@@ -122,9 +122,11 @@ class ParkingEditController extends GetxController {
     selectType(parkingTypes[1]); // Casas
     updateCompatibleCarTypes();
 
-    pricePerHour.value = '5';
+    pricePerHourController.text = '5';
 
-    ever(pricePerHour, (_) => calculateSuggestedPrices());
+    nameController.value.addListener(() => update());
+    descriptionController.value.addListener(() => update());
+    pricePerHourController.addListener(() => calculateSuggestedPrices());
     ever(gateHeight, (_) => updateCompatibleCarTypes());
     ever(gateWidth, (_) => updateCompatibleCarTypes());
     ever(garageDepth, (_) => updateCompatibleCarTypes());
@@ -162,9 +164,12 @@ class ParkingEditController extends GetxController {
     return '';
   }
 
-  RxBool get isImageValid => selectedGalleryImages.isNotEmpty.obs;
+  RxBool get isNameValid => nameController.value.text.isNotEmpty.obs;
 
-  RxBool get isNameValid => name.isNotEmpty.obs;
+  RxBool get isDescriptionValid =>
+      descriptionController.value.text.isNotEmpty.obs;
+
+  RxBool get isImageValid => selectedGalleryImages.isNotEmpty.obs;
 
   RxBool get isTagsValid => parkingTags.isNotEmpty.obs;
 
@@ -175,34 +180,37 @@ class ParkingEditController extends GetxController {
           isPricePerMonthValid.isTrue)
       .obs;
 
-  RxBool get isPricePerHourValid => _isValidPrice(pricePerHour, 3);
+  RxBool get isPricePerHourValid =>
+      _isValidPrice(pricePerHourController.text, 3);
 
-  RxBool get isPricePerSixHoursValid =>
-      _isValidPrice(pricePerSixHours, double.tryParse(pricePerHour.value) ?? 0,
-          minDifference: 6, minValue: 6);
+  RxBool get isPricePerSixHoursValid => _isValidPrice(
+      pricePerSixHoursController.text,
+      double.tryParse(pricePerHourController.text) ?? 0,
+      minDifference: 6,
+      minValue: 6);
 
   RxBool get isPricePerTwelveHoursValid => _isValidPrice(
-      pricePerTwelveHours, double.tryParse(pricePerSixHours.value) ?? 0,
-      minDifference: 6, minValue: 9);
+      pricePerTwelveHoursController.text,
+      double.tryParse(pricePerSixHoursController.text) ?? 0,
+      minDifference: 6,
+      minValue: 9);
 
-  RxBool get isPricePerDayValid => _isValidPrice(
-      pricePerDay, double.tryParse(pricePerTwelveHours.value) ?? 0,
+  RxBool get isPricePerDayValid => _isValidPrice(pricePerDayController.text,
+      double.tryParse(pricePerTwelveHoursController.text) ?? 0,
       minDifference: 9, minValue: 12);
 
   RxBool get isPricePerMonthValid =>
-      _isValidPrice(pricePerMonth, 0, minValue: 90);
+      _isValidPrice(pricePerMonthController.text, 0, minValue: 90);
 
-  RxBool _isValidPrice(RxString price, double previousPrice,
+  RxBool _isValidPrice(String price, double previousPrice,
       {double minDifference = 0, double minValue = 0}) {
-    final value = double.tryParse(price.value) ?? 0;
+    final value = double.tryParse(price) ?? 0;
     return (price.isNotEmpty &&
             value >= previousPrice &&
             value >= minDifference)
         ? (value >= minValue).obs
         : false.obs;
   }
-
-  RxBool get isDescriptionValid => description.value.isNotEmpty.obs;
 
   // bool validateOperatingHours() {
   //   if (selectedOperatingHours.isEmpty) {
@@ -223,21 +231,21 @@ class ParkingEditController extends GetxController {
   //   return true;
   // }
 
-  RxBool get isCoordinatesValid => coordinates.value.isNotEmpty.obs;
+  RxBool get isCoordinatesValid => coordinatesController.text.isNotEmpty.obs;
 
-  RxBool get isPostalCodeValid => postalCode.value.isNotEmpty.obs;
+  RxBool get isPostalCodeValid => postalCodeController.text.isNotEmpty.obs;
 
-  RxBool get isStreetValid => street.value.isNotEmpty.obs;
+  RxBool get isStreetValid => streetController.text.isNotEmpty.obs;
 
-  RxBool get isNumberValid => number.value.isNotEmpty.obs;
+  RxBool get isNumberValid => numberController.text.isNotEmpty.obs;
 
-  RxBool get isCityValid => city.value.isNotEmpty.obs;
+  RxBool get isCityValid => cityController.text.isNotEmpty.obs;
 
-  RxBool get isStateValid => state.value.isNotEmpty.obs;
+  RxBool get isStateValid => stateController.text.isNotEmpty.obs;
 
-  RxBool get isCountryValid => country.value.isNotEmpty.obs;
+  RxBool get isCountryValid => countryController.text.isNotEmpty.obs;
 
-  RxBool get isComplementValid => complement.value.isNotEmpty.obs;
+  RxBool get isComplementValid => complementController.text.isNotEmpty.obs;
 
   RxBool get isGateValid {
     return true.obs;
@@ -246,13 +254,13 @@ class ParkingEditController extends GetxController {
   void fillAddressFromLandlord() {
     final landlordAddress = landlord.address;
 
-    postalCode.value = landlordAddress.postalCode ?? '';
-    street.value = landlordAddress.street ?? '';
-    number.value = landlordAddress.number ?? '';
-    city.value = landlordAddress.city ?? '';
-    state.value = landlordAddress.state ?? '';
-    country.value = landlordAddress.country ?? '';
-    complement.value = landlordAddress.complement ?? '';
+    postalCodeController.text = landlordAddress.postalCode ?? '';
+    streetController.text = landlordAddress.street ?? '';
+    numberController.text = landlordAddress.number ?? '';
+    cityController.text = landlordAddress.city ?? '';
+    stateController.text = landlordAddress.state ?? '';
+    countryController.text = landlordAddress.country ?? '';
+    complementController.text = landlordAddress.complement ?? '';
   }
 
   Future<void> pickImages(ImageSource source) async {
@@ -312,26 +320,26 @@ class ParkingEditController extends GetxController {
   void removeSelectedImage(XFile image) => selectedGalleryImages.remove(image);
 
   void fetchAddressDetails() async {
-    if (postalCode.isNotEmpty) {
+    if (postalCodeController.text.isNotEmpty) {
       final addressDetails =
-          await _addressService.getAddressDetails(postalCode.value);
+          await _addressService.getAddressDetails(postalCodeController.text);
       if (addressDetails != null) {
-        street.value = addressDetails['logradouro'] ?? '';
-        city.value = addressDetails['localidade'] ?? '';
-        state.value = addressDetails['uf'] ?? '';
-        country.value = 'Brasil';
+        streetController.text = addressDetails['logradouro'] ?? '';
+        cityController.text = addressDetails['localidade'] ?? '';
+        stateController.text = addressDetails['uf'] ?? '';
+        countryController.text = 'Brasil';
       }
     }
   }
 
   Address getAddressFromFields() {
     return Address(
-      postalCode: postalCode.value,
-      street: street.value,
-      number: number.value,
-      city: city.value,
-      state: state.value,
-      country: country.value,
+      postalCode: postalCodeController.text,
+      street: streetController.text,
+      number: numberController.text,
+      city: cityController.text,
+      state: stateController.text,
+      country: countryController.text,
     );
   }
 
@@ -344,13 +352,14 @@ class ParkingEditController extends GetxController {
   }
 
   void calculateSuggestedPrices() {
-    final price = double.tryParse(pricePerHour.value);
+    final price = double.tryParse(pricePerHourController.text);
     if (price != null) {
       final suggestedPrices = PriceService.calculateSuggestedPrices(price);
-      pricePerSixHours.value = suggestedPrices.sixHours.toString();
-      pricePerTwelveHours.value = suggestedPrices.twelveHours.toString();
-      pricePerDay.value = suggestedPrices.day.toString();
-      pricePerMonth.value = suggestedPrices.month.toString();
+      pricePerSixHoursController.text = suggestedPrices.sixHours.toString();
+      pricePerTwelveHoursController.text =
+          suggestedPrices.twelveHours.toString();
+      pricePerDayController.text = suggestedPrices.day.toString();
+      pricePerMonthController.text = suggestedPrices.month.toString();
     }
   }
 
@@ -375,31 +384,23 @@ class ParkingEditController extends GetxController {
     final parking = Parking(
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
-      name: name.value,
+      name: nameController.value.text,
       price: Price(
-        hour: double.parse(pricePerHour.value),
-        sixHours: double.parse(pricePerSixHours.value),
-        twelveHours: double.parse(pricePerTwelveHours.value),
-        day: double.parse(pricePerDay.value),
-        month: double.parse(pricePerMonth.value),
+        hour: double.parse(pricePerHourController.text),
+        sixHours: double.parse(pricePerSixHoursController.text),
+        twelveHours: double.parse(pricePerTwelveHoursController.text),
+        day: double.parse(pricePerDayController.text),
+        month: double.parse(pricePerMonthController.text),
       ),
       isAvailable: true,
       tags: parkingTags,
-      description: description.value,
+      description: descriptionController.value.text,
       images: selectedImagesBlurhash,
       ownerId: _authRepository.authUser!.uid,
       type: parkingType.value!.name,
       // operatingHours: OperatingHours(daysAndHours: selectedOperatingHours),
       location: location,
-      address: Address(
-        postalCode: postalCode.value,
-        street: street.value,
-        number: number.value,
-        city: city.value,
-        state: state.value,
-        country: country.value,
-        complement: complement.value,
-      ),
+      address: getAddressFromFields(),
       gateHeight: gateHeight.value,
       gateWidth: gateWidth.value,
       garageDepth: garageDepth.value,
@@ -417,5 +418,28 @@ class ParkingEditController extends GetxController {
     await _repository.save(parking);
 
     loading(false);
+  }
+
+  @override
+  void onClose() {
+    clearControllers();
+    super.onClose();
+  }
+
+  void clearControllers() {
+    nameController.value.clear();
+    descriptionController.value.clear();
+    pricePerHourController.clear();
+    pricePerSixHoursController.clear();
+    pricePerTwelveHoursController.clear();
+    pricePerDayController.clear();
+    pricePerMonthController.clear();
+    postalCodeController.clear();
+    streetController.clear();
+    numberController.clear();
+    cityController.clear();
+    stateController.clear();
+    countryController.clear();
+    complementController.clear();
   }
 }
