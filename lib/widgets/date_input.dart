@@ -7,7 +7,7 @@ enum DateInputType { birthday, reservation }
 
 Future<DateTime?> selectDateTime(
     BuildContext context, DateInputType dateInputType,
-    {bool showTime = true, DateTime? initialDate}) async {
+    {bool showTime = false, DateTime? initialDate}) async {
   final DateTime currentDate = DateTime.now();
   DateTime? pickedDateTime;
 
@@ -86,8 +86,7 @@ Future<DateTime?> selectDateTime(
 }
 
 class DateInput extends StatelessWidget {
-  final String value;
-  final TextEditingController controller;
+  final DateTime? date;
   final String hintText;
   final Function(DateTime) onDateSelected;
   final String? error;
@@ -99,37 +98,44 @@ class DateInput extends StatelessWidget {
 
   DateInput({
     super.key,
-    required this.value,
-    required this.controller,
+    this.date,
+    // required this.controller,
     required this.hintText,
     required this.onDateSelected,
     this.error,
     required this.dateInputType,
-    this.showTime = true,
+    this.showTime = false,
     this.initialDate,
     this.enabled = true,
     this.openDatePicker = true,
   });
 
+  final controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return Input2(
-      value: value,
+    if (date != null) {
+      controller.text = date!.toMonthlyAndYearFormattedString();
+    }
+    return Input(
       enabled: enabled,
       controller: controller,
       keyboardType: TextInputType.datetime,
       hintText: hintText,
-      onTap: () {
-        selectDateTime(
+      onTap: () async {
+        final date = await selectDateTime(
           context,
           dateInputType,
           showTime: showTime,
           initialDate: initialDate,
         );
+
+        if (date != null) onDateSelected(date);
+
         FocusScope.of(context).requestFocus(FocusNode());
       },
       error: error != null && error!.isNotEmpty ? error : null,
-      onChanged: (String) {},
+      // onChanged: (String) {},
     );
   }
 }

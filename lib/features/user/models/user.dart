@@ -17,6 +17,7 @@ class User extends BaseModel {
   final String firstName;
   final String lastName;
   final String phone;
+  final String gender;
   final DateTime birthday;
   final Address address;
   final String type;
@@ -32,6 +33,7 @@ class User extends BaseModel {
     required this.firstName,
     required this.lastName,
     required this.phone,
+    required this.gender,
     required this.birthday,
     required this.address,
     required this.type,
@@ -48,6 +50,7 @@ class User extends BaseModel {
         firstName = document['firstName'],
         lastName = document['lastName'],
         phone = document['phone'],
+        gender = document['gender'],
         birthday = (document['birthday'] as Timestamp).toDate(),
         address = Address.fromMap(document['address']),
         type = document['type'],
@@ -62,6 +65,7 @@ class User extends BaseModel {
       'firstName': firstName,
       'lastName': lastName,
       'phone': phone,
+      'gender': gender,
       'birthday': birthday.toUtc(),
       'address': address.toMap(),
       'type': type,

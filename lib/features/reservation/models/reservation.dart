@@ -111,7 +111,6 @@ class Reservation extends BaseModel {
   bool get isScheduled =>
       isInProgress && startDate.difference(DateTime.now()).inSeconds > 0;
 
-  bool get isDone => isConcluded || isCanceled || isPaymentDenied;
 
   bool get isConcluded => status == ReservationStatus.concluded;
 
@@ -121,6 +120,9 @@ class Reservation extends BaseModel {
       status == ReservationStatus.canceled || isPaymentTimeOut;
 
   bool get isPaymentDenied => status == ReservationStatus.paymentDenied;
+
+
+  bool get isDone => isConcluded || isCanceled || isPaymentDenied;
 
   bool get isError => status == ReservationStatus.error;
 }

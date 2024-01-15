@@ -1,7 +1,7 @@
 class Address {
   final String postalCode;
-  final String? street;
-  final String? number;
+  final String street;
+  final String number;
   final String city;
   final String state;
   final String country;
@@ -9,8 +9,8 @@ class Address {
 
   Address({
     required this.postalCode,
-    this.street,
-    this.number,
+    required this.street,
+    required this.number,
     required this.city,
     required this.state,
     required this.country,

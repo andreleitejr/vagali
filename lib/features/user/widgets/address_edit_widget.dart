@@ -18,13 +18,13 @@ class AddressEditWidget extends StatelessWidget {
   final FocusNode countryFocus = FocusNode();
   final FocusNode complementFocus = FocusNode();
 
-  final postalCodeController = TextEditingController();
-  final streetController = TextEditingController();
-  final numberController = TextEditingController();
-  final cityController = TextEditingController();
-  final stateController = TextEditingController();
-  final countryController = TextEditingController();
-  final complementController = TextEditingController();
+  // final postalCodeController = TextEditingController();
+  // final streetController = TextEditingController();
+  // final numberController = TextEditingController();
+  // final cityController = TextEditingController();
+  // final stateController = TextEditingController();
+  // final countryController = TextEditingController();
+  // final complementController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,93 +32,73 @@ class AddressEditWidget extends StatelessWidget {
     return ListView(
       children: [
         Obx(
-          () => Input2(
-              controller: postalCodeController,
-              value: controller.postalCode.value,
-              hintText: 'CEP',
-              error: controller.getError(controller.postalCodeError),
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                CepInputFormatter(),
-              ],
-              currentFocusNode: postalCodeFocus,
-              nextFocusNode: numberFocus,
-              onChanged: (text) {
-                controller.postalCode(text);
-                controller.fetchAddressDetails();
-              }),
+          () => Input(
+            controller: controller.postalCodeController,
+            hintText: 'CEP',
+            error: controller.getError(controller.postalCodeError),
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              CepInputFormatter(),
+            ],
+            currentFocusNode: postalCodeFocus,
+            nextFocusNode: numberFocus,
+          ),
         ),
         const SizedBox(height: 16),
         Obx(
-          () => Input2(
-            controller: streetController,
-            value: controller.street.value,
+          () => Input(
+            controller: controller.streetController,
             keyboardType: TextInputType.streetAddress,
             hintText: 'Rua',
             error: controller.getError(controller.streetError),
             currentFocusNode: streetFocus,
             nextFocusNode: numberFocus,
-            onChanged: controller.street,
           ),
         ),
         const SizedBox(height: 16),
         Obx(
-          () => Input2(
-            controller: numberController,
-            value: controller.number.value,
+          () => Input(
+            controller: controller.numberController,
             hintText: 'Número',
             error: controller.getError(controller.numberError),
             currentFocusNode: numberFocus,
             nextFocusNode: complementFocus,
-            onChanged: controller.number,
           ),
         ),
         const SizedBox(height: 16),
         Obx(
-          () => Input2(
-            controller: cityController,
-            value: controller.city.value,
+          () => Input(
+            controller: controller.cityController,
             hintText: 'Cidade',
             error: controller.getError(controller.cityError),
             currentFocusNode: cityFocus,
             nextFocusNode: stateFocus,
-            onChanged: controller.city,
           ),
         ),
         const SizedBox(height: 16),
         Obx(
-          () => Input2(
-            controller: stateController,
-            value: controller.state.value,
+          () => Input(
+            controller: controller.stateController,
             hintText: 'Estado',
             error: controller.getError(controller.stateError),
             currentFocusNode: stateFocus,
             nextFocusNode: countryFocus,
-            onChanged: controller.state,
           ),
         ),
         const SizedBox(height: 16),
-        Obx(
-          () => Input2(
-            controller: countryController,
-            value: controller.country.value,
-            hintText: 'País',
-            currentFocusNode: countryFocus,
-            nextFocusNode: complementFocus,
-            onChanged: controller.country,
-          ),
+        Input(
+          controller: controller.countryController,
+          hintText: 'País',
+          currentFocusNode: countryFocus,
+          nextFocusNode: complementFocus,
         ),
         const SizedBox(height: 16),
-        Obx(
-          () => Input2(
-            controller: complementController,
-            value: controller.complement.value,
-            hintText: 'Complemento',
-            currentFocusNode: complementFocus,
-            onSubmit: () => FocusScope.of(context).unfocus(),
-            onChanged: controller.complement,
-          ),
+        Input(
+          controller: controller.complementController,
+          hintText: 'Complemento',
+          currentFocusNode: complementFocus,
+          onSubmit: () => FocusScope.of(context).unfocus(),
         ),
       ],
     );

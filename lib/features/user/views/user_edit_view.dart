@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/parking/views/parking_edit_view.dart';
-import 'package:vagali/features/tenant/models/tenant.dart';
 import 'package:vagali/features/user/controllers/user_edit_controller.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/features/user/widgets/address_edit_widget.dart';
@@ -11,13 +10,13 @@ import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/loading_view.dart';
-import 'package:vagali/widgets/rounded_gradient_button.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
 class UserEditView extends StatefulWidget {
   final String type;
+  final User? user;
 
-  const UserEditView({super.key, required this.type});
+  const UserEditView({super.key, required this.type, this.user});
 
   @override
   State<UserEditView> createState() => _UserEditViewState();
@@ -30,7 +29,7 @@ class _UserEditViewState extends State<UserEditView> {
 
   @override
   void initState() {
-    _controller = Get.put(UserEditController(widget.type));
+    _controller = Get.put(UserEditController(widget.type, user: widget.user));
     super.initState();
   }
 
@@ -61,6 +60,7 @@ class _UserEditViewState extends State<UserEditView> {
 
   Future<void> _handleNavigationOnValidStep() async {
     if (_controller.isValid()) {
+      await _controller.uploadImage();
       final result = await _controller.save();
       if (result == SaveResult.success) {
         _navigateToEditView();
@@ -83,7 +83,7 @@ class _UserEditViewState extends State<UserEditView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopNavigationBar(
-        showLeading: false,
+        showLeading: widget.user != null,
         title: 'Editar Usuário',
         actions: [
           Obx(
@@ -91,7 +91,7 @@ class _UserEditViewState extends State<UserEditView> {
               onPressed: () => _validateAndNavigateNext(),
               child: Text(
                 'Avancar',
-                style: ThemeTypography.semiBold16.apply(
+                style: ThemeTypography.medium14.apply(
                   color: _controller.validateCurrentStep(_currentPage).isTrue
                       ? ThemeColors.primary
                       : ThemeColors.grey3,

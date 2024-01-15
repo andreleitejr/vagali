@@ -31,14 +31,16 @@ class SelectTypeView extends StatelessWidget {
                   child: Logo(),
                 ),
               ),
-              const GradientText(
+              Text(
                 'Celular confirmado',
-                style: ThemeTypography.semiBold22,
+                style: ThemeTypography.semiBold16.apply(
+                  color: ThemeColors.primary,
+                ),
               ),
               const SizedBox(height: 4),
               const Text(
                 'Seja bem-vindo ao Vagali. Vamos começar?',
-                style: ThemeTypography.medium16,
+                style: ThemeTypography.regular14,
               ),
               const SizedBox(height: 32),
               FlatButton(

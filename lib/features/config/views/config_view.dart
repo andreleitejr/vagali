@@ -6,6 +6,11 @@ import 'package:vagali/features/auth/views/auth_view.dart';
 import 'package:vagali/features/auth/views/login_view.dart';
 import 'package:vagali/features/config/widgets/config_list_tile.dart';
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
+import 'package:vagali/features/user/models/user.dart';
+import 'package:vagali/features/user/views/address_edit_view.dart';
+import 'package:vagali/features/user/views/personal_info_edit_view.dart';
+import 'package:vagali/features/user/views/user_details_view.dart';
+import 'package:vagali/features/user/views/user_edit_view.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
@@ -13,21 +18,15 @@ import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
 class ConfigController extends GetxController {
+  final User user = Get.find();
   final AuthRepository authRepository = Get.find();
 
-  final packageInfo = PackageInfo(
-    appName: 'Unknown',
-    packageName: 'Unknown',
-    version: 'Unknown',
-    buildNumber: 'Unknown',
-    buildSignature: 'Unknown',
-    installerStore: 'Unknown',
-  ).obs;
+  final packageInfo = Rx<PackageInfo?>(null);
 
   @override
   Future<void> onInit() async {
-    super.onInit();
     await _initPackageInfo();
+    super.onInit();
   }
 
   Future<void> _initPackageInfo() async {
@@ -55,8 +54,16 @@ class ConfigView extends StatelessWidget {
       body: Column(
         children: [
           ConfigListTile(
-            title: 'Meus Dados',
-            onTap: () {},
+            title: 'Informações pessoais',
+            onTap: () => Get.to(
+              () => PersonalInfoEditView(user: controller.user),
+            ),
+          ),
+          ConfigListTile(
+            title: 'Endereço',
+            onTap: () => Get.to(
+              () => AddressEditView(user: controller.user),
+            ),
           ),
           Divider(
             color: Color(0xFFE8E8E8),
@@ -79,7 +86,6 @@ class ConfigView extends StatelessWidget {
             ),
             trailing: Coolicon(
               icon: Coolicons.logOut,
-
             ),
             onTap: () async {
               await controller.signOut();
@@ -90,7 +96,7 @@ class ConfigView extends StatelessWidget {
           Expanded(child: Container()),
           Obx(
             () => Text(
-              'Versão ${controller.packageInfo.value.version}',
+              'Versão ${controller.packageInfo.value?.version}',
               style: ThemeTypography.regular12.apply(
                 color: ThemeColors.grey3,
               ),

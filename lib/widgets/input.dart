@@ -48,13 +48,15 @@ class Input extends StatelessWidget {
           obscureText: obscureText,
           inputFormatters: inputFormatters,
           maxLines: maxLines,
-          style: ThemeTypography.medium14.apply(color: ThemeColors.primary),
+          style: ThemeTypography.medium14.apply(
+            color: enabled ? ThemeColors.primary : ThemeColors.grey3,
+          ),
           decoration: InputDecoration(
             contentPadding:
                 EdgeInsets.only(left: 16, top: maxLines > 1 ? 20 : 0),
             hintText: '$hintText${required ? ' *' : ''}',
             hintStyle:
-            ThemeTypography.regular14.apply(color: ThemeColors.grey4),
+                ThemeTypography.regular14.apply(color: ThemeColors.grey4),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(
@@ -146,13 +148,14 @@ class Input2 extends StatelessWidget {
           obscureText: obscureText,
           inputFormatters: inputFormatters,
           maxLines: maxLines,
-          style: ThemeTypography.medium14.apply(color: ThemeColors.primary),
+          style: ThemeTypography.regular14
+              .apply(color: enabled ? ThemeColors.primary : ThemeColors.grey4),
           decoration: InputDecoration(
             contentPadding:
-            EdgeInsets.only(left: 16, top: maxLines > 1 ? 20 : 0),
+                EdgeInsets.only(left: 16, top: maxLines > 1 ? 20 : 0),
             hintText: '$hintText${required ? ' *' : ''}',
             hintStyle:
-            ThemeTypography.regular14.apply(color: ThemeColors.grey4),
+                ThemeTypography.regular14.apply(color: ThemeColors.grey3),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(

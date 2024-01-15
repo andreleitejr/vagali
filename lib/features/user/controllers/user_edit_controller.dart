@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vagali/features/address/models/address.dart';
@@ -12,7 +13,40 @@ import 'package:vagali/services/address_service.dart';
 import 'package:vagali/services/image_service.dart';
 
 class UserEditController extends GetxController {
-  UserEditController(this.type);
+  UserEditController(this.type, {this.user}) {
+    if (user != null) setUserToEdit(user!);
+  }
+
+  final User? user;
+
+  Rx<User?> currentUser = Rx<User?>(null);
+
+  RxBool get hasCurrentUser => (currentUser.value != null).obs;
+
+  void setUserToEdit(User user) {
+    currentUser.value = user;
+    fillFormWithUserData();
+  }
+
+  void fillFormWithUserData() {
+    final user = currentUser.value!;
+
+    firstNameController.text = user.firstName;
+    lastNameController.text = user.lastName;
+    emailController.text = user.email;
+    documentController.text = user.document;
+    genderController.text = user.gender;
+    birthday.value = user.birthday;
+    imageBlurhash.value = user.image;
+
+    postalCodeController.text = user.address.postalCode;
+    streetController.text = user.address.street;
+    numberController.text = user.address.number;
+    cityController.text = user.address.city;
+    stateController.text = user.address.state;
+    countryController.text = user.address.country;
+    complementController.text = user.address.complement ?? '';
+  }
 
   final String type;
   final UserRepository _repository = UserRepository();
@@ -21,27 +55,28 @@ class UserEditController extends GetxController {
   final _imageService = Get.put(ImageService());
   final AddressService _addressService = AddressService();
 
-  final firstName = ''.obs;
-  final lastName = ''.obs;
-  final email = ''.obs;
-  final document = ''.obs;
-  final gender = ''.obs;
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final emailController = TextEditingController();
+  final documentController = TextEditingController();
+  final genderController = TextEditingController();
 
-  final birthday = ''.obs;
-  final birthdayDate = Rx<DateTime?>(null);
+  final Rx<DateTime?> birthday = Rx<DateTime?>(null);
 
   var imageBlurhash = Rx<ImageBlurHash?>(null);
   final imageFile = Rx<XFile?>(null);
-  final postalCode = ''.obs;
-  final street = ''.obs;
-  final number = ''.obs;
-  final city = ''.obs;
-  final state = ''.obs;
-  final country = ''.obs;
-  final complement = ''.obs;
+
+  // final imageUrlController = TextEditingController();
+  final postalCodeController = TextEditingController();
+  final streetController = TextEditingController();
+  final numberController = TextEditingController();
+  final cityController = TextEditingController();
+  final stateController = TextEditingController();
+  final countryController = TextEditingController();
+  final complementController = TextEditingController();
 
   RxString get postalCodeClean =>
-      postalCode.replaceAll('.', '').replaceAll('-', '').obs;
+      postalCodeController.text.replaceAll('.', '').replaceAll('-', '').obs;
 
   final emailRegExp = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
 
@@ -58,9 +93,9 @@ class UserEditController extends GetxController {
       (isDocumentValid.isTrue ? '' : 'CPF inválido').obs;
 
   RxString get emailError {
-    if (email.isEmpty) {
+    if (emailController.text.isEmpty) {
       return 'Email não pode estar vazio'.obs;
-    } else if (!emailRegExp.hasMatch(email.value)) {
+    } else if (!emailRegExp.hasMatch(emailController.text)) {
       return 'Email inválido'.obs;
     } else {
       return ''.obs;
@@ -95,7 +130,8 @@ class UserEditController extends GetxController {
     return '';
   }
 
-  bool isValid() => isPersonalInfoValid.isTrue && isAddressValid.isTrue;
+  RxBool get isValid =>
+      (isPersonalInfoValid.isTrue && isAddressValid.isTrue).obs;
 
   RxBool get isPersonalInfoValid => (isImageValid.isTrue &&
           isFirstNameValid.isTrue &&
@@ -113,24 +149,30 @@ class UserEditController extends GetxController {
       .obs;
 
   RxBool get isImageValid {
-    return (imageFile.value != null && imageFile.value!.path.isNotEmpty).obs;
+    if (currentUser.value == null) {
+      return (imageFile.value != null && imageFile.value!.path.isNotEmpty).obs;
+    } else {
+      return true.obs;
+    }
   }
 
-  RxBool get isFirstNameValid => firstName.isNotEmpty.obs;
+  RxBool get isFirstNameValid => firstNameController.text.isNotEmpty.obs;
 
-  RxBool get isLastNameValid => lastName.isNotEmpty.obs;
+  RxBool get isLastNameValid => lastNameController.text.isNotEmpty.obs;
 
   RxBool get isDocumentValid {
-    final cpf = document.replaceAll(RegExp(r'[^\d]'), '');
+    final cpf = documentController.text.replaceAll(RegExp(r'[^\d]'), '');
 
     return (cpf.isNotEmpty && cpf.length == 11 && GetUtils.isCpf(cpf)).obs;
   }
 
   RxBool get isEmailValid {
-    return (email.isNotEmpty && emailRegExp.hasMatch(email.value)).obs;
+    return (emailController.text.isNotEmpty &&
+            emailRegExp.hasMatch(emailController.text))
+        .obs;
   }
 
-  RxBool get isBirthdayValid => (birthdayDate.value != null).obs;
+  RxBool get isBirthdayValid => (birthday.value != null).obs;
 
   RxBool get isPostalCodeValid =>
       (postalCodeClean.isNotEmpty && postalCodeClean.value.length >= 8).obs;
@@ -140,26 +182,24 @@ class UserEditController extends GetxController {
       final addressDetails =
           await _addressService.getAddressDetails(postalCodeClean.value);
       if (addressDetails != null) {
-        street.value = addressDetails['logradouro'] ?? '';
-        city.value = addressDetails['localidade'] ?? '';
-        state.value = addressDetails['uf'] ?? '';
-        country.value = 'Brasil';
+        streetController.text = addressDetails['logradouro'] ?? '';
+        cityController.text = addressDetails['localidade'] ?? '';
+        stateController.text = addressDetails['uf'] ?? '';
+        countryController.text = 'Brasil';
       }
     }
   }
 
-  RxBool get isStreetValid => street.isNotEmpty.obs;
+  RxBool get isStreetValid => streetController.text.isNotEmpty.obs;
 
-  RxBool get isNumberValid => number.isNotEmpty.obs;
+  RxBool get isNumberValid => numberController.text.isNotEmpty.obs;
 
   RxBool get isCityValid {
-    // cityError.value = isValid ? '' : 'Insira uma cidade';
-    return city.isNotEmpty.obs;
+    return cityController.text.isNotEmpty.obs;
   }
 
   RxBool get isStateValid {
-    // stateError.value = isValid ? '' : 'Escolha um estado';
-    return state.isNotEmpty.obs;
+    return stateController.text.isNotEmpty.obs;
   }
 
   RxBool validateCurrentStep(int stepIndex) {
@@ -183,23 +223,24 @@ class UserEditController extends GetxController {
     }
   }
 
-  Future<ImageBlurHash?> uploadImage() async {
-    final image = await _imageService.buildImageBlurHash(
-      imageFile.value!,
-      'users',
-    );
+  Future<void> uploadImage() async {
+    if (imageFile.value != null) {
+      final image = await _imageService.buildImageBlurHash(
+        imageFile.value!,
+        'users',
+      );
 
-    if (image == null) {
-      imageError.value = 'Falha ao carregar a imagem';
+      if (image == null) {
+        imageError.value = 'Falha ao carregar a imagem';
+        return;
+      }
+
+      imageBlurhash.value = image;
     }
-
-    return image;
   }
 
   Future<SaveResult?> save() async {
     loading(true);
-
-    imageBlurhash.value = await uploadImage();
 
     if (imageBlurhash.value == null) return SaveResult.failed;
 
@@ -208,20 +249,21 @@ class UserEditController extends GetxController {
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
       image: imageBlurhash.value!,
-      firstName: firstName.value,
-      lastName: lastName.value,
-      document: document.value,
-      email: email.value,
+      firstName: firstNameController.text,
+      lastName: lastNameController.text,
+      document: documentController.text,
+      email: emailController.text,
       phone: Get.find<String>(tag: 'phoneNumber'),
-      birthday: birthdayDate.value!,
+      gender: genderController.text,
+      birthday: birthday.value!,
       address: Address(
-        postalCode: postalCode.value,
-        street: street.value,
-        number: number.value,
-        city: city.value,
-        state: state.value,
-        country: country.value,
-        complement: complement.value,
+        postalCode: postalCodeController.text,
+        street: streetController.text,
+        number: numberController.text,
+        city: cityController.text,
+        state: stateController.text,
+        country: countryController.text,
+        complement: complementController.text,
       ),
       type: type,
     );
@@ -245,7 +287,30 @@ class UserEditController extends GetxController {
   }
 
   @override
+  void onInit() {
+    postalCodeController.addListener(() => fetchAddressDetails());
+    super.onInit();
+  }
+
+  @override
   void onClose() {
     super.onClose();
+    clearControllers();
+  }
+
+  void clearControllers() {
+    firstNameController.clear();
+    lastNameController.clear();
+    emailController.clear();
+    documentController.clear();
+    genderController.clear();
+    birthday.value = null;
+    postalCodeController.clear();
+    streetController.clear();
+    numberController.clear();
+    cityController.clear();
+    stateController.clear();
+    countryController.clear();
+    complementController.clear();
   }
 }
