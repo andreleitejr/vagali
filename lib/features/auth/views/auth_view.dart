@@ -37,10 +37,9 @@ class AuthView extends StatelessWidget {
 
           if (authStatus == AuthStatus.unauthenticated) {
             return LoginView(controller: _controller);
-          } else if (authStatus == AuthStatus.codeSent) {
+          } else if (authStatus == AuthStatus.codeSent ||
+              authStatus == AuthStatus.verifying) {
             return CodeVerificationView(controller: _controller);
-          } else if (authStatus == AuthStatus.verifying) {
-            return LoadingView(message: 'Verificando informações de usuário');
           } else if (authStatus == AuthStatus.unregistered) {
             return SelectTypeView();
           } else if (authStatus == AuthStatus.authenticatedAsTenant) {
@@ -51,18 +50,9 @@ class AuthView extends StatelessWidget {
             return const ParkingEditView();
           } else if (authStatus == AuthStatus.locationDenied) {
             return const LocationDeniedView();
-          } else if (authStatus == AuthStatus.error) {
-            return AuthErrorView();
           } else {
-            return Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: (MediaQuery.of(context).size.height * 100) / 1152,
-              ),
-              decoration: BoxDecoration(
-                color: ThemeColors.primary,
-              ),
-              alignment: Alignment.center,
-              child: Image.asset('images/splash-logo.png'),
+            return AuthErrorView(
+              error: authStatus.name,
             );
           }
         },

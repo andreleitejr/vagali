@@ -51,7 +51,7 @@ class LandlordHomeController extends GetxController {
 
       await _handleReservationsUpdate(stream);
       // await Future.delayed(const Duration(seconds: 3));
-    } catch(e){
+    } catch (e) {
       debugPrint('Erro ao buscar os dados do Locador.');
     }
   }
@@ -90,17 +90,16 @@ class LandlordHomeController extends GetxController {
         update();
       }
 
-      _getScheduledReservation();
-      currentReservation.value = scheduledReservations.first;
+      scheduledReservations.value =
+          reservations.where((reservation) => reservation.isScheduled).toList();
+
+      scheduledReservations.sort((a, b) => a.startDate.compareTo(b.startDate));
+
+      if (scheduledReservations.isNotEmpty) {
+        currentReservation.value = scheduledReservations.first;
+      }
       loading(false);
     });
-  }
-
-  void _getScheduledReservation() {
-    scheduledReservations.value =
-        reservations.where((reservation) => reservation.isScheduled).toList();
-
-    scheduledReservations.sort((a, b) => a.startDate.compareTo(b.startDate));
   }
 
   Future<void> _handleVehicleUpdate(Reservation reservation) async {

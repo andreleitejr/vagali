@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/gradient_text.dart';
 import 'package:vagali/widgets/pin_input.dart';
@@ -38,12 +39,14 @@ class CodeWidget extends StatelessWidget {
         const SizedBox(height: 4),
         const Text(
           'Enviamos um código para o número:',
-          style: ThemeTypography.medium16,
+          style: ThemeTypography.medium14,
         ),
         const SizedBox(height: 4),
-        GradientText(
+        Text(
           phoneNumber,
-          style: ThemeTypography.medium14,
+          style: ThemeTypography.medium14.apply(
+            color: ThemeColors.primary,
+          ),
         ),
         const SizedBox(height: 16),
         PinInput(
