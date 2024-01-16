@@ -141,8 +141,8 @@ class _LineChart extends StatelessWidget {
     );
   }
 
-  // String _getWeekdayLabel(int weekday) {
-  //   return DateFormat('E')
-  //       .format(DateTime.now().subtract(Duration(days: 7 - weekday)));
-  // }
+// String _getWeekdayLabel(int weekday) {
+//   return DateFormat('E')
+//       .format(DateTime.now().subtract(Duration(days: 7 - weekday)));
+// }
 }

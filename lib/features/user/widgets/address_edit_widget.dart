@@ -40,7 +40,7 @@ class AddressEditWidget extends StatelessWidget {
             ),
           ),
           if (controller.isPostalCodeValid.isTrue &&
-              controller.loadingPostalCode.isFalse) ...[
+              controller.isPostalCodeLoading.isFalse) ...[
             const SizedBox(height: 16),
             Obx(() {
               return Input(

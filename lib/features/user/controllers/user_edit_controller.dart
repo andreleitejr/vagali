@@ -178,11 +178,11 @@ class UserEditController extends GetxController {
   RxBool get isPostalCodeValid =>
       (postalCodeClean.isNotEmpty && postalCodeClean.value.length >= 8).obs;
 
-  final loadingPostalCode = false.obs;
+  final isPostalCodeLoading = false.obs;
 
   Future<void> fetchAddressDetails() async {
     if (isPostalCodeValid.isTrue) {
-      loadingPostalCode.value = true;
+      isPostalCodeLoading.value = true;
       final addressDetails =
           await _addressService.getAddressDetails(postalCodeClean.value);
 
@@ -193,7 +193,7 @@ class UserEditController extends GetxController {
         countryController.value = 'Brasil';
       }
 
-      loadingPostalCode.value = false;
+      isPostalCodeLoading.value = false;
     }
   }
 

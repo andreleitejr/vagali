@@ -81,8 +81,10 @@ class ConfigView extends StatelessWidget {
             ),
             onTap: () async {
               await controller.signOut();
+              controller.dispose();
               final authController = AuthController();
               Get.offAll(() => LoginView(controller: authController));
+              Get.reset();
             },
           ),
           divider(),

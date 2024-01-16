@@ -12,9 +12,9 @@ import 'package:vagali/widgets/title_with_action.dart';
 import 'package:vagali/widgets/user_app_bar.dart';
 
 class LandlordHomeView extends StatelessWidget {
-  final controller = Get.put(LandlordHomeController());
+  final LandlordHomeController controller;
 
-  LandlordHomeView({Key? key}) : super(key: key);
+  LandlordHomeView({Key? key, required this.controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

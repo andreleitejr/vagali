@@ -5,11 +5,16 @@ import 'package:vagali/features/dashboard/views/dashboard_view.dart';
 import 'package:vagali/features/home/landlord/controllers/dashboard_controller.dart';
 import 'package:vagali/features/home/landlord/views/landlord_home_view.dart';
 import 'package:vagali/features/landlord/views/landlord_view.dart';
+import 'package:vagali/features/parking/views/parking_edit_view.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/widgets/avatar.dart';
 import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/shimmer_box.dart';
+
+abstract class HomeNavigator {
+  void goToParkingEditPage();
+}
 
 class LandlordBaseView extends StatefulWidget {
   final int selectedIndex;
@@ -20,13 +25,22 @@ class LandlordBaseView extends StatefulWidget {
   _LandlordBaseViewState createState() => _LandlordBaseViewState();
 }
 
-class _LandlordBaseViewState extends State<LandlordBaseView> {
-  final controller = Get.put(LandlordHomeController());
+class _LandlordBaseViewState extends State<LandlordBaseView>
+    implements HomeNavigator {
+  late LandlordHomeController controller;
+
+  @override
+  void initState() {
+    controller = Get.put(LandlordHomeController(this));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> _pages = [
-      LandlordHomeView(),
+      LandlordHomeView(
+        controller: controller,
+      ),
       DashboardView(
         reservations: controller.reservations,
       ),
@@ -93,5 +107,10 @@ class _LandlordBaseViewState extends State<LandlordBaseView> {
         ),
       ),
     );
+  }
+
+  @override
+  void goToParkingEditPage() {
+    Get.to(() => ParkingEditView());
   }
 }

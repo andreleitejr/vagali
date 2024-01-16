@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:vagali/features/home/landlord/views/landlord_base_view.dart';
 import 'package:vagali/features/landlord/models/landlord.dart';
 import 'package:vagali/features/parking/models/parking.dart';
 import 'package:vagali/features/parking/repositories/parking_repository.dart';
@@ -16,6 +17,10 @@ import 'package:vagali/services/location_service.dart';
 import 'package:vagali/theme/images.dart';
 
 class LandlordHomeController extends GetxController {
+  LandlordHomeController(this.navigator);
+
+  final HomeNavigator navigator;
+
   final Landlord landlord = Get.find();
   final _locationService = Get.put(LocationService());
   final _parkingRepository = Get.put(ParkingRepository());
@@ -47,7 +52,10 @@ class LandlordHomeController extends GetxController {
     super.onInit();
     final parkings = await _parkingRepository.getAll(userId: landlord.id);
 
-    if (parkings.isEmpty) return;
+    if (parkings.isEmpty) {
+      navigator.goToParkingEditPage();
+      return;
+    }
 
     Get.put(parkings);
 

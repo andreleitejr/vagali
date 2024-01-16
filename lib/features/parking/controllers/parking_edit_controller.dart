@@ -400,7 +400,11 @@ class ParkingEditController extends GetxController {
     );
   }
 
-  void calculateSuggestedPrices() {
+  final isPriceLoading = false.obs;
+
+  Future<void> calculateSuggestedPrices() async {
+    isPriceLoading.value = true;
+    await Future.delayed(const Duration(seconds: 1));
     final price = double.tryParse(pricePerHourController.value);
     if (price != null) {
       final suggestedPrices = _priceService.calculateSuggestedPrices(price);
@@ -410,6 +414,7 @@ class ParkingEditController extends GetxController {
       pricePerDayController.value = suggestedPrices.day.toString();
       pricePerMonthController.value = suggestedPrices.month.toString();
     }
+    isPriceLoading.value = false;
   }
 
   Future<SaveResult> save() async {

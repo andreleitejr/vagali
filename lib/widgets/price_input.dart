@@ -5,6 +5,7 @@ import 'package:vagali/theme/theme_typography.dart';
 
 class PriceInput extends StatelessWidget {
   final String? initialValue;
+  final TextEditingController? controller;
   final TextInputType keyboardType;
   final String hintText;
   final bool obscureText;
@@ -18,12 +19,14 @@ class PriceInput extends StatelessWidget {
   final FocusNode? nextFocusNode;
   final VoidCallback? onSubmit;
   final Function(String) onChanged;
+  final bool isLoading;
 
   // final TextEditingController controller;
 
   PriceInput({
     super.key,
     this.initialValue,
+    this.controller,
     this.keyboardType = TextInputType.text,
     required this.hintText,
     this.obscureText = false,
@@ -38,6 +41,7 @@ class PriceInput extends StatelessWidget {
     this.onSubmit,
     // required this.controller,
     required this.onChanged,
+    this.isLoading = false,
   });
 
   @override
@@ -50,7 +54,7 @@ class PriceInput extends StatelessWidget {
             Expanded(
               child: Container(
                 alignment: Alignment.center,
-                height: 58,
+                height: 48,
                 decoration: BoxDecoration(
                   color: ThemeColors.grey2,
                   borderRadius: BorderRadius.only(
@@ -60,57 +64,71 @@ class PriceInput extends StatelessWidget {
                 ),
                 child: Text(
                   hintText,
-                  style: ThemeTypography.semiBold16,
+                  style: ThemeTypography.regular14,
                 ),
               ),
             ),
             Expanded(
-              child: TextFormField(
-                initialValue: initialValue,
-                focusNode: currentFocusNode,
-                enabled: enabled,
-                // controller: controller,
-                keyboardType: keyboardType,
-                obscureText: obscureText,
-                inputFormatters: inputFormatters,
-                maxLines: maxLines,
-                textAlign: TextAlign.center,
-                style: ThemeTypography.medium16.apply(
-                  color: ThemeColors.intermediary,
-                ),
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(8),
-                      bottomRight: Radius.circular(8),
+              child: isLoading
+                  ? Text(
+                      'Calculando precos',
+                      style: ThemeTypography.medium16.apply(
+                        color: ThemeColors.intermediary,
+                      ),
+                      textAlign: TextAlign.center,
+                    )
+                  : TextFormField(
+                      controller: controller,
+                      initialValue: initialValue,
+                      focusNode: currentFocusNode,
+                      enabled: enabled,
+                      // controller: controller,
+                      keyboardType: keyboardType,
+                      obscureText: obscureText,
+                      inputFormatters: inputFormatters,
+                      maxLines: maxLines,
+                      // textAlign: TextAlign.left,
+                      style: ThemeTypography.medium14.apply(
+                        color: ThemeColors.primary,
+                      ),
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(left: 8),
+                        prefixText: 'RS',
+                        prefixStyle: ThemeTypography.medium14.apply(
+                          color: ThemeColors.primary,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(8),
+                            bottomRight: Radius.circular(8),
+                          ),
+                          borderSide: const BorderSide(
+                            color: ThemeColors.grey2,
+                            width: 1,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: ThemeColors.grey2,
+                            width: 1,
+                          ),
+                        ),
+                        fillColor: ThemeColors.grey1,
+                        filled: true,
+                      ),
+                      onTap: onTap,
+                      onEditingComplete: () {
+                        if (onSubmit != null) {
+                          onSubmit?.call();
+                          return;
+                        }
+                        if (nextFocusNode != null) {
+                          FocusScope.of(context).requestFocus(nextFocusNode);
+                        }
+                      },
+                      onChanged: onChanged,
                     ),
-                    borderSide: const BorderSide(
-                      color: ThemeColors.grey2,
-                      width: 1,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(
-                      color: ThemeColors.grey2,
-                      width: 1,
-                    ),
-                  ),
-                  fillColor: ThemeColors.grey1,
-                  filled: true,
-                ),
-                onTap: onTap,
-                onEditingComplete: () {
-                  if (onSubmit != null) {
-                    onSubmit?.call();
-                    return;
-                  }
-                  if (nextFocusNode != null) {
-                    FocusScope.of(context).requestFocus(nextFocusNode);
-                  }
-                },
-                onChanged: onChanged,
-              ),
             ),
           ],
         ),

@@ -41,8 +41,7 @@ class StepFiveWidget extends StatelessWidget {
           const SizedBox(height: 16),
           Obx(
             () => PriceInput(
-              initialValue:
-                  getMonetaryValue(controller.pricePerMonthController.value),
+              initialValue:controller.pricePerHourController.value,
               hintText: 'Preco por hora',
               keyboardType: TextInputType.number,
               error: controller.getError(controller.priceError),
@@ -54,37 +53,40 @@ class StepFiveWidget extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Obx(
-            () => PriceInput(
-              initialValue:
-                  getMonetaryValue(controller.pricePerSixHoursController.value),
-              hintText: 'Preco por 6 horas',
-              keyboardType: TextInputType.number,
-              error: controller.getError(controller.priceError),
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              onChanged: controller.pricePerSixHoursController,
-            ),
+            () {
+              return PriceInput(
+                initialValue: controller.pricePerSixHoursController.value,
+                hintText: 'Preco por 6 horas',
+                keyboardType: TextInputType.number,
+                error: controller.getError(controller.priceError),
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                onChanged: controller.pricePerSixHoursController,
+                isLoading: controller.isPriceLoading.value,
+              );
+            },
           ),
           const SizedBox(height: 16),
           Obx(
-            () => PriceInput(
-              initialValue: getMonetaryValue(
-                  controller.pricePerTwelveHoursController.value),
-              hintText: 'Preco por 12 horas',
-              keyboardType: TextInputType.number,
-              error: controller.getError(controller.priceError),
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              onChanged: controller.pricePerTwelveHoursController,
-            ),
+            () {
+              return PriceInput(
+                initialValue: controller.pricePerTwelveHoursController.value,
+                hintText: 'Preco por 12 horas',
+                keyboardType: TextInputType.number,
+                error: controller.getError(controller.priceError),
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                onChanged: controller.pricePerTwelveHoursController,
+                isLoading: controller.isPriceLoading.value,
+              );
+            },
           ),
           const SizedBox(height: 16),
-          Obx(
-            () => PriceInput(
-              initialValue:
-                  getMonetaryValue(controller.pricePerDayController.value),
+          Obx(() {
+            return PriceInput(
+              initialValue: controller.pricePerDayController.value,
               hintText: 'Preco por diária',
               keyboardType: TextInputType.number,
               error: controller.getError(controller.priceError),
@@ -92,13 +94,13 @@ class StepFiveWidget extends StatelessWidget {
                 FilteringTextInputFormatter.digitsOnly,
               ],
               onChanged: controller.pricePerDayController,
-            ),
-          ),
+              isLoading: controller.isPriceLoading.value,
+            );
+          }),
           const SizedBox(height: 16),
           Obx(() {
             return PriceInput(
-              initialValue:
-                  getMonetaryValue(controller.pricePerMonthController.value),
+              initialValue: controller.pricePerMonthController.value,
               hintText: 'Preco por mês',
               keyboardType: TextInputType.number,
               error: controller.getError(controller.priceError),
@@ -106,6 +108,7 @@ class StepFiveWidget extends StatelessWidget {
                 FilteringTextInputFormatter.digitsOnly,
               ],
               onChanged: controller.pricePerMonthController,
+              isLoading: controller.isPriceLoading.value,
             );
           }),
           const SizedBox(height: 16),
@@ -130,27 +133,19 @@ class StepFiveWidget extends StatelessWidget {
     );
   }
 
-  String? getMonetaryValue(String v) {
-    final value = double.tryParse(v);
-    if (value != null) {
-      return UtilBrasilFields.obterReal(value);
-    }
-    return null;
-  }
-
-  // void _showReservationTypeBottomSheet(BuildContext context) {
-  //   final focus = FocusScope.of(context);
-  //
-  //   Get.bottomSheet(
-  //     CustomBottomSheet<ReservationType>(
-  //       items: reservationTypes,
-  //       title: 'Qual tipo de reserva?',
-  //       onItemSelected: (selectedItem) async {
-  //         controller.reservationTypeController.value = selectedItem.title;
-  //         focus.unfocus();
-  //       },
-  //     ),
-  //     enableDrag: true,
-  //   );
-  // }
+// void _showReservationTypeBottomSheet(BuildContext context) {
+//   final focus = FocusScope.of(context);
+//
+//   Get.bottomSheet(
+//     CustomBottomSheet<ReservationType>(
+//       items: reservationTypes,
+//       title: 'Qual tipo de reserva?',
+//       onItemSelected: (selectedItem) async {
+//         controller.reservationTypeController.value = selectedItem.title;
+//         focus.unfocus();
+//       },
+//     ),
+//     enableDrag: true,
+//   );
+// }
 }

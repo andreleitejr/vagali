@@ -111,12 +111,16 @@ class DateInput extends StatelessWidget {
     this.openDatePicker = true,
   });
 
+  final controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    if (date != null) {
+      controller.text = date!.toMonthlyAndYearFormattedString();
+    }
 
     return Input(
-      initialValue: date?.toMonthlyAndYearFormattedString(),
+      controller: controller,
       enabled: enabled,
       onChanged: (v) {},
       keyboardType: TextInputType.datetime,
