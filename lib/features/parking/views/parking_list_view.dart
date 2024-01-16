@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:get/get.dart';
-import 'package:vagali/features/home/tenant/widgets/parking_list_item.dart';
-import 'package:vagali/features/home/tenant/widgets/parking_list_tile.dart';
-import 'package:vagali/features/landlord/models/landlord.dart';
 import 'package:vagali/features/parking/models/parking.dart';
-import 'package:vagali/features/parking/repositories/parking_repository.dart';
 import 'package:vagali/features/parking/views/parking_edit_option_view.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/widgets/shimmer_box.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
 class ParkingListView extends StatelessWidget {

@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:vagali/features/map/views/map_view.dart';
 import 'package:vagali/features/parking/models/parking.dart';
 import 'package:vagali/features/parking/repositories/parking_repository.dart';
 import 'package:vagali/services/location_service.dart';
@@ -109,7 +108,7 @@ class MapController extends GetxController {
       (parking) => [
         parking.address.city,
         parking.address.state,
-        parking.address.street!,
+        parking.address.street,
         parking.address.postalCode,
       ],
     ));

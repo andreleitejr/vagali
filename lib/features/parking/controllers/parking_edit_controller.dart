@@ -1,14 +1,11 @@
-import 'dart:io';
-
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vagali/features/address/models/address.dart';
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/landlord/models/landlord.dart';
 import 'package:vagali/features/parking/models/parking.dart';
-import 'package:vagali/features/parking/models/parking_type.dart';
 import 'package:vagali/features/parking/models/parking_tag.dart';
+import 'package:vagali/features/parking/models/parking_type.dart';
 import 'package:vagali/features/parking/models/price.dart';
 import 'package:vagali/features/parking/repositories/parking_repository.dart';
 import 'package:vagali/features/reservation/models/reservation_type.dart';
@@ -305,12 +302,12 @@ class ParkingEditController extends GetxController {
   void fillAddressFromLandlord() {
     final landlordAddress = landlord.address;
 
-    postalCodeController.value = landlordAddress.postalCode ?? '';
-    streetController.value = landlordAddress.street ?? '';
-    numberController.value = landlordAddress.number ?? '';
-    cityController.value = landlordAddress.city ?? '';
-    stateController.value = landlordAddress.state ?? '';
-    countryController.value = landlordAddress.country ?? '';
+    postalCodeController.value = landlordAddress.postalCode;
+    streetController.value = landlordAddress.street;
+    numberController.value = landlordAddress.number;
+    cityController.value = landlordAddress.city;
+    stateController.value = landlordAddress.state;
+    countryController.value = landlordAddress.country;
     complementController.value = landlordAddress.complement ?? '';
   }
 

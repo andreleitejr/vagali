@@ -1,16 +1,13 @@
-import 'dart:ffi';
-
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/address/models/states.dart';
-import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/features/vehicle/controllers/vehicle_edit_controller.dart';
 import 'package:vagali/features/vehicle/models/vehicle_color.dart';
 import 'package:vagali/features/vehicle/models/vehicle_type.dart';
-import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/bottom_sheet.dart';
 import 'package:vagali/widgets/image_button.dart';
 import 'package:vagali/widgets/image_picker_bottom_sheet.dart';
@@ -38,7 +35,6 @@ class VehicleEditWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final focus = FocusScope.of(context);
     return ListView(
       children: [
         Obx(
@@ -82,7 +78,8 @@ class VehicleEditWidget extends StatelessWidget {
         const SizedBox(height: 16),
         Obx(
           () => InputButton(
-            onChanged: controller.vehicleTypeController,
+            // onChanged: controller.vehicleTypeController,
+            controller: TextEditingController(),
             hintText: 'Tipo de veículo',
             error: controller.getError(controller.vehicleTypeError),
             onTap: () => _showVehicleTypeBottomSheet(context),
@@ -199,11 +196,11 @@ class VehicleEditWidget extends StatelessWidget {
   void _showVehicleTypeBottomSheet(BuildContext context) {
     final focus = FocusScope.of(context);
     Get.bottomSheet(
-      CustomBottomSheet(
-        items: vehicleTypes.map((vehicle) => vehicle.title).toList(),
+      CustomBottomSheet<VehicleType>(
+        items: vehicleTypes,
         title: "Selecione o tipo de veículo",
         onItemSelected: (selectedItem) {
-          controller.vehicleTypeController.value = selectedItem;
+          controller.vehicleTypeController.value = selectedItem.title;
           focus.requestFocus(licensePlateFocus);
         },
       ),
@@ -214,13 +211,11 @@ class VehicleEditWidget extends StatelessWidget {
   void _showStateBottomSheet(BuildContext context) {
     final focus = FocusScope.of(context);
     Get.bottomSheet(
-      CustomBottomSheet(
-        items: statesList
-            .map((state) => '${state.title} - ${state.acronym}')
-            .toList(),
+      CustomBottomSheet<BrazilianState>(
+        items: statesList,
         title: "Selecione o estado de registro",
         onItemSelected: (selectedItem) {
-          controller.registrationStateController.value = selectedItem;
+          controller.registrationStateController.value = selectedItem.title;
           focus.unfocus();
         },
       ),
@@ -230,7 +225,6 @@ class VehicleEditWidget extends StatelessWidget {
   }
 
   void _showColorBottomSheet(BuildContext context) {
-    final focus = FocusScope.of(context);
     Get.bottomSheet(
       Container(
         constraints:

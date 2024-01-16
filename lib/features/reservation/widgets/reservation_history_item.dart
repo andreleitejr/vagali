@@ -3,9 +3,9 @@ import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/views/reservation_details_view.dart';
-import 'package:vagali/utils/extensions.dart';
-import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
+import 'package:vagali/utils/extensions.dart';
 import 'package:vagali/widgets/date_period.dart';
 
 class ReservationHistoryItem extends StatelessWidget {

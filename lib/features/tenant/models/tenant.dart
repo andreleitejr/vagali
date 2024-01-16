@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vagali/features/address/models/address.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/features/vehicle/models/vehicle.dart';
-import 'package:vagali/models/coordinates.dart';
 import 'package:vagali/models/image_blurhash.dart';
 
 // Futuros dados de Tenant

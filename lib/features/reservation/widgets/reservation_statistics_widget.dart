@@ -1,6 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/theme/theme_colors.dart';
 
@@ -69,7 +68,7 @@ class _LineChart extends StatelessWidget {
     List<FlSpot> chartData = [];
 
     // Obtém a data de hoje
-    DateTime now = DateTime.now();
+    // DateTime now = DateTime.now();
 
     // Lógica para extrair os dados de suas reservas e criar o gráfico
     // Utilize totalCost, startDate e endDate para gerar os dados do gráfico
@@ -77,7 +76,7 @@ class _LineChart extends StatelessWidget {
     // Itera por cada dia da última semana
     for (int i = 0; i < 7; i++) {
       // Obtém a data correspondente a este dia da semana na última semana
-      DateTime currentDate = now.subtract(Duration(days: now.weekday - i));
+      // DateTime currentDate = now.subtract(Duration(days: now.weekday - i));
 
       double totalSales = 30;
 
@@ -142,8 +141,8 @@ class _LineChart extends StatelessWidget {
     );
   }
 
-  String _getWeekdayLabel(int weekday) {
-    return DateFormat('E')
-        .format(DateTime.now().subtract(Duration(days: 7 - weekday)));
-  }
+  // String _getWeekdayLabel(int weekday) {
+  //   return DateFormat('E')
+  //       .format(DateTime.now().subtract(Duration(days: 7 - weekday)));
+  // }
 }

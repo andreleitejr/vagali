@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:vagali/features/tenant/models/tenant.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/models/base_model.dart';
 

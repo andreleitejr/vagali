@@ -3,15 +3,12 @@ import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:vagali/features/calendar/controllers/calendar_controller.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
-import 'package:vagali/features/reservation/widgets/reservation_history_item.dart';
 import 'package:vagali/features/reservation/widgets/reservation_item.dart';
 import 'package:vagali/theme/coolicons.dart';
-import 'package:vagali/theme/images.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/utils/extensions.dart';
 import 'package:vagali/widgets/coolicon.dart';
-import 'package:vagali/widgets/date_card.dart';
 import 'package:vagali/widgets/empty_list.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
@@ -136,6 +133,7 @@ class _CalendarViewState extends State<CalendarView> {
                     ),
                   );
                 }
+                return Container();
               },
               selectedBuilder: (context, date, events) {
                 return Container(

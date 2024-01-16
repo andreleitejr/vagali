@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
 
 class CustomDropdown<T> extends StatelessWidget {
   final RxBool isDropdownOpen = false.obs;

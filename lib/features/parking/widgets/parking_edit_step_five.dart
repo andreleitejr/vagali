@@ -3,14 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/parking/controllers/parking_edit_controller.dart';
-import 'package:vagali/features/reservation/models/reservation_type.dart';
-import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/theme/theme_colors.dart';
-import 'package:vagali/utils/extensions.dart';
-import 'package:vagali/widgets/bottom_sheet.dart';
-import 'package:vagali/widgets/gradient_slider.dart';
-import 'package:vagali/widgets/input.dart';
-import 'package:vagali/widgets/input_button.dart';
+import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/price_input.dart';
 
 class StepFiveWidget extends StatelessWidget {
@@ -144,22 +138,19 @@ class StepFiveWidget extends StatelessWidget {
     return null;
   }
 
-  void _showReservationTypeBottomSheet(BuildContext context) {
-    final focus = FocusScope.of(context);
-
-    Get.bottomSheet(
-      CustomBottomSheet(
-        items: reservationTypes
-            .map((reservationType) =>
-                reservationType.type.toReadableReservationType)
-            .toList(),
-        title: 'Qual tipo de reserva?',
-        onItemSelected: (selectedItem) async {
-          controller.reservationTypeController.value = selectedItem;
-          focus.unfocus();
-        },
-      ),
-      enableDrag: true,
-    );
-  }
+  // void _showReservationTypeBottomSheet(BuildContext context) {
+  //   final focus = FocusScope.of(context);
+  //
+  //   Get.bottomSheet(
+  //     CustomBottomSheet<ReservationType>(
+  //       items: reservationTypes,
+  //       title: 'Qual tipo de reserva?',
+  //       onItemSelected: (selectedItem) async {
+  //         controller.reservationTypeController.value = selectedItem.title;
+  //         focus.unfocus();
+  //       },
+  //     ),
+  //     enableDrag: true,
+  //   );
+  // }
 }

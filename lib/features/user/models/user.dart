@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vagali/features/address/models/address.dart';
 import 'package:vagali/features/rating/models/rating.dart';
 import 'package:vagali/models/base_model.dart';
-import 'package:vagali/models/coordinates.dart';
 import 'package:vagali/models/image_blurhash.dart';
 
 class UserType {

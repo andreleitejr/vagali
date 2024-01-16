@@ -5,8 +5,8 @@ import 'package:vagali/features/parking/models/parking.dart';
 import 'package:vagali/features/parking/views/parking_details_view.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
-import 'package:vagali/utils/extensions.dart';
 import 'package:vagali/theme/theme_typography.dart';
+import 'package:vagali/utils/extensions.dart';
 import 'package:vagali/widgets/coolicon.dart'; // Importe a página de detalhes aqui
 
 class ParkingListItem extends StatelessWidget {

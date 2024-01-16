@@ -94,7 +94,7 @@ class ParkingDetailsView extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: AddressCard(
                   address: controller.parking.value!.address,
-                  editionModeOn: false,
+                  editModeOn: false,
                 ),
               ),
               const SizedBox(height: 16),

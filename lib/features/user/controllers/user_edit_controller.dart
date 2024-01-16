@@ -5,6 +5,7 @@ import 'package:vagali/features/address/models/address.dart';
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/landlord/models/landlord.dart';
 import 'package:vagali/features/tenant/models/tenant.dart';
+import 'package:vagali/features/user/models/gender.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/features/user/repositories/user_repository.dart';
 import 'package:vagali/models/image_blurhash.dart';
@@ -35,7 +36,8 @@ class UserEditController extends GetxController {
     lastNameController.value = user.lastName;
     emailController.value = user.email;
     documentController.value = user.document;
-    genderController.value = user.gender;
+    genderController.text =
+        genders.firstWhereOrNull((g) => g.value == user.gender)?.title ?? '';
     birthday.value = user.birthday;
     imageBlurhash.value = user.image;
 
@@ -59,7 +61,8 @@ class UserEditController extends GetxController {
   final lastNameController = ''.obs;
   final emailController = ''.obs;
   final documentController = ''.obs;
-  final genderController = ''.obs;
+
+  final genderController = TextEditingController();
 
   final Rx<DateTime?> birthday = Rx<DateTime?>(null);
 
@@ -175,16 +178,22 @@ class UserEditController extends GetxController {
   RxBool get isPostalCodeValid =>
       (postalCodeClean.isNotEmpty && postalCodeClean.value.length >= 8).obs;
 
+  final loadingPostalCode = false.obs;
+
   Future<void> fetchAddressDetails() async {
     if (isPostalCodeValid.isTrue) {
+      loadingPostalCode.value = true;
       final addressDetails =
           await _addressService.getAddressDetails(postalCodeClean.value);
+
       if (addressDetails != null) {
         streetController.value = addressDetails['logradouro'] ?? '';
         cityController.value = addressDetails['localidade'] ?? '';
         stateController.value = addressDetails['uf'] ?? '';
         countryController.value = 'Brasil';
       }
+
+      loadingPostalCode.value = false;
     }
   }
 
@@ -248,7 +257,7 @@ class UserEditController extends GetxController {
       document: documentController.value,
       email: emailController.value,
       phone: Get.find<String>(tag: 'phoneNumber'),
-      gender: genderController.value,
+      gender: genderController.text,
       birthday: birthday.value!,
       address: Address(
         postalCode: postalCodeController.value,
@@ -282,7 +291,12 @@ class UserEditController extends GetxController {
 
   @override
   void onInit() {
-    ever(postalCodeController, (_) => fetchAddressDetails());
+    ever(postalCodeController, (_) {
+      print(
+          ' HUASDHUASASDUHASDUHUHU POSTAL CODE CONTROLLER $postalCodeController');
+      fetchAddressDetails();
+      update();
+    });
     super.onInit();
   }
 

@@ -3,11 +3,7 @@ import 'package:get/get.dart';
 import 'package:vagali/features/parking/models/parking.dart';
 import 'package:vagali/features/parking/models/parking_type.dart';
 import 'package:vagali/features/parking/repositories/parking_repository.dart';
-import 'package:vagali/features/reservation/models/reservation.dart';
-import 'package:vagali/features/reservation/repositories/reservation_repository.dart';
 import 'package:vagali/features/tenant/models/tenant.dart';
-import 'package:vagali/features/vehicle/models/vehicle.dart';
-import 'package:vagali/features/vehicle/repositories/vehicle_repository.dart';
 import 'package:vagali/services/location_service.dart';
 import 'package:vagali/services/search_service.dart';
 import 'package:vagali/utils/extensions.dart';
@@ -73,7 +69,7 @@ class HomeController extends GetxController {
       (parking) => [
         parking.address.city,
         parking.address.state,
-        parking.address.street!,
+        parking.address.street,
         parking.address.postalCode,
       ],
     );

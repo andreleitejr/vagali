@@ -3,8 +3,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:vagali/features/tenant/models/tenant.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/theme/coolicons.dart';
-import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/coolicon.dart';
 
 import 'avatar.dart';

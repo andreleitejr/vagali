@@ -5,9 +5,9 @@ import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
 // import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:vagali/models/image_blurhash.dart';
 import 'package:vagali/repositories/storage_repository.dart';
 
@@ -117,6 +117,7 @@ class ImageService {
           return ImageBlurHash(image: url, blurHash: blurHash);
         }
       }
+      return null;
     } catch (e) {
       debugPrint('Erro ao fazer upload de Blurhash no Firebase Storage: $e');
       return null;

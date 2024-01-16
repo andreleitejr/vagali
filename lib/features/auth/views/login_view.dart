@@ -8,10 +8,8 @@ import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/flat_button.dart';
-import 'package:vagali/widgets/gradient_text.dart';
 import 'package:vagali/widgets/logo.dart';
 import 'package:vagali/widgets/phone_input.dart';
-
 import 'package:vagali/widgets/snackbar.dart';
 
 class LoginView extends StatelessWidget {

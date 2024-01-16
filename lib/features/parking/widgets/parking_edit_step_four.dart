@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/parking/controllers/parking_edit_controller.dart';
 import 'package:vagali/features/parking/models/parking_tag.dart';
-import 'package:vagali/features/parking/widgets/gate_input.dart';
 import 'package:vagali/widgets/chip_selector.dart';
 
 class StepFourWidget extends StatelessWidget {

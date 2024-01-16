@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:vagali/models/selectable_item.dart';
 import 'package:vagali/theme/coolicons.dart';
 

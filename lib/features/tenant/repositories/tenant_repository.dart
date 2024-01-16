@@ -1,9 +1,6 @@
-import 'package:get/get.dart';
 import 'package:vagali/features/tenant/models/tenant.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/features/user/repositories/user_repository.dart';
-import 'package:vagali/features/vehicle/models/vehicle.dart';
-import 'package:vagali/features/vehicle/repositories/vehicle_repository.dart';
 
 class TenantRepository extends UserRepository {
 

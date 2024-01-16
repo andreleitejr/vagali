@@ -174,18 +174,6 @@ extension StringExtensions on String {
     return '';
   }
 
-  String get toReadableGender {
-    if (this == 'male') {
-      return 'Masculino';
-    } else if (this == 'female') {
-      return 'Feminino';
-    } else if (this == 'transgender') {
-      return 'Transgênero';
-    } else {
-      return 'Outros';
-    }
-  }
-
   String get toReadableReservationType {
     if (this == 'month') {
       return 'Mensal';

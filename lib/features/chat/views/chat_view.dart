@@ -38,7 +38,7 @@ class _ChatViewState extends State<ChatView> {
           Expanded(
             child: Obx(
               () => MessageList(
-                messages: controller.messages.value,
+                messages: controller.messages,
               ),
             ),
           ),

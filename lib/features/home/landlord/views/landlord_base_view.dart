@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vagali/features/auth/repositories/auth_repository.dart';
-import 'package:vagali/features/auth/views/auth_view.dart';
 import 'package:vagali/features/calendar/views/calendar_view.dart';
 import 'package:vagali/features/dashboard/views/dashboard_view.dart';
 import 'package:vagali/features/home/landlord/controllers/dashboard_controller.dart';

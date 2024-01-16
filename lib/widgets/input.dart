@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
 
 class Input extends StatelessWidget {
   final String? initialValue;
 
-  // final TextEditingController controller;
+  final TextEditingController? controller;
   final TextInputType keyboardType;
   final String hintText;
   final bool obscureText;
@@ -21,9 +21,9 @@ class Input extends StatelessWidget {
   final VoidCallback? onSubmit;
   final Function(String) onChanged;
 
-  Input({
+   Input({
     super.key,
-    // required this.controller,
+    this.controller,
     this.initialValue,
     this.keyboardType = TextInputType.text,
     required this.hintText,
@@ -47,6 +47,7 @@ class Input extends StatelessWidget {
       children: [
         TextFormField(
           initialValue: initialValue,
+          controller: controller,
           focusNode: currentFocusNode,
           enabled: enabled,
           // controller: controller,

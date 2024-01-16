@@ -7,9 +7,7 @@ import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/flat_button.dart';
-
 import 'package:vagali/widgets/input.dart';
-import 'package:vagali/widgets/rounded_gradient_button.dart';
 import 'package:vagali/widgets/snackbar.dart';
 import 'package:vagali/widgets/switch_button.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/widgets/gradient_text.dart';
 import 'package:vagali/widgets/pin_input.dart';
 
 class CodeWidget extends StatelessWidget {

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/widgets/gradient_text.dart';
 
-import 'package:flutter/material.dart';
 
 class WarningDialog extends StatelessWidget {
   final String title;

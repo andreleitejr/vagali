@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jumping_dot/jumping_dot.dart';
-import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/loader.dart';
 
 class RoundedGradientButton extends StatelessWidget {

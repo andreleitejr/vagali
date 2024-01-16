@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vagali/features/parking/models/parking_tag.dart';
-import 'package:vagali/theme/coolicons.dart';
-import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/coolicon.dart';
 
 class TagList extends StatelessWidget {

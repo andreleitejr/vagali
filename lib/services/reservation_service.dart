@@ -20,21 +20,21 @@ class ReservationService extends GetxService {
     }
   }
 
-  void startLocationUpdates(String reservationId) {
-    // Execute a atualização da localização em um loop (por exemplo, a cada minuto)
-    Timer.periodic(const Duration(minutes: 1), (timer) async {
-      // Verifique se a reserva ainda precisa ser atualizada (opcional)
-      // ...
-
-      // Obtenha a localização atual do usuário
-      final userLocation = locationService.userLocation;
-      if (userLocation != null) {
-        // Obtenha latitude e longitude da localização
-        final latitude = userLocation.latitude;
-        final longitude = userLocation.longitude;
-
-        // Atualize a localização da reserva
-      }
-    });
-  }
+  // void startLocationUpdates(String reservationId) {
+  //   // Execute a atualização da localização em um loop (por exemplo, a cada minuto)
+  //   Timer.periodic(const Duration(minutes: 1), (timer) async {
+  //     // Verifique se a reserva ainda precisa ser atualizada (opcional)
+  //     // ...
+  //
+  //     // Obtenha a localização atual do usuário
+  //     final userLocation = locationService.userLocation;
+  //     if (userLocation != null) {
+  //       // Obtenha latitude e longitude da localização
+  //       final latitude = userLocation.latitude;
+  //       final longitude = userLocation.longitude;
+  //
+  //       // Atualize a localização da reserva
+  //     }
+  //   });
+  // }
 }

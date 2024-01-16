@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
 
 class FlatButton extends StatelessWidget {
   final String actionText;

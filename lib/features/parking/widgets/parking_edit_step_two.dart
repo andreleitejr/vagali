@@ -1,12 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/parking/controllers/parking_edit_controller.dart';
 import 'package:vagali/theme/coolicons.dart';
-import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/image_picker_bottom_sheet.dart';
 import 'package:vagali/widgets/over_image_button.dart';

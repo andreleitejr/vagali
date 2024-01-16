@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
-import 'package:vagali/models/location_history.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/repositories/reservation_repository.dart';
-import 'package:vagali/services/reservation_service.dart';
+import 'package:vagali/models/location_history.dart';
 
 class LocationService {
   final ReservationRepository _reservationRepository = ReservationRepository();

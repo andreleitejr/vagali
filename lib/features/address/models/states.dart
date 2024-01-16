@@ -1,8 +1,10 @@
-class BrazilianState {
-  final String title;
+import 'package:vagali/models/selectable_item.dart';
+
+class BrazilianState extends SelectableItem{
+  final String name;
   final String acronym;
 
-  BrazilianState(this.title, this.acronym);
+  BrazilianState(this.name, this.acronym);
 
   static const acre = 'AC';
   static const alagoas = 'AL';
@@ -31,6 +33,9 @@ class BrazilianState {
   static const saoPaulo = 'SP';
   static const sergipe = 'SE';
   static const tocantins = 'TO';
+
+  @override
+  String get title => name;
 }
 
 final statesList = <BrazilianState>[

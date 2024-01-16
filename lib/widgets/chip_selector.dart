@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:vagali/models/selectable_item.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/widgets/selection_chip.dart';

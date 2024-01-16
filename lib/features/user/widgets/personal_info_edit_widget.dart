@@ -2,15 +2,12 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:vagali/features/user/controllers/user_edit_controller.dart';
 import 'package:vagali/features/user/models/gender.dart';
-import 'package:vagali/utils/extensions.dart';
-import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/bottom_sheet.dart';
 import 'package:vagali/widgets/date_input.dart';
-import 'package:vagali/widgets/dropdown.dart';
 import 'package:vagali/widgets/image_button.dart';
 import 'package:vagali/widgets/image_picker_bottom_sheet.dart';
 import 'package:vagali/widgets/input.dart';
@@ -27,13 +24,6 @@ class PersonalInfoEditWidget extends StatelessWidget {
   final FocusNode emailFocus = FocusNode();
   final FocusNode genderFocus = FocusNode();
   final FocusNode birthdayFocus = FocusNode();
-
-  // final firstNameController = TextEditingController();
-  // final lastNameController = TextEditingController();
-  // final documentController = TextEditingController();
-  // final emailController = TextEditingController();
-  // final genderController = TextEditingController();
-  // final birthdayController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +78,8 @@ class PersonalInfoEditWidget extends StatelessWidget {
         const SizedBox(height: 32),
         Obx(
           () => Input(
-            enabled:  controller.hasCurrentUser.isFalse,
+            initialValue: controller.firstNameController.value,
+            enabled: controller.hasCurrentUser.isFalse,
             onChanged: controller.firstNameController,
             hintText: 'Nome',
             keyboardType: TextInputType.name,
@@ -100,7 +91,8 @@ class PersonalInfoEditWidget extends StatelessWidget {
         const SizedBox(height: 16),
         Obx(
           () => Input(
-            enabled:  controller.hasCurrentUser.isFalse,
+            initialValue: controller.lastNameController.value,
+            enabled: controller.hasCurrentUser.isFalse,
             onChanged: controller.lastNameController,
             hintText: 'Sobrenome',
             keyboardType: TextInputType.name,
@@ -112,7 +104,8 @@ class PersonalInfoEditWidget extends StatelessWidget {
         const SizedBox(height: 16),
         Obx(
           () => Input(
-            enabled:  controller.hasCurrentUser.isFalse,
+            initialValue: controller.documentController.value,
+            enabled: controller.hasCurrentUser.isFalse,
             onChanged: controller.documentController,
             hintText: 'Document',
             keyboardType: TextInputType.number,
@@ -128,6 +121,7 @@ class PersonalInfoEditWidget extends StatelessWidget {
         const SizedBox(height: 16),
         Obx(
           () => Input(
+            initialValue: controller.emailController.value,
             onChanged: controller.emailController,
             hintText: 'Email',
             keyboardType: TextInputType.emailAddress,
@@ -135,15 +129,17 @@ class PersonalInfoEditWidget extends StatelessWidget {
             currentFocusNode: emailFocus,
             onSubmit: () {
               emailFocus.unfocus();
-              showGenderBottomSheet(context, controller);
+              if(controller.currentUser.value == null){
+                showGenderBottomSheet(context);
+              }
             },
           ),
         ),
         const SizedBox(height: 16),
         InputButton(
-          onChanged: controller.genderController,
+          controller: controller.genderController,
           hintText: 'Qual seu gênero?',
-          onTap: () => showGenderBottomSheet(context, controller),
+          onTap: () => showGenderBottomSheet(context),
         ),
         const SizedBox(height: 16),
         Obx(
@@ -158,32 +154,42 @@ class PersonalInfoEditWidget extends StatelessWidget {
       ],
     );
   }
+
+  void showGenderBottomSheet(BuildContext context) {
+    final focus = FocusScope.of(context);
+
+    Get.bottomSheet(
+      CustomBottomSheet<Gender>(
+        items: genders,
+        title: 'Qual seu gênero?',
+        onItemSelected: (selectedItem) async {
+          controller.genderController.text = selectedItem.title;
+          focus.unfocus();
+
+          await Future.delayed(const Duration(milliseconds: 100));
+
+          if (controller.currentUser.value == null) {
+            final birthday = await selectDateTime(
+              context,
+              DateInputType.birthday,
+              showTime: false,
+            );
+            if (birthday != null) {
+              controller.birthday.value = birthday;
+            }
+          }
+        },
+      ),
+      enableDrag: true,
+    );
+  }
 }
 
-void showGenderBottomSheet(
-    BuildContext context, UserEditController controller) {
-  final focus = FocusScope.of(context);
+class GenderSelectionInpu extends StatelessWidget {
+  const GenderSelectionInpu({super.key});
 
-  Get.bottomSheet(
-    CustomBottomSheet(
-      items: genders.map((gender) => gender.toReadableGender).toList(),
-      title: 'Qual seu gênero?',
-      onItemSelected: (selectedItem) async {
-        controller.genderController.value = selectedItem;
-        focus.unfocus();
-
-        await Future.delayed(const Duration(milliseconds: 100));
-
-        final birthday = await selectDateTime(
-          context,
-          DateInputType.birthday,
-          showTime: false,
-        );
-        if (birthday != null) {
-          controller.birthday.value = birthday;
-        }
-      },
-    ),
-    enableDrag: true,
-  );
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
 }

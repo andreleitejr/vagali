@@ -3,18 +3,12 @@ import 'package:get/get.dart';
 import 'package:vagali/features/auth/controllers/auth_controller.dart';
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/auth/views/code_verification_view.dart';
-import 'package:vagali/theme/theme_colors.dart';
-import 'package:vagali/widgets/loading_view.dart';
 import 'package:vagali/features/auth/views/location_denied_view.dart';
 import 'package:vagali/features/auth/views/login_error_view.dart';
 import 'package:vagali/features/auth/views/select_type_view.dart';
-import 'package:vagali/features/home/landlord/views/landlord_home_view.dart';
 import 'package:vagali/features/home/landlord/views/landlord_base_view.dart';
 import 'package:vagali/features/home/tenant//views/base_view.dart';
-import 'package:vagali/features/home/tenant/views/home_view.dart';
 import 'package:vagali/features/parking/views/parking_edit_view.dart';
-import 'package:vagali/features/user/models/user.dart';
-import 'package:vagali/features/user/views/user_edit_view.dart';
 
 import 'animation_view.dart';
 import 'login_view.dart';

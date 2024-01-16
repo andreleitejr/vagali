@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:rive/rive.dart';
-import 'package:vagali/features/auth/controllers/auth_controller.dart';
 import 'package:vagali/theme/animations.dart';
-import 'package:vagali/theme/images.dart';
 import 'package:vagali/theme/theme_colors.dart';
 
 class AnimationView extends StatefulWidget {

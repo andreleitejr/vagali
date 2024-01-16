@@ -1,17 +1,11 @@
-import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_blurhash/flutter_blurhash.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:get/get.dart';
-import 'package:jumping_dot/jumping_dot.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:vagali/features/map/controllers/map_controller.dart';
-import 'package:vagali/features/parking/models/parking.dart';
 import 'package:vagali/features/parking/views/parking_details_view.dart';
-import 'package:vagali/theme/images.dart';
-import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/image_gallery_dialog.dart';

@@ -1,15 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/landlord/models/landlord.dart';
 import 'package:vagali/features/landlord/repositories/landlord_repository.dart';
 import 'package:vagali/features/parking/repositories/parking_repository.dart';
-import 'package:vagali/features/user/models/user.dart';
-import 'package:vagali/models/location_history.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/tenant/models/tenant.dart';
 import 'package:vagali/features/tenant/repositories/tenant_repository.dart';
+import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/features/vehicle/repositories/vehicle_repository.dart';
+import 'package:vagali/models/location_history.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/utils/extensions.dart';
 
@@ -40,7 +39,6 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
     }
   }
 
-  @override
   Stream<List<Reservation>> streamAllReservationsForLandlord() {
     try {
       final Landlord landlord = Get.find();

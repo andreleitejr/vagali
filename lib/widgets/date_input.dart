@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:vagali/utils/extensions.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/utils/extensions.dart';
+
 import 'input.dart';
 
 enum DateInputType { birthday, reservation }
@@ -115,6 +116,7 @@ class DateInput extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Input(
+      initialValue: date?.toMonthlyAndYearFormattedString(),
       enabled: enabled,
       onChanged: (v) {},
       keyboardType: TextInputType.datetime,

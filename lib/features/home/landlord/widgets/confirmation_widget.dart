@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vagali/features/chat/views/chat_view.dart';
 import 'package:vagali/features/home/landlord/controllers/dashboard_controller.dart';
 import 'package:vagali/features/home/landlord/widgets/tracking_location.dart';
-import 'package:vagali/features/chat/views/chat_view.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/features/vehicle/widgets/vehicle_info_widget.dart';
 import 'package:vagali/theme/coolicons.dart';
-import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/utils/extensions.dart';
 import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/flat_button.dart';

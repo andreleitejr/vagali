@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/utils/extensions.dart';
 
 class PriceInput extends StatelessWidget {
   final String? initialValue;

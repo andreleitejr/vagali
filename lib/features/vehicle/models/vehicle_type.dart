@@ -1,9 +1,10 @@
+import 'package:vagali/models/selectable_item.dart';
 import 'package:vagali/theme/images.dart';
 
 enum VehicleTypeEnum { motorcycle, hatch, sedan, suv, pickup, van, truck }
 
-class VehicleType {
-  final String title;
+class VehicleType extends SelectableItem {
+  final String name;
   final VehicleTypeEnum type;
   final double height;
   final double width;
@@ -11,18 +12,22 @@ class VehicleType {
   final String image;
 
   VehicleType({
-    required this.title,
+    required this.name,
     required this.type,
     required this.height,
     required this.width,
     required this.depth,
     required this.image,
   });
+
+
+  @override
+  String get title => name;
 }
 
 final vehicleTypes = <VehicleType>[
   VehicleType(
-    title: 'Motocicleta',
+    name: 'Motocicleta',
     type: VehicleTypeEnum.motorcycle,
     height: 1,
     width: 1,
@@ -30,7 +35,7 @@ final vehicleTypes = <VehicleType>[
     image: Images.motorcycle,
   ),
   VehicleType(
-    title: 'Hatch',
+    name: 'Hatch',
     type: VehicleTypeEnum.hatch,
     height: 1,
     width: 1,
@@ -38,7 +43,7 @@ final vehicleTypes = <VehicleType>[
     image: Images.hatch,
   ),
   VehicleType(
-    title: 'Sedan',
+    name: 'Sedan',
     type: VehicleTypeEnum.sedan,
     height: 1,
     width: 1,
@@ -46,7 +51,7 @@ final vehicleTypes = <VehicleType>[
     image: Images.sedan,
   ),
   VehicleType(
-    title: 'SUV',
+    name: 'SUV',
     type: VehicleTypeEnum.suv,
     height: 1,
     width: 1,
@@ -54,7 +59,7 @@ final vehicleTypes = <VehicleType>[
     image: Images.suv,
   ),
   VehicleType(
-    title: 'Caminhonete',
+    name: 'Caminhonete',
     type: VehicleTypeEnum.pickup,
     height: 1,
     width: 1,
@@ -62,7 +67,7 @@ final vehicleTypes = <VehicleType>[
     image: Images.pickup,
   ),
   VehicleType(
-    title: 'Van',
+    name: 'Van',
     type: VehicleTypeEnum.van,
     height: 1,
     width: 1,
@@ -70,7 +75,7 @@ final vehicleTypes = <VehicleType>[
     image: Images.van,
   ),
   VehicleType(
-    title: 'Caminhão',
+    name: 'Caminhão',
     type: VehicleTypeEnum.truck,
     height: 1,
     width: 1,

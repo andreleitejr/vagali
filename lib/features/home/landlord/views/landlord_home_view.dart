@@ -7,7 +7,6 @@ import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/empty_list.dart';
-
 import 'package:vagali/widgets/loader.dart';
 import 'package:vagali/widgets/title_with_action.dart';
 import 'package:vagali/widgets/user_app_bar.dart';

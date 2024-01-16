@@ -7,8 +7,8 @@ import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/features/vehicle/widgets/vehicle_info_widget.dart';
 import 'package:vagali/theme/coolicons.dart';
-import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/carousel_image_slider.dart';
 import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/date_period.dart';
@@ -91,7 +91,7 @@ class ReservationDetailsView extends StatelessWidget {
           const SizedBox(height: 16),
           AddressCard(
             address: reservation.parking!.address,
-            editionModeOn: false,
+            editModeOn: false,
           ),
           const SizedBox(height: 16),
         ],

@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vagali/features/landlord/models/landlord.dart';
 import 'package:vagali/features/parking/models/parking.dart';
-import 'package:vagali/models/location_history.dart';
 import 'package:vagali/features/tenant/models/tenant.dart';
 import 'package:vagali/features/vehicle/models/vehicle.dart';
 import 'package:vagali/models/base_model.dart';
+import 'package:vagali/models/location_history.dart';
 import 'package:vagali/utils/extensions.dart';
 
 enum ReservationStatus {

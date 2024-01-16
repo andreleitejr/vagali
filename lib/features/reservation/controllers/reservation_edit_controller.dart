@@ -1,18 +1,15 @@
-import 'dart:ffi';
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import 'package:vagali/features/parking/models/parking.dart';
-import 'package:vagali/features/vehicle/models/vehicle.dart';
-import 'package:vagali/models/location_history.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/repositories/reservation_repository.dart';
 import 'package:vagali/features/tenant/models/tenant.dart';
 import 'package:vagali/features/vehicle/controllers/vehicle_edit_controller.dart';
+import 'package:vagali/features/vehicle/models/vehicle.dart';
+import 'package:vagali/models/location_history.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/services/price_service.dart';
 import 'package:vagali/theme/images.dart';

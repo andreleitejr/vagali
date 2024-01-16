@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
-import 'package:get/get.dart';
 import 'package:vagali/theme/theme_typography.dart';
 
 class GradientSlider extends StatelessWidget {

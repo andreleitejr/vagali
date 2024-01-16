@@ -1,20 +1,9 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/parking/controllers/parking_edit_controller.dart';
-import 'package:vagali/features/parking/models/parking_tag.dart';
-import 'package:vagali/features/vehicle/models/vehicle_type.dart';
-import 'package:vagali/services/garage_service.dart';
 import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/widgets/chip_selector.dart';
 import 'package:vagali/widgets/gradient_slider.dart';
-import 'package:vagali/widgets/input.dart';
-
-import 'package:vagali/widgets/schedule_input.dart';
 import 'package:vagali/widgets/switch_button.dart';
-
-import 'gate_input.dart';
 
 class StepThreeWidget extends StatelessWidget {
   final ParkingEditController controller;

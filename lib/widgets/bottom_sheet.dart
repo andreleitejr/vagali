@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vagali/theme/theme_typography.dart';
+import 'package:vagali/models/selectable_item.dart';
 import 'package:vagali/theme/theme_colors.dart';
-import 'package:vagali/widgets/input.dart';
+import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/search_input.dart';
 
-class CustomBottomSheet extends StatelessWidget {
-  final List<String> items;
+class CustomBottomSheet<T extends SelectableItem> extends StatelessWidget {
+  final List<T> items;
   final String title;
-  final Function(String) onItemSelected;
+  final Function(T) onItemSelected;
 
   CustomBottomSheet({
     super.key,
@@ -94,7 +94,7 @@ class CustomBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildListItem(String item) {
+  Widget _buildListItem(T item) {
     return GestureDetector(
       onTap: () {
         onItemSelected(item);
@@ -109,7 +109,7 @@ class CustomBottomSheet extends StatelessWidget {
           color: ThemeColors.grey2,
         ))),
         child: Text(
-          item,
+          item.title,
           // textAlign: TextAlign.center,
           style: ThemeTypography.medium14,
         ),

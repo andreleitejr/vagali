@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
-
 // Features
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/landlord/models/landlord.dart';

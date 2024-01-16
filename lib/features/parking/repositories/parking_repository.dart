@@ -1,14 +1,12 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/landlord/models/landlord.dart';
 import 'package:vagali/features/landlord/repositories/landlord_repository.dart';
 import 'package:vagali/features/parking/models/parking.dart';
-import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vagali/services/image_service.dart';
 import 'package:vagali/services/location_service.dart';
 import 'package:vagali/utils/extensions.dart';

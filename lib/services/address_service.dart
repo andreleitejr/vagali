@@ -1,8 +1,9 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
 import 'package:vagali/features/address/models/address.dart';
-import 'dart:convert';
 
 class AddressService {
   Future<Map<String, dynamic>?> getAddressDetails(String postalCode) async {

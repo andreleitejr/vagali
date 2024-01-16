@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:vagali/features/vehicle/models/vehicle.dart';
-import 'package:vagali/features/vehicle/views/vehicle_edit_view.dart';
 import 'package:vagali/theme/coolicons.dart';
-import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/theme/theme_colors.dart';
-import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/title_with_icon.dart';
 
 class VehicleInfoWidget extends StatelessWidget {

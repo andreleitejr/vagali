@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:vagali/features/landlord/models/landlord.dart';
-import 'package:vagali/features/landlord/repositories/landlord_repository.dart';
 import 'package:vagali/features/parking/models/parking.dart';
 import 'package:vagali/features/parking/repositories/parking_repository.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
@@ -23,7 +22,6 @@ class LandlordHomeController extends GetxController {
   final _reservationRepository = Get.put(ReservationRepository());
   final _tenantRepository = Get.put(TenantRepository());
   final _vehicleRepository = Get.put(VehicleRepository());
-  final _landlordRepository = Get.put(LandlordRepository());
 
   GoogleMapController? _mapController;
 

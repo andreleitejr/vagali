@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vagali/theme/coolicons.dart';
-import 'package:vagali/utils/extensions.dart';
-import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/theme/theme_colors.dart';
-import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/theme/theme_typography.dart';
+import 'package:vagali/utils/extensions.dart';
 import 'package:vagali/widgets/title_with_icon.dart';
 
 enum DatePeriodType {
@@ -23,7 +22,7 @@ class DatePeriod extends StatelessWidget {
     super.key,
     required this.startDate,
     required this.endDate,
-    final this.showTitle = true,
+    this.showTitle = true,
     // this.type = DatePeriodType.monthAndYear,
   });
 

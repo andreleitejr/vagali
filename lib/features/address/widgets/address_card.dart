@@ -1,36 +1,30 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:vagali/features/address/controllers/address_controller.dart';
 import 'package:vagali/features/address/models/address.dart';
-import 'package:vagali/services/address_service.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/coolicon.dart';
 
-class AddressCard extends StatefulWidget {
-  final bool editionModeOn;
+// ignore: must_be_immutable
+class AddressCard extends StatelessWidget {
+  final bool editModeOn;
   final Address address;
   late AddressController addressController;
 
   AddressCard({
     super.key,
     required this.address,
-    this.editionModeOn = true,
+    this.editModeOn = true,
   }) {
     addressController = Get.put(AddressController(address));
   }
 
   @override
-  State<AddressCard> createState() => _AddressCardState();
-}
-
-class _AddressCardState extends State<AddressCard> {
-  @override
   Widget build(BuildContext context) {
     final fullAddress =
-        '${widget.address.street ?? ''}, ${widget.address.number ?? ''} - ${widget.address.city}, ${widget.address.state} - ${widget.address.country}';
+        '${address.street}, ${address.number} - ${address.city}, ${address.state} - ${address.country}';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -43,7 +37,7 @@ class _AddressCardState extends State<AddressCard> {
                 style: ThemeTypography.medium16,
               ),
             ),
-            if (widget.editionModeOn)
+            if (editModeOn)
               const Coolicon(
                 icon: Coolicons.noteEdit,
               ),
@@ -54,7 +48,6 @@ class _AddressCardState extends State<AddressCard> {
           children: [
             const Coolicon(
               icon: Coolicons.mapPin,
-
             ),
             const SizedBox(width: 4),
             Expanded(
@@ -71,8 +64,7 @@ class _AddressCardState extends State<AddressCard> {
           height: 140,
           child: Obx(
             () {
-              final currentCoordinates =
-                  widget.addressController.coordinates.value;
+              final currentCoordinates = addressController.coordinates.value;
 
               if (currentCoordinates == null) return Container();
 
@@ -85,7 +77,7 @@ class _AddressCardState extends State<AddressCard> {
                   zoom: 15.0,
                 ),
                 markers: {
-                  widget.addressController.marker.value ??
+                  addressController.marker.value ??
                       Marker(
                         markerId: MarkerId('location'),
                         position: LatLng(currentCoordinates.latitude,
@@ -93,7 +85,7 @@ class _AddressCardState extends State<AddressCard> {
                       ),
                 },
                 onMapCreated: (GoogleMapController controller) {
-                  widget.addressController.loadMapStyle(controller);
+                  addressController.loadMapStyle(controller);
                 },
               );
             },
