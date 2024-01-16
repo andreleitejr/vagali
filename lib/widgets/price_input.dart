@@ -5,6 +5,7 @@ import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/utils/extensions.dart';
 
 class PriceInput extends StatelessWidget {
+  final String? initialValue;
   final TextInputType keyboardType;
   final String hintText;
   final bool obscureText;
@@ -17,10 +18,13 @@ class PriceInput extends StatelessWidget {
   final FocusNode? currentFocusNode;
   final FocusNode? nextFocusNode;
   final VoidCallback? onSubmit;
-  final TextEditingController controller;
+  final Function(String) onChanged;
+
+  // final TextEditingController controller;
 
   PriceInput({
     super.key,
+    this.initialValue,
     this.keyboardType = TextInputType.text,
     required this.hintText,
     this.obscureText = false,
@@ -33,7 +37,8 @@ class PriceInput extends StatelessWidget {
     this.currentFocusNode,
     this.nextFocusNode,
     this.onSubmit,
-    required this.controller,
+    // required this.controller,
+    required this.onChanged,
   });
 
   @override
@@ -62,9 +67,10 @@ class PriceInput extends StatelessWidget {
             ),
             Expanded(
               child: TextFormField(
+                initialValue: initialValue,
                 focusNode: currentFocusNode,
                 enabled: enabled,
-                controller: controller,
+                // controller: controller,
                 keyboardType: keyboardType,
                 obscureText: obscureText,
                 inputFormatters: inputFormatters,
@@ -104,6 +110,7 @@ class PriceInput extends StatelessWidget {
                     FocusScope.of(context).requestFocus(nextFocusNode);
                   }
                 },
+                onChanged: onChanged,
               ),
             ),
           ],

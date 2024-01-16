@@ -22,6 +22,6 @@ class ParkingDetailsController extends GetxController {
   ParkingDetailsController(this._parking);
 
   Future<void> _loadOwnerDetails() async {
-    parking.value = await _repository.getParkingWithEntities(_parking.ownerId);
+    parking.value = await _repository.getParkingWithEntities(_parking.userId);
   }
 }

@@ -61,10 +61,7 @@ class ParkingListTile extends StatelessWidget {
                         loading: loading,
                         child: Text(
                           parking.name,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: ThemeTypography.semiBold14,
                         ),
                       ),
                       ShimmerBox(

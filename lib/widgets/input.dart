@@ -4,7 +4,9 @@ import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/theme/theme_colors.dart';
 
 class Input extends StatelessWidget {
-  final TextEditingController controller;
+  final String? initialValue;
+
+  // final TextEditingController controller;
   final TextInputType keyboardType;
   final String hintText;
   final bool obscureText;
@@ -17,10 +19,12 @@ class Input extends StatelessWidget {
   final FocusNode? currentFocusNode;
   final FocusNode? nextFocusNode;
   final VoidCallback? onSubmit;
+  final Function(String) onChanged;
 
   Input({
     super.key,
-    required this.controller,
+    // required this.controller,
+    this.initialValue,
     this.keyboardType = TextInputType.text,
     required this.hintText,
     this.obscureText = false,
@@ -33,6 +37,7 @@ class Input extends StatelessWidget {
     this.currentFocusNode,
     this.nextFocusNode,
     this.onSubmit,
+    required this.onChanged,
   });
 
   @override
@@ -41,9 +46,10 @@ class Input extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextFormField(
+          initialValue: initialValue,
           focusNode: currentFocusNode,
           enabled: enabled,
-          controller: controller,
+          // controller: controller,
           keyboardType: keyboardType,
           obscureText: obscureText,
           inputFormatters: inputFormatters,
@@ -53,10 +59,10 @@ class Input extends StatelessWidget {
           ),
           decoration: InputDecoration(
             contentPadding:
-                EdgeInsets.only(left: 16, top: maxLines > 1 ? 20 : 0),
+            EdgeInsets.only(left: 16, top: maxLines > 1 ? 20 : 0),
             hintText: '$hintText${required ? ' *' : ''}',
             hintStyle:
-                ThemeTypography.regular14.apply(color: ThemeColors.grey4),
+            ThemeTypography.regular14.apply(color: ThemeColors.grey4),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(
@@ -84,6 +90,7 @@ class Input extends StatelessWidget {
               FocusScope.of(context).requestFocus(nextFocusNode);
             }
           },
+          onChanged: onChanged,
         ),
         if (error != null && error!.isNotEmpty) ...[
           Text(
@@ -152,10 +159,10 @@ class Input2 extends StatelessWidget {
               .apply(color: enabled ? ThemeColors.primary : ThemeColors.grey4),
           decoration: InputDecoration(
             contentPadding:
-                EdgeInsets.only(left: 16, top: maxLines > 1 ? 20 : 0),
+            EdgeInsets.only(left: 16, top: maxLines > 1 ? 20 : 0),
             hintText: '$hintText${required ? ' *' : ''}',
             hintStyle:
-                ThemeTypography.regular14.apply(color: ThemeColors.grey3),
+            ThemeTypography.regular14.apply(color: ThemeColors.grey3),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(

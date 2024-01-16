@@ -9,9 +9,11 @@ import 'package:vagali/features/parking/widgets/parking_edit_step_four.dart';
 import 'package:vagali/features/parking/widgets/parking_edit_step_one.dart';
 import 'package:vagali/features/parking/widgets/parking_edit_step_three.dart';
 import 'package:vagali/features/parking/widgets/parking_edit_step_two.dart';
+import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/logo.dart';
+import 'package:vagali/widgets/snackbar.dart';
 
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
@@ -42,9 +44,16 @@ class _ParkingEditViewState extends State<ParkingEditView> {
           await _controller.pickImagesFromGallery();
         }
       } else {
-        await _controller.save();
+        try {
+          await _controller.uploadImages();
+          final result = await _controller.save();
 
-        Get.to(() => LandlordBaseView());
+          if (result == SaveResult.success) {
+            Get.to(() => LandlordBaseView());
+          }
+        } catch (e) {
+          snackBar('Erro', e.toString());
+        }
       }
     } else {
       _controller.showErrors(true);

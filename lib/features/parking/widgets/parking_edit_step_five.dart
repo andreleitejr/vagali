@@ -1,3 +1,4 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -16,12 +17,6 @@ class StepFiveWidget extends StatelessWidget {
   final ParkingEditController controller;
 
   StepFiveWidget({super.key, required this.controller});
-
-  final pricePerHourController = TextEditingController();
-  final pricePerSixHoursController = TextEditingController();
-  final pricePerTwelveHoursController = TextEditingController();
-  final pricePerDayController = TextEditingController();
-  final pricePerMonthController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -52,61 +47,71 @@ class StepFiveWidget extends StatelessWidget {
           const SizedBox(height: 16),
           Obx(
             () => PriceInput(
-              controller: controller.pricePerHourController,
+              initialValue:
+                  getMonetaryValue(controller.pricePerMonthController.value),
               hintText: 'Preco por hora',
               keyboardType: TextInputType.number,
               error: controller.getError(controller.priceError),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
+              onChanged: controller.pricePerHourController,
             ),
           ),
           const SizedBox(height: 16),
           Obx(
             () => PriceInput(
-              controller: controller.pricePerSixHoursController,
+              initialValue:
+                  getMonetaryValue(controller.pricePerSixHoursController.value),
               hintText: 'Preco por 6 horas',
               keyboardType: TextInputType.number,
               error: controller.getError(controller.priceError),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
+              onChanged: controller.pricePerSixHoursController,
             ),
           ),
           const SizedBox(height: 16),
           Obx(
             () => PriceInput(
-              controller: controller.pricePerTwelveHoursController,
+              initialValue: getMonetaryValue(
+                  controller.pricePerTwelveHoursController.value),
               hintText: 'Preco por 12 horas',
               keyboardType: TextInputType.number,
               error: controller.getError(controller.priceError),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
+              onChanged: controller.pricePerTwelveHoursController,
             ),
           ),
           const SizedBox(height: 16),
           Obx(
             () => PriceInput(
-              controller: controller.pricePerDayController,
+              initialValue:
+                  getMonetaryValue(controller.pricePerDayController.value),
               hintText: 'Preco por diária',
               keyboardType: TextInputType.number,
               error: controller.getError(controller.priceError),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
+              onChanged: controller.pricePerDayController,
             ),
           ),
           const SizedBox(height: 16),
           Obx(() {
             return PriceInput(
-              controller: controller.pricePerMonthController,
+              initialValue:
+                  getMonetaryValue(controller.pricePerMonthController.value),
               hintText: 'Preco por mês',
               keyboardType: TextInputType.number,
               error: controller.getError(controller.priceError),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
+              onChanged: controller.pricePerMonthController,
             );
           }),
           const SizedBox(height: 16),
@@ -129,6 +134,14 @@ class StepFiveWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String? getMonetaryValue(String v) {
+    final value = double.tryParse(v);
+    if (value != null) {
+      return UtilBrasilFields.obterReal(value);
+    }
+    return null;
   }
 
   void _showReservationTypeBottomSheet(BuildContext context) {

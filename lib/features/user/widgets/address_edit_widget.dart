@@ -33,7 +33,7 @@ class AddressEditWidget extends StatelessWidget {
       children: [
         Obx(
           () => Input(
-            controller: controller.postalCodeController,
+            onChanged: controller.postalCodeController,
             hintText: 'CEP',
             error: controller.getError(controller.postalCodeError),
             keyboardType: TextInputType.number,
@@ -48,7 +48,7 @@ class AddressEditWidget extends StatelessWidget {
         const SizedBox(height: 16),
         Obx(
           () => Input(
-            controller: controller.streetController,
+            onChanged: controller.streetController,
             keyboardType: TextInputType.streetAddress,
             hintText: 'Rua',
             error: controller.getError(controller.streetError),
@@ -59,7 +59,7 @@ class AddressEditWidget extends StatelessWidget {
         const SizedBox(height: 16),
         Obx(
           () => Input(
-            controller: controller.numberController,
+            onChanged: controller.numberController,
             hintText: 'Número',
             error: controller.getError(controller.numberError),
             currentFocusNode: numberFocus,
@@ -69,7 +69,7 @@ class AddressEditWidget extends StatelessWidget {
         const SizedBox(height: 16),
         Obx(
           () => Input(
-            controller: controller.cityController,
+            onChanged: controller.cityController,
             hintText: 'Cidade',
             error: controller.getError(controller.cityError),
             currentFocusNode: cityFocus,
@@ -79,7 +79,7 @@ class AddressEditWidget extends StatelessWidget {
         const SizedBox(height: 16),
         Obx(
           () => Input(
-            controller: controller.stateController,
+            onChanged: controller.stateController,
             hintText: 'Estado',
             error: controller.getError(controller.stateError),
             currentFocusNode: stateFocus,
@@ -88,14 +88,14 @@ class AddressEditWidget extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Input(
-          controller: controller.countryController,
+          onChanged: controller.countryController,
           hintText: 'País',
           currentFocusNode: countryFocus,
           nextFocusNode: complementFocus,
         ),
         const SizedBox(height: 16),
         Input(
-          controller: controller.complementController,
+          onChanged: controller.complementController,
           hintText: 'Complemento',
           currentFocusNode: complementFocus,
           onSubmit: () => FocusScope.of(context).unfocus(),

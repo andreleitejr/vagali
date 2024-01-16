@@ -18,21 +18,14 @@ class StepFourWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Obx(
-            () => ChipSelector<ParkingTag>(
+          Obx(() {
+
+            return ChipSelector<ParkingTag>(
               items: parkingTags,
-              onSelectionChanged: (selectedItems) {
-                if (selectedItems.isNotEmpty) {
-                  for (final item in selectedItems) {
-                    controller.parkingTags.add(item);
-                  }
-                } else {
-                  controller.parkingTags.clear();
-                }
-              },
+              selectedItems: controller.parkingTags,
               error: controller.getError(controller.tagsError),
-            ),
-          ),
+            );
+          }),
           Obx(
             () {
               final error = controller.getError(controller.tagsError);

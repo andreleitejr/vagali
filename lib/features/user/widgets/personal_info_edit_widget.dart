@@ -89,7 +89,7 @@ class PersonalInfoEditWidget extends StatelessWidget {
         Obx(
           () => Input(
             enabled:  controller.hasCurrentUser.isFalse,
-            controller: controller.firstNameController,
+            onChanged: controller.firstNameController,
             hintText: 'Nome',
             keyboardType: TextInputType.name,
             error: controller.getError(controller.firstNameError),
@@ -101,7 +101,7 @@ class PersonalInfoEditWidget extends StatelessWidget {
         Obx(
           () => Input(
             enabled:  controller.hasCurrentUser.isFalse,
-            controller: controller.lastNameController,
+            onChanged: controller.lastNameController,
             hintText: 'Sobrenome',
             keyboardType: TextInputType.name,
             error: controller.getError(controller.lastNameError),
@@ -113,7 +113,7 @@ class PersonalInfoEditWidget extends StatelessWidget {
         Obx(
           () => Input(
             enabled:  controller.hasCurrentUser.isFalse,
-            controller: controller.documentController,
+            onChanged: controller.documentController,
             hintText: 'Document',
             keyboardType: TextInputType.number,
             error: controller.getError(controller.documentError),
@@ -128,7 +128,7 @@ class PersonalInfoEditWidget extends StatelessWidget {
         const SizedBox(height: 16),
         Obx(
           () => Input(
-            controller: controller.emailController,
+            onChanged: controller.emailController,
             hintText: 'Email',
             keyboardType: TextInputType.emailAddress,
             error: controller.getError(controller.emailError),
@@ -141,7 +141,7 @@ class PersonalInfoEditWidget extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         InputButton(
-          controller: controller.genderController,
+          onChanged: controller.genderController,
           hintText: 'Qual seu gênero?',
           onTap: () => showGenderBottomSheet(context, controller),
         ),
@@ -169,7 +169,7 @@ void showGenderBottomSheet(
       items: genders.map((gender) => gender.toReadableGender).toList(),
       title: 'Qual seu gênero?',
       onItemSelected: (selectedItem) async {
-        controller.genderController.text = selectedItem;
+        controller.genderController.value = selectedItem;
         focus.unfocus();
 
         await Future.delayed(const Duration(milliseconds: 100));

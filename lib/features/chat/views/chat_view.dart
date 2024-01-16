@@ -48,7 +48,7 @@ class _ChatViewState extends State<ChatView> {
               children: <Widget>[
                 Expanded(
                   child: Input(
-                    controller: controller.messageController,
+                    onChanged: controller.messageController,
                     hintText: 'Digite sua mensagem...',
                   ),
                 ),

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:vagali/theme/theme_typography.dart';
 
 class GradientSlider extends StatelessWidget {
-  final RxDouble value;
+  final double value;
   final double min;
   final double max;
   final ValueChanged<double> onChanged;
@@ -32,16 +32,14 @@ class GradientSlider extends StatelessWidget {
                 style: ThemeTypography.semiBold16,
               ),
             ),
-            Obx(
-              () => Text(
-                '${value.toStringAsFixed(0)} metros',
-                style: const TextStyle(fontSize: 16),
-              ),
+            Text(
+            '${value.toStringAsFixed(0)} metros',
+            style: const TextStyle(fontSize: 16),
             ),
           ],
         ),
         FlutterSlider(
-          values: [value.value],
+          values: [value],
           min: min,
           max: max,
           onDragging: (handlerIndex, lowerValue, upperValue) {

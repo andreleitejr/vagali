@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:vagali/widgets/input.dart';
 
 class InputButton extends StatelessWidget {
-  final TextEditingController controller;
+  // final TextEditingController controller;
   final TextInputType keyboardType;
   final String hintText;
   final bool obscureText;
@@ -13,10 +13,11 @@ class InputButton extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final int maxLines;
   final bool enabled;
+  final Function(String) onChanged;
 
   const InputButton({
     super.key,
-    required this.controller,
+    // required this.controller,
     this.keyboardType = TextInputType.text,
     required this.hintText,
     this.obscureText = false,
@@ -26,6 +27,7 @@ class InputButton extends StatelessWidget {
     this.inputFormatters,
     this.maxLines = 1,
     this.enabled = true,
+    required this.onChanged,
   });
 
   @override
@@ -34,7 +36,8 @@ class InputButton extends StatelessWidget {
       onTap: onTap,
       child: AbsorbPointer(
         child: Input(
-          controller: controller,
+          // controller: controller,
+          onChanged: onChanged,
           hintText: hintText,
           keyboardType: keyboardType,
           obscureText: obscureText,

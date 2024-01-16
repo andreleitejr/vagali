@@ -5,6 +5,7 @@ import 'package:vagali/features/config/widgets/config_list_tile.dart';
 import 'package:vagali/features/landlord/controllers/landlord_controller.dart';
 import 'package:vagali/features/landlord/widgets/landlord_header.dart';
 import 'package:vagali/features/parking/views/parking_edit_option_view.dart';
+import 'package:vagali/features/parking/views/parking_list_view.dart';
 import 'package:vagali/features/support/views/support_edit_view.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
@@ -33,7 +34,7 @@ class LandlordView extends StatelessWidget {
             const SizedBox(height: 16),
             ConfigListTile(
               title: 'Minhas vagas',
-              onTap: () => Get.to(() => ParkingEditOptionView()),
+              onTap: () => Get.to(() => ParkingListView()),
             ),
             const Divider(
               color: ThemeColors.grey2,

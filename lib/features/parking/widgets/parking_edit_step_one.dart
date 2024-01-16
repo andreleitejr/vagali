@@ -20,18 +20,20 @@ class StepOneWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Obx(() {
-              return Input(
-                controller: controller.nameController.value,
+            Obx(
+              () => Input(
+                initialValue: controller.nameController.value,
+                onChanged: controller.nameController,
                 hintText: 'Nome da Vaga',
                 required: true,
                 error: controller.getError(controller.nameError),
-              );
-            }),
+              ),
+            ),
             const SizedBox(height: 16),
             Obx(
               () => Input(
-                controller: controller.descriptionController.value,
+                initialValue: controller.descriptionController.value,
+                onChanged: controller.descriptionController,
                 hintText: 'Descrição da Vaga',
                 required: true,
                 error: controller.getError(controller.descriptionError),

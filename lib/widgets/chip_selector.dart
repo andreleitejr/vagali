@@ -6,14 +6,17 @@ import 'package:vagali/widgets/selection_chip.dart';
 
 class ChipSelector<T extends SelectableItem> extends StatefulWidget {
   final List<T> items;
-  final Function(List<T>) onSelectionChanged;
+  final List<T> selectedItems;
+
+  // final Function(List<T>) onSelectionChanged;
   final bool isSingleSelection;
   final String? error;
 
   const ChipSelector(
       {Key? key,
       required this.items,
-      required this.onSelectionChanged,
+      required this.selectedItems,
+      // required this.onSelectionChanged,
       this.isSingleSelection = false,
       this.error})
       : super(key: key);
@@ -24,25 +27,24 @@ class ChipSelector<T extends SelectableItem> extends StatefulWidget {
 
 class _ChipSelectorState<T extends SelectableItem>
     extends State<ChipSelector<T>> {
-  List<T> selectedItems = [];
-
   void toggleSelection(T item) {
-    setState(() {
-      if (widget.isSingleSelection) {
-        selectedItems = [item];
+    if (widget.isSingleSelection) {
+      widget.selectedItems.add(item);
+    } else {
+      if (widget.selectedItems.contains(item)) {
+        widget.selectedItems.remove(item);
       } else {
-        if (selectedItems.contains(item)) {
-          selectedItems.remove(item);
-        } else {
-          selectedItems.add(item);
-        }
+        widget.selectedItems.add(item);
       }
-      widget.onSelectionChanged(selectedItems);
-    });
+    }
+    // widget.onSelectionChanged(widget.selectedItems);
   }
 
   @override
   Widget build(BuildContext context) {
+    print(
+        'HUASDHUHSUHUADSHUADSHADSUH SELECTED ITEMS dd3 ${widget.selectedItems.length}');
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -54,7 +56,9 @@ class _ChipSelectorState<T extends SelectableItem>
               },
               child: SelectionChip(
                 label: item.title,
-                isSelected: selectedItems.contains(item),
+                isSelected: widget.selectedItems.any(
+                  (element) => element.title == item.title,
+                ),
               ),
             );
           }).toList(),

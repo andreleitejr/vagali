@@ -27,7 +27,7 @@ class ParkingRepository extends FirestoreRepository<Parking> {
           .where('ownerId', isEqualTo: ownerId)
           .get();
       final parking = fromDocument(document.docs.first);
-      final landlord = await LandlordRepository().get(parking.ownerId);
+      final landlord = await LandlordRepository().get(parking.userId);
 
       parking.owner = landlord as Landlord;
 
@@ -51,7 +51,7 @@ class ParkingRepository extends FirestoreRepository<Parking> {
 
       for (final parking in parkings) {
         parking.owner = landlords
-            .firstWhereOrNull((landlord) => parking.ownerId == landlord.id!);
+            .firstWhereOrNull((landlord) => parking.userId == landlord.id!);
       }
       return parkings;
     } catch (error) {

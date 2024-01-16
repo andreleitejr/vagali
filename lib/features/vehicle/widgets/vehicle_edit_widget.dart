@@ -82,7 +82,7 @@ class VehicleEditWidget extends StatelessWidget {
         const SizedBox(height: 16),
         Obx(
           () => InputButton(
-            controller: controller.vehicleTypeController,
+            onChanged: controller.vehicleTypeController,
             hintText: 'Tipo de veículo',
             error: controller.getError(controller.vehicleTypeError),
             onTap: () => _showVehicleTypeBottomSheet(context),
@@ -91,7 +91,7 @@ class VehicleEditWidget extends StatelessWidget {
         const SizedBox(height: 16),
         Obx(
           () => Input(
-            controller: controller.licensePlateController,
+            onChanged: controller.licensePlateController,
             hintText: 'Placa do Veículo',
             error: controller.getError(controller.licensePlateError),
             inputFormatters: [
@@ -104,7 +104,7 @@ class VehicleEditWidget extends StatelessWidget {
         const SizedBox(height: 16),
         Obx(
           () => Input(
-            controller: controller.brandController,
+            onChanged: controller.brandController,
             hintText: 'Marca do Veículo',
             error: controller.getError(controller.brandError),
             currentFocusNode: brandFocus,
@@ -114,7 +114,7 @@ class VehicleEditWidget extends StatelessWidget {
         const SizedBox(height: 16),
         Obx(
           () => Input(
-            controller: controller.modelController,
+            onChanged: controller.modelController,
             hintText: 'Modelo do Veículo',
             error: controller.getError(controller.modelError),
             currentFocusNode: modelFocus,
@@ -124,7 +124,7 @@ class VehicleEditWidget extends StatelessWidget {
         const SizedBox(height: 16),
         Obx(
           () => Input(
-            controller: controller.yearController,
+            onChanged: controller.yearController,
             hintText: 'Ano do Veículo',
             error: controller.getError(controller.yearError),
             keyboardType: TextInputType.number,
@@ -145,7 +145,7 @@ class VehicleEditWidget extends StatelessWidget {
             onTap: () => _showColorBottomSheet(context),
             child: Input(
               enabled: false,
-              controller: controller.colorController,
+              onChanged: controller.colorController,
               hintText: 'Cor do Veículo',
               error: controller.getError(controller.colorError),
               currentFocusNode: colorFocus,
@@ -163,7 +163,7 @@ class VehicleEditWidget extends StatelessWidget {
             onTap: () => _showStateBottomSheet(context),
             child: Input(
               enabled: false,
-              controller: controller.registrationStateController,
+              onChanged: controller.registrationStateController,
               hintText: 'Estado de Registro',
               error: controller.getError(controller.registrationStateError),
             ),
@@ -203,7 +203,7 @@ class VehicleEditWidget extends StatelessWidget {
         items: vehicleTypes.map((vehicle) => vehicle.title).toList(),
         title: "Selecione o tipo de veículo",
         onItemSelected: (selectedItem) {
-          controller.vehicleTypeController.text = selectedItem;
+          controller.vehicleTypeController.value = selectedItem;
           focus.requestFocus(licensePlateFocus);
         },
       ),
@@ -220,7 +220,7 @@ class VehicleEditWidget extends StatelessWidget {
             .toList(),
         title: "Selecione o estado de registro",
         onItemSelected: (selectedItem) {
-          controller.registrationStateController.text = selectedItem;
+          controller.registrationStateController.value = selectedItem;
           focus.unfocus();
         },
       ),
@@ -266,7 +266,7 @@ class VehicleEditWidget extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     onTap: () {
-                      controller.colorController.text =
+                      controller.colorController.value =
                           vehicleColorsList[index].title;
                       Get.back();
                       _showStateBottomSheet(context);

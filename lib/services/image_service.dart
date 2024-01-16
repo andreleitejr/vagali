@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:blurhash/blurhash.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 // import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vagali/models/image_blurhash.dart';
@@ -119,5 +121,26 @@ class ImageService {
       debugPrint('Erro ao fazer upload de Blurhash no Firebase Storage: $e');
       return null;
     }
+  }
+
+  Future<List<XFile>> downloadAndSaveImagesToLocal(List<ImageBlurHash> imageUrls) async {
+    final List<XFile> localImages = [];
+
+    for (final url in imageUrls) {
+      try {
+        final response = await Dio().get<List<int>>(url.image,
+            options: Options(responseType: ResponseType.bytes));
+
+        final directory = await getTemporaryDirectory();
+        final filePath = '${directory.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+
+        await File(filePath).writeAsBytes(response.data!);
+        localImages.add(XFile(filePath));
+      } catch (e) {
+        debugPrint('Erro ao baixar e salvar imagem: $e');
+      }
+    }
+
+    return localImages;
   }
 }

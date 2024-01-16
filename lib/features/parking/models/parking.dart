@@ -18,16 +18,16 @@ class Parking extends BaseModel {
   final String description;
   final List<ImageBlurHash> images;
   Landlord? owner;
-  final String ownerId;
+  final String userId;
   final String type;
   final String reservationType;
 
   // final OperatingHours operatingHours;
   final GeoPoint location;
   final Address address;
-  final double gateHeight;
-  final double gateWidth;
-  final double garageDepth;
+  final num gateHeight;
+  final num gateWidth;
+  final num garageDepth;
   final bool isAutomatic;
   List<Rating> ratings = <Rating>[];
   final bool isOpen;
@@ -60,7 +60,7 @@ class Parking extends BaseModel {
     required this.tags,
     required this.description,
     required this.images,
-    required this.ownerId,
+    required this.userId,
     required this.type,
     // required this.operatingHours,
     required this.location,
@@ -85,7 +85,7 @@ class Parking extends BaseModel {
       'tags': tags.map((tag) => tag.name).toList(),
       'description': description,
       'images': images.map((image) => image.toMap()).toList(),
-      'ownerId': ownerId,
+      'userId': userId,
       'type': type,
       // 'operatingHours': operatingHours.toMap(),
       'location': location,
@@ -111,7 +111,7 @@ class Parking extends BaseModel {
         images = (document['images'] as List<dynamic>)
             .map((imageData) => ImageBlurHash.fromMap(imageData))
             .toList(),
-        ownerId = document['ownerId'],
+        userId = document['userId'],
         type = document['type'],
         // operatingHours = OperatingHours.fromMap(document['operatingHours']),
         location = document['location'],

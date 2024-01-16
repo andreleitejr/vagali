@@ -13,26 +13,25 @@ class VehicleEditController extends GetxController {
 
   var imageBlurhash = Rx<ImageBlurHash?>(null);
   final imageFileController = Rx<XFile?>(null);
-  final TextEditingController vehicleTypeController = TextEditingController();
-  final TextEditingController licensePlateController = TextEditingController();
-  final TextEditingController yearController = TextEditingController();
-  final TextEditingController colorController = TextEditingController();
-  final TextEditingController brandController = TextEditingController();
-  final TextEditingController modelController = TextEditingController();
-  final TextEditingController registrationStateController =
-      TextEditingController();
+  final vehicleTypeController = ''.obs;
+  final licensePlateController = ''.obs;
+  final yearController = ''.obs;
+  final colorController = ''.obs;
+  final brandController = ''.obs;
+  final modelController = ''.obs;
+  final registrationStateController = ''.obs;
 
-  final RxString vehicleTypeError = RxString('');
-  final RxString licensePlateError = RxString('');
-  final RxString yearError = RxString('');
-  final RxString colorError = RxString('');
-  final RxString brandError = RxString('');
-  final RxString modelError = RxString('');
-  final RxString registrationStateError = RxString('');
-  final imageError = RxString('');
+  final RxString vehicleTypeError = ''.obs;
+  final RxString licensePlateError = ''.obs;
+  final RxString yearError = ''.obs;
+  final RxString colorError = ''.obs;
+  final RxString brandError = ''.obs;
+  final RxString modelError = ''.obs;
+  final RxString registrationStateError = ''.obs;
+  final imageError = ''.obs;
 
-  var loading = RxBool(false);
-  final showErrors = RxBool(false);
+  var loading = false.obs;
+  final showErrors = false.obs;
 
   String getError(RxString error) {
     if (showErrors.isTrue) {
@@ -67,35 +66,23 @@ class VehicleEditController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    licensePlateController.addListener(() {
-      validateLicensePlate();
-    });
-    yearController.addListener(() {
-      validateYear();
-    });
-    colorController.addListener(() {
-      validateColor();
-    });
-    brandController.addListener(() {
-      validateBrand();
-    });
-    modelController.addListener(() {
-      validateModel();
-    });
-    registrationStateController.addListener(() {
-      validateRegistrationState();
-    });
+    ever(licensePlateController, (callback) => validateLicensePlate());
+    ever(yearController, (callback) => validateYear());
+    ever(colorController, (callback) => validateColor());
+    ever(brandController, (callback) => validateBrand());
+    ever(modelController, (callback) => validateModel());
+    ever(registrationStateController, (callback) => validateRegistrationState());
   }
 
   bool validateLicensePlate() {
-    final isValid = licensePlateController.text.isNotEmpty;
+    final isValid = licensePlateController.value.isNotEmpty;
     licensePlateError.value =
         isValid ? '' : 'Placa do veículo não pode estar vazia';
     return isValid;
   }
 
   bool validateYear() {
-    final yearText = yearController.text;
+    final yearText = yearController.value;
     final currentYear = DateTime.now().year;
 
     final inputYear = int.tryParse(yearText);
@@ -106,7 +93,7 @@ class VehicleEditController extends GetxController {
       yearError.value = '';
     } else {
       yearError.value = 'Ano do veículo inválido';
-      yearController.text = currentYear.toString();
+      yearController.value = currentYear.toString();
     }
 
     showErrors(true);
@@ -114,25 +101,25 @@ class VehicleEditController extends GetxController {
   }
 
   bool validateColor() {
-    final isValid = colorController.text.isNotEmpty;
+    final isValid = colorController.value.isNotEmpty;
     colorError.value = isValid ? '' : 'Cor do veículo não pode estar vazia';
     return isValid;
   }
 
   bool validateBrand() {
-    final isValid = brandController.text.isNotEmpty;
+    final isValid = brandController.value.isNotEmpty;
     brandError.value = isValid ? '' : 'Marca do veículo não pode estar vazia';
     return isValid;
   }
 
   bool validateModel() {
-    final isValid = modelController.text.isNotEmpty;
+    final isValid = modelController.value.isNotEmpty;
     modelError.value = isValid ? '' : 'Modelo do veículo não pode estar vazio';
     return isValid;
   }
 
   bool validateRegistrationState() {
-    final isValid = registrationStateController.text.isNotEmpty;
+    final isValid = registrationStateController.value.isNotEmpty;
     registrationStateError.value =
         isValid ? '' : 'Estado de registro não pode estar vazio';
     return isValid;
@@ -161,13 +148,13 @@ class VehicleEditController extends GetxController {
 
     if (imageBlurhash.value == null) return null;
 
-    final vehicleType = vehicleTypeController.text;
-    final licensePlate = licensePlateController.text;
-    final year = yearController.text;
-    final color = colorController.text;
-    final brand = brandController.text;
-    final model = modelController.text;
-    final registrationState = registrationStateController.text;
+    final vehicleType = vehicleTypeController.value;
+    final licensePlate = licensePlateController.value;
+    final year = yearController.value;
+    final color = colorController.value;
+    final brand = brandController.value;
+    final model = modelController.value;
+    final registrationState = registrationStateController.value;
 
     final vehicle = Vehicle(
       image: imageBlurhash.value!,
@@ -200,13 +187,13 @@ class VehicleEditController extends GetxController {
 
     if (imageBlurhash.value == null) return false;
 
-    final vehicleType = vehicleTypeController.text;
-    final licensePlate = licensePlateController.text;
-    final year = yearController.text;
-    final color = colorController.text;
-    final brand = brandController.text;
-    final model = modelController.text;
-    final registrationState = registrationStateController.text;
+    final vehicleType = vehicleTypeController.value;
+    final licensePlate = licensePlateController.value;
+    final year = yearController.value;
+    final color = colorController.value;
+    final brand = brandController.value;
+    final model = modelController.value;
+    final registrationState = registrationStateController.value;
 
     final vehicle = Vehicle(
       image: imageBlurhash.value!,

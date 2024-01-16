@@ -7,10 +7,10 @@ import 'package:vagali/widgets/top_bavigation_bar.dart';
 class ParkingPartialEditWidget extends StatelessWidget {
   final String title;
   final Widget body;
-  final RxBool isValid;
+  final bool isValid;
   final VoidCallback onSave;
 
-  const ParkingPartialEditWidget({
+  ParkingPartialEditWidget({
     super.key,
     required this.title,
     required this.body,
@@ -18,26 +18,23 @@ class ParkingPartialEditWidget extends StatelessWidget {
     required this.onSave,
   });
 
+  // final controller  = ParkingEditController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopNavigationBar(
         title: title,
         actions: [
-          Obx(
-            () {
-              return TextButton(
-                onPressed: () {},
-                child: Text(
-                  'Avancar',
-                  style: ThemeTypography.medium14.apply(
-                    color: isValid.isTrue
-                        ? ThemeColors.primary
-                        : ThemeColors.grey3,
-                  ),
-                ),
-              );
-            },
+          TextButton(
+            onPressed: onSave,
+            child: Text(
+              'Avancar',
+              style: ThemeTypography.medium14.apply(
+                color: isValid
+                    ? ThemeColors.primary
+                    : ThemeColors.grey3,
+              ),
+            ),
           ),
         ],
       ),

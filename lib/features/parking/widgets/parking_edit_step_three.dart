@@ -48,26 +48,32 @@ class StepThreeWidget extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 32),
-          GradientSlider(
-            value: controller.gateHeight,
-            min: 2,
-            max: 10,
-            onChanged: controller.gateHeight,
-            label: 'Altura do Portão',
+          Obx(
+            () => GradientSlider(
+              value: controller.gateHeight.value,
+              min: 2,
+              max: 10,
+              onChanged: controller.gateHeight,
+              label: 'Altura do Portão',
+            ),
           ),
-          GradientSlider(
-            value: controller.gateWidth,
-            min: 2,
-            max: 10,
-            onChanged: controller.gateWidth,
-            label: 'Largura do Portão',
+          Obx(
+            () => GradientSlider(
+              value: controller.gateWidth.value,
+              min: 2,
+              max: 10,
+              onChanged: controller.gateWidth,
+              label: 'Largura do Portão',
+            ),
           ),
-          GradientSlider(
-            value: controller.garageDepth,
-            min: 2,
-            max: 20,
-            onChanged: controller.garageDepth,
-            label: 'Profundidade da Garagem',
+          Obx(
+            () => GradientSlider(
+              value: controller.garageDepth.value,
+              min: 2,
+              max: 20,
+              onChanged: controller.garageDepth,
+              label: 'Profundidade da Garagem',
+            ),
           ),
           const SizedBox(height: 16),
           const Text(

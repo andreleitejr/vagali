@@ -142,7 +142,7 @@ class _ReservationEditViewState extends State<ReservationEditView> {
                   ),
                   const SizedBox(height: 12),
                   Input(
-                    controller: _controller.reservationMessageController,
+                    onChanged: _controller.reservationMessageController,
                     hintText: 'Enviar mensagem ao locador (opcional)',
                     maxLines: 3,
                   ),

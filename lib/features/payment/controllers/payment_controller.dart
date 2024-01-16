@@ -17,10 +17,10 @@ class PaymentController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final ReservationRepository _reservationRepository = Get.find();
 
-  final cardNumberController = TextEditingController();
-  final cardHolderNameController = TextEditingController();
-  final expiryDateController = TextEditingController();
-  final cvvCodeController = TextEditingController();
+  final cardNumberController = ''.obs;
+  final cardHolderNameController = ''.obs;
+  final expiryDateController = ''.obs;
+  final cvvCodeController = ''.obs;
   var maskedCardNumber = 'XXXX XXXX XXXX XXXX'.obs;
   var maskedCardHolderName = 'SEU NOME'.obs;
   var maskedExpiryDate = '00/00'.obs;
@@ -31,22 +31,24 @@ class PaymentController extends GetxController {
 
   @override
   void onInit() {
-    cardNumberController.addListener(() {
-      if (cardNumberController.text.length >= 16) {
+    ever(cardNumberController, (callback) {
+      if (cardNumberController.value.length >= 16) {
         maskedCardNumber.value =
-            '**** **** **** ${cardNumberController.text.substring(cardNumberController.text.length - 4)}';
+            '**** **** **** ${cardNumberController.value.substring(cardNumberController.value.length - 4)}';
       }
     });
-    cardHolderNameController.addListener(() {
-      if (cardHolderNameController.text.length >= 3) {
-        maskedCardHolderName.value = cardHolderNameController.text;
+    ever(cardHolderNameController, (callback) {
+      if (cardHolderNameController.value.length >= 3) {
+        maskedCardHolderName.value = cardHolderNameController.value;
       }
     });
-    expiryDateController.addListener(() {
-      if (expiryDateController.text.length >= 4) {
-        maskedExpiryDate.value = expiryDateController.text;
+
+    ever(expiryDateController, (callback) {
+      if (expiryDateController.value.length >= 4) {
+        maskedExpiryDate.value = expiryDateController.value;
       }
     });
+
     super.onInit();
   }
 
@@ -54,7 +56,7 @@ class PaymentController extends GetxController {
 
   Future<PaymentResult> processPayment(double transactionAmount) async {
     final request = BraintreeCreditCardRequest(
-      cardNumber: cardNumberController.text,
+      cardNumber: cardNumberController.value,
       expirationMonth: '12',
       expirationYear: '2021',
       cvv: '100',

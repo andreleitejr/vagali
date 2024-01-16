@@ -100,7 +100,7 @@ class PaymentView extends GetView<PaymentController> {
                 }),
                 const SizedBox(height: 16),
                 Input(
-                  controller: controller.cardNumberController,
+                  onChanged: controller.cardNumberController,
                   keyboardType: TextInputType.number,
                   hintText: 'Número do cartão',
                   inputFormatters: [
@@ -110,7 +110,7 @@ class PaymentView extends GetView<PaymentController> {
                 ),
                 const SizedBox(height: 16),
                 Input(
-                  controller: controller.cardHolderNameController,
+                  onChanged: controller.cardHolderNameController,
                   keyboardType: TextInputType.name,
                   hintText: 'Nome do proprietário',
                 ),
@@ -119,7 +119,7 @@ class PaymentView extends GetView<PaymentController> {
                   children: [
                     Expanded(
                       child: Input(
-                        controller: controller.expiryDateController,
+                        onChanged: controller.expiryDateController,
                         keyboardType: TextInputType.datetime,
                         hintText: 'Data de validade',
                         inputFormatters: [
@@ -132,7 +132,7 @@ class PaymentView extends GetView<PaymentController> {
                     SizedBox(
                       width: 128,
                       child: Input(
-                        controller: controller.cvvCodeController,
+                        onChanged: controller.cvvCodeController,
                         keyboardType: TextInputType.number,
                         hintText: 'CCV',
                       ),

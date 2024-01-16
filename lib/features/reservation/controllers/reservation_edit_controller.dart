@@ -31,9 +31,8 @@ class ReservationEditController extends GetxController {
 
   ReservationEditController({required this.parking});
 
-  final nameController = TextEditingController();
-  final TextEditingController reservationMessageController =
-      TextEditingController();
+  final nameController = ''.obs;
+  final reservationMessageController = ''.obs;
 
   final RxString reservationError = RxString('');
 
@@ -184,7 +183,7 @@ class ReservationEditController extends GetxController {
       return null;
     }
 
-    final reservationMessage = reservationMessageController.text;
+    final reservationMessage = reservationMessageController.value;
 
     final total = totalCost.value;
 
@@ -208,7 +207,7 @@ class ReservationEditController extends GetxController {
       startDate: startDate.value!,
       endDate: endDate.value!,
       totalCost: total,
-      landlordId: parking.ownerId,
+      landlordId: parking.userId,
       reservationMessage: reservationMessage,
       vehicleId: vehicleId!,
       locationHistory: [

@@ -64,6 +64,8 @@ class FirestoreRepository<T extends BaseModel> {
       final dataList =
           querySnapshot.docs.map((doc) => fromDocument(doc)).toList();
 
+      print('######################################### DATA LIST ${dataList}');
+
       return dataList;
     } catch (error) {
       print(

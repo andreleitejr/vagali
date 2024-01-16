@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:vagali/features/landlord/models/landlord.dart';
 import 'package:vagali/features/landlord/repositories/landlord_repository.dart';
+import 'package:vagali/features/parking/models/parking.dart';
+import 'package:vagali/features/parking/repositories/parking_repository.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/repositories/reservation_repository.dart';
 import 'package:vagali/features/tenant/models/tenant.dart';
@@ -16,12 +18,16 @@ import 'package:vagali/theme/images.dart';
 
 class LandlordHomeController extends GetxController {
   final Landlord landlord = Get.find();
-  final locationService = Get.put(LocationService());
+  final _locationService = Get.put(LocationService());
+  final _parkingRepository = Get.put(ParkingRepository());
   final _reservationRepository = Get.put(ReservationRepository());
-  final _tenantRepository = TenantRepository();
-  final _vehicleRepository = VehicleRepository();
-  final landlordRepository = LandlordRepository();
+  final _tenantRepository = Get.put(TenantRepository());
+  final _vehicleRepository = Get.put(VehicleRepository());
+  final _landlordRepository = Get.put(LandlordRepository());
+
   GoogleMapController? _mapController;
+
+  final parkings = <Parking>[].obs;
 
   final reservations = <Reservation>[].obs;
   final currentReservation = Rx<Reservation?>(null);
@@ -41,6 +47,12 @@ class LandlordHomeController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
+    final parkings = await _parkingRepository.getAll(userId: landlord.id);
+
+    if (parkings.isEmpty) return;
+
+    Get.put(parkings);
+
     final stream = _reservationRepository.streamAllReservationsForLandlord();
 
     loading(true);
@@ -118,7 +130,7 @@ class LandlordHomeController extends GetxController {
   }
 
   Future<void> _calculateAndSetEstimatedArrivalTime() async {
-    estimatedArrivalTime.value = await locationService.calculateEstimatedTime(
+    estimatedArrivalTime.value = await _locationService.calculateEstimatedTime(
         location.value.latitude, location.value.longitude);
   }
 
@@ -172,8 +184,8 @@ class LandlordHomeController extends GetxController {
   }
 
   Future<void> _getCurrentLandlordLocation() async {
-    await locationService.getUserLocation();
-    final position = locationService.userLocation;
+    await _locationService.getUserLocation();
+    final position = _locationService.userLocation;
 
     if (position != null) {
       location.value = LatLng(position.latitude, position.longitude);

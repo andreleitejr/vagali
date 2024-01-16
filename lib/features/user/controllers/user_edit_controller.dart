@@ -19,7 +19,7 @@ class UserEditController extends GetxController {
 
   final User? user;
 
-  Rx<User?> currentUser = Rx<User?>(null);
+  final currentUser = Rx<User?>(null);
 
   RxBool get hasCurrentUser => (currentUser.value != null).obs;
 
@@ -31,21 +31,21 @@ class UserEditController extends GetxController {
   void fillFormWithUserData() {
     final user = currentUser.value!;
 
-    firstNameController.text = user.firstName;
-    lastNameController.text = user.lastName;
-    emailController.text = user.email;
-    documentController.text = user.document;
-    genderController.text = user.gender;
+    firstNameController.value = user.firstName;
+    lastNameController.value = user.lastName;
+    emailController.value = user.email;
+    documentController.value = user.document;
+    genderController.value = user.gender;
     birthday.value = user.birthday;
     imageBlurhash.value = user.image;
 
-    postalCodeController.text = user.address.postalCode;
-    streetController.text = user.address.street;
-    numberController.text = user.address.number;
-    cityController.text = user.address.city;
-    stateController.text = user.address.state;
-    countryController.text = user.address.country;
-    complementController.text = user.address.complement ?? '';
+    postalCodeController.value = user.address.postalCode;
+    streetController.value = user.address.street;
+    numberController.value = user.address.number;
+    cityController.value = user.address.city;
+    stateController.value = user.address.state;
+    countryController.value = user.address.country;
+    complementController.value = user.address.complement ?? '';
   }
 
   final String type;
@@ -55,11 +55,11 @@ class UserEditController extends GetxController {
   final _imageService = Get.put(ImageService());
   final AddressService _addressService = AddressService();
 
-  final firstNameController = TextEditingController();
-  final lastNameController = TextEditingController();
-  final emailController = TextEditingController();
-  final documentController = TextEditingController();
-  final genderController = TextEditingController();
+  final firstNameController = ''.obs;
+  final lastNameController = ''.obs;
+  final emailController = ''.obs;
+  final documentController = ''.obs;
+  final genderController = ''.obs;
 
   final Rx<DateTime?> birthday = Rx<DateTime?>(null);
 
@@ -67,16 +67,16 @@ class UserEditController extends GetxController {
   final imageFile = Rx<XFile?>(null);
 
   // final imageUrlController = TextEditingController();
-  final postalCodeController = TextEditingController();
-  final streetController = TextEditingController();
-  final numberController = TextEditingController();
-  final cityController = TextEditingController();
-  final stateController = TextEditingController();
-  final countryController = TextEditingController();
-  final complementController = TextEditingController();
+  final postalCodeController = ''.obs;
+  final streetController = ''.obs;
+  final numberController = ''.obs;
+  final cityController = ''.obs;
+  final stateController = ''.obs;
+  final countryController = ''.obs;
+  final complementController = ''.obs;
 
   RxString get postalCodeClean =>
-      postalCodeController.text.replaceAll('.', '').replaceAll('-', '').obs;
+      postalCodeController.value.replaceAll('.', '').replaceAll('-', '').obs;
 
   final emailRegExp = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
 
@@ -93,9 +93,9 @@ class UserEditController extends GetxController {
       (isDocumentValid.isTrue ? '' : 'CPF inválido').obs;
 
   RxString get emailError {
-    if (emailController.text.isEmpty) {
+    if (emailController.value.isEmpty) {
       return 'Email não pode estar vazio'.obs;
-    } else if (!emailRegExp.hasMatch(emailController.text)) {
+    } else if (!emailRegExp.hasMatch(emailController.value)) {
       return 'Email inválido'.obs;
     } else {
       return ''.obs;
@@ -156,21 +156,19 @@ class UserEditController extends GetxController {
     }
   }
 
-  RxBool get isFirstNameValid => firstNameController.text.isNotEmpty.obs;
+  RxBool get isFirstNameValid => firstNameController.value.isNotEmpty.obs;
 
-  RxBool get isLastNameValid => lastNameController.text.isNotEmpty.obs;
+  RxBool get isLastNameValid => lastNameController.value.isNotEmpty.obs;
 
   RxBool get isDocumentValid {
-    final cpf = documentController.text.replaceAll(RegExp(r'[^\d]'), '');
+    final cpf = documentController.value.replaceAll(RegExp(r'[^\d]'), '');
 
     return (cpf.isNotEmpty && cpf.length == 11 && GetUtils.isCpf(cpf)).obs;
   }
 
-  RxBool get isEmailValid {
-    return (emailController.text.isNotEmpty &&
-            emailRegExp.hasMatch(emailController.text))
-        .obs;
-  }
+  RxBool get isEmailValid => (emailController.value.isNotEmpty &&
+          emailRegExp.hasMatch(emailController.value))
+      .obs;
 
   RxBool get isBirthdayValid => (birthday.value != null).obs;
 
@@ -182,25 +180,21 @@ class UserEditController extends GetxController {
       final addressDetails =
           await _addressService.getAddressDetails(postalCodeClean.value);
       if (addressDetails != null) {
-        streetController.text = addressDetails['logradouro'] ?? '';
-        cityController.text = addressDetails['localidade'] ?? '';
-        stateController.text = addressDetails['uf'] ?? '';
-        countryController.text = 'Brasil';
+        streetController.value = addressDetails['logradouro'] ?? '';
+        cityController.value = addressDetails['localidade'] ?? '';
+        stateController.value = addressDetails['uf'] ?? '';
+        countryController.value = 'Brasil';
       }
     }
   }
 
-  RxBool get isStreetValid => streetController.text.isNotEmpty.obs;
+  RxBool get isStreetValid => streetController.value.isNotEmpty.obs;
 
-  RxBool get isNumberValid => numberController.text.isNotEmpty.obs;
+  RxBool get isNumberValid => numberController.value.isNotEmpty.obs;
 
-  RxBool get isCityValid {
-    return cityController.text.isNotEmpty.obs;
-  }
+  RxBool get isCityValid => cityController.value.isNotEmpty.obs;
 
-  RxBool get isStateValid {
-    return stateController.text.isNotEmpty.obs;
-  }
+  RxBool get isStateValid => stateController.value.isNotEmpty.obs;
 
   RxBool validateCurrentStep(int stepIndex) {
     switch (stepIndex) {
@@ -249,21 +243,21 @@ class UserEditController extends GetxController {
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
       image: imageBlurhash.value!,
-      firstName: firstNameController.text,
-      lastName: lastNameController.text,
-      document: documentController.text,
-      email: emailController.text,
+      firstName: firstNameController.value,
+      lastName: lastNameController.value,
+      document: documentController.value,
+      email: emailController.value,
       phone: Get.find<String>(tag: 'phoneNumber'),
-      gender: genderController.text,
+      gender: genderController.value,
       birthday: birthday.value!,
       address: Address(
-        postalCode: postalCodeController.text,
-        street: streetController.text,
-        number: numberController.text,
-        city: cityController.text,
-        state: stateController.text,
-        country: countryController.text,
-        complement: complementController.text,
+        postalCode: postalCodeController.value,
+        street: streetController.value,
+        number: numberController.value,
+        city: cityController.value,
+        state: stateController.value,
+        country: countryController.value,
+        complement: complementController.value,
       ),
       type: type,
     );
@@ -288,29 +282,12 @@ class UserEditController extends GetxController {
 
   @override
   void onInit() {
-    postalCodeController.addListener(() => fetchAddressDetails());
+    ever(postalCodeController, (_) => fetchAddressDetails());
     super.onInit();
   }
 
   @override
   void onClose() {
     super.onClose();
-    clearControllers();
-  }
-
-  void clearControllers() {
-    firstNameController.clear();
-    lastNameController.clear();
-    emailController.clear();
-    documentController.clear();
-    genderController.clear();
-    birthday.value = null;
-    postalCodeController.clear();
-    streetController.clear();
-    numberController.clear();
-    cityController.clear();
-    stateController.clear();
-    countryController.clear();
-    complementController.clear();
   }
 }

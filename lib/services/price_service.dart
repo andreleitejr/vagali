@@ -7,7 +7,7 @@ class PriceService {
   static const _twentyFourHoursBasePrice = 20;
   static const _monthBasePrice = 150;
 
-  static Price calculateSuggestedPrices(double pricePerHour) {
+  Price calculateSuggestedPrices(double pricePerHour) {
     return Price(
       hour: pricePerHour,
       sixHours: (pricePerHour * _sixHoursBasePrice) / _hourBasePrice,
