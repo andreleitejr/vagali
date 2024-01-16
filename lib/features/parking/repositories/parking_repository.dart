@@ -21,8 +21,8 @@ class ParkingRepository extends FirestoreRepository<Parking> {
   Future<Parking> getParkingWithEntities(String ownerId) async {
     try {
       final document = await firestore
-          .collectionGroup(collectionName.lastSegmentAfterSlash)
-          .where('ownerId', isEqualTo: ownerId)
+          .collection(collectionName.lastSegmentAfterSlash)
+          .where('userId', isEqualTo: ownerId)
           .get();
       final parking = fromDocument(document.docs.first);
       final landlord = await LandlordRepository().get(parking.userId);
@@ -31,7 +31,7 @@ class ParkingRepository extends FirestoreRepository<Parking> {
 
       return parking;
     } catch (error) {
-      debugPrint('Error fetching reservation with entities: $error');
+      debugPrint('Error fetching parking with entities: $error');
       rethrow;
     }
   }

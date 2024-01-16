@@ -84,7 +84,7 @@ class ConfigView extends StatelessWidget {
               controller.dispose();
               final authController = AuthController();
               Get.offAll(() => LoginView(controller: authController));
-              Get.reset();
+              // Get.reset();
             },
           ),
           divider(),
