@@ -14,23 +14,23 @@ import 'package:vagali/services/address_service.dart';
 import 'package:vagali/services/image_service.dart';
 
 class UserEditController extends GetxController {
-  UserEditController(this.type, {this.user}) {
-    if (user != null) setUserToEdit(user!);
-  }
+  UserEditController({this.type});
 
-  final User? user;
+  final String? type;
+  final UserRepository _repository = UserRepository();
+  final AuthRepository _authRepository = Get.find();
 
   final currentUser = Rx<User?>(null);
 
   RxBool get hasCurrentUser => (currentUser.value != null).obs;
 
-  void setUserToEdit(User user) {
-    currentUser.value = user;
-    fillFormWithUserData();
-  }
-
   void fillFormWithUserData() {
     final user = currentUser.value!;
+
+    print('######################### USER EXISTES NAME: ${user.firstName}');
+    print('######################### USER EXISTES NAME: ${user.lastName}');
+    print('######################### USER EXISTES NAME: ${user.email}');
+    print('######################### USER EXISTES NAME: ${user.document}');
 
     firstNameController.value = user.firstName;
     lastNameController.value = user.lastName;
@@ -49,10 +49,6 @@ class UserEditController extends GetxController {
     countryController.value = user.address.country;
     complementController.value = user.address.complement ?? '';
   }
-
-  final String type;
-  final UserRepository _repository = UserRepository();
-  final AuthRepository _authRepository = Get.find();
 
   final _imageService = Get.put(ImageService());
   final AddressService _addressService = AddressService();
@@ -257,7 +253,7 @@ class UserEditController extends GetxController {
       document: documentController.value,
       email: emailController.value,
       phone: Get.find<String>(tag: 'phoneNumber'),
-      gender: genderController.text,
+      gender: genders.firstWhere((g) => g.name == genderController.text).value,
       birthday: birthday.value!,
       address: Address(
         postalCode: postalCodeController.value,
@@ -268,13 +264,14 @@ class UserEditController extends GetxController {
         country: countryController.value,
         complement: complementController.value,
       ),
-      type: type,
+      type: type ?? currentUser.value!.type,
     );
 
     final result = await _repository.save(user, docId: user.id);
 
     if (result == SaveResult.success) {
       Get.put<User>(user);
+      debugPrint('Successful saved user with id ${user.id}...');
       if (user.type == UserType.tenant) {
         final tenant = Tenant.fromUser(user);
         Get.put<Tenant>(tenant);
@@ -290,18 +287,40 @@ class UserEditController extends GetxController {
   }
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
+    loading.value = true;
+    await verifyUser();
     ever(postalCodeController, (_) {
-      print(
-          ' HUASDHUASASDUHASDUHUHU POSTAL CODE CONTROLLER $postalCodeController');
       fetchAddressDetails();
       update();
     });
+    loading.value = false;
     super.onInit();
+  }
+
+  Future<void> verifyUser() async {
+
+    bool userExists = Get.isRegistered<User>();
+
+    if (userExists) {
+      print('O USUARIO EXISTE HEHEHEHEHEHEHE');
+
+      final User localUser = Get.find();
+
+      final user = await _repository.get(localUser.id!);
+
+      if (user != null) {
+        currentUser.value = user;
+        fillFormWithUserData();
+        print(
+            '################################## USER EXISTES NAME: ${currentUser.value!.firstName}');
+      }
+    }
   }
 
   @override
   void onClose() {
+    genderController.clear();
     super.onClose();
   }
 }

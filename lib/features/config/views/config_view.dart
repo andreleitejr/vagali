@@ -53,14 +53,14 @@ class ConfigView extends StatelessWidget {
           ConfigListTile(
             title: 'Informações pessoais',
             onTap: () => Get.to(
-              () => PersonalInfoEditView(user: controller.user),
+              () => PersonalInfoEditView(),
             ),
           ),
           divider(),
           ConfigListTile(
             title: 'Endereço',
             onTap: () => Get.to(
-              () => AddressEditView(user: controller.user),
+              () => AddressEditView(),
             ),
           ),
           divider(),

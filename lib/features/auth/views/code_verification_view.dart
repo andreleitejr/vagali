@@ -36,21 +36,24 @@ class CodeVerificationView extends StatelessWidget {
                 onChanged: controller.sms,
               ),
               Obx(
-                () => FlatButton(
-                  actionText: 'Verificar Código',
-                  onPressed: () => verifySmsCode(),
-                  isValid: controller.isSmsValid.value,
-                ),
+                () {
+                  final isVerifying =
+                      controller.authStatus.value == AuthStatus.verifying;
+
+                  return FlatButton(
+                    actionText: isVerifying
+                        ? 'Verificando os dados...'
+                        : 'Verificar código',
+                    onPressed: () => verifySmsCode(),
+                    isValid: controller.isSmsValid.value,
+                    backgroundColor: isVerifying
+                        ? ThemeColors.secondary
+                        : ThemeColors.primary,
+                  );
+                },
               ),
               const SizedBox(height: 16),
-              if (controller.authStatus.value == AuthStatus.verifying) ...[
-                Text(
-                  'Verificando os dados...',
-                  style: ThemeTypography.semiBold12.apply(
-                    color: ThemeColors.primary,
-                  ),
-                ),
-              ] else ...[
+              if (controller.authStatus.value != AuthStatus.verifying)
                 Obx(
                   () => TextButton(
                     onPressed: () async {
@@ -74,7 +77,6 @@ class CodeVerificationView extends StatelessWidget {
                     ),
                   ),
                 ),
-              ],
             ],
           ),
         ),
@@ -85,7 +87,7 @@ class CodeVerificationView extends StatelessWidget {
   Future<void> verifySmsCode() async {
     if (controller.isValid.isTrue) {
       final result = await controller.verifySmsCode();
-      if (result != AuthStatus.authenticatedAsTenant ||
+      if (result != AuthStatus.authenticatedAsTenant &&
           result != AuthStatus.authenticatedAsLandlord) {
         Get.snackbar(
           'Erro com SMS',

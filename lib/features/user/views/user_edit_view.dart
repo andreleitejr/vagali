@@ -29,7 +29,7 @@ class _UserEditViewState extends State<UserEditView> {
 
   @override
   void initState() {
-    _controller = Get.put(UserEditController(widget.type, user: widget.user));
+    _controller = Get.put(UserEditController(type: widget.type));
     super.initState();
   }
 

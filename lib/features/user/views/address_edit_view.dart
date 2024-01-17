@@ -9,9 +9,7 @@ import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
 class AddressEditView extends StatefulWidget {
-  final User user;
-
-  AddressEditView({super.key, required this.user});
+  AddressEditView({super.key});
 
   @override
   State<AddressEditView> createState() => _AddressEditViewState();
@@ -23,10 +21,7 @@ class _AddressEditViewState extends State<AddressEditView> {
   @override
   void initState() {
     controller = Get.put(
-      UserEditController(
-        widget.user.type,
-        user: widget.user,
-      ),
+      UserEditController(),
     );
     super.initState();
   }
