@@ -70,10 +70,12 @@ android {
     productFlavors {
         tenant {
             dimension "app"
+            applicationId "com.vagali.vagali"
             manifestPlaceholders = [appName: "Vagali"]
         }
         landlord {
             dimension "app"
+            applicationId "com.vagali.vagali.landlord"
             manifestPlaceholders = [appName: "Vagali Locador"]
         }
     }

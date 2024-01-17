@@ -10,6 +10,7 @@ import 'package:vagali/apps/tenant/features/vehicle/models/vehicle_type.dart';
 import 'package:vagali/features/address/models/address.dart';
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/reservation/models/reservation_type.dart';
+import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/models/image_blurhash.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/services/address_service.dart';
@@ -23,7 +24,7 @@ class ParkingEditController extends GetxController {
     if (parking != null) setParkingToEdit(parking!);
   }
 
-  final Landlord landlord = Get.find();
+  final User landlord = Get.find();
   final ParkingRepository _repository = ParkingRepository();
   final AuthRepository _authRepository = Get.find();
 

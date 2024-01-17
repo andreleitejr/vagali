@@ -3,10 +3,11 @@ import 'package:get/get.dart';
 import 'package:vagali/apps/tenant/features/home/models/tenant.dart';
 import 'package:vagali/apps/tenant/features/vehicle/models/vehicle.dart';
 import 'package:vagali/apps/tenant/features/vehicle/repositories/vehicle_repository.dart';
+import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/models/image_blurhash.dart';
 
 class TenantController extends GetxController {
-  final Tenant tenant = Get.find();
+  final User tenant = Get.find();
   final _vehicleRepository = Get.find<VehicleRepository>();
 
   final vehicles = <Vehicle>[].obs;

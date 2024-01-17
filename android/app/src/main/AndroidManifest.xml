@@ -23,7 +23,7 @@
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
-        android:label="Vagali"
+        android:label="${appName}"
         tools:replace="android:label">
 
         <meta-data

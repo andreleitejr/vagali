@@ -4,12 +4,13 @@ import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking_type.dart';
 import 'package:vagali/apps/landlord/features/parking/repositories/parking_repository.dart';
 import 'package:vagali/apps/tenant/features/home/models/tenant.dart';
+import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/services/location_service.dart';
 import 'package:vagali/services/search_service.dart';
 import 'package:vagali/utils/extensions.dart';
 
 class HomeController extends GetxController {
-  final Tenant tenant = Get.find();
+  final User tenant = Get.find();
   final _parkingRepository = Get.put(ParkingRepository());
 
   // final _reservationRepository = Get.put(ReservationRepository());

@@ -12,7 +12,20 @@
           "package_name": "com.vagali.vagali"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "474910118931-jrg7ab4n9cvhk7ev5irt1s3fvesc1dek.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vagali.vagali",
+            "certificate_hash": "ffe88927c15e7b5eb5e3de3dc6849b22e6f282f0"
+          }
+        },
+        {
+          "client_id": "474910118931-kodp8hetlp5oon00gv07vpebk7v7rl9b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDS2JyhWQVIgrgDJtOxSz4xocz-dLGqBRE"
@@ -20,7 +33,55 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "474910118931-kodp8hetlp5oon00gv07vpebk7v7rl9b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "474910118931-g8j0dh1gr4kr5bqpakc7docpd5cacp6q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.vagali.vagali"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474910118931:android:a78e4abdd77ce754bb9be6",
+        "android_client_info": {
+          "package_name": "com.vagali.vagali.landlord"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "474910118931-kodp8hetlp5oon00gv07vpebk7v7rl9b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDS2JyhWQVIgrgDJtOxSz4xocz-dLGqBRE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "474910118931-kodp8hetlp5oon00gv07vpebk7v7rl9b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "474910118931-g8j0dh1gr4kr5bqpakc7docpd5cacp6q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.vagali.vagali"
+              }
+            }
+          ]
         }
       }
     }
