@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/apps/landlord/models/landlord.dart';
 import 'package:vagali/apps/landlord/repositories/landlord_repository.dart';
+import 'package:vagali/features/user/repositories/user_repository.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/services/image_service.dart';
 import 'package:vagali/services/location_service.dart';
@@ -45,11 +46,12 @@ class ParkingRepository extends FirestoreRepository<Parking> {
       final parkings =
           querySnapshot.docs.map((doc) => fromDocument(doc)).toList();
 
-      final landlords = await LandlordRepository().getAll();
+      final users = await LandlordRepository().getAll();
 
       for (final parking in parkings) {
-        parking.owner = landlords
+        final landlord = users
             .firstWhereOrNull((landlord) => parking.userId == landlord.id!);
+        parking.owner = landlord as Landlord;
       }
       return parkings;
     } catch (error) {

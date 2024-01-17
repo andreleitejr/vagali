@@ -6,6 +6,7 @@ import 'package:vagali/features/auth/views/auth_view.dart';
 import 'package:vagali/features/auth/views/select_type_view.dart';
 import 'package:vagali/features/home/landlord/views/landlord_base_view.dart';
 import 'package:vagali/features/home/tenant/views/base_view.dart';
+import 'package:vagali/models/flavor_config.dart';
 import 'package:vagali/theme/theme_colors.dart';
 
 class App extends StatelessWidget {
@@ -29,32 +30,35 @@ class App extends StatelessWidget {
         ),
       ),
       initialRoute: '/auth',
-      getPages: [
-        GetPage(
-          name: '/auth',
-          page: () => AuthView(),
-        ),
-        GetPage(
-          name: '/landlord_base',
-          page: () => const LandlordBaseView(),
-        ),
-        GetPage(
-          name: '/base',
-          page: () => const BaseView(),
-        ),
-        // GetPage(
-        //   name: '/verification',
-        //   page: () => VerificationView(),
-        // ),
-        GetPage(
-          name: '/parking_edit',
-          page: () => ParkingEditView(),
-        ),
-        GetPage(
-          name: '/selectType',
-          page: () => SelectTypeView(),
-        ),
-      ],
+      getPages: Get.find<FlavorConfig>().flavor == Flavor.tenant
+          ? tenantPages()
+          : landlordPages(),
     );
+  }
+
+  List<GetPage<dynamic>> tenantPages() {
+    return [
+      GetPage(
+        name: '/auth',
+        page: () => AuthView(),
+      ),
+      GetPage(
+        name: '/home',
+        page: () => const LandlordBaseView(),
+      ),
+    ];
+  }
+
+  List<GetPage<dynamic>> landlordPages() {
+    return [
+      GetPage(
+        name: '/auth',
+        page: () => AuthView(),
+      ),
+      GetPage(
+        name: '/home',
+        page: () => const BaseView(),
+      ),
+    ];
   }
 }

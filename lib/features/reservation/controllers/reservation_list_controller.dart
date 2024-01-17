@@ -80,29 +80,6 @@ class ReservationListController extends GetxController {
     reservationsDone.assignAll(done);
 
     reservationsInProgress.sort((b, a) => a.createdAt.compareTo(b.createdAt));
-
-    for (final res in reservationsInProgress) {
-      if (res.parking == null)
-        print('asdhusdahuhsaduhdsauhuah parking id ${res.parkingId}');
-    }
-    // currentReservation.value =
-    //     reservationsInProgress.firstWhereOrNull((r) => !r.isConcluded || !r.isCanceled);
-    //
-    // if (currentReservation.value != null) {
-    //   checkPaymentTimeout();
-    //   currentReservation.value!.landlord = landlords.firstWhereOrNull(
-    //       (l) => l.id! == currentReservation.value!.landlordId);
-    //
-    //   currentReservation.value?.vehicle = vehicles.firstWhereOrNull(
-    //       (vehicle) => vehicle.id == currentReservation.value?.vehicleId);
-    // }
-
-    // reservations.value = reservations
-    //     .where((reservation) =>
-    //         reservation.isConcluded ||
-    //         reservation.isCanceled ||
-    //         reservation.isPaymentDenied)
-    //     .toList();
   }
 
   Future<void> fetchLandlords() async {

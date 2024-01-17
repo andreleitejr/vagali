@@ -89,12 +89,7 @@ flutter_native_splash:
     ios: true
 
 flutter_launcher_icons:
-  ios: true
-  android: "launcher_icon"
-  image_path: "images/icon.png"
-  min_sdk_android: 21
-  adaptive_icon_background: "#02d39a"
-  adaptive_icon_foreground: "images/icon2.png"
+  path: ../..
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

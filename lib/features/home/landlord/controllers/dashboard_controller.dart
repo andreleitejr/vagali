@@ -13,6 +13,7 @@ import 'package:vagali/apps/tenant/features/vehicle/repositories/vehicle_reposit
 import 'package:vagali/features/home/landlord/views/landlord_base_view.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/repositories/reservation_repository.dart';
+import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/services/location_service.dart';
 import 'package:vagali/theme/images.dart';
 
@@ -21,7 +22,7 @@ class LandlordHomeController extends GetxController {
 
   final HomeNavigator navigator;
 
-  final Landlord landlord = Get.find();
+  final User landlord = Get.find();
   final _locationService = Get.put(LocationService());
   final _parkingRepository = Get.put(ParkingRepository());
   final _reservationRepository = Get.put(ReservationRepository());

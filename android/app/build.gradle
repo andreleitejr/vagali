@@ -66,6 +66,18 @@ android {
         }
     }
 
+    flavorDimensions "app"
+    productFlavors {
+        tenant {
+            dimension "app"
+            manifestPlaceholders = [appName: "Vagali"]
+        }
+        landlord {
+            dimension "app"
+            manifestPlaceholders = [appName: "Vagali Locador"]
+        }
+    }
+
     buildTypes {
         release {
             signingConfig signingConfigs.release

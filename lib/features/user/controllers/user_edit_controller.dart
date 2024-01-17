@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vagali/apps/landlord/models/landlord.dart';
+import 'package:vagali/apps/landlord/repositories/landlord_repository.dart';
 import 'package:vagali/apps/tenant/features/home/models/tenant.dart';
+import 'package:vagali/apps/tenant/features/home/repositories/tenant_repository.dart';
 import 'package:vagali/features/address/models/address.dart';
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/user/models/gender.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/features/user/repositories/user_repository.dart';
+import 'package:vagali/models/flavor_config.dart';
 import 'package:vagali/models/image_blurhash.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/services/address_service.dart';
@@ -17,7 +20,9 @@ class UserEditController extends GetxController {
   UserEditController({this.type});
 
   final String? type;
-  final UserRepository _repository = UserRepository();
+  final _tenantRepository = TenantRepository();
+  final _landlordRepository = LandlordRepository();
+
   final AuthRepository _authRepository = Get.find();
 
   final currentUser = Rx<User?>(null);
@@ -26,11 +31,6 @@ class UserEditController extends GetxController {
 
   void fillFormWithUserData() {
     final user = currentUser.value!;
-
-    print('######################### USER EXISTES NAME: ${user.firstName}');
-    print('######################### USER EXISTES NAME: ${user.lastName}');
-    print('######################### USER EXISTES NAME: ${user.email}');
-    print('######################### USER EXISTES NAME: ${user.document}');
 
     firstNameController.value = user.firstName;
     lastNameController.value = user.lastName;
@@ -267,7 +267,9 @@ class UserEditController extends GetxController {
       type: type ?? currentUser.value!.type,
     );
 
-    final result = await _repository.save(user, docId: user.id);
+    final result = Get.find<FlavorConfig>().flavor == Flavor.tenant
+        ? await _tenantRepository.save(user as Tenant, docId: user.id)
+        : await _landlordRepository.save(user as Landlord, docId: user.id);
 
     if (result == SaveResult.success) {
       Get.put<User>(user);
@@ -299,21 +301,18 @@ class UserEditController extends GetxController {
   }
 
   Future<void> verifyUser() async {
-
     bool userExists = Get.isRegistered<User>();
 
     if (userExists) {
-      print('O USUARIO EXISTE HEHEHEHEHEHEHE');
-
       final User localUser = Get.find();
 
-      final user = await _repository.get(localUser.id!);
+      final user = Get.find<FlavorConfig>().flavor == Flavor.tenant
+          ? await _tenantRepository.get(localUser.id!)
+          : await _landlordRepository.get(localUser.id!);
 
       if (user != null) {
         currentUser.value = user;
         fillFormWithUserData();
-        print(
-            '################################## USER EXISTES NAME: ${currentUser.value!.firstName}');
       }
     }
   }

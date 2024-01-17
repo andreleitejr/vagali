@@ -3,10 +3,11 @@ import 'package:get/get.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/apps/landlord/features/parking/repositories/parking_repository.dart';
 import 'package:vagali/apps/landlord/models/landlord.dart';
+import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/models/image_blurhash.dart';
 
 class LandlordController extends GetxController {
-  final Landlord landlord = Get.find();
+  final User landlord = Get.find();
   final _parkingRepository = Get.put(ParkingRepository());
 
   final parkings = <Parking>[].obs;

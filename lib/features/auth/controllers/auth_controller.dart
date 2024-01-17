@@ -4,15 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:vagali/apps/landlord/models/landlord.dart';
+import 'package:vagali/apps/landlord/repositories/landlord_repository.dart';
 import 'package:vagali/apps/tenant/features/home/models/tenant.dart';
+import 'package:vagali/apps/tenant/features/home/repositories/tenant_repository.dart';
+
 // Features
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/user/repositories/user_repository.dart';
+import 'package:vagali/models/flavor_config.dart';
 import 'package:vagali/utils/extensions.dart';
 
 class AuthController extends GetxController {
   final _authRepository = Get.put(AuthRepository());
-  final _userRepository = Get.put(UserRepository());
+  final _tenantRepository = Get.put(TenantRepository());
+  final _landlordRepository = Get.put(LandlordRepository());
 
   final phone = ''.obs;
   final sms = ''.obs;
@@ -46,8 +51,6 @@ class AuthController extends GetxController {
 
     loading(true);
     FlutterNativeSplash.remove();
-
-    Get.put(UserRepository());
 
     await checkCurrentUser();
 
@@ -134,20 +137,17 @@ class AuthController extends GetxController {
 
   Future<AuthStatus> _checkUserInFirestore() async {
     try {
-      final user = await _userRepository.get(_authRepository.authUser!.uid);
+      final user = Get.find<FlavorConfig>().flavor == Flavor.tenant
+          ? await _tenantRepository.get(_authRepository.authUser!.uid)
+          : await _landlordRepository.get(_authRepository.authUser!.uid);
 
       if (user == null) {
         return AuthStatus.unregistered;
       }
 
       Get.put(user);
-      user.isTenant
-          ? Get.put<Tenant>(user as Tenant)
-          : Get.put<Landlord>(user as Landlord);
 
-      return user.isTenant
-          ? AuthStatus.authenticatedAsTenant
-          : AuthStatus.authenticatedAsLandlord;
+      return AuthStatus.authenticated;
     } catch (e) {
       return AuthStatus.failed;
     }

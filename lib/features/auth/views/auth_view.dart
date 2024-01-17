@@ -9,6 +9,7 @@ import 'package:vagali/features/auth/views/login_error_view.dart';
 import 'package:vagali/features/auth/views/select_type_view.dart';
 import 'package:vagali/features/home/landlord/views/landlord_base_view.dart';
 import 'package:vagali/features/home/tenant//views/base_view.dart';
+import 'package:vagali/models/flavor_config.dart';
 
 import 'animation_view.dart';
 import 'login_view.dart';
@@ -36,10 +37,10 @@ class AuthView extends StatelessWidget {
             return CodeVerificationView(controller: _controller);
           } else if (authStatus == AuthStatus.unregistered) {
             return SelectTypeView();
-          } else if (authStatus == AuthStatus.authenticatedAsTenant) {
-            return const BaseView();
-          } else if (authStatus == AuthStatus.authenticatedAsLandlord) {
-            return const LandlordBaseView();
+          } else if (authStatus == AuthStatus.authenticated) {
+            return Get.find<FlavorConfig>().flavor == Flavor.tenant
+                ? const BaseView()
+                : LandlordBaseView();
           } else if (authStatus == AuthStatus.parkingNotFound) {
             return const ParkingEditView();
           } else if (authStatus == AuthStatus.locationDenied) {
