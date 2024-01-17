@@ -35,7 +35,7 @@ class _ParkingEditOptionViewState extends State<ParkingEditOptionView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopNavigationBar(title: 'Configurações'),
+      appBar: TopNavigationBar(title: widget.parking.name),
       body: Column(
         children: [
           ConfigListTile(

@@ -43,7 +43,10 @@ class _PersonalInfoEditViewState extends State<PersonalInfoEditView> {
                 final result = await controller.save();
 
                 if (result != SaveResult.success) {
-                  snackBar('Erro ao atualizar', 'Houve um erro ao atualizar');
+                  snackBar(
+                    'Erro ao atualizar',
+                    'Houve um erro ao atualizar',
+                  );
                 }
               } else {
                 controller.showErrors(true);

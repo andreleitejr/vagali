@@ -5,6 +5,7 @@ import 'package:vagali/features/auth/controllers/auth_controller.dart';
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/auth/views/login_view.dart';
 import 'package:vagali/features/config/widgets/config_list_tile.dart';
+import 'package:vagali/features/legal/terms_and_conditions.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/features/user/views/address_edit_view.dart';
 import 'package:vagali/features/user/views/personal_info_edit_view.dart';
@@ -66,7 +67,7 @@ class ConfigView extends StatelessWidget {
           divider(),
           ConfigListTile(
             title: 'Termos e Condições',
-            onTap: () {},
+            onTap: () => Get.to(()=> TermsAndConditions()),
           ),
           divider(),
           ListTile(
