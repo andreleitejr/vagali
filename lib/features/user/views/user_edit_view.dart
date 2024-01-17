@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vagali/features/parking/views/parking_edit_view.dart';
+import 'package:vagali/apps/landlord/features/parking/views/parking_edit_view.dart';
+import 'package:vagali/apps/tenant/features/vehicle/views/vehicle_edit_view.dart';
 import 'package:vagali/features/user/controllers/user_edit_controller.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/features/user/widgets/address_edit_widget.dart';
 import 'package:vagali/features/user/widgets/personal_info_edit_widget.dart';
-import 'package:vagali/features/vehicle/views/vehicle_edit_view.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';

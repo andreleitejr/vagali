@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:vagali/apps/landlord/features/parking/views/parking_details_view.dart';
+import 'package:vagali/apps/tenant/features/payment/views/payment_view.dart';
 import 'package:vagali/features/chat/views/chat_view.dart';
-import 'package:vagali/features/parking/views/parking_details_view.dart';
-import 'package:vagali/features/payment/views/payment_view.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/services/location_service.dart';
 import 'package:vagali/theme/coolicons.dart';
@@ -132,39 +132,60 @@ class ReservationStatusIndicator extends StatelessWidget {
 
     if (reservation.isUserOnTheWay) {
       buttons.add(
-          _buildFlatButton('Abrir no Waze', openWaze, ThemeColors.primary));
+        _buildFlatButton('Abrir no Waze', openWaze, ThemeColors.primary),
+      );
     }
 
     if (reservation.isPaymentTimeOut) {
-      buttons.add(_buildFlatButton(
+      buttons.add(
+        _buildFlatButton(
           'Fazer nova reserva',
-          () => Get.to(() => ParkingDetailsView(parking: reservation.parking!)),
-          ThemeColors.primary));
+          () => Get.to(
+            () => ParkingDetailsView(
+              parking: reservation.parking!,
+            ),
+          ),
+          ThemeColors.primary,
+        ),
+      );
     }
 
     if (reservation.isPaymentDenied) {
-      buttons.add(_buildFlatButton(
+      buttons.add(
+        _buildFlatButton(
           'Tentar novo pagamento',
-          () => Get.to(() => PaymentView(reservation: reservation)),
-          Colors.red));
+          () => Get.to(
+            () => PaymentView(
+              reservation: reservation,
+            ),
+          ),
+          Colors.red,
+        ),
+      );
     }
 
     if (reservation.isHandshakeMade) {
       buttons.add(
         _buildFlatButton(
           'Conversar com locatário',
-          () => Get.to(() => ChatView(reservation: reservation)),
+          () => Get.to(
+            () => ChatView(
+              reservation: reservation,
+            ),
+          ),
           ThemeColors.blue,
         ),
       );
     }
 
     if (reservation.isConcluded) {
-      buttons.add(_buildFlatButton(
-        'Avaliar experiência',
-        () {},
-        ThemeColors.blue,
-      ));
+      buttons.add(
+        _buildFlatButton(
+          'Avaliar experiência',
+          () {},
+          ThemeColors.blue,
+        ),
+      );
     }
 
     return buttons;

@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+import 'package:vagali/apps/landlord/models/landlord.dart';
+import 'package:vagali/apps/tenant/features/home/models/tenant.dart';
 // Features
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
-import 'package:vagali/features/landlord/models/landlord.dart';
-import 'package:vagali/features/tenant/models/tenant.dart';
 import 'package:vagali/features/user/repositories/user_repository.dart';
 import 'package:vagali/utils/extensions.dart';
 

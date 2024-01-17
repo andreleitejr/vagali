@@ -1,4 +1,5 @@
-import 'package:vagali/features/parking/models/price.dart';
+
+import 'package:vagali/apps/landlord/features/parking/models/price.dart';
 
 class PriceService {
   static const _hourBasePrice = 5;

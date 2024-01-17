@@ -1,4 +1,5 @@
-import 'package:vagali/features/vehicle/models/vehicle_type.dart';
+
+import 'package:vagali/apps/tenant/features/vehicle/models/vehicle_type.dart';
 
 class GarageService {
   List<VehicleType> getCompatibleCarTypes(

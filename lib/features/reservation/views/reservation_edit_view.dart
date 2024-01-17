@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:vagali/features/parking/models/parking.dart';
-import 'package:vagali/features/payment/controllers/payment_controller.dart';
-import 'package:vagali/features/payment/views/payment_view.dart';
+import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
+import 'package:vagali/apps/tenant/features/payment/controllers/payment_controller.dart';
+import 'package:vagali/apps/tenant/features/payment/views/payment_view.dart';
+import 'package:vagali/apps/tenant/features/vehicle/widgets/vehicle_info_widget.dart';
 import 'package:vagali/features/reservation/controllers/reservation_edit_controller.dart';
 import 'package:vagali/features/reservation/widgets/reservation_date_widget.dart';
-import 'package:vagali/features/vehicle/widgets/vehicle_info_widget.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_typography.dart';

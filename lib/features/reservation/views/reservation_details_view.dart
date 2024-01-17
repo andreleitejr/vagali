@@ -1,11 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vagali/apps/tenant/features/vehicle/widgets/vehicle_info_widget.dart';
 import 'package:vagali/features/address/widgets/address_card.dart';
 import 'package:vagali/features/chat/views/chat_view.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/user/models/user.dart';
-import 'package:vagali/features/vehicle/widgets/vehicle_info_widget.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';

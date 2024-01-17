@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:vagali/features/tenant/models/tenant.dart';
+import 'package:vagali/apps/tenant/features/home/models/tenant.dart';
 
 class BaseController extends GetxController {
   BaseController(this.index);

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vagali/apps/tenant/features/home/views/tenant_view.dart';
 import 'package:vagali/features/home/tenant/controllers/base_controller.dart';
 import 'package:vagali/features/home/tenant/controllers/home_controller.dart';
 import 'package:vagali/features/home/tenant/views/home_view.dart';
 import 'package:vagali/features/map/views/map_view.dart';
 import 'package:vagali/features/reservation/views/reservation_list_view.dart';
-import 'package:vagali/features/tenant/views/tenant_view.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/widgets/avatar.dart';

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:vagali/apps/landlord/models/landlord.dart';
+import 'package:vagali/apps/tenant/features/home/models/tenant.dart';
 import 'package:vagali/features/address/models/address.dart';
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
-import 'package:vagali/features/landlord/models/landlord.dart';
-import 'package:vagali/features/tenant/models/tenant.dart';
 import 'package:vagali/features/user/models/gender.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/features/user/repositories/user_repository.dart';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vagali/apps/landlord/features/parking/views/parking_edit_view.dart';
 import 'package:vagali/features/auth/controllers/auth_controller.dart';
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/auth/views/code_verification_view.dart';
@@ -8,7 +9,6 @@ import 'package:vagali/features/auth/views/login_error_view.dart';
 import 'package:vagali/features/auth/views/select_type_view.dart';
 import 'package:vagali/features/home/landlord/views/landlord_base_view.dart';
 import 'package:vagali/features/home/tenant//views/base_view.dart';
-import 'package:vagali/features/parking/views/parking_edit_view.dart';
 
 import 'animation_view.dart';
 import 'login_view.dart';
