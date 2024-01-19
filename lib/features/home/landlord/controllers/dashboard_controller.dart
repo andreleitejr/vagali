@@ -65,7 +65,7 @@ class LandlordHomeController extends GetxController {
     loading(true);
 
     try {
-      await _getCurrentLandlordLocation();
+      // await _getCurrentLandlordLocation();
       await _loadCarMarker();
 
       await _handleReservationsUpdate(stream);
@@ -190,14 +190,14 @@ class LandlordHomeController extends GetxController {
     }
   }
 
-  Future<void> _getCurrentLandlordLocation() async {
-    await _locationService.getUserLocation();
-    final position = _locationService.userLocation;
-
-    if (position != null) {
-      location.value = LatLng(position.latitude, position.longitude);
-    }
-  }
+  // Future<void> _getCurrentLandlordLocation() async {
+  //   await _locationService.getUserLocation();
+  //   final position = _locationService.userLocation;
+  //
+  //   if (position != null) {
+  //     location.value = LatLng(position.latitude, position.longitude);
+  //   }
+  // }
 
   var location = const LatLng(-23.5504533, -46.6339112).obs;
 

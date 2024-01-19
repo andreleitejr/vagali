@@ -31,7 +31,7 @@ class CodeVerificationView extends StatelessWidget {
               const SizedBox(height: 64),
               CodeWidget(
                 value: controller.sms.value,
-                onSubmit: () => verifySmsCode(),
+                onSubmit: () => controller.verifySmsCode(),
                 phoneNumber: controller.phone.value,
                 onChanged: controller.sms,
               ),
@@ -44,7 +44,7 @@ class CodeVerificationView extends StatelessWidget {
                     actionText: isVerifying
                         ? 'Verificando os dados...'
                         : 'Verificar código',
-                    onPressed: () => verifySmsCode(),
+                    onPressed: () => controller.verifySmsCode(),
                     isValid: controller.isSmsValid.value,
                     backgroundColor: isVerifying
                         ? ThemeColors.secondary
@@ -83,22 +83,5 @@ class CodeVerificationView extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Future<void> verifySmsCode() async {
-    if (controller.isValid.isTrue) {
-      await controller.verifySmsCode();
-      // if (result != AuthStatus.authenticated) {
-      //   Get.snackbar(
-      //     'Erro com SMS',
-      //     'Erro ao validar o SMS. Tente novamente.',
-      //   );
-      // }
-    } else {
-      Get.snackbar(
-        'Erro com SMS',
-        controller.inputError,
-      );
-    }
   }
 }

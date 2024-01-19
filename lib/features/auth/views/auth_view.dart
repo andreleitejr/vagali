@@ -48,19 +48,7 @@ class _AuthViewState extends State<AuthView> implements AuthNavigator {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(
-        () {
-          if (controller.loading.isTrue) {
-            return AnimationView();
-          }
-
-          final authStatus = controller.authStatus.value;
-
-          return AuthErrorView(
-            error: authStatus.name,
-          );
-        },
-      ),
+      body: AnimationView(),
     );
   }
 
@@ -76,6 +64,7 @@ class _AuthViewState extends State<AuthView> implements AuthNavigator {
 
   @override
   void register() {
+    print('##########3333 Entrou aqui no register!');
     Get.to(
       () => Get.find<FlavorConfig>().flavor == Flavor.tenant
           ? const TenantEditView()

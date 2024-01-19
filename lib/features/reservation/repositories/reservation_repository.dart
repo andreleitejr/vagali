@@ -45,7 +45,7 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
 
   Stream<List<Reservation>> streamAllReservationsForLandlord() {
     try {
-      final Landlord landlord = Get.find();
+      final User landlord = Get.find();
 
       final collection = firestore.collection(collectionName);
 

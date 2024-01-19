@@ -46,41 +46,40 @@ class AuthController extends GetxController {
 
     await checkCurrentUser();
 
-    await Future.delayed(const Duration(milliseconds: 2800));
-
     loading(false);
   }
 
   Future<void> checkCurrentUser() async {
-    final isAuthenticated = _authRepository.isUserAuthenticated();
+    final isAuthenticated = await _authRepository.isUserAuthenticated();
 
+    await Future.delayed(const Duration(milliseconds: 2800));
+    print(' ########################## USer is authenticated $isAuthenticated');
     if (isAuthenticated) {
-      await _checkUserInFirestore();
-
-      // navigator.home();
+      print(
+          ' ########################## USer is authenticated12 $isAuthenticated');
+      final isRegisteredInDatabase = await _checkUserInDatabase();
+      if (isRegisteredInDatabase) navigator.home();
     } else {
-      navigator.register();
+      print(
+          ' ########################## USer is NOT NOT NOT authenticated $isAuthenticated');
+
+      navigator.login();
       // authStatus.value = AuthStatus.unauthenticated;
     }
   }
 
-  Future<void> _checkUserInFirestore() async {
+  Future<bool> _checkUserInDatabase() async {
     try {
       final user = Get.find<FlavorConfig>().flavor == Flavor.tenant
           ? await _tenantRepository.get(_authRepository.authUser!.uid)
           : await _landlordRepository.get(_authRepository.authUser!.uid);
-
       if (user != null) {
-        print('##################### _checkUserInFirestore User is not null');
         Get.put(user);
-        navigator.home();
+        return true;
       }
-      print('##################### _checkUserInFirestore User is null');
-
-      navigator.register();
+      return false;
     } catch (e) {
-
-      navigator.register();
+      return false;
     }
   }
 
@@ -120,10 +119,11 @@ class AuthController extends GetxController {
       var newAuthStatus = await _authRepository.verifySmsCode(sms.value);
 
       if (newAuthStatus == AuthStatus.authenticated) {
-        await _checkUserInFirestore();
+        final isRegisteredInDatabase = await _checkUserInDatabase();
+        if (isRegisteredInDatabase) navigator.home();
+      } else {
+        navigator.register();
       }
-
-      authStatus.value = newAuthStatus;
     } catch (e) {
       error(e.toString());
       authStatus.value = AuthStatus.error;

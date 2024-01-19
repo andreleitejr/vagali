@@ -7,8 +7,6 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 enum AuthStatus {
   uninitialized,
   authenticated,
-  authenticatedAsTenant,
-  authenticatedAsLandlord,
   codeSent,
   error,
   unauthenticated,
@@ -31,6 +29,7 @@ class AuthRepository {
   auth.User? authUser;
 
   bool isUserAuthenticated() {
+
     authUser = _auth.currentUser;
 
     if (authUser != null) {

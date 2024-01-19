@@ -44,6 +44,7 @@ class FirestoreRepository<T extends BaseModel> {
     try {
       final document =
           await firestore.collection(collectionName).doc(documentId).get();
+      print('$collectionName Getting all docs...');
       return fromDocument(document);
     } catch (error) {
       print('Error fetching data fromm $collectionName in Firestore: $error');
@@ -63,8 +64,6 @@ class FirestoreRepository<T extends BaseModel> {
       final querySnapshot = await query.get();
       final dataList =
           querySnapshot.docs.map((doc) => fromDocument(doc)).toList();
-
-      print('######################################### DATA LIST ${dataList}');
 
       return dataList;
     } catch (error) {
