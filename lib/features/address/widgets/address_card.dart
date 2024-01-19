@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:vagali/features/address/controllers/address_controller.dart';
+import 'package:vagali/features/address/controllers/address_card_controller.dart';
 import 'package:vagali/features/address/models/address.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_typography.dart';
@@ -11,14 +11,14 @@ import 'package:vagali/widgets/coolicon.dart';
 class AddressCard extends StatelessWidget {
   final bool editModeOn;
   final Address address;
-  late AddressController addressController;
+  late AddressCardController addressController;
 
   AddressCard({
     super.key,
     required this.address,
     this.editModeOn = true,
   }) {
-    addressController = Get.put(AddressController(address));
+    addressController = Get.put(AddressCardController(address));
   }
 
   @override

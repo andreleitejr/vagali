@@ -8,7 +8,7 @@ import 'package:vagali/features/address/models/address.dart';
 import 'package:vagali/services/address_service.dart';
 import 'package:vagali/theme/images.dart';
 
-class AddressController extends GetxController {
+class AddressCardController extends GetxController {
   final Address address;
 
   final AddressService _addressService = AddressService();
@@ -18,7 +18,7 @@ class AddressController extends GetxController {
 
   final marker = Rx<Marker?>(null);
 
-  AddressController(this.address);
+  AddressCardController(this.address);
 
   Future<void> getCoordinatesFromAddress(Address address) async {
     final newCoordinates =

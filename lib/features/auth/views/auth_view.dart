@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/apps/landlord/features/parking/views/parking_edit_view.dart';
+import 'package:vagali/apps/landlord/views/landlord_edit_view.dart';
+import 'package:vagali/apps/tenant/views/tenant_edit_view.dart';
 import 'package:vagali/features/auth/controllers/auth_controller.dart';
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/auth/views/code_verification_view.dart';
@@ -9,49 +11,92 @@ import 'package:vagali/features/auth/views/login_error_view.dart';
 import 'package:vagali/features/auth/views/select_type_view.dart';
 import 'package:vagali/features/home/landlord/views/landlord_base_view.dart';
 import 'package:vagali/features/home/tenant//views/base_view.dart';
+import 'package:vagali/features/user/views/user_edit_view.dart';
 import 'package:vagali/models/flavor_config.dart';
 
 import 'animation_view.dart';
 import 'login_view.dart';
 
-class AuthView extends StatelessWidget {
-  final AuthController _controller = Get.put(AuthController());
+abstract class AuthNavigator {
+  void login();
 
-  AuthView({super.key});
+  void verification();
+
+  void register();
+
+  void home();
+
+  void locationDenied();
+
+  void createParking();
+}
+
+class AuthView extends StatefulWidget {
+  @override
+  State<AuthView> createState() => _AuthViewState();
+}
+
+class _AuthViewState extends State<AuthView> implements AuthNavigator {
+  late AuthController controller;
+
+  @override
+  void initState() {
+    controller = Get.put(AuthController(this));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(
         () {
-          if (_controller.loading.isTrue) {
+          if (controller.loading.isTrue) {
             return AnimationView();
           }
 
-          final authStatus = _controller.authStatus.value;
+          final authStatus = controller.authStatus.value;
 
-          if (authStatus == AuthStatus.unauthenticated) {
-            return LoginView(controller: _controller);
-          } else if (authStatus == AuthStatus.codeSent ||
-              authStatus == AuthStatus.verifying) {
-            return CodeVerificationView(controller: _controller);
-          } else if (authStatus == AuthStatus.unregistered) {
-            return SelectTypeView();
-          } else if (authStatus == AuthStatus.authenticated) {
-            return Get.find<FlavorConfig>().flavor == Flavor.tenant
-                ? const BaseView()
-                : LandlordBaseView();
-          } else if (authStatus == AuthStatus.parkingNotFound) {
-            return const ParkingEditView();
-          } else if (authStatus == AuthStatus.locationDenied) {
-            return const LocationDeniedView();
-          } else {
-            return AuthErrorView(
-              error: authStatus.name,
-            );
-          }
+          return AuthErrorView(
+            error: authStatus.name,
+          );
         },
       ),
     );
+  }
+
+  @override
+  void login() {
+    Get.to(() => LoginView(controller: controller));
+  }
+
+  @override
+  void verification() {
+    Get.to(() => CodeVerificationView(controller: controller));
+  }
+
+  @override
+  void register() {
+    Get.to(
+      () => Get.find<FlavorConfig>().flavor == Flavor.tenant
+          ? const TenantEditView()
+          : LandlordEditView(),
+    );
+  }
+
+  @override
+  void home() {
+    Get.to(() => Get.find<FlavorConfig>().flavor == Flavor.tenant
+        ? const BaseView()
+        : LandlordBaseView());
+  }
+
+  @override
+  void createParking() {
+    Get.to(() => const ParkingEditView());
+  }
+
+  @override
+  void locationDenied() {
+    Get.to(() => const LocationDeniedView());
   }
 }

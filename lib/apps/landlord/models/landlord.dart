@@ -25,7 +25,7 @@ class Landlord extends User {
     required String gender,
     required DateTime birthday,
     required Address address,
-    required String type,
+    // required String type,
     // required GeoPoint coordinates,
   }) : super(
           id: id,
@@ -40,7 +40,7 @@ class Landlord extends User {
     gender: gender,
           birthday: birthday,
           address: address,
-          type: type,
+          // type: type,
         );
 
   Landlord.fromDocument(DocumentSnapshot document)
@@ -60,7 +60,7 @@ class Landlord extends User {
       gender: user.gender,
       birthday: user.birthday,
       address: user.address,
-      type: user.type,
+      // type: user.type,
     );
   }
 

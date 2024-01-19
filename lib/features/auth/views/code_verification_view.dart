@@ -53,30 +53,31 @@ class CodeVerificationView extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 16),
-              if (controller.authStatus.value != AuthStatus.verifying)
-                Obx(
-                  () => TextButton(
-                    onPressed: () async {
-                      if (controller.isCountdownFinished.isTrue) {
-                        await controller.sendVerificationCode();
-                        snackBar('Novo código enviado',
-                            'Um novo SMS foi enviado ao número ${controller.phone.value}');
-                      }
-                    },
-                    child: Text(
-                      'Reenviar código '
-                      '(${controller.minutes.value.toString().padLeft(2, '0')}'
-                      ':${controller.seconds.value.toString().padLeft(2, '0')})',
-                      style: controller.isCountdownFinished.isTrue
-                          ? ThemeTypography.semiBold14.apply(
-                              color: ThemeColors.primary,
-                            )
-                          : ThemeTypography.regular14.apply(
-                              color: ThemeColors.grey4,
-                            ),
-                    ),
+              Obx(
+                () => TextButton(
+                  onPressed: () async {
+                    if (controller.isCountdownFinished.isTrue) {
+                      await controller.sendVerificationCode();
+                      snackBar('Novo código enviado',
+                          'Um novo SMS foi enviado ao número ${controller.phone.value}');
+                    }
+                  },
+                  child: Text(
+                    controller.authStatus.value != AuthStatus.verifying
+                        ? 'Reenviar código '
+                            '(${controller.minutes.value.toString().padLeft(2, '0')}'
+                            ':${controller.seconds.value.toString().padLeft(2, '0')})'
+                        : '',
+                    style: controller.isCountdownFinished.isTrue
+                        ? ThemeTypography.semiBold14.apply(
+                            color: ThemeColors.primary,
+                          )
+                        : ThemeTypography.regular14.apply(
+                            color: ThemeColors.grey4,
+                          ),
                   ),
                 ),
+              ),
             ],
           ),
         ),
@@ -86,14 +87,13 @@ class CodeVerificationView extends StatelessWidget {
 
   Future<void> verifySmsCode() async {
     if (controller.isValid.isTrue) {
-      final result = await controller.verifySmsCode();
-      if (result != AuthStatus.authenticatedAsTenant &&
-          result != AuthStatus.authenticatedAsLandlord) {
-        Get.snackbar(
-          'Erro com SMS',
-          'Erro ao validar o SMS. Tente novamente.',
-        );
-      }
+      await controller.verifySmsCode();
+      // if (result != AuthStatus.authenticated) {
+      //   Get.snackbar(
+      //     'Erro com SMS',
+      //     'Erro ao validar o SMS. Tente novamente.',
+      //   );
+      // }
     } else {
       Get.snackbar(
         'Erro com SMS',

@@ -16,12 +16,10 @@ import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/services/address_service.dart';
 import 'package:vagali/services/image_service.dart';
 
-class UserEditController extends GetxController {
-  UserEditController({this.type});
+class TenantEditController extends GetxController {
+  TenantEditController();
 
-  final String? type;
   final _tenantRepository = TenantRepository();
-  final _landlordRepository = LandlordRepository();
 
   final AuthRepository _authRepository = Get.find();
 
@@ -133,18 +131,18 @@ class UserEditController extends GetxController {
       (isPersonalInfoValid.isTrue && isAddressValid.isTrue).obs;
 
   RxBool get isPersonalInfoValid => (isImageValid.isTrue &&
-          isFirstNameValid.isTrue &&
-          isLastNameValid.isTrue &&
-          isDocumentValid.isTrue &&
-          isEmailValid.isTrue &&
-          isBirthdayValid.isTrue)
+      isFirstNameValid.isTrue &&
+      isLastNameValid.isTrue &&
+      isDocumentValid.isTrue &&
+      isEmailValid.isTrue &&
+      isBirthdayValid.isTrue)
       .obs;
 
   RxBool get isAddressValid => (isPostalCodeValid.isTrue &&
-          isNumberValid.isTrue &&
-          isStreetValid.isTrue &&
-          isCityValid.isTrue &&
-          isStateValid.isTrue)
+      isNumberValid.isTrue &&
+      isStreetValid.isTrue &&
+      isCityValid.isTrue &&
+      isStateValid.isTrue)
       .obs;
 
   RxBool get isImageValid {
@@ -166,7 +164,7 @@ class UserEditController extends GetxController {
   }
 
   RxBool get isEmailValid => (emailController.value.isNotEmpty &&
-          emailRegExp.hasMatch(emailController.value))
+      emailRegExp.hasMatch(emailController.value))
       .obs;
 
   RxBool get isBirthdayValid => (birthday.value != null).obs;
@@ -180,7 +178,7 @@ class UserEditController extends GetxController {
     if (isPostalCodeValid.isTrue) {
       isPostalCodeLoading.value = true;
       final addressDetails =
-          await _addressService.getAddressDetails(postalCodeClean.value);
+      await _addressService.getAddressDetails(postalCodeClean.value);
 
       if (addressDetails != null) {
         streetController.value = addressDetails['logradouro'] ?? '';
@@ -264,16 +262,22 @@ class UserEditController extends GetxController {
         country: countryController.value,
         complement: complementController.value,
       ),
-      // type: type ?? currentUser.value!.type,
+      // type: UserType.landlord,
     );
 
-    final result = Get.find<FlavorConfig>().flavor == Flavor.tenant
-        ? await _tenantRepository.save(user as Tenant, docId: user.id)
-        : await _landlordRepository.save(user as Landlord, docId: user.id);
+    final result =
+    await _tenantRepository.save(user as Tenant, docId: user.id);
 
     if (result == SaveResult.success) {
       Get.put<User>(user);
-
+      // debugPrint('Successful saved user with id ${user.id}...');
+      // if (user.type == UserType.tenant) {
+      //   final tenant = Tenant.fromUser(user);
+      //   Get.put<Tenant>(tenant);
+      // } else if (user.type == UserType.landlord) {
+      //   final landlord = Landlord.fromUser(user);
+      //   Get.put<Landlord>(landlord);
+      // }
       loading(false);
       return SaveResult.success;
     }
@@ -299,9 +303,7 @@ class UserEditController extends GetxController {
     if (userExists) {
       final User localUser = Get.find();
 
-      final user = Get.find<FlavorConfig>().flavor == Flavor.tenant
-          ? await _tenantRepository.get(localUser.id!)
-          : await _landlordRepository.get(localUser.id!);
+      final user = await _tenantRepository.get(localUser.id!);
 
       if (user != null) {
         currentUser.value = user;

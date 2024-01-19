@@ -29,7 +29,7 @@ class Tenant extends User {
     required String gender,
     required DateTime birthday,
     required Address address,
-    required String type,
+    // required String type,
   }) : super(
           id: id,
           createdAt: createdAt,
@@ -43,7 +43,7 @@ class Tenant extends User {
           gender: gender,
           birthday: birthday,
           address: address,
-          type: type,
+          // type: type,
         );
 
   Tenant.fromDocument(DocumentSnapshot document) : super.fromDocument(document);
@@ -62,7 +62,7 @@ class Tenant extends User {
       gender: user.gender,
       birthday: user.birthday,
       address: user.address,
-      type: user.type,
+      // type: user.type,
     );
   }
 

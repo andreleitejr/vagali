@@ -8,6 +8,7 @@ import 'package:vagali/apps/tenant/features/home/repositories/tenant_repository.
 import 'package:vagali/apps/tenant/features/vehicle/repositories/vehicle_repository.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/user/models/user.dart';
+import 'package:vagali/models/flavor_config.dart';
 import 'package:vagali/models/location_history.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/utils/extensions.dart';
@@ -26,7 +27,10 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
 
       final collection = firestore.collection(collectionName);
 
-      final query = collection.where(user.isTenant ? 'tenantId' : 'landlordId',
+      final query = collection.where(
+          Get.find<FlavorConfig>().flavor == Flavor.tenant
+              ? 'tenantId'
+              : 'landlordId',
           isEqualTo: user.id);
 
       final stream = query.snapshots().map((querySnapshot) =>

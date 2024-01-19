@@ -10,11 +10,15 @@ import 'package:vagali/apps/tenant/features/home/repositories/tenant_repository.
 
 // Features
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
+import 'package:vagali/features/auth/views/auth_view.dart';
 import 'package:vagali/features/user/repositories/user_repository.dart';
 import 'package:vagali/models/flavor_config.dart';
 import 'package:vagali/utils/extensions.dart';
 
 class AuthController extends GetxController {
+  AuthController(this.navigator);
+
+  final AuthNavigator navigator;
   final _authRepository = Get.put(AuthRepository());
   final _tenantRepository = Get.put(TenantRepository());
   final _landlordRepository = Get.put(LandlordRepository());
@@ -22,27 +26,14 @@ class AuthController extends GetxController {
   final phone = ''.obs;
   final sms = ''.obs;
   final termsAndConditions = false.obs;
-  var minutes = 5.obs;
-  var seconds = 0.obs;
-  var isCountdownFinished = false.obs;
-
-  String get inputError {
-    if (isPhoneValid.isFalse) {
-      return 'Insira um telefone válido';
-    } else if (termsAndConditions.isFalse) {
-      return 'Para utilizar nossa plataforma, é preciso aceitar nossos Termos e Condições.';
-    } else if (isSmsValid.isFalse) {
-      return 'SMS inválido';
-    } else {
-      return 'Algum campo necessita de atenção';
-    }
-  }
+  final minutes = 5.obs;
+  final seconds = 0.obs;
+  final isCountdownFinished = false.obs;
 
   final authStatus = AuthStatus.uninitialized.obs;
   final error = ''.obs;
   final userType = ''.obs;
   final loading = false.obs;
-
   final showErrors = RxBool(false);
 
   @override
@@ -50,35 +41,54 @@ class AuthController extends GetxController {
     super.onInit();
 
     loading(true);
+
     FlutterNativeSplash.remove();
 
     await checkCurrentUser();
 
     await Future.delayed(const Duration(milliseconds: 2800));
+
     loading(false);
   }
 
-  RxBool get isValid =>
-      (isPhoneValid.isTrue && termsAndConditions.isTrue && isSmsValid.isTrue)
-          .obs;
+  Future<void> checkCurrentUser() async {
+    final isAuthenticated = _authRepository.isUserAuthenticated();
 
-  RxBool get isLoginValid =>
-      (isPhoneValid.isTrue && termsAndConditions.isTrue).obs;
+    if (isAuthenticated) {
+      await _checkUserInFirestore();
 
-  RxBool get isPhoneValid {
-    final cleanPhone = phone.value.clean.removeParenthesis.removeAllWhitespace;
-
-    print('${cleanPhone.length == 11}');
-    return (cleanPhone.length == 11).obs;
+      // navigator.home();
+    } else {
+      navigator.register();
+      // authStatus.value = AuthStatus.unauthenticated;
+    }
   }
 
-  RxBool get isSmsValid => (sms.isNotEmpty && sms.value.length == 6).obs;
+  Future<void> _checkUserInFirestore() async {
+    try {
+      final user = Get.find<FlavorConfig>().flavor == Flavor.tenant
+          ? await _tenantRepository.get(_authRepository.authUser!.uid)
+          : await _landlordRepository.get(_authRepository.authUser!.uid);
+
+      if (user != null) {
+        print('##################### _checkUserInFirestore User is not null');
+        Get.put(user);
+        navigator.home();
+      }
+      print('##################### _checkUserInFirestore User is null');
+
+      navigator.register();
+    } catch (e) {
+
+      navigator.register();
+    }
+  }
 
   Future<void> sendVerificationCode() async {
     try {
-      final newAuthStatus =
-          await _authRepository.sendVerificationCode('+55${phone.value}');
-      authStatus.value = newAuthStatus;
+      await _authRepository.sendVerificationCode('+55${phone.value}');
+      // authStatus.value = newAuthStatus;
+      navigator.verification();
       startCountdown();
     } catch (e) {
       debugPrint('Verification code: $error');
@@ -103,53 +113,48 @@ class AuthController extends GetxController {
     });
   }
 
-  Future<AuthStatus?> verifySmsCode() async {
+  Future<void> verifySmsCode() async {
     try {
       authStatus.value = AuthStatus.verifying;
 
       var newAuthStatus = await _authRepository.verifySmsCode(sms.value);
 
       if (newAuthStatus == AuthStatus.authenticated) {
-        newAuthStatus = await _checkUserInFirestore();
+        await _checkUserInFirestore();
       }
 
       authStatus.value = newAuthStatus;
-
-      return authStatus.value;
     } catch (e) {
       error(e.toString());
-
       authStatus.value = AuthStatus.error;
-      return null;
     }
   }
 
-  Future<void> checkCurrentUser() async {
-    final isAuthenticated = _authRepository.isUserAuthenticated();
+  RxBool get isValid =>
+      (isPhoneValid.isTrue && termsAndConditions.isTrue && isSmsValid.isTrue)
+          .obs;
 
-    if (isAuthenticated) {
-      final newAuthStatus = await _checkUserInFirestore();
-      authStatus.value = newAuthStatus;
+  RxBool get isLoginValid =>
+      (isPhoneValid.isTrue && termsAndConditions.isTrue).obs;
+
+  RxBool get isPhoneValid {
+    final cleanPhone = phone.value.clean.removeParenthesis.removeAllWhitespace;
+
+    print('${cleanPhone.length == 11}');
+    return (cleanPhone.length == 11).obs;
+  }
+
+  RxBool get isSmsValid => (sms.isNotEmpty && sms.value.length == 6).obs;
+
+  String get inputError {
+    if (isPhoneValid.isFalse) {
+      return 'Insira um telefone válido';
+    } else if (termsAndConditions.isFalse) {
+      return 'Para utilizar nossa plataforma, é preciso aceitar nossos Termos e Condições.';
+    } else if (isSmsValid.isFalse) {
+      return 'SMS inválido';
     } else {
-      authStatus.value = AuthStatus.unauthenticated;
-    }
-  }
-
-  Future<AuthStatus> _checkUserInFirestore() async {
-    try {
-      final user = Get.find<FlavorConfig>().flavor == Flavor.tenant
-          ? await _tenantRepository.get(_authRepository.authUser!.uid)
-          : await _landlordRepository.get(_authRepository.authUser!.uid);
-
-      if (user == null) {
-        return AuthStatus.unregistered;
-      }
-
-      Get.put(user);
-
-      return AuthStatus.authenticated;
-    } catch (e) {
-      return AuthStatus.failed;
+      return 'Algum campo necessita de atenção';
     }
   }
 }

@@ -19,7 +19,8 @@ class User extends BaseModel {
   final String gender;
   final DateTime birthday;
   final Address address;
-  final String type;
+
+  // final String type;
   Rating? rating;
 
   User({
@@ -35,7 +36,7 @@ class User extends BaseModel {
     required this.gender,
     required this.birthday,
     required this.address,
-    required this.type,
+    // required this.type,
   }) : super(
           id: id,
           createdAt: createdAt,
@@ -52,7 +53,7 @@ class User extends BaseModel {
         gender = document['gender'],
         birthday = (document['birthday'] as Timestamp).toDate(),
         address = Address.fromMap(document['address']),
-        type = document['type'],
+        // type = document['type'],
         super.fromDocument(document);
 
   @override
@@ -67,12 +68,8 @@ class User extends BaseModel {
       'gender': gender,
       'birthday': birthday.toUtc(),
       'address': address.toMap(),
-      'type': type,
+      // 'type': type,
       ...super.toMap(),
     };
   }
-
-  bool get isTenant => type == UserType.tenant;
-
-  bool get isLandlord => type == UserType.landlord;
 }

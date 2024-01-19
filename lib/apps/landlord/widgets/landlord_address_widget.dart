@@ -2,13 +2,14 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:vagali/apps/landlord/controllers/landlord_edit_controller.dart';
 import 'package:vagali/features/user/controllers/user_edit_controller.dart';
 import 'package:vagali/widgets/input.dart';
 
-class AddressEditWidget extends StatelessWidget {
-  final UserEditController controller;
+class LandlordAddressWidget extends StatelessWidget {
+  final LandlordEditController controller;
 
-  AddressEditWidget({super.key, required this.controller});
+  LandlordAddressWidget({super.key, required this.controller});
 
   final FocusNode postalCodeFocus = FocusNode();
   final FocusNode streetFocus = FocusNode();
@@ -20,9 +21,6 @@ class AddressEditWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(
-        'HUDHSADUAHUADSHDUHASDUHSDAUSDAHU ${controller.postalCodeController.value}');
-
     postalCodeFocus.requestFocus();
     return Obx(
       () {
@@ -33,10 +31,12 @@ class AddressEditWidget extends StatelessWidget {
           children: [
             Obx(() {
               return Input(
-                initialValue: controller.postalCodeController.value,
-                onChanged: controller.postalCodeController,
+                initialValue:
+                    controller.addressController.postalCodeController.value,
+                onChanged: controller.addressController.postalCodeController,
                 hintText: 'CEP',
-                error: controller.getError(controller.postalCodeError),
+                error: controller
+                    .getError(controller.addressController.postalCodeError),
                 keyboardType: TextInputType.number,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -46,16 +46,18 @@ class AddressEditWidget extends StatelessWidget {
                 nextFocusNode: numberFocus,
               );
             }),
-            if (controller.isPostalCodeValid.isTrue &&
-                controller.isPostalCodeLoading.isFalse) ...[
+            if (controller.addressController.isPostalCodeValid.isTrue &&
+                controller.addressController.isPostalCodeLoading.isFalse) ...[
               const SizedBox(height: 16),
               Obx(() {
                 return Input(
-                  initialValue: controller.streetController.value,
-                  onChanged: controller.streetController,
+                  initialValue:
+                      controller.addressController.streetController.value,
+                  onChanged: controller.addressController.streetController,
                   keyboardType: TextInputType.streetAddress,
                   hintText: 'Rua',
-                  error: controller.getError(controller.streetError),
+                  error: controller
+                      .getError(controller.addressController.streetError),
                   currentFocusNode: streetFocus,
                   nextFocusNode: numberFocus,
                 );
@@ -63,10 +65,12 @@ class AddressEditWidget extends StatelessWidget {
               const SizedBox(height: 16),
               Obx(
                 () => Input(
-                  initialValue: controller.numberController.value,
-                  onChanged: controller.numberController,
+                  initialValue:
+                      controller.addressController.numberController.value,
+                  onChanged: controller.addressController.numberController,
                   hintText: 'Número',
-                  error: controller.getError(controller.numberError),
+                  error: controller
+                      .getError(controller.addressController.numberError),
                   currentFocusNode: numberFocus,
                   nextFocusNode: complementFocus,
                 ),
@@ -74,10 +78,12 @@ class AddressEditWidget extends StatelessWidget {
               const SizedBox(height: 16),
               Obx(
                 () => Input(
-                  initialValue: controller.cityController.value,
-                  onChanged: controller.cityController,
+                  initialValue:
+                      controller.addressController.cityController.value,
+                  onChanged: controller.addressController.cityController,
                   hintText: 'Cidade',
-                  error: controller.getError(controller.cityError),
+                  error: controller
+                      .getError(controller.addressController.cityError),
                   currentFocusNode: cityFocus,
                   nextFocusNode: stateFocus,
                 ),
@@ -85,26 +91,30 @@ class AddressEditWidget extends StatelessWidget {
               const SizedBox(height: 16),
               Obx(
                 () => Input(
-                  initialValue: controller.stateController.value,
-                  onChanged: controller.stateController,
+                  initialValue:
+                      controller.addressController.stateController.value,
+                  onChanged: controller.addressController.stateController,
                   hintText: 'Estado',
-                  error: controller.getError(controller.stateError),
+                  error: controller
+                      .getError(controller.addressController.stateError),
                   currentFocusNode: stateFocus,
                   nextFocusNode: countryFocus,
                 ),
               ),
               const SizedBox(height: 16),
               Input(
-                initialValue: controller.countryController.value,
-                onChanged: controller.countryController,
+                initialValue:
+                    controller.addressController.countryController.value,
+                onChanged: controller.addressController.countryController,
                 hintText: 'País',
                 currentFocusNode: countryFocus,
                 nextFocusNode: complementFocus,
               ),
               const SizedBox(height: 16),
               Input(
-                initialValue: controller.complementController.value,
-                onChanged: controller.complementController,
+                initialValue:
+                    controller.addressController.complementController.value,
+                onChanged: controller.addressController.complementController,
                 hintText: 'Complemento',
                 currentFocusNode: complementFocus,
                 onSubmit: () => FocusScope.of(context).unfocus(),
