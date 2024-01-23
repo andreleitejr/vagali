@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
-import 'package:vagali/apps/tenant/features/home/models/tenant.dart';
+import 'package:vagali/apps/tenant/features/home/controllers/home_controller.dart';
 import 'package:vagali/features/user/models/user.dart';
 
 class BaseController extends GetxController {
+
+  final HomeController homeController = HomeController();
   BaseController(this.index);
 
   final User tenant = Get.find();

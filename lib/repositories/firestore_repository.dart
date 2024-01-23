@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:vagali/models/base_model.dart';
 import 'package:vagali/utils/extensions.dart';
 
@@ -35,7 +36,7 @@ class FirestoreRepository<T extends BaseModel> {
       final docId = docSnapshot.id;
       return docId;
     } catch (error) {
-      print('Error saving data to Firestore: $error');
+      debugPrint('Error saving data and getting id from Firestore: $error');
       return null;
     }
   }
@@ -44,10 +45,10 @@ class FirestoreRepository<T extends BaseModel> {
     try {
       final document =
           await firestore.collection(collectionName).doc(documentId).get();
-      print('$collectionName Getting all docs...');
       return fromDocument(document);
     } catch (error) {
-      print('Error fetching data fromm $collectionName in Firestore: $error');
+      debugPrint(
+          'Error getting data from $collectionName in Firestore: $error');
 
       return null;
     }

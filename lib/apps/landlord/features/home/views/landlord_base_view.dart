@@ -1,46 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vagali/apps/tenant/features/home/views/tenant_view.dart';
-import 'package:vagali/features/home/tenant/controllers/base_controller.dart';
-import 'package:vagali/features/home/tenant/controllers/home_controller.dart';
-import 'package:vagali/features/home/tenant/views/home_view.dart';
-import 'package:vagali/features/map/views/map_view.dart';
-import 'package:vagali/features/reservation/views/reservation_list_view.dart';
+import 'package:vagali/apps/landlord/features/dashboard/views/dashboard_view.dart';
+import 'package:vagali/apps/landlord/features/home/controllers/dashboard_controller.dart';
+import 'package:vagali/apps/landlord/features/home/views/landlord_home_view.dart';
+import 'package:vagali/apps/landlord/features/parking/views/parking_edit_view.dart';
+import 'package:vagali/apps/landlord/views/landlord_view.dart';
+import 'package:vagali/features/calendar/views/calendar_view.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/widgets/avatar.dart';
 import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/shimmer_box.dart';
 
-class BaseView extends StatefulWidget {
-  final int selectedIndex;
-
-  const BaseView({super.key, this.selectedIndex = 0});
-
-  @override
-  _BaseViewState createState() => _BaseViewState();
+abstract class HomeNavigator {
+  void goToParkingEditPage();
 }
 
-class _BaseViewState extends State<BaseView> {
-  late BaseController controller;
+class LandlordBaseView extends StatefulWidget {
+  final int selectedIndex;
 
-  final List<Widget> _pages = [
-    HomeView(),
-    MapView(),
-    ReservationListView(),
-    TenantView(),
-  ];
+  const LandlordBaseView({super.key, this.selectedIndex = 0});
+
+  @override
+  _LandlordBaseViewState createState() => _LandlordBaseViewState();
+}
+
+class _LandlordBaseViewState extends State<LandlordBaseView>
+    implements HomeNavigator {
+  late LandlordHomeController controller;
 
   @override
   void initState() {
-    controller = Get.put(BaseController(widget.selectedIndex));
+    controller = Get.put(LandlordHomeController(this));
     super.initState();
   }
 
-  final HomeController _controller = HomeController();
-
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _pages = [
+      LandlordHomeView(
+        controller: controller,
+      ),
+      DashboardView(
+        reservations: controller.reservations,
+      ),
+      CalendarView(
+        reservations: controller.reservations,
+      ),
+      LandlordView(),
+    ];
     return Scaffold(
       body: Obx(() => _pages[controller.selectedIndex.value]),
       bottomNavigationBar: Obx(
@@ -48,7 +56,7 @@ class _BaseViewState extends State<BaseView> {
           type: BottomNavigationBarType.fixed,
           selectedFontSize: 0,
           items: <BottomNavigationBarItem>[
-            const BottomNavigationBarItem(
+            BottomNavigationBarItem(
               icon: Coolicon(
                 icon: Coolicons.house,
               ),
@@ -60,10 +68,10 @@ class _BaseViewState extends State<BaseView> {
             ),
             const BottomNavigationBarItem(
               icon: Coolicon(
-                icon: Coolicons.map,
+                icon: Coolicons.creditCard,
               ),
               activeIcon: Coolicon(
-                icon: Coolicons.map,
+                icon: Coolicons.creditCard,
                 color: ThemeColors.primary,
               ),
               label: '',
@@ -84,8 +92,8 @@ class _BaseViewState extends State<BaseView> {
                 width: 38,
                 child: Obx(
                   () => ShimmerBox(
-                    loading: _controller.loading.value,
-                    child: Avatar(image: controller.tenant.image),
+                    loading: controller.loading.value,
+                    child: Avatar(image: controller.landlord.image),
                   ),
                 ),
               ),
@@ -95,9 +103,14 @@ class _BaseViewState extends State<BaseView> {
           currentIndex: controller.selectedIndex.value,
           unselectedItemColor: ThemeColors.grey3,
           selectedItemColor: ThemeColors.primary,
-          onTap: controller.selectedIndex,
+          onTap: (index) => controller.selectedIndex(index),
         ),
       ),
     );
+  }
+
+  @override
+  void goToParkingEditPage() {
+    Get.to(() => ParkingEditView());
   }
 }

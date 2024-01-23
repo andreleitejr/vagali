@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
+import 'package:vagali/apps/landlord/features/parking/models/parking_tag.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking_type.dart';
 import 'package:vagali/apps/landlord/features/parking/repositories/parking_repository.dart';
-import 'package:vagali/apps/tenant/features/home/models/tenant.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/services/location_service.dart';
 import 'package:vagali/services/search_service.dart';
@@ -27,7 +27,7 @@ class HomeController extends GetxController {
 
   String get cleanText => searchText.value.clean;
 
-  final selectedCategories = <String>[parkingTypes.first.type].obs;
+  final selectedCategories = <String>[parkingTags.first.title].obs;
 
   final filteredParkings = RxList<Parking>();
 

@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/address/controllers/address_edit_controller.dart';
-import 'package:vagali/features/user/controllers/user_edit_controller.dart';
 import 'package:vagali/features/address/widgets/address_edit_widget.dart';
-import 'package:vagali/repositories/firestore_repository.dart';
-import 'package:vagali/theme/theme_colors.dart';
-import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/widgets/snackbar.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
 class AddressEditView extends StatefulWidget {

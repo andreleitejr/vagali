@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:vagali/apps/tenant/features/vehicle/models/vehicle.dart';
 import 'package:vagali/features/address/models/address.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/models/image_blurhash.dart';
@@ -14,7 +13,7 @@ import 'package:vagali/models/image_blurhash.dart';
 // Avaliações: Avaliações e comentários sobre a garagem e a experiência de aluguel.
 
 class Tenant extends User {
-  final vehicles = <Vehicle>[];
+  // final vehicles = <Vehicle>[];
 
   Tenant({
     required String id,
@@ -23,28 +22,26 @@ class Tenant extends User {
     required String email,
     required ImageBlurHash image,
     required String document,
+    required String gender,
     required String firstName,
     required String lastName,
     required String phone,
-    required String gender,
     required DateTime birthday,
     required Address address,
-    // required String type,
   }) : super(
-          id: id,
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-          email: email,
-          image: image,
-          document: document,
-          firstName: firstName,
-          lastName: lastName,
-          phone: phone,
-          gender: gender,
-          birthday: birthday,
-          address: address,
-          // type: type,
-        );
+    id: id,
+    createdAt: createdAt,
+    updatedAt: updatedAt,
+    email: email,
+    image: image,
+    document: document,
+    gender: gender,
+    firstName: firstName,
+    lastName: lastName,
+    phone: phone,
+    birthday: birthday,
+    address: address,
+  );
 
   Tenant.fromDocument(DocumentSnapshot document) : super.fromDocument(document);
 
@@ -56,13 +53,12 @@ class Tenant extends User {
       email: user.email,
       image: user.image,
       document: user.document,
+      gender: user.gender,
       firstName: user.firstName,
       lastName: user.lastName,
       phone: user.phone,
-      gender: user.gender,
       birthday: user.birthday,
       address: user.address,
-      // type: user.type,
     );
   }
 

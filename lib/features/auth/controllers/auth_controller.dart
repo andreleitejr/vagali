@@ -3,15 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
-import 'package:vagali/apps/landlord/models/landlord.dart';
 import 'package:vagali/apps/landlord/repositories/landlord_repository.dart';
-import 'package:vagali/apps/tenant/features/home/models/tenant.dart';
-import 'package:vagali/apps/tenant/features/home/repositories/tenant_repository.dart';
-
+import 'package:vagali/apps/tenant/repositories/tenant_repository.dart';
 // Features
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/auth/views/auth_view.dart';
-import 'package:vagali/features/user/repositories/user_repository.dart';
 import 'package:vagali/models/flavor_config.dart';
 import 'package:vagali/utils/extensions.dart';
 
@@ -58,7 +54,11 @@ class AuthController extends GetxController {
       print(
           ' ########################## USer is authenticated12 $isAuthenticated');
       final isRegisteredInDatabase = await _checkUserInDatabase();
-      if (isRegisteredInDatabase) navigator.home();
+      if (isRegisteredInDatabase) {
+        navigator.home();
+      } else {
+        navigator.register();
+      }
     } else {
       print(
           ' ########################## USer is NOT NOT NOT authenticated $isAuthenticated');
@@ -77,8 +77,14 @@ class AuthController extends GetxController {
         Get.put(user);
         return true;
       }
+      print(
+          ' asdhudashdsuahuhadsuhdasudashudashdasu sdsasd sdsdds is ${Get.find<FlavorConfig>().flavor == Flavor.tenant}');
+
       return false;
     } catch (e) {
+      print(
+          ' asdhudashdsuahuhadsuhdasudashudashdasu $e is ${Get.find<FlavorConfig>().flavor == Flavor.tenant}');
+
       return false;
     }
   }

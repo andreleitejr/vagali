@@ -63,4 +63,9 @@ class ThemeTypography {
     fontWeight: FontWeight.w400,
     fontFamily: 'Inter',
   );
+  static const regular9 = TextStyle(
+    fontSize: 9,
+    fontWeight: FontWeight.w400,
+    fontFamily: 'Inter',
+  );
 }

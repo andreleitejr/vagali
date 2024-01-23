@@ -5,7 +5,6 @@ import 'package:vagali/apps/landlord/features/parking/models/parking_tag.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking_type.dart';
 import 'package:vagali/apps/landlord/features/parking/models/price.dart';
 import 'package:vagali/apps/landlord/features/parking/repositories/parking_repository.dart';
-import 'package:vagali/apps/landlord/models/landlord.dart';
 import 'package:vagali/apps/tenant/features/vehicle/models/vehicle_type.dart';
 import 'package:vagali/features/address/models/address.dart';
 import 'package:vagali/features/auth/repositories/auth_repository.dart';

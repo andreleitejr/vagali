@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:vagali/apps/tenant/features/home/models/tenant.dart';
 import 'package:vagali/apps/tenant/features/vehicle/models/vehicle.dart';
 import 'package:vagali/apps/tenant/features/vehicle/repositories/vehicle_repository.dart';
 import 'package:vagali/features/user/models/user.dart';

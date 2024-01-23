@@ -16,5 +16,6 @@ Future<void> main() async {
 
   Get.put(FlavorConfig(flavor: Flavor.tenant));
 
+
   runApp(const App());
 }

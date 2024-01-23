@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/apps/landlord/features/parking/repositories/parking_repository.dart';
-import 'package:vagali/apps/landlord/models/landlord.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/models/image_blurhash.dart';
 

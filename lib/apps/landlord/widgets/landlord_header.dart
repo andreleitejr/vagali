@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
-import 'package:vagali/apps/tenant/features/home/controllers/tenant_controller.dart';
+import 'package:vagali/apps/landlord/controllers/landlord_controller.dart';
 import 'package:vagali/theme/theme_typography.dart';
 
-class TenantHeader extends StatelessWidget {
-  final TenantController controller;
+class LandlordHeader extends StatelessWidget {
 
-  const TenantHeader({super.key, required this.controller});
+  final LandlordController controller;
+  const LandlordHeader({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +20,8 @@ class TenantHeader extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             child: BlurHash(
               imageFit: BoxFit.cover,
-              image: controller.vehicleImage.image,
-              hash: controller.vehicleImage.blurHash,
+              image: controller.parkingImage.image,
+              hash: controller.parkingImage.blurHash,
             ),
           ),
           Container(

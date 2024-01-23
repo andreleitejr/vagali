@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vagali/apps/landlord/features/home/views/landlord_base_view.dart';
 import 'package:vagali/apps/landlord/features/parking/views/parking_edit_view.dart';
 import 'package:vagali/apps/landlord/views/landlord_edit_view.dart';
+import 'package:vagali/apps/tenant/features/home/views/base_view.dart';
 import 'package:vagali/apps/tenant/views/tenant_edit_view.dart';
 import 'package:vagali/features/auth/controllers/auth_controller.dart';
-import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/auth/views/code_verification_view.dart';
 import 'package:vagali/features/auth/views/location_denied_view.dart';
-import 'package:vagali/features/auth/views/login_error_view.dart';
-import 'package:vagali/features/auth/views/select_type_view.dart';
-import 'package:vagali/features/home/landlord/views/landlord_base_view.dart';
-import 'package:vagali/features/home/tenant//views/base_view.dart';
-import 'package:vagali/features/user/views/user_edit_view.dart';
 import 'package:vagali/models/flavor_config.dart';
 
 import 'animation_view.dart';
@@ -32,6 +28,10 @@ abstract class AuthNavigator {
 }
 
 class AuthView extends StatefulWidget {
+  final bool isLogOut;
+
+  const AuthView({super.key, this.isLogOut = false});
+
   @override
   State<AuthView> createState() => _AuthViewState();
 }
@@ -42,6 +42,7 @@ class _AuthViewState extends State<AuthView> implements AuthNavigator {
   @override
   void initState() {
     controller = Get.put(AuthController(this));
+    if(widget.isLogOut) login();
     super.initState();
   }
 

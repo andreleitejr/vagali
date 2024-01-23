@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jumping_dot/jumping_dot.dart';
+import 'package:vagali/apps/landlord/features/home/views/landlord_base_view.dart';
 import 'package:vagali/apps/landlord/features/parking/controllers/parking_edit_controller.dart';
 import 'package:vagali/apps/landlord/features/parking/widgets/parking_edit_step_five.dart';
 import 'package:vagali/apps/landlord/features/parking/widgets/parking_edit_step_four.dart';
 import 'package:vagali/apps/landlord/features/parking/widgets/parking_edit_step_one.dart';
 import 'package:vagali/apps/landlord/features/parking/widgets/parking_edit_step_three.dart';
 import 'package:vagali/apps/landlord/features/parking/widgets/parking_edit_step_two.dart';
-import 'package:vagali/features/home/landlord/views/landlord_base_view.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';

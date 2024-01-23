@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/address/controllers/address_edit_controller.dart';
-import 'package:vagali/features/user/controllers/user_edit_controller.dart';
 import 'package:vagali/widgets/input.dart';
 
 class AddressEditWidget extends StatelessWidget {

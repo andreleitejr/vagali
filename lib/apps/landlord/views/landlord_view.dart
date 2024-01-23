@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vagali/apps/landlord/features/home/controllers/landlord_controller.dart';
-import 'package:vagali/apps/landlord/features/home/widgets/landlord_header.dart';
+import 'package:vagali/apps/landlord/controllers/landlord_controller.dart';
 import 'package:vagali/apps/landlord/features/parking/views/parking_list_view.dart';
+import 'package:vagali/apps/landlord/widgets/landlord_header.dart';
 import 'package:vagali/features/config/views/config_view.dart';
 import 'package:vagali/features/config/widgets/config_list_tile.dart';
 import 'package:vagali/features/support/views/support_edit_view.dart';

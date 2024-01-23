@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vagali/apps/landlord/features/home/controllers/dashboard_controller.dart';
+import 'package:vagali/apps/landlord/features/home/widgets/tracking_location.dart';
 import 'package:vagali/apps/tenant/features/vehicle/widgets/vehicle_info_widget.dart';
 import 'package:vagali/features/chat/views/chat_view.dart';
-import 'package:vagali/features/home/landlord/controllers/dashboard_controller.dart';
-import 'package:vagali/features/home/landlord/widgets/tracking_location.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/theme/coolicons.dart';

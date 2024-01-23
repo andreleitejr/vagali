@@ -3,18 +3,12 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vagali/apps/landlord/models/landlord.dart';
 import 'package:vagali/apps/landlord/repositories/landlord_repository.dart';
-import 'package:vagali/apps/tenant/features/home/models/tenant.dart';
-import 'package:vagali/apps/tenant/features/home/repositories/tenant_repository.dart';
 import 'package:vagali/features/address/controllers/address_edit_controller.dart';
-import 'package:vagali/features/address/models/address.dart';
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/user/models/gender.dart';
 import 'package:vagali/features/user/models/user.dart';
-import 'package:vagali/features/user/repositories/user_repository.dart';
-import 'package:vagali/models/flavor_config.dart';
 import 'package:vagali/models/image_blurhash.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
-import 'package:vagali/services/address_service.dart';
 import 'package:vagali/services/image_service.dart';
 
 class LandlordEditController extends GetxController {

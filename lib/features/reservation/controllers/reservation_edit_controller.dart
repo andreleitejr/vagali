@@ -4,12 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
-import 'package:vagali/apps/tenant/features/home/models/tenant.dart';
 import 'package:vagali/apps/tenant/features/vehicle/controllers/vehicle_edit_controller.dart';
 import 'package:vagali/apps/tenant/features/vehicle/models/vehicle.dart';
+import 'package:vagali/apps/tenant/models/tenant.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/repositories/reservation_repository.dart';
-
 import 'package:vagali/models/location_history.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/services/price_service.dart';
@@ -152,20 +151,20 @@ class ReservationEditController extends GetxController {
   //   return true;
   // }
 
-  bool isVehicleValid() {
-    if (!userHasVehicle()) {
-      reservationError.value = 'Insira os dados do veiculo';
-
-      return false;
-    } else {
-      vehicleId = tenant.vehicles.first.id;
-    }
-    if (vehicleId == null || vehicleId!.isEmpty) {
-      reservationError.value = 'Selecione um veículo válido';
-      return false;
-    }
-    return true;
-  }
+  // bool isVehicleValid() {
+  //   if (!userHasVehicle()) {
+  //     reservationError.value = 'Insira os dados do veiculo';
+  //
+  //     return false;
+  //   } else {
+  //     vehicleId = tenant.vehicles.first.id;
+  //   }
+  //   if (vehicleId == null || vehicleId!.isEmpty) {
+  //     reservationError.value = 'Selecione um veículo válido';
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   bool isValid() {
     // final isStartTimeValid = validateStartTime();

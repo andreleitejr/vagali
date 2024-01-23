@@ -1,8 +1,7 @@
 // import 'package:blurhash/blurhash.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vagali/apps/tenant/features/home/controllers/tenant_controller.dart';
-import 'package:vagali/apps/tenant/features/home/widgets/tenant_header.dart';
+import 'package:vagali/apps/tenant/controllers/tenant_controller.dart';
 import 'package:vagali/apps/tenant/features/vehicle/views/vehicle_list_view.dart';
 import 'package:vagali/features/config/views/config_view.dart';
 import 'package:vagali/features/config/widgets/config_list_tile.dart';
@@ -25,7 +24,7 @@ class TenantView extends StatelessWidget {
         }
         return Column(
           children: [
-            TenantHeader(controller: controller),
+            // TenantHeader(controller: controller),
             const SizedBox(height: 16),
             Text(
               controller.tenant.firstName,

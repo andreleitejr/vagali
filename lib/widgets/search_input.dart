@@ -31,78 +31,54 @@ class _SearchInputState extends State<SearchInput> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 48,
-      child: Row(
-        children: [
-          Expanded(
-            child: TextFormField(
-              controller: textEditingController,
-              onChanged: widget.onSearch,
-              // controller: controller,
-              // keyboardType: keyboardType,
-              // inputFormatters: inputFormatters,
-
-              style: ThemeTypography.medium16.apply(
-                color: ThemeColors.intermediary,
-              ),
-              cursorColor: ThemeColors.primary,
-              cursorWidth: 3,
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.only(top: 16),
-                hintText: widget.hintText,
-                hintStyle: ThemeTypography.regular16.apply(
-                  color: ThemeColors.grey3,
-                ),
-                prefixIcon: const Padding(
-                  padding: EdgeInsets.only(left: 8),
-                  child: Coolicon(
-                    icon: Coolicons.search,
-                    color: ThemeColors.grey3,
-
-                  ),
-                ),
-                suffix: widget.searchText.isNotEmpty
-                    ? TextButton(
-                        onPressed: () {
-                          widget.onSearch('');
-                          textEditingController.text = '';
-                        },
-                        child: Text(
-                          'Limpar',
-                          style: ThemeTypography.regular12.apply(
-                            color: ThemeColors.primary,
-                          ),
-                        ),
-                      )
-                    : null,
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(100),
-                  borderSide: const BorderSide(
-                    color: ThemeColors.grey2,
-                    width: 1,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(100),
-                  borderSide: const BorderSide(
-                    color: ThemeColors.grey2,
-                    width: 1,
-                  ),
-                ),
-                fillColor: ThemeColors.grey1,
-                filled: true,
-              ),
-            ),
+    return TextFormField(
+      controller: textEditingController,
+      onChanged: widget.onSearch,
+      style: ThemeTypography.semiBold14.apply(color: ThemeColors.primary),
+      cursorColor: ThemeColors.primary,
+      cursorWidth: 2,
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.zero,
+        hintText: widget.hintText,
+        hintStyle: ThemeTypography.regular16.apply(color: ThemeColors.grey4),
+        prefixIcon: const Padding(
+          padding: EdgeInsets.only(left: 8),
+          child: Coolicon(
+            icon: Coolicons.search,
+            color: ThemeColors.grey4,
+            height: 20,
           ),
-          // IconButton(
-          //   onPressed: () {},
-          //   icon: const Icon(
-          //     Icons.filter_list,
-          //     color: ThemeColors.grey4,
-          //   ),
-          // ),
-        ],
+        ),
+        suffix: widget.searchText.isNotEmpty
+            ? TextButton(
+                onPressed: () {
+                  widget.onSearch('');
+                  textEditingController.text = '';
+                },
+                child: Text(
+                  'Limpar',
+                  style: ThemeTypography.regular12.apply(
+                    color: ThemeColors.primary,
+                  ),
+                ),
+              )
+            : null,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(100),
+          borderSide: const BorderSide(
+            color: ThemeColors.grey2,
+            width: 1,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(100),
+          borderSide: const BorderSide(
+            color: ThemeColors.grey2,
+            width: 1,
+          ),
+        ),
+        // fillColor: ThemeColors.grey1,
+        // filled: true,
       ),
     );
   }

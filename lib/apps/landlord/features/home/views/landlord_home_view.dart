@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vagali/features/home/landlord/controllers/dashboard_controller.dart';
-import 'package:vagali/features/home/landlord/widgets/confirmation_widget.dart';
+import 'package:vagali/apps/landlord/features/home/controllers/dashboard_controller.dart';
+import 'package:vagali/apps/landlord/features/home/widgets/confirmation_widget.dart';
 import 'package:vagali/features/reservation/widgets/reservation_item.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
