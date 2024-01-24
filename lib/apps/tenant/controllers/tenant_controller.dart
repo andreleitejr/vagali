@@ -7,36 +7,36 @@ import 'package:vagali/models/image_blurhash.dart';
 
 class TenantController extends GetxController {
   final User tenant = Get.find();
-  final _vehicleRepository = Get.find<VehicleRepository>();
-
-  final vehicles = <Vehicle>[].obs;
+  // final _vehicleRepository = Get.find<VehicleRepository>();
+  //
+  // final vehicles = <Vehicle>[].obs;
 
   String get name => tenant.firstName;
 
   ImageBlurHash get image => tenant.image;
   final loading = false.obs;
 
-  Future<void> fetchVehicles() async {
-    try {
-      final vehicles =
-          await _vehicleRepository.getVehiclesFromTenant(tenant.id!);
+  // Future<void> fetchVehicles() async {
+  //   try {
+  //     final vehicles =
+  //         await _vehicleRepository.getVehiclesFromTenant(tenant.id!);
+  //
+  //     if (vehicles != null) {
+  //       this.vehicles.addAll(vehicles);
+  //       Get.put<List<Vehicle>>(vehicles, tag: 'vehicles');
+  //       debugPrint('Successful got vehicles for Tenant.');
+  //     }
+  //   } catch (error) {
+  //     debugPrint('Error fetching tenant vehicles: $error');
+  //   }
+  // }
 
-      if (vehicles != null) {
-        this.vehicles.addAll(vehicles);
-        Get.put<List<Vehicle>>(vehicles, tag: 'vehicles');
-        debugPrint('Successful got vehicles for Tenant.');
-      }
-    } catch (error) {
-      debugPrint('Error fetching tenant vehicles: $error');
-    }
-  }
-
-  ImageBlurHash get vehicleImage => vehicles.first.image;
+  // ImageBlurHash get vehicleImage => vehicles.first.image;
 
   @override
   Future<void> onInit() async {
     loading(true);
-    await fetchVehicles();
+    // await fetchVehicles();
     loading(false);
     super.onInit();
   }

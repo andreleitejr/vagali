@@ -32,10 +32,10 @@ class TenantView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            ConfigListTile(
-              title: 'Meus Veículos',
-              onTap: () => Get.to(() => VehicleListView()),
-            ),
+            // ConfigListTile(
+            //   title: 'Meus Veículos',
+            //   onTap: () => Get.to(() => VehicleListView()),
+            // ),
             const Divider(
               color: ThemeColors.grey2,
               thickness: 1,

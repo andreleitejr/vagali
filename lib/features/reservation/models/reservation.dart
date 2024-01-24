@@ -3,6 +3,7 @@ import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/apps/landlord/models/landlord.dart';
 import 'package:vagali/apps/tenant/features/vehicle/models/vehicle.dart';
 import 'package:vagali/apps/tenant/models/tenant.dart';
+import 'package:vagali/features/item/models/item.dart';
 import 'package:vagali/models/base_model.dart';
 import 'package:vagali/models/location_history.dart';
 import 'package:vagali/utils/extensions.dart';
@@ -23,7 +24,7 @@ enum ReservationStatus {
 class Reservation extends BaseModel {
 
   final String parkingId;
-  final String vehicleId;
+  final String itemId;
   final String tenantId;
   final DateTime startDate;
   final DateTime endDate;
@@ -36,14 +37,14 @@ class Reservation extends BaseModel {
   Landlord? landlord;
   Tenant? tenant;
   Parking? parking;
-  Vehicle? vehicle;
+  Item? item;
 
   Reservation({
     required DateTime createdAt,
     required DateTime updatedAt,
     required this.parkingId,
     required this.tenantId,
-    required this.vehicleId,
+    required this.itemId,
     required this.startDate,
     required this.endDate,
     required this.totalCost,
@@ -61,7 +62,7 @@ class Reservation extends BaseModel {
     return {
       'parkingId': parkingId,
       'tenantId': tenantId,
-      'vehicleId': vehicleId,
+      'vehicleId': itemId,
       'startTime': startDate.toUtc(),
       'endTime': endDate.toUtc(),
       'totalCost': totalCost,
@@ -77,7 +78,7 @@ class Reservation extends BaseModel {
   Reservation.fromDocument(DocumentSnapshot document)
       : parkingId = document['parkingId'],
         tenantId = document['tenantId'],
-        vehicleId = document['vehicleId'],
+        itemId = document['vehicleId'],
         startDate = (document['startTime'] as Timestamp).toDate(),
         endDate = (document['endTime'] as Timestamp).toDate(),
         totalCost = document['totalCost'],

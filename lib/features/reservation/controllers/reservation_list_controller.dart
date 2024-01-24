@@ -6,6 +6,7 @@ import 'package:vagali/apps/landlord/models/landlord.dart';
 import 'package:vagali/apps/landlord/repositories/landlord_repository.dart';
 import 'package:vagali/apps/tenant/features/vehicle/models/vehicle.dart';
 import 'package:vagali/apps/tenant/features/vehicle/repositories/vehicle_repository.dart';
+import 'package:vagali/features/item/models/vehicle.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/repositories/reservation_repository.dart';
 import 'package:vagali/features/user/models/user.dart';
@@ -18,7 +19,7 @@ class ReservationListController extends GetxController {
 
   final _reservationRepository = Get.put(ReservationRepository());
   final _landlordRepository = Get.put(LandlordRepository());
-  final _vehicleRepository = Get.put(VehicleRepository());
+  // final _vehicleRepository = Get.put(VehicleRepository());
 
   // final currentReservation = Rx<Reservation?>(null);
   final allReservations = <Reservation>[].obs;
@@ -41,7 +42,7 @@ class ReservationListController extends GetxController {
 
     await fetchLandlords();
     await fetchParkings();
-    await fetchVehicles();
+    // await fetchVehicles();
 
     _listenToReservationsStream();
 
@@ -58,14 +59,14 @@ class ReservationListController extends GetxController {
     for (final reservation in reservations) {
       reservation.landlord = landlords.firstWhereOrNull(
           (landlord) => landlord.id! == reservation.landlordId);
-      reservation.vehicle = vehicles
-          .firstWhereOrNull((vehicle) => vehicle.id == reservation.vehicleId);
+      reservation.item = vehicles
+          .firstWhereOrNull((vehicle) => vehicle.id == reservation.itemId);
       print(' HUASDHUSDHDSUAHSDAUHDUHDUHSDAH ${parkings.length}');
       reservation.parking = parkings
           .firstWhereOrNull((parking) => parking.id! == reservation.parkingId);
 
       if (reservation.landlord != null &&
-          reservation.vehicle != null &&
+          reservation.item != null &&
           reservation.parking != null) {
         allReservations.add(reservation);
       }
@@ -100,20 +101,20 @@ class ReservationListController extends GetxController {
     }
   }
 
-  Future<void> fetchVehicles() async {
-    try {
-      final vehicles =
-          await _vehicleRepository.getVehiclesFromTenant(tenant.id!);
-
-      if (vehicles != null) {
-        this.vehicles.addAll(vehicles);
-        Get.put<List<Vehicle>>(vehicles, tag: 'vehicles');
-        debugPrint('Successful got vehicles for Tenant.');
-      }
-    } catch (error) {
-      debugPrint('Error fetching nearby parkings: $error');
-    }
-  }
+  // Future<void> fetchVehicles() async {
+  //   try {
+  //     final vehicles =
+  //         await _vehicleRepository.getVehiclesFromTenant(tenant.id!);
+  //
+  //     if (vehicles != null) {
+  //       this.vehicles.addAll(vehicles);
+  //       Get.put<List<Vehicle>>(vehicles, tag: 'vehicles');
+  //       debugPrint('Successful got vehicles for Tenant.');
+  //     }
+  //   } catch (error) {
+  //     debugPrint('Error fetching nearby parkings: $error');
+  //   }
+  // }
 
   Future<void> verifyStatusAndUpdateReservation(Reservation reservation) async {
     if (reservation.isConfirmed) {

@@ -84,7 +84,7 @@ class ConfirmationWidget extends StatelessWidget {
             message: reservation.reservationMessage,
           ),
           const SizedBox(height: 16),
-          VehicleInfoWidget(vehicle: reservation.vehicle!),
+          // VehicleInfoWidget(vehicle: reservation.item!),
           const SizedBox(height: 16),
           Row(
             children: [

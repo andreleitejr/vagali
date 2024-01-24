@@ -112,10 +112,10 @@ class TrackingLocation extends StatelessWidget {
                                 .currentReservation.value!.reservationMessage,
                           ),
                           const SizedBox(height: 16),
-                          VehicleInfoWidget(
-                            vehicle:
-                                controller.currentReservation.value!.vehicle!,
-                          ),
+                          // VehicleInfoWidget(
+                          //   vehicle:
+                          //       controller.currentReservation.value!.item!,
+                          // ),
                         ],
                       ),
                     ),

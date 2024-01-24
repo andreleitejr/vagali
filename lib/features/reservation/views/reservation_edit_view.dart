@@ -128,10 +128,10 @@ class _ReservationEditViewState extends State<ReservationEditView> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  if (_controller.userHasVehicle()) ...[
-                    VehicleInfoWidget(vehicle: _controller.vehicles.first),
-                  ] else
-                    Container(),
+                  // if (_controller.userHasVehicle()) ...[
+                  //   VehicleInfoWidget(vehicle: _controller.vehicles.first),
+                  // ] else
+                  //   Container(),
                   const SizedBox(height: 16),
                   TitleWithIcon(
                     title: 'Mensagem (opcional)',

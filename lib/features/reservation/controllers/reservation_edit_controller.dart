@@ -7,6 +7,7 @@ import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/apps/tenant/features/vehicle/controllers/vehicle_edit_controller.dart';
 import 'package:vagali/apps/tenant/features/vehicle/models/vehicle.dart';
 import 'package:vagali/apps/tenant/models/tenant.dart';
+import 'package:vagali/features/item/models/vehicle.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/repositories/reservation_repository.dart';
 import 'package:vagali/models/location_history.dart';
@@ -19,7 +20,7 @@ class ReservationEditController extends GetxController {
   final vehicles = Get.find<List<Vehicle>>(tag: 'vehicles');
 
   final _repository = Get.put(ReservationRepository());
-  final vehicleEditController = Get.put(VehicleEditController());
+  // final vehicleEditController = Get.put(VehicleEditController());
   final reservation = Rx<Reservation?>(null);
 
   final Parking parking;
@@ -184,14 +185,14 @@ class ReservationEditController extends GetxController {
 
     final total = totalCost.value;
 
-    if (!userHasVehicle()) {
-      vehicleId = await vehicleEditController.createVehicleAndGetId();
-
-      if (vehicleId == null) {
-        print('Erro ao criar o veículo');
-        return SaveResult.failed;
-      }
-    }
+    // if (!userHasVehicle()) {
+    //   vehicleId = await vehicleEditController.createVehicleAndGetId();
+    //
+    //   if (vehicleId == null) {
+    //     print('Erro ao criar o veículo');
+    //     return SaveResult.failed;
+    //   }
+    // }
 
     // _tenantRepository.getTenantVehicles();
     vehicleId = vehicles.first.id;
@@ -206,7 +207,7 @@ class ReservationEditController extends GetxController {
       totalCost: total,
       landlordId: parking.userId,
       reservationMessage: reservationMessage,
-      vehicleId: vehicleId!,
+      itemId: vehicleId!,
       locationHistory: [
         LocationHistory(
           latitude: 0,

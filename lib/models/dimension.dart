@@ -6,7 +6,23 @@ class Dimension {
   double get volume => width * height * depth;
 
   Dimension(this.width, this.height, this.depth);
+
+  Dimension.fromMap(Map<String, dynamic> map)
+      : width = map['width'],
+        height = map['height'],
+        depth = map['depth'];
 }
+
+// Vehicle
+// Stock
+// SmallVehicle
+// Furniture
+// Boxes
+// HouseholdHardware
+// HomeAppliance
+// GymEquipment
+// MusicalInstrument
+// Shopping
 
 // // Exemplo 1: Espaço totalmente ocupado
 // var space1 = Dimension(3, 3, 3);

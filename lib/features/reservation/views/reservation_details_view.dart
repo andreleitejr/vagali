@@ -87,8 +87,8 @@ class ReservationDetailsView extends StatelessWidget {
             endDate: reservation.endDate,
           ),
           const SizedBox(height: 16),
-          if (reservation.vehicle != null)
-            VehicleInfoWidget(vehicle: reservation.vehicle!),
+          if (reservation.item != null)
+            // VehicleInfoWidget(vehicle: reservation.item!),
           const SizedBox(height: 16),
           AddressCard(
             address: reservation.parking!.address,
@@ -123,32 +123,32 @@ class ReservationView extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          Image.network(reservation.vehicle!.image.image),
+          // Image.network(reservation.item!.image.image),
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                Row(
-                  children: [
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        'Placa: ${reservation.vehicle!.licensePlate}',
-                        style: ThemeTypography.semiBold16,
-                      ),
-                    ),
-                    // const Coolicon(
-                    //   icon: Coolicons.starFilled,
-                    //   color: ThemeColors.primary,
-                    // ),
-                    // const SizedBox(width: 4),
-                    // const Text(
-                    //   '4.7',
-                    //   style: ThemeTypography.semiBold16,
-                    // ),
-                    // const SizedBox(width: 8),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     const SizedBox(width: 8),
+                //     Expanded(
+                //       child: Text(
+                //         'Placa: ${reservation.item!.licensePlate}',
+                //         style: ThemeTypography.semiBold16,
+                //       ),
+                //     ),
+                //     // const Coolicon(
+                //     //   icon: Coolicons.starFilled,
+                //     //   color: ThemeColors.primary,
+                //     // ),
+                //     // const SizedBox(width: 4),
+                //     // const Text(
+                //     //   '4.7',
+                //     //   style: ThemeTypography.semiBold16,
+                //     // ),
+                //     // const SizedBox(width: 8),
+                //   ],
+                // ),
                 const SizedBox(height: 16),
                 UserCard(user: reservation.tenant as User),
                 const SizedBox(height: 16),
@@ -163,8 +163,8 @@ class ReservationView extends StatelessWidget {
                   endDate: reservation.endDate,
                 ),
                 const SizedBox(height: 16),
-                if (reservation.vehicle != null)
-                  VehicleInfoWidget(vehicle: reservation.vehicle!),
+                if (reservation.item != null)
+                  // VehicleInfoWidget(vehicle: reservation.item!),
                 const SizedBox(height: 16),
                 ..._buildButtonsBasedOnStatus(reservation),
                 if (reservation.isPaymentApproved) ...[

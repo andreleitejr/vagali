@@ -30,12 +30,3 @@ class SpaceCalculatorService {
     }
   }
 }
-
-class Material extends Dimension {
-  final double weight;
-  final String type;
-  final String material;
-
-  Material(super.width, super.height, super.depth, this.weight, this.type,
-      this.material);
-}

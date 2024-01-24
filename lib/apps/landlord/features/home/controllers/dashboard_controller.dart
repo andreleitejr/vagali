@@ -1,6 +1,5 @@
 import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -26,7 +25,7 @@ class LandlordHomeController extends GetxController {
   final _parkingRepository = Get.put(ParkingRepository());
   final _reservationRepository = Get.put(ReservationRepository());
   final _tenantRepository = Get.put(TenantRepository());
-  final _vehicleRepository = Get.put(VehicleRepository());
+  // final _vehicleRepository = Get.put(VehicleRepository());
 
   GoogleMapController? _mapController;
 
@@ -96,7 +95,7 @@ class LandlordHomeController extends GetxController {
         reservation.tenant ??=
             await _tenantRepository.get(reservation.tenantId) as Tenant;
 
-        await _handleVehicleUpdate(reservation);
+        // await _handleVehicleUpdate(reservation);
 
         if (currentReservation.value != null &&
             currentReservation.value!.isUserOnTheWay) {
@@ -120,15 +119,15 @@ class LandlordHomeController extends GetxController {
     });
   }
 
-  Future<void> _handleVehicleUpdate(Reservation reservation) async {
-    if (reservation.vehicle == null && reservation.tenant != null) {
-      final tenantId = reservation.tenantId;
-      final vehicleId = reservation.vehicleId;
-      final vehicles = await _vehicleRepository.getVehiclesFromTenant(tenantId);
-      reservation.vehicle =
-          vehicles?.firstWhereOrNull((vehicle) => vehicle.id == vehicleId);
-    }
-  }
+  // Future<void> _handleVehicleUpdate(Reservation reservation) async {
+  //   if (reservation.item == null && reservation.tenant != null) {
+  //     final tenantId = reservation.tenantId;
+  //     final vehicleId = reservation.itemId;
+  //     final vehicles = await _vehicleRepository.getVehiclesFromTenant(tenantId);
+  //     reservation.item =
+  //         vehicles?.firstWhereOrNull((vehicle) => vehicle.id == vehicleId);
+  //   }
+  // }
 
   Future<void> _animateCameraToLocation() async {
     await _mapController?.animateCamera(CameraUpdate.newLatLng(location.value));

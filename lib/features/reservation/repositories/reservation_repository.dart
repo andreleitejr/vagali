@@ -95,14 +95,14 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
       final landlord = await LandlordRepository().get(reservation.landlordId);
       final tenant = await TenantRepository().get(reservation.tenantId);
       final parkings = await ParkingRepository().getGroup();
-      final vehicles = await VehicleRepository().getGroup();
+      // final vehicles = await VehicleRepository().getGroup();
 
       reservation.landlord = landlord as Landlord;
       reservation.tenant = tenant as Tenant;
       reservation.parking = parkings
           .firstWhereOrNull((parking) => parking.id == reservation.parkingId);
-      reservation.vehicle = vehicles
-          .firstWhereOrNull((vehicle) => vehicle.id == reservation.vehicleId);
+      // reservation.item = vehicles
+      //     .firstWhereOrNull((vehicle) => vehicle.id == reservation.itemId);
 
       return reservation;
     } catch (error) {
