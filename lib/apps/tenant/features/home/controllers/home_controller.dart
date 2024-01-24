@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking_tag.dart';
-import 'package:vagali/apps/landlord/features/parking/models/parking_type.dart';
 import 'package:vagali/apps/landlord/features/parking/repositories/parking_repository.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/services/location_service.dart';
 import 'package:vagali/services/search_service.dart';
-import 'package:vagali/utils/extensions.dart';
 
 class HomeController extends GetxController {
   final User tenant = Get.find();
@@ -23,9 +21,11 @@ class HomeController extends GetxController {
 
   final loading = false.obs;
 
-  final searchText = ''.obs;
+  // final showItemSelection = false.obs;
 
-  String get cleanText => searchText.value.clean;
+  // final searchText = ''.obs;
+  //
+  // String get cleanText => searchText.value.clean;
 
   final category = ParkingTag.all.obs;
 
@@ -44,9 +44,6 @@ class HomeController extends GetxController {
     ever(category, (_) {
       filteredParkings(filterParkingsByCategory(nearbyParkings));
     });
-    ever(searchText, (_) {
-      filteredParkings(filterParkingsBySearchText());
-    });
   }
 
   Future<void> fetchNearbyParkings() async {
@@ -63,18 +60,18 @@ class HomeController extends GetxController {
     }
   }
 
-  List<Parking> filterParkingsBySearchText() {
-    return _searchService.filterBySearchText<Parking>(
-      nearbyParkings,
-      searchText.value,
-      (parking) => [
-        parking.address.city,
-        parking.address.state,
-        parking.address.street,
-        parking.address.postalCode,
-      ],
-    );
-  }
+  // List<Parking> filterParkingsBySearchText() {
+  //   return _searchService.filterBySearchText<Parking>(
+  //     nearbyParkings,
+  //     searchText.value,
+  //     (parking) => [
+  //       parking.address.city,
+  //       parking.address.state,
+  //       parking.address.street,
+  //       parking.address.postalCode,
+  //     ],
+  //   );
+  // }
 
   List<Parking> filterParkingsByCategory(List<Parking> parkings) {
     if (category.value == ParkingTag.all) {

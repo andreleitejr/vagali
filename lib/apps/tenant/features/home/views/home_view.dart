@@ -4,6 +4,7 @@ import 'package:vagali/apps/landlord/features/parking/models/parking_tag.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking_type.dart';
 import 'package:vagali/apps/tenant/features/home/controllers/home_controller.dart';
 import 'package:vagali/apps/tenant/features/home/widgets/parking_list_item.dart';
+import 'package:vagali/features/item/widgets/item_list_view.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
@@ -20,6 +21,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(() {
+
         final loading = _controller.loading.value;
         return CustomScrollView(
           slivers: [
@@ -37,10 +39,15 @@ class HomeView extends StatelessWidget {
                   child: Row(
                     children: [
                       Expanded(
-                        child: SearchInput(
-                          searchText: _controller.searchText.value,
-                          hintText: 'O que deseja guardar?',
-                          onSearch: _controller.searchText,
+                        child: GestureDetector(
+                          onTap: ()=> Get.to(()=> ItemListView()),
+                          child: AbsorbPointer(
+                            child: SearchInput(
+                              searchText: '',
+                              hintText: 'O que deseja guardar?',
+                              onSearch: (_) {},
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -53,28 +60,26 @@ class HomeView extends StatelessWidget {
             SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  if (_controller.searchText.isEmpty) ...[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16, top: 4),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: [
-                                for (final type in parkingTags) ...[
-                                  _buildCategoryButton(type),
-                                ],
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16, top: 4),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              for (final type in parkingTags) ...[
+                                _buildCategoryButton(type),
                               ],
-                            ),
+                            ],
                           ),
-                          const SizedBox(height: 16),
-                          // const SizedBox(height: 8),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 16),
+                        // const SizedBox(height: 8),
+                      ],
                     ),
-                  ],
+                  ),
                 ],
               ),
             ),

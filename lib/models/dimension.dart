@@ -5,12 +5,20 @@ class Dimension {
 
   double get volume => width * height * depth;
 
-  Dimension(this.width, this.height, this.depth);
+  const Dimension(this.width, this.height, this.depth);
 
   Dimension.fromMap(Map<String, dynamic> map)
       : width = map['width'],
         height = map['height'],
         depth = map['depth'];
+
+  Map<String, dynamic> toMap() {
+    return {
+      'width': width,
+      'height': height,
+      'depth': depth,
+    };
+  }
 }
 
 // Vehicle
