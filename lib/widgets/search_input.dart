@@ -38,6 +38,8 @@ class _SearchInputState extends State<SearchInput> {
       cursorColor: ThemeColors.primary,
       cursorWidth: 2,
       decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
         contentPadding: EdgeInsets.zero,
         hintText: widget.hintText,
         hintStyle: ThemeTypography.regular16.apply(color: ThemeColors.grey4),

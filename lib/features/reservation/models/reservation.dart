@@ -21,6 +21,7 @@ enum ReservationStatus {
 }
 
 class Reservation extends BaseModel {
+
   final String parkingId;
   final String vehicleId;
   final String tenantId;

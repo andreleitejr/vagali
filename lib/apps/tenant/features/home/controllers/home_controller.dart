@@ -27,7 +27,7 @@ class HomeController extends GetxController {
 
   String get cleanText => searchText.value.clean;
 
-  final selectedCategories = <String>[parkingTags.first.title].obs;
+  final category = ParkingTag.all.obs;
 
   final filteredParkings = RxList<Parking>();
 
@@ -41,7 +41,7 @@ class HomeController extends GetxController {
     // await fetchReservations();
     filteredParkings.value = nearbyParkings;
     loading(false);
-    ever(selectedCategories, (_) {
+    ever(category, (_) {
       filteredParkings(filterParkingsByCategory(nearbyParkings));
     });
     ever(searchText, (_) {
@@ -77,15 +77,11 @@ class HomeController extends GetxController {
   }
 
   List<Parking> filterParkingsByCategory(List<Parking> parkings) {
-    if (selectedCategories.isEmpty ||
-        selectedCategories.any(
-          (type) => type == ParkingType.all,
-        )) {
+    if (category.value == ParkingTag.all) {
       return parkings;
     } else {
       parkings = parkings
-          .where((parking) =>
-              selectedCategories.any((type) => parking.type == type))
+          .where((parking) => parking.tags.contains(category.value))
           .toList();
       return parkings;
     }

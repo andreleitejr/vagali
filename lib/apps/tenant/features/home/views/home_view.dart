@@ -4,7 +4,6 @@ import 'package:vagali/apps/landlord/features/parking/models/parking_tag.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking_type.dart';
 import 'package:vagali/apps/tenant/features/home/controllers/home_controller.dart';
 import 'package:vagali/apps/tenant/features/home/widgets/parking_list_item.dart';
-import 'package:vagali/apps/tenant/features/home/widgets/parking_list_tile.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
@@ -29,7 +28,7 @@ class HomeView extends StatelessWidget {
               expandedHeight: 56,
               stretch: true,
               automaticallyImplyLeading: false,
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.transparent,
               pinned: true,
               flexibleSpace: Padding(
                 padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
@@ -71,46 +70,48 @@ class HomeView extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          ShimmerBox(
-                            loading: loading,
-                            child: const Text(
-                              'Próximos de você',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
                           // const SizedBox(height: 8),
                         ],
                       ),
                     ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.all(16),
-                      // scrollDirection: Axis.horizontal,
-                      itemCount: _controller.filteredParkings.length,
-                      itemBuilder: (context, index) {
-                        final parking = _controller.filteredParkings[index];
-                        return ShimmerBox(
-                          loading: loading,
-                          child: ParkingListItem(parking: parking),
-                        );
-                      },
-                    ),
-                  ] else ...[
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(
-                        'Resultado da busca:',
+                  ],
+                ],
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: ShimmerBox(
+                      loading: loading,
+                      child: const Text(
+                        'Próximos de você',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                  ]
+                  ),
+                  const SizedBox(height: 16),
                 ],
+              ),
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final parking = _controller.filteredParkings[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: ShimmerBox(
+                      loading: loading,
+                      child: ParkingListItem(parking: parking),
+                    ),
+                  );
+                },
+                childCount: _controller.filteredParkings.length,
               ),
             ),
           ],
@@ -122,8 +123,8 @@ class HomeView extends StatelessWidget {
   Widget _buildCategoryButton(ParkingTag? tag) {
     return Obx(
       () {
-        final selectedCategories = _controller.selectedCategories;
-        final isSelected = selectedCategories.contains(tag?.title);
+        final category = _controller.category;
+        final isSelected = category == tag!.title;
 
         final loading = _controller.loading.value;
 
@@ -137,22 +138,21 @@ class HomeView extends StatelessWidget {
                   loading: loading,
                   child: GestureDetector(
                     onTap: () {
-                      selectedCategories.clear();
-                      selectedCategories.add(tag!.title);
+                      category(tag.tag);
                     },
                     child: Container(
-                      width: 48,
-                      height: 48,
+                      width: 64,
+                      height: 64,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                         color: isSelected
                             ? ThemeColors.primary
-                            : ThemeColors.grey2,
+                            : ThemeColors.grey1,
                       ),
                       child: Center(
                         child: Coolicon(
-                          icon: tag?.icon ?? Coolicons.compass,
-                          color: Colors.white,
+                          icon: tag.icon,
+                          color: isSelected ? Colors.white : ThemeColors.grey4,
                         ),
                       ),
                     ),
@@ -165,7 +165,7 @@ class HomeView extends StatelessWidget {
                     width: 48,
                     height: 24,
                     child: Text(
-                      tag?.name ?? 'Not found',
+                      tag.name,
                       style: ThemeTypography.regular10,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,

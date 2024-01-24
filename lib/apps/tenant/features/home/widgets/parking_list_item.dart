@@ -9,6 +9,7 @@ import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/utils/extensions.dart';
+import 'package:vagali/widgets/carousel_image_slider.dart';
 import 'package:vagali/widgets/coolicon.dart'; // Importe a página de detalhes aqui
 
 class ParkingListItem extends StatelessWidget {
@@ -23,34 +24,17 @@ class ParkingListItem extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            // width:  MediaQuery.of(context).size.width - 32,
+            constraints: BoxConstraints(maxHeight: 326),
             height: MediaQuery.of(context).size.width - 32,
             child: Stack(
               children: [
                 if (parking.images.isNotEmpty)
                   ClipRRect(
                     borderRadius: BorderRadius.circular(24),
-                    child: BlurHash(
-                      imageFit: BoxFit.cover,
-                      image: parking.images[0].image,
-                      hash: parking.images[0].blurHash,
+                    child: CarouselImageSlider(
+                      images: parking.images,
                     ),
                   ),
-                Positioned(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(24),
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.transparent,
-                          Colors.black.withOpacity(0.35),
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                    ),
-                  ),
-                ),
                 Positioned(
                   top: 16,
                   left: 16,
@@ -62,7 +46,7 @@ class ParkingListItem extends StatelessWidget {
                       borderRadius: BorderRadius.circular(24),
                     ),
                     child: Text(
-                      '${Random().nextInt(10) + 2} pessoas de olho',
+                      '${Random().nextInt(6) + 1} pessoas de olho',
                       style: ThemeTypography.regular12,
                     ),
                   ),

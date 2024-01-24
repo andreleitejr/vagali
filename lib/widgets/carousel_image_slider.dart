@@ -32,7 +32,7 @@ class CarouselImageSlider extends StatelessWidget {
           }).toList(),
           options: CarouselOptions(
             pageSnapping: true,
-            height: MediaQuery.of(context).size.width * 0.75,
+            height: MediaQuery.of(context).size.width,
             enableInfiniteScroll: false,
             viewportFraction: 1.0,
             onPageChanged: (index, reason) {
