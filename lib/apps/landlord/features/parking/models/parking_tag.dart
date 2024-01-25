@@ -8,7 +8,7 @@ class ParkingTag extends SelectableItem {
 
   ParkingTag({
     this.tag = all,
-    required this.name,
+    this.name = 'Todos',
     this.icon = Coolicons.house,
   });
 

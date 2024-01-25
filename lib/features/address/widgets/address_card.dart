@@ -11,12 +11,14 @@ import 'package:vagali/widgets/coolicon.dart';
 class AddressCard extends StatelessWidget {
   final bool editModeOn;
   final Address address;
+  final bool isReservationActive;
   late AddressCardController addressController;
 
   AddressCard({
     super.key,
     required this.address,
     this.editModeOn = true,
+    this.isReservationActive = false,
   }) {
     addressController = Get.put(AddressCardController(address));
   }
@@ -52,7 +54,10 @@ class AddressCard extends StatelessWidget {
             const SizedBox(width: 4),
             Expanded(
               child: Text(
-                fullAddress,
+                // fullAddress,
+                isReservationActive
+                    ? fullAddress
+                    : 'O endereço ficará visível após a confirmação da reserva',
                 style: ThemeTypography.regular14,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -68,25 +73,38 @@ class AddressCard extends StatelessWidget {
 
               if (currentCoordinates == null) return Container();
 
-              return GoogleMap(
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(
-                    currentCoordinates.latitude,
-                    currentCoordinates.longitude,
-                  ),
-                  zoom: 15.0,
-                ),
-                markers: {
-                  addressController.marker.value ??
-                      Marker(
-                        markerId: MarkerId('location'),
-                        position: LatLng(currentCoordinates.latitude,
-                            currentCoordinates.longitude),
+              return Stack(
+                children: [
+                  GoogleMap(
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(
+                        currentCoordinates.latitude,
+                        currentCoordinates.longitude,
                       ),
-                },
-                onMapCreated: (GoogleMapController controller) {
-                  addressController.loadMapStyle(controller);
-                },
+                      zoom: isReservationActive ? 18 : 13,
+                    ),
+                    markers: isReservationActive ? {
+                      addressController.marker.value ??
+                          Marker(
+                            markerId: MarkerId('location'),
+                            position: LatLng(
+                              currentCoordinates.latitude,
+                              currentCoordinates.longitude,
+                            ),
+                          ),
+                    } : {},
+                    onMapCreated: (GoogleMapController controller) {
+                      addressController.loadMapStyle(controller);
+                    },
+                  ),
+                  // if (!isReservationActive) ...[
+                  //   Positioned(
+                  //     child: Container(
+                  //       color: Colors.white.withOpacity(0.5),
+                  //     ),
+                  //   ),
+                  // ]
+                ],
               );
             },
           ),

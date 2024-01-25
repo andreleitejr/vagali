@@ -6,6 +6,7 @@ import 'package:vagali/apps/landlord/features/parking/models/price.dart';
 import 'package:vagali/apps/landlord/models/landlord.dart';
 import 'package:vagali/features/address/models/address.dart';
 import 'package:vagali/features/rating/models/rating.dart';
+import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/models/base_model.dart';
 import 'package:vagali/models/image_blurhash.dart';
 import 'package:vagali/services/location_service.dart';
@@ -17,7 +18,7 @@ class Parking extends BaseModel {
   final List<ParkingTag> tags;
   final String description;
   final List<ImageBlurHash> images;
-  Landlord? owner;
+  User? owner;
   final String userId;
   final String type;
   final String reservationType;
@@ -104,7 +105,7 @@ class Parking extends BaseModel {
         price = Price.fromMap(document['price']),
         isAvailable = document['isAvailable'],
         tags = (document['tags'] as List<dynamic>)
-            .map((tagName) => ParkingTag(name: tagName))
+            .map((tagName) => ParkingTag(tag: tagName))
             .toList(),
         description = document['description'],
         images = (document['images'] as List<dynamic>)

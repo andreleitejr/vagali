@@ -16,10 +16,10 @@ class LandlordController extends GetxController {
   ImageBlurHash get image => landlord.image;
   final loading = false.obs;
 
-  Future<void> fetchVehicles() async {
+  Future<void> fetchParkings() async {
     try {
       final parkingsWithEntities =
-          await _parkingRepository.getParkingsWithEntities();
+          await _parkingRepository.getAll(userId: landlord.id);
       parkings.addAll(parkingsWithEntities);
     } catch (error) {
       debugPrint('Error fetching nearby parkings: $error');
@@ -31,7 +31,7 @@ class LandlordController extends GetxController {
   @override
   Future<void> onInit() async {
     loading(true);
-    await fetchVehicles();
+    await fetchParkings();
     loading(false);
     super.onInit();
   }

@@ -18,8 +18,8 @@ class TagList extends StatelessWidget {
           ListView(
             scrollDirection: Axis.horizontal,
             children: tags.map((tag) {
-              final icon =
-                  parkingTags.firstWhere((t) => t.name == tag.name).icon;
+              final filteredTag =
+                  parkingTags.firstWhere((t) => t.tag == tag.tag);
               return Row(
                 children: [
                   if (tag == tags.first) const SizedBox(width: 16),
@@ -29,12 +29,12 @@ class TagList extends StatelessWidget {
                     label: Row(
                       children: [
                         Coolicon(
-                          icon: icon,
+                          icon: filteredTag.icon,
 
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          tag.name,
+                          filteredTag.name,
                           style: ThemeTypography.semiBold14.apply(
                             color: ThemeColors.grey4,
                           ),

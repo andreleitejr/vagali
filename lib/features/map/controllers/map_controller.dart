@@ -92,7 +92,7 @@ class MapController extends GetxController {
 
   Future<void> fetchNearbyParkings() async {
     try {
-      final parkings = await _parkingRepository.getParkingsWithEntities();
+      final parkings = await _parkingRepository.getAll();
       parkings.sort((a, b) => a.distance.compareTo(b.distance));
       nearbyParkings.assignAll(parkings);
       updateFilteredParkings();

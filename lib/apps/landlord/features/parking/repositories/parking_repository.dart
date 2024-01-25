@@ -19,43 +19,43 @@ class ParkingRepository extends FirestoreRepository<Parking> {
 
   final User user = Get.find();
 
-  Future<Parking> getParkingWithEntities(String ownerId) async {
-    try {
-      final document = await firestore
-          .collection(collectionName.lastSegmentAfterSlash)
-          .where('userId', isEqualTo: ownerId)
-          .get();
-      final parking = fromDocument(document.docs.first);
-      final landlord = await LandlordRepository().get(parking.userId);
-
-      parking.owner = landlord as Landlord;
-
-      return parking;
-    } catch (error) {
-      debugPrint('Error fetching parking with entities: $error');
-      rethrow;
-    }
-  }
-
-  Future<List<Parking>> getParkingsWithEntities() async {
-    try {
-      final query = firestore.collectionGroup(collectionName);
-
-      final querySnapshot = await query.get();
-      final parkings =
-          querySnapshot.docs.map((doc) => fromDocument(doc)).toList();
-
-      final landlord = await LandlordRepository().get(user.id!);
-
-      for (final parking in parkings) {
-        parking.owner = landlord;
-      }
-      return parkings;
-    } catch (error) {
-      debugPrint('Error fetching parkings with entities: $error');
-      rethrow;
-    }
-  }
+  // Future<Parking> getParkingWithEntities(String ownerId) async {
+  //   try {
+  //     final document = await firestore
+  //         .collection(collectionName.lastSegmentAfterSlash)
+  //         .where('userId', isEqualTo: ownerId)
+  //         .get();
+  //     final parking = fromDocument(document.docs.first);
+  //     final landlord = await LandlordRepository().get(parking.userId);
+  //
+  //     parking.owner = landlord as Landlord;
+  //
+  //     return parking;
+  //   } catch (error) {
+  //     debugPrint('Error fetching parking with entities: $error');
+  //     rethrow;
+  //   }
+  // }
+  //
+  // Future<List<Parking>> getParkingsWithEntities() async {
+  //   try {
+  //     final query = firestore.collectionGroup(collectionName);
+  //
+  //     final querySnapshot = await query.get();
+  //     final parkings =
+  //         querySnapshot.docs.map((doc) => fromDocument(doc)).toList();
+  //
+  //     final landlord = await LandlordRepository().get(user.id!);
+  //
+  //     for (final parking in parkings) {
+  //       parking.owner = landlord;
+  //     }
+  //     return parkings;
+  //   } catch (error) {
+  //     debugPrint('Error fetching parkings with entities: $error');
+  //     rethrow;
+  //   }
+  // }
 
   // Future<List<Parking>> getParkingsNearUser() async {
   //   const maxDistance = 10.0;
