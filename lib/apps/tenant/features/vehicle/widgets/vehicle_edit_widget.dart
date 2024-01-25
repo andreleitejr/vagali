@@ -193,20 +193,7 @@
 //     );
 //   }
 //
-//   void _showVehicleTypeBottomSheet(BuildContext context) {
-//     final focus = FocusScope.of(context);
-//     Get.bottomSheet(
-//       CustomBottomSheet<VehicleType>(
-//         items: vehicleTypes,
-//         title: "Selecione o tipo de veículo",
-//         onItemSelected: (selectedItem) {
-//           controller.vehicleTypeController.value = selectedItem.title;
-//           focus.requestFocus(licensePlateFocus);
-//         },
-//       ),
-//       enableDrag: true,
-//     );
-//   }
+
 //
 //   void _showStateBottomSheet(BuildContext context) {
 //     final focus = FocusScope.of(context);
@@ -290,3 +277,24 @@
 //     );
 //   }
 // }
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:vagali/apps/tenant/features/vehicle/models/vehicle_type.dart';
+import 'package:vagali/widgets/bottom_sheet.dart';
+
+void showVehicleTypeBottomSheet(BuildContext context,
+    {required Function(VehicleType) onItemSelected, FocusNode? nextFocus}) {
+  final focus = FocusScope.of(context);
+  Get.bottomSheet(
+    CustomBottomSheet<VehicleType>(
+      items: vehicleTypes,
+      title: "Selecione o tipo de veículo",
+      onItemSelected: (selectedItem) {
+        onItemSelected(selectedItem);
+        focus.requestFocus(nextFocus);
+      },
+    ),
+    enableDrag: true,
+  );
+}

@@ -5,7 +5,11 @@ class Dimension {
 
   double get volume => width * height * depth;
 
-  const Dimension(this.width, this.height, this.depth);
+  const Dimension({
+    required this.width,
+    required this.height,
+    required this.depth,
+  });
 
   Dimension.fromMap(Map<String, dynamic> map)
       : width = map['width'],

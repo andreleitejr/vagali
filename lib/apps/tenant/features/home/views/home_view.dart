@@ -5,6 +5,7 @@ import 'package:vagali/apps/landlord/features/parking/models/parking_type.dart';
 import 'package:vagali/apps/tenant/features/home/controllers/home_controller.dart';
 import 'package:vagali/apps/tenant/features/home/widgets/parking_list_item.dart';
 import 'package:vagali/features/item/views/item_list_view.dart';
+import 'package:vagali/features/search/views/search_view.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
@@ -40,7 +41,7 @@ class HomeView extends StatelessWidget {
                     children: [
                       Expanded(
                         child: GestureDetector(
-                          onTap: ()=> Get.to(()=> ItemListView()),
+                          onTap: ()=> Get.to(()=> ParkingSearchView()),
                           child: AbsorbPointer(
                             child: SearchInput(
                               searchText: '',
