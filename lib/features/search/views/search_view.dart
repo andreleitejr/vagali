@@ -4,75 +4,103 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:vagali/apps/tenant/features/vehicle/widgets/vehicle_edit_widget.dart';
+import 'package:vagali/features/item/controllers/item_edit_controller.dart';
 import 'package:vagali/features/item/models/item.dart';
 import 'package:vagali/features/item/views/item_list_view.dart';
-import 'package:vagali/features/search/controllers/search_controller.dart';
 import 'package:vagali/widgets/input.dart';
 import 'package:vagali/widgets/input_button.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
 class ParkingSearchView extends StatelessWidget {
-  final controller = Get.put(SearchParkingController());
+  final controller = Get.put(ItemEditController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopNavigationBar(
-        title: 'O que gostaria de guardar?',
-      ),
-      body: Obx(() {
-        if (controller.selectedItemType.value != null) {
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                if (controller.selectedItemType.value?.type ==
-                    ItemType.vehicle) ...[
-                  InputButton(
-                    // onChanged: controller.vehicleTypeController,
-                    controller: TextEditingController(),
-                    hintText: 'Tipo de veículo',
-                    onTap: () => showVehicleTypeBottomSheet(
-                      context,
-                      onItemSelected: controller.selectedVehicleType,
+      appBar: TopNavigationBar(title: 'O que gostaria de guardar?'),
+      body: Obx(
+        () {
+          if (controller.selectedItemType.value != null) {
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (controller.selectedItemType.value?.type ==
+                      ItemType.vehicle) ...[
+                    InputButton(
+                      // onChanged: controller.vehicleTypeController,
+                      controller: TextEditingController(),
+                      hintText: 'Tipo de veículo',
+                      onTap: () => showVehicleTypeBottomSheet(
+                        context,
+                        onItemSelected: controller.selectedVehicleType,
+                      ),
                     ),
-                  ),
-                ] else ...[
-                  Obx(
-                    () => Input(
-                      onChanged: controller.width,
-                      hintText: 'Ano do Veículo',
-                      // error: controller.getError(controller.yearError),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(4),
-                      ],
-                      // currentFocusNode: yearFocus,
-                      onSubmit: () {},
+                  ] else ...[
+                    Obx(
+                      () => Input(
+                        onChanged: controller.width,
+                        hintText: 'Altura',
+                        // error: controller.getError(controller.yearError),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(4),
+                        ],
+                        // currentFocusNode: yearFocus,
+                        onSubmit: () {},
+                      ),
                     ),
+                    Obx(
+                      () => Input(
+                        onChanged: controller.width,
+                        hintText: 'Largura',
+                        // error: controller.getError(controller.yearError),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(4),
+                        ],
+                        // currentFocusNode: yearFocus,
+                        onSubmit: () {},
+                      ),
+                    ),
+                    Obx(
+                      () => Input(
+                        onChanged: controller.width,
+                        hintText: 'Profundidade',
+                        // error: controller.getError(controller.yearError),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(4),
+                        ],
+                        // currentFocusNode: yearFocus,
+                        onSubmit: () {},
+                      ),
+                    ),
+                  ],
+                  // _buildTextField('Select Location', controller.selectedLocation),
+                  // _buildDatePicker(
+                  //     'Select Check-In Date', controller.selectedCheckInDate),
+                  // _buildDatePicker(
+                  //     'Select Check-Out Date', controller.selectedCheckOutDate),
+                  ElevatedButton(
+                    onPressed: () {
+                      controller.saveReservation();
+                    },
+                    child: Text('Save Reservation'),
                   ),
                 ],
-                _buildTextField('Select Location', controller.selectedLocation),
-                _buildDatePicker(
-                    'Select Check-In Date', controller.selectedCheckInDate),
-                _buildDatePicker(
-                    'Select Check-Out Date', controller.selectedCheckOutDate),
-                ElevatedButton(
-                  onPressed: () {
-                    controller.saveReservation();
-                  },
-                  child: Text('Save Reservation'),
-                ),
-              ],
-            ),
+              ),
+            );
+          }
+          return ItemTypeListView(
+            onItemSelected: controller.selectedItemType,
           );
-        }
-        return ItemTypeListView(
-          onItemSelected: controller.selectedItemType,
-        );
-      }),
+        },
+      ),
     );
   }
 

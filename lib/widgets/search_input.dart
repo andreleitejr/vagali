@@ -34,7 +34,7 @@ class _SearchInputState extends State<SearchInput> {
     return TextFormField(
       controller: textEditingController,
       onChanged: widget.onSearch,
-      style: ThemeTypography.semiBold14.apply(color: ThemeColors.primary),
+      style: ThemeTypography.regular14.apply(color: ThemeColors.primary),
       cursorColor: ThemeColors.primary,
       cursorWidth: 2,
       decoration: InputDecoration(
@@ -42,7 +42,7 @@ class _SearchInputState extends State<SearchInput> {
         fillColor: Colors.white,
         contentPadding: EdgeInsets.zero,
         hintText: widget.hintText,
-        hintStyle: ThemeTypography.regular16.apply(color: ThemeColors.grey4),
+        hintStyle: ThemeTypography.regular14.apply(color: ThemeColors.grey4),
         prefixIcon: const Padding(
           padding: EdgeInsets.only(left: 8),
           child: Coolicon(

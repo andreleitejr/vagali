@@ -1,19 +1,23 @@
-// import 'package:brasil_fields/brasil_fields.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:get/get.dart';
-// import 'package:vagali/apps/tenant/features/vehicle/controllers/vehicle_edit_controller.dart';
-// import 'package:vagali/apps/tenant/features/vehicle/models/vehicle_color.dart';
-// import 'package:vagali/apps/tenant/features/vehicle/models/vehicle_type.dart';
-// import 'package:vagali/features/address/models/states.dart';
-// import 'package:vagali/theme/theme_colors.dart';
-// import 'package:vagali/theme/theme_typography.dart';
-// import 'package:vagali/widgets/bottom_sheet.dart';
-// import 'package:vagali/widgets/image_button.dart';
-// import 'package:vagali/widgets/image_picker_bottom_sheet.dart';
-// import 'package:vagali/widgets/input.dart';
-// import 'package:vagali/widgets/input_button.dart';
-// import 'package:vagali/widgets/rounded_gradient_button.dart';
+import 'package:brasil_fields/brasil_fields.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:vagali/apps/tenant/features/vehicle/controllers/vehicle_edit_controller.dart';
+import 'package:vagali/apps/tenant/features/vehicle/models/vehicle_color.dart';
+import 'package:vagali/apps/tenant/features/vehicle/models/vehicle_type.dart';
+import 'package:vagali/features/address/models/states.dart';
+import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
+import 'package:vagali/widgets/bottom_sheet.dart';
+import 'package:vagali/widgets/image_button.dart';
+import 'package:vagali/widgets/image_picker_bottom_sheet.dart';
+import 'package:vagali/widgets/input.dart';
+import 'package:vagali/widgets/input_button.dart';
+import 'package:vagali/widgets/rounded_gradient_button.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:vagali/apps/tenant/features/vehicle/models/vehicle_type.dart';
+import 'package:vagali/widgets/bottom_sheet.dart';
 //
 // class VehicleEditWidget extends StatelessWidget {
 //   final VehicleEditController controller;
@@ -278,10 +282,6 @@
 //   }
 // }
 
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:vagali/apps/tenant/features/vehicle/models/vehicle_type.dart';
-import 'package:vagali/widgets/bottom_sheet.dart';
 
 void showVehicleTypeBottomSheet(BuildContext context,
     {required Function(VehicleType) onItemSelected, FocusNode? nextFocus}) {

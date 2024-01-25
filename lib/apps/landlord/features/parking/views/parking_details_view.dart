@@ -54,7 +54,7 @@ class ParkingDetailsView extends StatelessWidget {
                         onTap: () async {
                           final shareService = ShareService();
                           await shareService.shareParking(
-                            controller.parking.value!,
+                            controller.parking.value!
                           );
                         },
                       ),

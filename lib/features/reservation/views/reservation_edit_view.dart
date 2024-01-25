@@ -5,11 +5,15 @@ import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/apps/tenant/features/payment/controllers/payment_controller.dart';
 import 'package:vagali/apps/tenant/features/payment/views/payment_view.dart';
 import 'package:vagali/apps/tenant/features/vehicle/widgets/vehicle_info_widget.dart';
+import 'package:vagali/features/address/widgets/address_card.dart';
 import 'package:vagali/features/reservation/controllers/reservation_edit_controller.dart';
 import 'package:vagali/features/reservation/widgets/reservation_date_widget.dart';
+import 'package:vagali/features/search/views/search_view.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/theme/coolicons.dart';
+import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
+import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/date_period.dart';
 import 'package:vagali/widgets/input.dart';
 import 'package:vagali/widgets/rounded_gradient_button.dart';
@@ -41,110 +45,148 @@ class _ReservationEditViewState extends State<ReservationEditView> {
       appBar: TopNavigationBar(
         title: 'Minha reserva',
       ),
-      body: Stack(
+      body: Column(
         children: [
-          Column(
-            children: [
-              Expanded(child: Obx(() {
-                if (_controller.parkingMarkerIcon.value == null) {
-                  return Container();
-                }
-                return GoogleMap(
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(
-                      _controller.parking.location.latitude + 0.0010,
-                      _controller.parking.location.longitude,
-                    ),
-                    zoom: 17,
-                  ),
-                  markers: {
-                    Marker(
-                      markerId: const MarkerId('location'),
-                      position: LatLng(
-                        _controller.parking.location.latitude,
-                        _controller.parking.location.longitude,
-                      ),
-                      icon: _controller.parkingMarkerIcon.value!,
-                    ),
-                  },
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.loadMapStyle(controller);
-                  },
-                );
-              })),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.3,
-              ),
-            ],
-          ),
-          Positioned(
-            left: 16,
-            right: 16,
-            top: 16,
-            child: Obx(
-              () => ReservationDateWidget(
-                onDatesSelected: _controller.onDatesSelected,
-                initialStartDate: _controller.startDate.value,
-                initialEndDate: _controller.endDate.value,
-                hasError: _controller.showErrors.value,
-              ),
-            ),
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(24),
-                  topRight: Radius.circular(24),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.25),
-                    spreadRadius: -8,
-                    blurRadius: 20,
-                    offset: const Offset(0, 0),
-                  ),
-                ],
-              ),
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height * 0.4,
-              ),
-              child: ListView(
+          GestureDetector(
+            onTap: ()=> Get.to(()=> ParkingSearchView()),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Text(
+                        'O que gostaria de guardar?',
+                        style: ThemeTypography.regular12.apply(
+                          color: ThemeColors.grey4,
+                        ),
+                      ),
                       const SizedBox(height: 8),
-                      Obx(
-                        () => DatePeriod(
-                            startDate: _controller.startDate.value,
-                            endDate: _controller.endDate.value),
+                      Text(
+                        'Veículos, estoques, caixas, equipamentos...',
+                        style: ThemeTypography.regular14.apply(
+                          // color: widget.hasError ? Colors.red : ThemeColors.grey4,
+                          color: ThemeColors.grey4,
+                        ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
-                  // if (_controller.userHasVehicle()) ...[
-                  //   VehicleInfoWidget(vehicle: _controller.vehicles.first),
-                  // ] else
-                  //   Container(),
-                  const SizedBox(height: 16),
-                  TitleWithIcon(
-                    title: 'Mensagem (opcional)',
-                    icon: Coolicons.chatDots,
-                  ),
-                  const SizedBox(height: 12),
-                  Input(
-                    onChanged: _controller.reservationMessageController,
-                    hintText: 'Enviar mensagem ao locador (opcional)',
-                    maxLines: 3,
-                  ),
                 ],
               ),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+            width: double.infinity,
+            height: 0.75,
+            color: ThemeColors.grey3,
+          ),
+          Obx(
+            () => ReservationDateWidget(
+              onDatesSelected: _controller.onDatesSelected,
+              initialStartDate: _controller.startDate.value,
+              initialEndDate: _controller.endDate.value,
+              hasError: _controller.showErrors.value,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: AddressCard(
+              address: _controller.parking.address,
+              editModeOn: false,
+            ),
+          ),
+          // SizedBox(
+          //   height: 200,
+          //   child: Obx(
+          //     () {
+          //       if (_controller.parkingMarkerIcon.value == null) {
+          //         return Container();
+          //       }
+          //       return GoogleMap(
+          //         initialCameraPosition: CameraPosition(
+          //           target: LatLng(
+          //             _controller.parking.location.latitude + 0.0010,
+          //             _controller.parking.location.longitude,
+          //           ),
+          //           zoom: 17,
+          //         ),
+          //         markers: {
+          //           Marker(
+          //             markerId: const MarkerId('location'),
+          //             position: LatLng(
+          //               _controller.parking.location.latitude,
+          //               _controller.parking.location.longitude,
+          //             ),
+          //             icon: _controller.parkingMarkerIcon.value!,
+          //           ),
+          //         },
+          //         onMapCreated: (GoogleMapController controller) {
+          //           _controller.loadMapStyle(controller);
+          //         },
+          //       );
+          //     },
+          //   ),
+          // ),
+          // Container(
+          //   padding: const EdgeInsets.all(16),
+          //   decoration: BoxDecoration(
+          //     color: Colors.white,
+          //     borderRadius: const BorderRadius.only(
+          //       topLeft: Radius.circular(24),
+          //       topRight: Radius.circular(24),
+          //     ),
+          //     boxShadow: [
+          //       BoxShadow(
+          //         color: Colors.grey.withOpacity(0.25),
+          //         spreadRadius: -8,
+          //         blurRadius: 20,
+          //         offset: const Offset(0, 0),
+          //       ),
+          //     ],
+          //   ),
+          //   constraints: BoxConstraints(
+          //     maxHeight: MediaQuery.of(context).size.height * 0.4,
+          //   ),
+          //   child: ListView(
+          //     children: [
+          //       // Column(
+          //       //   crossAxisAlignment: CrossAxisAlignment.start,
+          //       //   children: [
+          //       //     const SizedBox(height: 8),
+          //       //     Obx(
+          //       //       () => DatePeriod(
+          //       //           startDate: _controller.startDate.value,
+          //       //           endDate: _controller.endDate.value),
+          //       //     ),
+          //       //   ],
+          //       // ),
+          //       // const SizedBox(height: 16),
+          //       // if (_controller.userHasVehicle()) ...[
+          //       //   VehicleInfoWidget(vehicle: _controller.vehicles.first),
+          //       // ] else
+          //       //   Container(),
+          //     ],
+          //   ),
+          // ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                const SizedBox(height: 16),
+                TitleWithIcon(
+                  title: 'Mensagem (opcional)',
+                  icon: Coolicons.chatDots,
+                ),
+                const SizedBox(height: 12),
+                Input(
+                  onChanged: _controller.reservationMessageController,
+                  hintText: 'Enviar mensagem ao locador (opcional)',
+                  maxLines: 4,
+                ),
+              ],
             ),
           ),
         ],

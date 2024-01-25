@@ -50,64 +50,28 @@ class _ReservationWidgetState extends State<ReservationDateWidget> {
       height: 141,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white,
+        // color: Colors.white,
         borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.5),
-            spreadRadius: -8,
-            blurRadius: 20,
-            offset: const Offset(0, 0),
-          ),
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: Colors.black.withOpacity(0.5),
+        //     spreadRadius: -8,
+        //     blurRadius: 20,
+        //     offset: const Offset(0, 0),
+        //   ),
+        // ],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(height: 16),
-          GestureDetector(
-            onTap: () {
+          buildDateTimeSelector(
+            'Data de entrada:',
+            startDate,
+            false,
+            () {
               _selectDateTime(context);
               FocusScope.of(context).requestFocus(FocusNode());
             },
-            child: Row(
-              children: [
-                const SizedBox(width: 16),
-                Container(
-                  height: 32,
-                  width: 32,
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: ThemeColors.blue,
-                    borderRadius: BorderRadius.circular(64),
-                  ),
-                  child: const Coolicon(
-                    icon: Coolicons.calendar,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Data de entrada:',
-                      style: ThemeTypography.regular12.apply(
-                        color: ThemeColors.grey4,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      startDate?.toFriendlyDateTimeString() ??
-                          'Selecione a data de entrada',
-                      style: ThemeTypography.medium14.apply(
-                        color: widget.hasError ? Colors.red : ThemeColors.grey4,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
           ),
           Container(
             margin: const EdgeInsets.all(16),
@@ -115,52 +79,67 @@ class _ReservationWidgetState extends State<ReservationDateWidget> {
             height: 0.75,
             color: ThemeColors.grey3,
           ),
-          GestureDetector(
-            onTap: () {
+          buildDateTimeSelector(
+            'Data de saída:',
+            endDate,
+            true,
+            () {
               _selectDateTime(context, isEndDate: true);
               FocusScope.of(context).requestFocus(FocusNode());
             },
-            child: Row(
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildDateTimeSelector(
+    String title,
+    DateTime? date,
+    bool isEndDate,
+    Function() onTap,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          children: [
+            // const SizedBox(width: 16),
+            // Container(
+            //   height: 32,
+            //   width: 32,
+            //   padding: const EdgeInsets.all(5),
+            //   decoration: BoxDecoration(
+            //     color: isEndDate ? ThemeColors.primary : ThemeColors.blue,
+            //     borderRadius: BorderRadius.circular(64),
+            //   ),
+            //   child: const Coolicon(
+            //     icon: Coolicons.calendar,
+            //     color: Colors.white,
+            //   ),
+            // ),
+            // const SizedBox(width: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(width: 16),
-                Container(
-                  height: 32,
-                  width: 32,
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: ThemeColors.primary,
-                    borderRadius: BorderRadius.circular(64),
-                  ),
-                  child: const Coolicon(
-                    icon: Coolicons.calendar,
-                    color: Colors.white,
+                Text(
+                  title,
+                  style: ThemeTypography.regular12.apply(
+                    color: ThemeColors.grey4,
                   ),
                 ),
-                const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Data de saída:',
-                      style: ThemeTypography.regular12.apply(
-                        color: ThemeColors.grey4,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      endDate?.toFriendlyDateTimeString() ??
-                          'Selecione a data de saída',
-                      style: ThemeTypography.medium14.apply(
-                        color: widget.hasError ? Colors.red : ThemeColors.grey4,
-                      ),
-                    ),
-                  ],
+                const SizedBox(height: 8),
+                Text(
+                  date?.toFriendlyDateTimeString() ?? 'Selecione a data',
+                  style: ThemeTypography.regular14.apply(
+                    color: widget.hasError ? Colors.red : ThemeColors.grey4,
+                  ),
                 ),
               ],
             ),
-          ),
-          const SizedBox(height: 16),
-        ],
+          ],
+        ),
       ),
     );
   }
