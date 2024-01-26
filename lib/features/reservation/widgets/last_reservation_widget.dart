@@ -102,15 +102,24 @@ class LastReservationWidget extends StatelessWidget {
             startDate: reservation.startDate,
             endDate: reservation.endDate,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 8),
 
-
+          const Divider(
+            color: ThemeColors.grey2,
+            thickness: 1,
+          ),
+          const SizedBox(height: 8),
           TitleWithIcon(
             title: 'O que vou guardar',
             icon: Coolicons.circleCheckOutline,
           ),
           const SizedBox(height: 8),
-          Text(itemTypes.firstWhere((item) => item.type == reservation.item!.type).name!),
+          Text(
+            itemTypes
+                .firstWhere((item) => item.type == reservation.item!.type)
+                .name!,
+          ),
+          const SizedBox(height: 24),
           ReservationStatusIndicator(
             reservation: reservation,
             onReservationChanged: onReservationChanged,

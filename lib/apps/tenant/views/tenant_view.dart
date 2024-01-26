@@ -9,6 +9,7 @@ import 'package:vagali/features/support/views/support_edit_view.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/loader.dart';
+import 'package:vagali/widgets/top_bavigation_bar.dart';
 
 class TenantView extends StatelessWidget {
   TenantView({super.key});
@@ -18,18 +19,37 @@ class TenantView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: TopNavigationBar(
+        showLeading: false,
+        title: 'Meu perfil',
+      ),
       body: Obx(() {
         if (controller.loading.isTrue) {
           return Loader();
         }
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // TenantHeader(controller: controller),
             const SizedBox(height: 16),
-            Text(
-              controller.tenant.firstName,
-              style: ThemeTypography.medium16,
-            ),
+            Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${controller.tenant.firstName} ${controller.tenant.lastName}',
+                      style: ThemeTypography.medium16,
+                    ),
+                    // const SizedBox(height: 8),
+                    // Text(
+                    //   '${controller.tenant.id}',
+                    //   style: ThemeTypography.regular12.apply(
+                    //     color: ThemeColors.grey3,
+                    //   ),
+                    // ),
+                  ],
+                )),
             const SizedBox(height: 16),
 
             // ConfigListTile(

@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/apps/landlord/features/parking/repositories/parking_repository.dart';
+import 'package:vagali/apps/landlord/models/landlord.dart';
+import 'package:vagali/apps/landlord/repositories/landlord_repository.dart';
 import 'package:vagali/services/location_service.dart';
 import 'package:vagali/services/search_service.dart';
 import 'package:vagali/theme/images.dart';
@@ -13,12 +15,13 @@ import 'package:vagali/theme/images.dart';
 class MapController extends GetxController {
   final LocationService locationService = Get.find();
   final ParkingRepository _parkingRepository = Get.find();
+  final LandlordRepository _landlordRepository = Get.find();
   final SearchService _searchService = Get.find();
   GoogleMapController? googleMapController;
 
   final userCurrentLocation = Rx<Position?>(null);
   final nearbyParkings = <Parking>[].obs;
-  final filteredParkings = <Parking>[].obs; // Adicionado
+  final filteredParkings = <Parking>[].obs;
   final selectedParking = Rx<Parking?>(null);
 
   var markers = <Marker>{}.obs;
@@ -26,7 +29,7 @@ class MapController extends GetxController {
   late BitmapDescriptor userMarkerIcon;
 
   var loading = false.obs;
-  var searchText = ''.obs; // Adicionado
+  var searchText = ''.obs;
 
   @override
   Future<void> onInit() async {
@@ -92,26 +95,41 @@ class MapController extends GetxController {
 
   Future<void> fetchNearbyParkings() async {
     try {
-      final parkings = await _parkingRepository.getAll();
-      parkings.sort((a, b) => a.distance.compareTo(b.distance));
-      nearbyParkings.assignAll(parkings);
+      final allParkings = await _parkingRepository.getAll();
+      await fetchLandlordsForParkings(allParkings);
+      allParkings.sort((a, b) => a.distance.compareTo(b.distance));
+      nearbyParkings.assignAll(allParkings);
       updateFilteredParkings();
     } catch (error) {
       print('Error fetching nearby parkings: $error');
     }
   }
 
+  Future<void> fetchLandlordsForParkings(List<Parking> parkings) async {
+    for (var parking in parkings) {
+      final landlord = await getLandlord(parking.userId);
+      parking.owner = landlord;
+    }
+  }
+
+  Future<Landlord?> getLandlord(String userId) async {
+    final landlord = await _landlordRepository.get(userId);
+    return landlord;
+  }
+
   void updateFilteredParkings() {
-    filteredParkings.assignAll(_searchService.filterBySearchText<Parking>(
-      nearbyParkings,
-      searchText.value,
-      (parking) => [
-        parking.address.city,
-        parking.address.state,
-        parking.address.street,
-        parking.address.postalCode,
-      ],
-    ));
+    filteredParkings.assignAll(
+      _searchService.filterBySearchText<Parking>(
+        nearbyParkings,
+        searchText.value,
+        (parking) => [
+          parking.address.city,
+          parking.address.state,
+          parking.address.street,
+          parking.address.postalCode,
+        ],
+      ),
+    );
   }
 
   void _addUserMarker() {
