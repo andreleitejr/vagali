@@ -6,6 +6,7 @@ import 'package:vagali/apps/tenant/features/payment/controllers/payment_controll
 import 'package:vagali/apps/tenant/features/payment/views/payment_view.dart';
 import 'package:vagali/apps/tenant/features/vehicle/widgets/vehicle_info_widget.dart';
 import 'package:vagali/features/address/widgets/address_card.dart';
+import 'package:vagali/features/item/views/item_list_view.dart';
 import 'package:vagali/features/reservation/controllers/reservation_edit_controller.dart';
 import 'package:vagali/features/reservation/widgets/reservation_date_widget.dart';
 import 'package:vagali/features/search/views/search_view.dart';
@@ -15,6 +16,7 @@ import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/date_period.dart';
+import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/input.dart';
 import 'package:vagali/widgets/rounded_gradient_button.dart';
 import 'package:vagali/widgets/title_with_icon.dart';
@@ -48,7 +50,7 @@ class _ReservationEditViewState extends State<ReservationEditView> {
       body: Column(
         children: [
           GestureDetector(
-            onTap: ()=> Get.to(()=> ParkingSearchView()),
+            onTap: () => Get.to(() => ItemTypeListView()),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
@@ -58,7 +60,7 @@ class _ReservationEditViewState extends State<ReservationEditView> {
                     children: [
                       Text(
                         'O que gostaria de guardar?',
-                        style: ThemeTypography.regular12.apply(
+                        style: ThemeTypography.semiBold12.apply(
                           color: ThemeColors.grey4,
                         ),
                       ),
@@ -221,7 +223,7 @@ class _ReservationEditViewState extends State<ReservationEditView> {
               ),
             ),
             Expanded(
-              child: RoundedGradientButton(
+              child: FlatButton(
                 actionText: 'Pagar',
                 onPressed: () async {
                   if (_controller.isValid()) {

@@ -6,6 +6,7 @@ import 'package:vagali/apps/tenant/features/home/views/base_view.dart';
 import 'package:vagali/apps/tenant/features/payment/controllers/payment_controller.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/theme/theme_typography.dart';
+import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/input.dart';
 import 'package:vagali/widgets/rounded_gradient_button.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
@@ -170,7 +171,7 @@ class PaymentView extends GetView<PaymentController> {
                   ),
                 ),
                 Expanded(
-                  child: RoundedGradientButton(
+                  child: FlatButton(
                     actionText: ' Pagar',
                     onPressed: () {
                       controller

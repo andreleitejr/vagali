@@ -8,46 +8,52 @@ import 'package:vagali/widgets/search_input.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
 class ItemTypeListView extends StatelessWidget {
-  final Function(ItemType) onItemSelected;
-
-  const ItemTypeListView({super.key, required this.onItemSelected});
+  const ItemTypeListView({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: SearchInput(
-            searchText: '',
-            hintText: 'Buscar objetos',
-            onSearch: (_) {},
+
+    return Scaffold(
+      appBar: TopNavigationBar(title: 'O que gostaria de guardar?'),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: SearchInput(
+              searchText: '',
+              hintText: 'Buscar objetos',
+              onSearch: (_) {},
+            ),
           ),
-        ),
-        const SizedBox(height: 16),
-        Expanded(
-          child: ListView.builder(
-            itemCount: itemTypes.length,
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () => onItemSelected(itemTypes[index]),
-                child: ListTile(
-                  leading: Coolicon(icon: itemTypes[index].icon),
-                  title: Text(itemTypes[index].name!),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(itemTypes[index].description!),
-                      SizedBox(height: 8),
-                      Text('Type: ${itemTypes[index].type}'),
-                    ],
+          const SizedBox(height: 16),
+          Expanded(
+            child: ListView.builder(
+              itemCount: itemTypes.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () => Get.to(
+                        () => ItemEditView(selectedType: itemTypes[index]),
                   ),
-                ),
-              );
-            },
+                  child: ListTile(
+                    leading: Image.asset(itemTypes[index].image),
+                    title: Text(itemTypes[index].name!),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(itemTypes[index].description!),
+                        SizedBox(height: 8),
+                        // Text('Type: ${itemTypes[index].type}'),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:vagali/theme/images.dart';
 import 'package:vagali/theme/theme_typography.dart';
+import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/gradient_text.dart';
 import 'package:vagali/widgets/rounded_gradient_button.dart';
 
@@ -25,7 +26,7 @@ class LocationDeniedView extends StatelessWidget {
               'Para que o Vagali te proporcione a melhor experiência de usa, precisamos da sua localização. Permita o acesso à localização nas configurações e tente novamente.',
               style: ThemeTypography.regular16,
             ),
-            RoundedGradientButton(
+            FlatButton(
                 actionText: 'Ir para configurações',
                 onPressed: () => AppSettings.openAppSettings()),
           ],

@@ -4,6 +4,7 @@ import 'package:vagali/models/dimension.dart';
 import 'package:vagali/models/image_blurhash.dart';
 import 'package:vagali/models/selectable_item.dart';
 import 'package:vagali/theme/coolicons.dart';
+import 'package:vagali/theme/images.dart';
 
 class Item extends BaseModel {
   final ImageBlurHash image;
@@ -48,13 +49,13 @@ class ItemType extends SelectableItem {
   final String? name;
   final String? description;
   final String type;
-  late final String icon;
+  late final String image;
 
   ItemType({
     required this.type,
     this.name,
     this.description,
-    this.icon = Coolicons.house,
+    this.image = Coolicons.house,
   });
 
   Map<String, dynamic> toMap() {
@@ -81,12 +82,36 @@ final itemTypes = <ItemType>[
     type: ItemType.vehicle,
     name: 'Veiculos',
     description: 'Veiculos description',
-    icon: Coolicons.car,
+    image: Images.carItem,
   ),
   ItemType(
     type: ItemType.stock,
     name: 'Estoques',
     description: 'Estoques description',
-    icon: Coolicons.car,
+    image: Images.stock,
+  ),
+  ItemType(
+    type: ItemType.stock,
+    name: 'Móveis',
+    description: 'Móveis description',
+    image: Images.furniture,
+  ),
+  ItemType(
+    type: ItemType.stock,
+    name: 'Materiais de Construção',
+    description: 'Móveis description',
+    image: Images.householdHardware,
+  ),
+  ItemType(
+    type: ItemType.stock,
+    name: 'Compras',
+    description: 'Compras description',
+    image: Images.shopping,
+  ),
+  ItemType(
+    type: ItemType.stock,
+    name: 'Outros',
+    description: 'Outros description',
+    image: Images.other,
   ),
 ];

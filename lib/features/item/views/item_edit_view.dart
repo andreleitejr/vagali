@@ -1,5 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:vagali/apps/tenant/features/vehicle/widgets/vehicle_edit_widget.dart';
+import 'package:vagali/features/item/controllers/item_edit_controller.dart';
 import 'package:vagali/features/item/models/item.dart';
+import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
+import 'package:vagali/widgets/flat_button.dart';
+import 'package:vagali/widgets/image_button.dart';
+import 'package:vagali/widgets/image_picker_bottom_sheet.dart';
+import 'package:vagali/widgets/input.dart';
+import 'package:vagali/widgets/top_bavigation_bar.dart';
 
 class ItemEditView extends StatefulWidget {
   final ItemType selectedType;
@@ -11,8 +22,12 @@ class ItemEditView extends StatefulWidget {
 }
 
 class _ItemEditViewState extends State<ItemEditView> {
-  final TextEditingController _commonFieldController = TextEditingController();
+  final controller = Get.put(ItemEditController());
   late List<Widget> _typeSpecificFields;
+
+  final widthFocus = FocusNode();
+  final heightFocus = FocusNode();
+  final depthFocus = FocusNode();
 
   @override
   void initState() {
@@ -33,23 +48,42 @@ class _ItemEditViewState extends State<ItemEditView> {
 
   List<Widget> _buildVehicleFields() {
     return [
-      TextFormField(
-        decoration: InputDecoration(labelText: 'Vehicle-Specific Field 1'),
-      ),
-      TextFormField(
-        decoration: InputDecoration(labelText: 'Vehicle-Specific Field 2'),
-      ),
+      VehicleEditWidget(controller: controller),
       // Add more vehicle-specific fields as needed
     ];
   }
 
   List<Widget> _buildStockFields() {
     return [
-      TextFormField(
-        decoration: InputDecoration(labelText: 'Stock-Specific Field 1'),
+      Input(
+        onChanged: controller.width,
+        hintText: 'Largura',
+        // error: controller.getError(controller.licensePlateError),
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+        ],
+        currentFocusNode: widthFocus,
+        nextFocusNode: heightFocus,
       ),
-      TextFormField(
-        decoration: InputDecoration(labelText: 'Stock-Specific Field 2'),
+      Input(
+        onChanged: controller.height,
+        hintText: 'Altura',
+        error: controller.getError(controller.licensePlateError),
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+        ],
+        currentFocusNode: heightFocus,
+        nextFocusNode: depthFocus,
+      ),
+
+      Input(
+        onChanged: controller.depth,
+        hintText: 'Profundidade',
+        error: controller.getError(controller.licensePlateError),
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+        ],
+        currentFocusNode: depthFocus,
       ),
       // Add more stock-specific fields as needed
     ];
@@ -58,26 +92,62 @@ class _ItemEditViewState extends State<ItemEditView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Create ${widget.selectedType.name}'),
+      appBar: TopNavigationBar(
+        title: '${widget.selectedType.name}',
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: ListView(
+          // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextFormField(
-              controller: _commonFieldController,
-              decoration: InputDecoration(labelText: 'Common Field'),
+            Obx(
+              () => Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ImageButton(
+                    imageUrl: controller.imageFileController.value?.path,
+                    imageSize: 100.0,
+                    imageDataSource: ImageDataSource.asset,
+                    onPressed: () async {
+                      final source = await showImagePickerBottomSheet(context);
+
+                      if (source != null) {
+                        await controller.pickImage(source);
+
+                        await Future.delayed(const Duration(milliseconds: 500));
+                        showVehicleTypeBottomSheet(context,
+                            onItemSelected: (VehicleType) {});
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
-            // Add more common fields as needed
+            Obx(
+              () {
+                if (controller.imageBlurhash.value != null) {
+                  return Container();
+                }
+                return Column(
+                  children: [
+                    const SizedBox(height: 8),
+                    Text(
+                      'Tire uma foto',
+                      style: ThemeTypography.regular14.apply(
+                        color: ThemeColors.grey4,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
             ..._typeSpecificFields,
-            ElevatedButton(
+            FlatButton(
               onPressed: () {
                 // Save the item with the entered data
                 _saveItem();
               },
-              child: Text('Save'),
+              actionText: 'Salvar ${widget.selectedType.name}',
             ),
           ],
         ),
@@ -98,10 +168,12 @@ class _ItemEditViewState extends State<ItemEditView> {
   }
 
   void _saveVehicle() {
+    print('Salvei um veiculo!');
     // Implement saving logic for Vehicle type
   }
 
   void _saveStock() {
+    print('Salvei um stock!');
     // Implement saving logic for Stock type
   }
 }

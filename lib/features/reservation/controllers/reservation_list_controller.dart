@@ -59,9 +59,8 @@ class ReservationListController extends GetxController {
     for (final reservation in reservations) {
       reservation.landlord = landlords.firstWhereOrNull(
           (landlord) => landlord.id! == reservation.landlordId);
-      reservation.item = vehicles
-          .firstWhereOrNull((vehicle) => vehicle.id == reservation.itemId);
-      print(' HUASDHUSDHDSUAHSDAUHDUHDUHSDAH ${parkings.length}');
+      // reservation.item = vehicles
+      //     .firstWhereOrNull((vehicle) => vehicle.id == reservation.itemId);
       reservation.parking = parkings
           .firstWhereOrNull((parking) => parking.id! == reservation.parkingId);
 

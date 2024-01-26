@@ -125,7 +125,7 @@ class _ReservationWidgetState extends State<ReservationDateWidget> {
               children: [
                 Text(
                   title,
-                  style: ThemeTypography.regular12.apply(
+                  style: ThemeTypography.semiBold12.apply(
                     color: ThemeColors.grey4,
                   ),
                 ),

@@ -88,7 +88,7 @@ class ParkingSearchView extends StatelessWidget {
                   //     'Select Check-Out Date', controller.selectedCheckOutDate),
                   ElevatedButton(
                     onPressed: () {
-                      controller.saveReservation();
+                      // controller.saveReservation();
                     },
                     child: Text('Save Reservation'),
                   ),
@@ -96,9 +96,7 @@ class ParkingSearchView extends StatelessWidget {
               ),
             );
           }
-          return ItemTypeListView(
-            onItemSelected: controller.selectedItemType,
-          );
+          return ItemTypeListView();
         },
       ),
     );
