@@ -24,7 +24,7 @@ class PriceService {
     final int durationInHours = endDateTime.difference(startDateTime).inHours;
 
     if (durationInHours <= 0) {
-      return 0.0; // Caso a duração seja negativa ou zero, o preço é zero.
+      return 0.0;
     } else if (durationInHours < 6) {
       return pricePerHour * durationInHours;
     } else if (durationInHours < 12) {
@@ -36,7 +36,6 @@ class PriceService {
 
       return _twelveHoursBasePrice.toDouble() + (overtime * pricePerHour);
     } else if (durationInHours < 24 * 30) {
-      // Calcula o número de dias e arredonda para cima
       final int days = (durationInHours / 24).ceil();
       return _twentyFourHoursBasePrice.toDouble() * days;
     } else {

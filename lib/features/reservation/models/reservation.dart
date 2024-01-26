@@ -124,10 +124,7 @@ class Reservation extends BaseModel {
 
   /// MEU IS IN PROGRESS
   bool get isInProgress =>
-      status == ReservationStatus.inProgress ||
-      (isOpen &&
-          startDate.isBefore(DateTime.now()) &&
-          endDate.isAfter(DateTime.now()));
+      status == ReservationStatus.inProgress;
 
   bool get isScheduled =>
       isOpen && startDate.difference(DateTime.now()).inSeconds > 0;

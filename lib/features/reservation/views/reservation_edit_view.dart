@@ -85,6 +85,7 @@ class _ReservationEditViewState extends State<ReservationEditView> {
         }
         return ListView(
           children: [
+            const SizedBox(height: 16),
             GestureDetector(
               onTap: () => controller.showItemTypeList(true),
               child: Padding(
@@ -96,9 +97,7 @@ class _ReservationEditViewState extends State<ReservationEditView> {
                       children: [
                         Text(
                           'O que gostaria de guardar?',
-                          style: ThemeTypography.semiBold12.apply(
-                            color: ThemeColors.grey4,
-                          ),
+                          style: ThemeTypography.semiBold16,
                         ),
                         const SizedBox(height: 8),
                         Text(
@@ -230,60 +229,62 @@ class _ReservationEditViewState extends State<ReservationEditView> {
           ],
         );
       }),
-      bottomNavigationBar: Container(
-        height: 100,
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Valor total:',
-                    style: ThemeTypography.regular12,
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Obx(
-                        () => Text(
-                          'R\$${controller.totalCost.value}',
-                          style: ThemeTypography.semiBold22,
+      bottomNavigationBar: Obx(
+        () => Container(
+          height: controller.showItemTypeList.isTrue ? 0 : 100,
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Valor total:',
+                      style: ThemeTypography.regular12,
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Obx(
+                          () => Text(
+                            'R\$${controller.totalCost.value}',
+                            style: ThemeTypography.semiBold22,
+                          ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: FlatButton(
-                actionText: 'Pagar',
-                onPressed: () async {
-                  if (controller.isValid()) {
-                    final result = await controller.createReservation();
-                    if (result == SaveResult.success) {
-                      initiatePayment();
+              Expanded(
+                child: FlatButton(
+                  actionText: 'Pagar',
+                  onPressed: () async {
+                    if (controller.isValid()) {
+                      final result = await controller.createReservation();
+                      if (result == SaveResult.success) {
+                        initiatePayment();
+                      } else {
+                        Get.snackbar('Erro ao salvar reserva',
+                            'Houve um erro inesperado ao salvar sua reserva. Tenve novamente.');
+                      }
                     } else {
-                      Get.snackbar('Erro ao salvar reserva',
-                          'Houve um erro inesperado ao salvar sua reserva. Tenve novamente.');
+                      controller.showErrors(true);
+                      debugPrint('Inválido.');
+                      Get.snackbar('Data inválida',
+                          'A data de início e a data de fim são obrigatória',
+                          backgroundColor: Colors.red.withOpacity(0.75),
+                          colorText: Colors.white,
+                          margin: const EdgeInsets.all(16));
                     }
-                  } else {
-                    controller.showErrors(true);
-                    debugPrint('Inválido.');
-                    Get.snackbar('Data inválida',
-                        'A data de início e a data de fim são obrigatória',
-                        backgroundColor: Colors.red.withOpacity(0.75),
-                        colorText: Colors.white,
-                        margin: const EdgeInsets.all(16));
-                  }
-                },
-              ),
-            )
-          ],
+                  },
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

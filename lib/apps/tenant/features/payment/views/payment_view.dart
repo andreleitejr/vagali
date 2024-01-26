@@ -184,10 +184,10 @@ class PaymentView extends GetView<PaymentController> {
 
                           Get.snackbar('Reserva feita com sucesso',
                               'Sua reserva foi realizada com sucesso. Agora é só aguarda aprovação do locador.');
+
+                          Get.off(() => const BaseView(selectedIndex: 2));
                         }
                       });
-
-                      Get.off(() => const BaseView(selectedIndex: 2));
                     },
                   ),
                 )

@@ -125,13 +125,12 @@ class _ReservationWidgetState extends State<ReservationDateWidget> {
               children: [
                 Text(
                   title,
-                  style: ThemeTypography.semiBold12.apply(
-                    color: ThemeColors.grey4,
-                  ),
+                  style: ThemeTypography.semiBold16,
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  date?.toFriendlyDateTimeString() ?? 'Selecione a data',
+                  date?.toFriendlyDateTimeString() ??
+                      'Selecione a data de ${isEndDate ? 'saída' : 'entrada'}',
                   style: ThemeTypography.regular14.apply(
                     color: widget.hasError ? Colors.red : ThemeColors.grey4,
                   ),

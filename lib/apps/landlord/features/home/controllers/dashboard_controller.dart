@@ -87,7 +87,7 @@ class LandlordHomeController extends GetxController {
 
     if (allReservations.isNotEmpty) {
       currentReservation.value = allReservations
-          .firstWhereOrNull((reservation) => reservation.isInProgress);
+          .firstWhereOrNull((reservation) => reservation.isOpen);
 
       if (currentReservation.value != null &&
           currentReservation.value!.isUserOnTheWay) {
