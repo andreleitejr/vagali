@@ -82,6 +82,7 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
   // }
 
   final LandlordRepository _landlordRepository = Get.find();
+  final TenantRepository _tenantRepository = Get.find();
   final ParkingRepository _parkingRepository = Get.find();
   final ItemRepository _itemRepository = Get.find();
 
@@ -104,8 +105,14 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
         await Future.wait(querySnapshot.docs.map((doc) async {
           final reservation = fromDocument(doc);
 
-          final landlord =
-              await _landlordRepository.get(reservation.landlordId);
+          final tenant = Get.find<FlavorConfig>().flavor == Flavor.tenant
+              ? user as Tenant
+              : await _tenantRepository.get(reservation.tenantId);
+          reservation.tenant = tenant;
+
+          final landlord = Get.find<FlavorConfig>().flavor == Flavor.landlord
+              ? user as Landlord
+              : await _landlordRepository.get(reservation.landlordId);
           reservation.landlord = landlord;
 
           final parking = await _parkingRepository.get(reservation.parkingId);

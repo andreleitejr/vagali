@@ -29,6 +29,8 @@ class _ChatViewState extends State<ChatView> {
     super.initState();
   }
 
+  final messageController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,8 +39,50 @@ class _ChatViewState extends State<ChatView> {
         children: <Widget>[
           Expanded(
             child: Obx(
-              () => MessageList(
-                messages: controller.messages,
+              () => ListView.builder(
+                reverse: true,
+                itemCount: controller.messages.length,
+                itemBuilder: (context, index) {
+                  final message = controller.messages[index];
+
+                  return Align(
+                    alignment: message.isSender
+                        ? Alignment.centerRight
+                        : Alignment.centerLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Container(
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: message.isSender
+                                ? ThemeColors.primary
+                                : ThemeColors.grey3,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            message.message,
+                            style: ThemeTypography.regular14.apply(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 8),
+                          // padding: EdgeInsets.all(12),
+                          child: Text(
+                            message.createdAt.toTimeString(),
+                            style: ThemeTypography.regular14.apply(
+                              color: ThemeColors.grey3,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
           ),
@@ -48,6 +92,7 @@ class _ChatViewState extends State<ChatView> {
               children: <Widget>[
                 Expanded(
                   child: Input(
+                    controller: messageController,
                     onChanged: controller.messageController,
                     hintText: 'Digite sua mensagem...',
                   ),
@@ -63,7 +108,10 @@ class _ChatViewState extends State<ChatView> {
                   child: Coolicon(
                     icon: Coolicons.chatDots,
                     color: Colors.white,
-                    onTap: () => controller.sendMessage(),
+                    onTap: (){
+                      controller.sendMessage();
+                      messageController.clear();
+                    },
                   ),
                 ),
               ],
@@ -71,61 +119,6 @@ class _ChatViewState extends State<ChatView> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class MessageList extends StatelessWidget {
-  final List<Message> messages;
-
-  MessageList({required this.messages});
-
-  @override
-  Widget build(BuildContext context) {
-    messages.sort((b, a) => a.createdAt.compareTo(b.createdAt));
-
-    return ListView.builder(
-      reverse: true,
-      itemCount: messages.length,
-      itemBuilder: (context, index) {
-        final message = messages[index];
-
-        return Align(
-          alignment:
-              message.isSender ? Alignment.centerRight : Alignment.centerLeft,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                padding: EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: message.isSender
-                      ? ThemeColors.primary
-                      : ThemeColors.grey3,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  message.message,
-                  style: ThemeTypography.regular14.apply(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 8),
-                // padding: EdgeInsets.all(12),
-                child: Text(
-                  message.createdAt.toTimeString(),
-                  style: ThemeTypography.regular14.apply(
-                    color: ThemeColors.grey3,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

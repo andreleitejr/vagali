@@ -89,10 +89,12 @@ class FirestoreRepository<T extends BaseModel> {
     }
   }
 
-  Future<SaveResult> update(
-      String documentId, Map<String, dynamic> data) async {
+  Future<SaveResult> update(String documentId, T document) async {
     try {
-      await firestore.collection(collectionName).doc(documentId).update(data);
+      await firestore
+          .collection(collectionName)
+          .doc(documentId)
+          .update(document.toMap());
 
       return SaveResult.success;
     } catch (error) {

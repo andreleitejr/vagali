@@ -240,6 +240,8 @@ extension ReservationStatusExtension on ReservationStatus {
         return ReservationStatus.confirmed;
       case 'userOnTheWay':
         return ReservationStatus.userOnTheWay;
+      case 'inProgress':
+        return ReservationStatus.inProgress;
       case 'parked':
         return ReservationStatus.parked;
       case 'concluded':
@@ -263,6 +265,8 @@ extension ReservationStatusExtension on ReservationStatus {
         return "A reserva foi cancelada.";
       case ReservationStatus.confirmed:
         return "Confirmado pelo locatário.";
+      case ReservationStatus.inProgress:
+        return "A reserva está em andamento";
       case ReservationStatus.userOnTheWay:
         return "O locatário à caminho. Fique atento para abrir o portão.";
       case ReservationStatus.parked:
@@ -279,16 +283,20 @@ extension ReservationStatusExtension on ReservationStatus {
       return "Pagamento negado";
     } else if (this == ReservationStatus.canceled) {
       return "Cancelada";
+    } else if (this == ReservationStatus.canceled) {
+      return "Cancelada";
     } else if (this == ReservationStatus.paymentTimeOut) {
       return "Tempo excedido";
     } else if (this == ReservationStatus.concluded) {
       return "Concluída";
     } else if (this == ReservationStatus.pendingPayment) {
-      return "Pendente de Pagamento";
+      return "Pendente de pagamento";
     } else if (this == ReservationStatus.paymentApproved) {
-      return "Aguardando Confirmacao";
+      return "Aguardando confirmacao";
     } else if (this == ReservationStatus.confirmed) {
       return "Confirmado";
+    } else if (this == ReservationStatus.inProgress) {
+      return "Em andamento";
     } else if (this == ReservationStatus.userOnTheWay) {
       return "Veiculo a caminho";
     } else if (this == ReservationStatus.parked) {
@@ -303,6 +311,8 @@ extension ReservationStatusExtension on ReservationStatus {
         this == ReservationStatus.canceled ||
         this == ReservationStatus.paymentTimeOut) {
       return Colors.red;
+    } else if (this == ReservationStatus.pendingPayment) {
+      return Colors.amber;
     } else {
       return ThemeColors.primary;
     }

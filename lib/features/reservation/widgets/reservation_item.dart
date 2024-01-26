@@ -40,8 +40,8 @@ class ReservationItem extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-                "${reservation.tenant?.firstName ?? 'Teste'}"
-                " ${reservation.tenant?.lastName ?? 'Teste'}",
+                "${reservation.tenant?.firstName}'"
+                " ${reservation.tenant?.lastName}",
                 style: ThemeTypography.medium14),
           ),
           Text(

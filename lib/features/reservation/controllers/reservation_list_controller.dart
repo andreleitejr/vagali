@@ -68,7 +68,7 @@ class ReservationListController extends GetxController {
     allReservations.addAll(reservations);
 
     final inProgress =
-        allReservations.where((reservation) => reservation.isInProgress);
+        allReservations.where((reservation) => reservation.isOpen);
 
     reservationsInProgress.assignAll(inProgress);
 

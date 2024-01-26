@@ -17,7 +17,7 @@ class ParkingRepository extends FirestoreRepository<Parking> {
           fromDocument: (document) => Parking.fromDocument(document),
         );
 
-  final User user = Get.find();
+  // final User user = Get.find();
 
   // Future<Parking> getParkingWithEntities(String ownerId) async {
   //   try {

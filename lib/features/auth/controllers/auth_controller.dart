@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+import 'package:vagali/apps/landlord/features/parking/repositories/parking_repository.dart';
 import 'package:vagali/apps/landlord/repositories/landlord_repository.dart';
 import 'package:vagali/apps/tenant/repositories/tenant_repository.dart';
 
@@ -42,6 +43,7 @@ class AuthController extends GetxController {
 
     FlutterNativeSplash.remove();
     Get.put(ItemRepository());
+    Get.put(ParkingRepository());
     await checkCurrentUser();
 
     loading(false);

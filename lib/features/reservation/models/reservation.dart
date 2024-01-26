@@ -15,6 +15,7 @@ enum ReservationStatus {
   paymentTimeOut,
   canceled,
   confirmed,
+  inProgress,
   userOnTheWay,
   parked,
   concluded,
@@ -22,7 +23,6 @@ enum ReservationStatus {
 }
 
 class Reservation extends BaseModel {
-
   final String parkingId;
   final String itemId;
   final String tenantId;
@@ -90,13 +90,18 @@ class Reservation extends BaseModel {
         status = ReservationStatusExtension.fromString(document['status']),
         super.fromDocument(document);
 
-  bool get isHandshakeMade => isConfirmed || isUserOnTheWay || isParked;
+  bool get isHandshakeMade =>
+      isConfirmed || isUserOnTheWay || isParked || isInProgress;
 
   bool get isWaitingToGo =>
-      isConfirmed && isInProgress && !isUserOnTheWay && !isParked;
+      isConfirmed && isOpen && !isUserOnTheWay && !isParked;
 
   bool get isActive =>
-      isPaymentApproved || isConfirmed || isUserOnTheWay || isParked;
+      isPaymentApproved ||
+      isConfirmed ||
+      isUserOnTheWay ||
+      isParked ||
+      isInProgress;
 
   bool get isPendingPayment => status == ReservationStatus.pendingPayment;
 
@@ -108,11 +113,24 @@ class Reservation extends BaseModel {
 
   bool get isParked => status == ReservationStatus.parked;
 
-  bool get isInProgress => !isConcluded && !isCanceled && !isPaymentDenied;
+  bool get isOpen =>
+      !isConcluded &&
+      !isCanceled &&
+      !isPaymentDenied &&
+      !isExpired &&
+      !isPendingPayment;
+
+  bool get isExpired => endDate.isBefore(DateTime.now());
+
+  /// MEU IS IN PROGRESS
+  bool get isInProgress =>
+      status == ReservationStatus.inProgress ||
+      (isOpen &&
+          startDate.isBefore(DateTime.now()) &&
+          endDate.isAfter(DateTime.now()));
 
   bool get isScheduled =>
-      isInProgress && startDate.difference(DateTime.now()).inSeconds > 0;
-
+      isOpen && startDate.difference(DateTime.now()).inSeconds > 0;
 
   bool get isConcluded => status == ReservationStatus.concluded;
 
@@ -122,7 +140,6 @@ class Reservation extends BaseModel {
       status == ReservationStatus.canceled || isPaymentTimeOut;
 
   bool get isPaymentDenied => status == ReservationStatus.paymentDenied;
-
 
   bool get isDone => isConcluded || isCanceled || isPaymentDenied;
 

@@ -61,7 +61,7 @@ class DashboardController extends GetxController {
         reservations.where((reservation) => reservation.isDone).toList();
 
     openReservations.value =
-        reservations.where((reservation) => reservation.isInProgress).toList();
+        reservations.where((reservation) => reservation.isOpen).toList();
     super.onInit();
   }
 }

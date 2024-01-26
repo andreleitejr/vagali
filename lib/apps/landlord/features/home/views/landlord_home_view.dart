@@ -39,9 +39,11 @@ class LandlordHomeView extends StatelessWidget {
             );
           }
 
-          if (controller.scheduledReservations.isEmpty) {
+          if (controller.scheduledReservations.isEmpty &&
+              controller.allReservations.isEmpty) {
             return Center(child: EmptyList());
           }
+
 
           return SingleChildScrollView(
             child: Column(
@@ -57,19 +59,19 @@ class LandlordHomeView extends StatelessWidget {
                   return Container();
                 }),
                 const SizedBox(height: 16),
-                if (controller.scheduledReservations.isNotEmpty)
+                if (controller.allReservations.isNotEmpty)
                   TitleWithAction(
-                    title: 'Próximas reservas',
+                    title: 'Minhas reservas',
                     icon: Coolicons.calendar,
                     actionText: '',
                     onActionPressed: () {},
                   ),
                 ListView.builder(
-                  itemCount: controller.scheduledReservations.length,
+                  itemCount: controller.allReservations.length,
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, int index) {
-                    final reservation = controller.scheduledReservations[index];
+                    final reservation = controller.allReservations[index];
                     return ReservationItem(reservation: reservation);
                   },
                 ),

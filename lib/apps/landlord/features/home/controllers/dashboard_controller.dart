@@ -25,13 +25,14 @@ class LandlordHomeController extends GetxController {
   final _parkingRepository = Get.put(ParkingRepository());
   final _reservationRepository = Get.put(ReservationRepository());
   final _tenantRepository = Get.put(TenantRepository());
+
   // final _vehicleRepository = Get.put(VehicleRepository());
 
   GoogleMapController? _mapController;
 
   final parkings = <Parking>[].obs;
 
-  final reservations = <Reservation>[].obs;
+  final allReservations = <Reservation>[].obs;
   final currentReservation = Rx<Reservation?>(null);
 
   final scheduledReservations = <Reservation>[].obs;
@@ -58,18 +59,66 @@ class LandlordHomeController extends GetxController {
 
     Get.put(parkings);
 
-    final stream = _reservationRepository.streamAllReservationsForLandlord();
-
     loading(true);
 
-    try {
-      // await _getCurrentLandlordLocation();
-      await _loadCarMarker();
+    _listenToReservations();
+    await Future.delayed(const Duration(milliseconds: 1500));
+    await _loadCarMarker();
+    _verifyExpiredReservations();
+    _verifyInProgressReservations();
+    loading(false);
+  }
 
-      await _handleReservationsUpdate(stream);
-      // await Future.delayed(const Duration(seconds: 3));
-    } catch (e) {
-      debugPrint('Erro ao buscar os dados do Locador.');
+  void _listenToReservations() {
+    _reservationRepository.streamAll().listen((dataList) {
+      _processReservationData(dataList);
+    });
+  }
+
+  Future<void> _processReservationData(List<Reservation> reservations) async {
+    allReservations.clear();
+    scheduledReservations.clear();
+    allReservations.addAll(reservations);
+
+    final scheduled =
+        allReservations.where((reservation) => reservation.isScheduled);
+
+    scheduledReservations.assignAll(scheduled);
+
+    if (allReservations.isNotEmpty) {
+      currentReservation.value = allReservations
+          .firstWhereOrNull((reservation) => reservation.isInProgress);
+
+      if (currentReservation.value != null &&
+          currentReservation.value!.isUserOnTheWay) {
+        _updateMarker();
+        await _animateCameraToLocation();
+        await _calculateAndSetEstimatedArrivalTime();
+      }
+    }
+  }
+
+  void _verifyExpiredReservations() {
+    for (final reservation in allReservations) {
+      if (reservation.isExpired) {
+        _reservationRepository.updateReservationStatus(
+          reservation.id!,
+          ReservationStatus.canceled,
+        );
+      }
+    }
+  }
+
+  void _verifyInProgressReservations() {
+    for (final reservation in allReservations) {
+      if (reservation.isUserOnTheWay) return;
+
+      if (reservation.isInProgress) {
+        _reservationRepository.updateReservationStatus(
+          reservation.id!,
+          ReservationStatus.inProgress,
+        );
+      }
     }
   }
 
@@ -86,38 +135,30 @@ class LandlordHomeController extends GetxController {
     }
   }
 
-  Future<void> _handleReservationsUpdate(
-      Stream<List<Reservation>> stream) async {
-    stream.listen((event) async {
-      reservations.assignAll(event);
-
-      for (final reservation in reservations) {
-        reservation.tenant ??=
-            await _tenantRepository.get(reservation.tenantId) as Tenant;
-
-        // await _handleVehicleUpdate(reservation);
-
-        if (currentReservation.value != null &&
-            currentReservation.value!.isUserOnTheWay) {
-          _updateMarker();
-          await _animateCameraToLocation();
-          await _calculateAndSetEstimatedArrivalTime();
-        }
-
-        update();
-      }
-
-      scheduledReservations.value =
-          reservations.where((reservation) => reservation.isScheduled).toList();
-
-      scheduledReservations.sort((a, b) => a.startDate.compareTo(b.startDate));
-
-      if (scheduledReservations.isNotEmpty) {
-        currentReservation.value = scheduledReservations.first;
-      }
-      loading(false);
-    });
-  }
+  // Future<void> _handleReservationsUpdate(
+  //     Stream<List<Reservation>> stream) async {
+  //   stream.listen((event) async {
+  //     allReservations.assignAll(event);
+  //
+  //     if (currentReservation.value != null &&
+  //         currentReservation.value!.isUserOnTheWay) {
+  //       _updateMarker();
+  //       await _animateCameraToLocation();
+  //       await _calculateAndSetEstimatedArrivalTime();
+  //     }
+  //
+  //     scheduledReservations.value = allReservations
+  //         .where((reservation) => reservation.isScheduled)
+  //         .toList();
+  //
+  //     scheduledReservations.sort((a, b) => a.startDate.compareTo(b.startDate));
+  //
+  //     if (scheduledReservations.isNotEmpty) {
+  //       currentReservation.value = scheduledReservations.first;
+  //     }
+  //     loading(false);
+  //   });
+  // }
 
   // Future<void> _handleVehicleUpdate(Reservation reservation) async {
   //   if (reservation.item == null && reservation.tenant != null) {
@@ -146,46 +187,12 @@ class LandlordHomeController extends GetxController {
     _mapController = controller;
   }
 
-  Future<void> verifyStatusAndUpdateReservation() async {
-    if (currentReservation.value?.status == ReservationStatus.paymentApproved) {
-      await confirmReservation();
-    } else if (currentReservation.value?.status ==
-        ReservationStatus.userOnTheWay) {
-      await confirmParkedVehicle();
-    }
-  }
-
-  Future<void> confirmReservation() async {
-    try {
-      await _reservationRepository.updateReservationStatus(
-        currentReservation.value!.id!,
-        ReservationStatus.confirmed,
-      );
-    } catch (error) {
-      debugPrint('Erro ao confirmar a reserva: $error');
-    }
-  }
-
-  Future<void> denyReservation() async {
-    try {
-      await _reservationRepository.updateReservationStatus(
-        currentReservation.value!.id!,
-        ReservationStatus.canceled,
-      );
-    } catch (error) {
-      debugPrint('Erro ao cancelar a reserva: $error');
-    }
-  }
-
-  Future<void> confirmParkedVehicle() async {
-    try {
-      await _reservationRepository.updateReservationStatus(
-        currentReservation.value!.id!,
-        ReservationStatus.parked,
-      );
-    } catch (error) {
-      debugPrint('Erro ao confirmar a reserva: $error');
-    }
+  Future<void> updateReservation(
+      ReservationStatus status) async {
+    await _reservationRepository.updateReservationStatus(
+      currentReservation.value!.id!,
+      status,
+    );
   }
 
   // Future<void> _getCurrentLandlordLocation() async {
@@ -201,8 +208,8 @@ class LandlordHomeController extends GetxController {
 
   void _updateMarker() {
     location.value = LatLng(
-      currentReservation.value!.locationHistory.last.latitude as double,
-      currentReservation.value!.locationHistory.last.longitude as double,
+      currentReservation.value!.locationHistory.last.latitude.toDouble(),
+      currentReservation.value!.locationHistory.last.longitude.toDouble(),
     );
     marker.value = Marker(
       markerId: const MarkerId('userMarker'),

@@ -42,10 +42,10 @@ class _LandlordBaseViewState extends State<LandlordBaseView>
         controller: controller,
       ),
       DashboardView(
-        reservations: controller.reservations,
+        reservations: controller.allReservations,
       ),
       CalendarView(
-        reservations: controller.reservations,
+        reservations: controller.allReservations,
       ),
       LandlordView(),
     ];

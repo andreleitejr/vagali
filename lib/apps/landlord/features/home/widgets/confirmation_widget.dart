@@ -4,6 +4,7 @@ import 'package:vagali/apps/landlord/features/home/controllers/dashboard_control
 import 'package:vagali/apps/landlord/features/home/widgets/tracking_location.dart';
 import 'package:vagali/apps/tenant/features/vehicle/widgets/vehicle_info_widget.dart';
 import 'package:vagali/features/chat/views/chat_view.dart';
+import 'package:vagali/features/item/models/item.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/theme/coolicons.dart';
@@ -12,6 +13,7 @@ import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/utils/extensions.dart';
 import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/flat_button.dart';
+import 'package:vagali/widgets/title_with_icon.dart';
 import 'package:vagali/widgets/user_card.dart';
 import 'package:vagali/widgets/warning_dialog.dart';
 
@@ -33,7 +35,8 @@ class ConfirmationWidget extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: controller.currentReservation.value!.isUserOnTheWay
+          color: controller.currentReservation.value!.isUserOnTheWay ||
+                  controller.currentReservation.value!.isInProgress
               ? ThemeColors.primary
               : ThemeColors.grey2,
           width: controller.currentReservation.value!.isUserOnTheWay ? 1.5 : 1,
@@ -47,7 +50,8 @@ class ConfirmationWidget extends StatelessWidget {
           Row(
             children: [
               if (controller.currentReservation.value != null &&
-                  controller.currentReservation.value!.isUserOnTheWay) ...[
+                  (controller.currentReservation.value!.isUserOnTheWay ||
+                      controller.currentReservation.value!.isInProgress)) ...[
                 PulsatingWidget(),
                 const SizedBox(width: 4),
               ],
@@ -91,17 +95,34 @@ class ConfirmationWidget extends StatelessWidget {
               const Coolicon(
                 icon: Coolicons.creditCard,
                 width: 18,
+                color: Colors.black,
               ),
               const SizedBox(width: 4),
               Text(
                 'Você receberá R\$${reservation.totalCost.toStringAsFixed(2)} pela reserva',
-                style: ThemeTypography.regular14.apply(
-                  color: ThemeColors.grey4,
-                ),
+                style: ThemeTypography.regular14,
               ),
             ],
           ),
+          const SizedBox(height: 8),
+
+          const Divider(
+            color: ThemeColors.grey2,
+            thickness: 1,
+          ),
+          const SizedBox(height: 8),
+          TitleWithIcon(
+            title: 'O que você precisa guardar',
+            icon: Coolicons.circleCheckOutline,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            itemTypes
+                .firstWhere((item) => item.type == reservation.item!.type)
+                .name!,
+          ),
           const SizedBox(height: 16),
+
           /// JUNTAR COM O RESERVATION DETAILS VIEW
           ..._buildButtonsBasedOnStatus(reservation),
           if (reservation.isPaymentApproved) ...[
@@ -111,7 +132,8 @@ class ConfirmationWidget extends StatelessWidget {
                 context,
                 title: 'Cancelar reserva',
                 description: 'Tem certeza que gostaria de cancelar a reserva?',
-                onConfirm: () => controller.denyReservation(),
+                onConfirm: () =>
+                    controller.updateReservation(ReservationStatus.canceled),
               ),
               ThemeColors.red,
             ),
@@ -128,7 +150,21 @@ class ConfirmationWidget extends StatelessWidget {
       buttons.add(
         _buildFlatButton(
           'Aceitar',
-          controller.verifyStatusAndUpdateReservation,
+          () {
+            controller.updateReservation(ReservationStatus.confirmed);
+          },
+          ThemeColors.primary,
+        ),
+      );
+    }
+
+    if ((reservation.isInProgress || reservation.isParked) && !reservation.isPaymentApproved) {
+      buttons.add(
+        _buildFlatButton(
+          'Concluir reserva',
+          () {
+            controller.updateReservation(ReservationStatus.concluded);
+          },
           ThemeColors.primary,
         ),
       );
@@ -146,16 +182,6 @@ class ConfirmationWidget extends StatelessWidget {
       );
     }
 
-    if (reservation.isParked) {
-      buttons.add(
-        _buildFlatButton(
-          'Concluir reserva',
-          () {},
-          ThemeColors.primary,
-        ),
-      );
-    }
-
     if (reservation.isHandshakeMade) {
       buttons.add(
         _buildFlatButton(
@@ -166,13 +192,13 @@ class ConfirmationWidget extends StatelessWidget {
       );
     }
 
-    if (reservation.isConcluded) {
-      buttons.add(_buildFlatButton(
-        'Avaliar locatário',
-        () {},
-        ThemeColors.blue,
-      ));
-    }
+    // if (reservation.isConcluded) {
+    //   buttons.add(_buildFlatButton(
+    //     'Avaliar locatário',
+    //     () {},
+    //     ThemeColors.blue,
+    //   ));
+    // }
 
     return buttons;
   }
