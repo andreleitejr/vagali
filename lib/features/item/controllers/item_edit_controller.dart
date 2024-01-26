@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vagali/apps/tenant/features/vehicle/models/vehicle_type.dart';
 import 'package:vagali/features/item/models/item.dart';
+import 'package:vagali/features/item/models/stock.dart';
 import 'package:vagali/features/item/models/vehicle.dart';
 import 'package:vagali/features/item/repositories/item_repository.dart';
 import 'package:vagali/models/dimension.dart';
@@ -15,17 +16,20 @@ import 'package:vagali/services/image_service.dart';
 
 class ItemEditController extends GetxController {
   final ItemRepository repository = Get.find();
+  final _imageService = ImageService();
   final loading = false.obs;
   final selectedItemType = Rx<ItemType?>(null);
   final selectedVehicleType = Rx<VehicleType?>(null);
+
+  final imageBlurhash = Rx<ImageBlurHash?>(null);
+  final imageFileController = Rx<XFile?>(null);
+  final title = ''.obs;
+  final description = ''.obs;
   final width = ''.obs;
   final height = ''.obs;
   final depth = ''.obs;
 
-  final _imageService = ImageService();
-
-  final imageBlurhash = Rx<ImageBlurHash?>(null);
-  final imageFileController = Rx<XFile?>(null);
+  /// VEHICLE INPUTS
   final vehicleTypeController = Rx<VehicleType?>(null);
   final licensePlateController = ''.obs;
   final yearController = ''.obs;
@@ -33,6 +37,10 @@ class ItemEditController extends GetxController {
   final brandController = ''.obs;
   final modelController = ''.obs;
   final registrationStateController = ''.obs;
+
+  /// STOCK INPUTS
+  final productQuantity = 0.obs;
+  final productType = ''.obs;
 
   final vehicleTypeError = ''.obs;
   final licensePlateError = ''.obs;
@@ -121,7 +129,7 @@ class ItemEditController extends GetxController {
 
     final id = await await repository.saveAndGetId(vehicle);
 
-    if (id != null){
+    if (id != null) {
       vehicle.id = id;
       return vehicle;
     }
@@ -131,4 +139,34 @@ class ItemEditController extends GetxController {
     return null;
   }
 
+  Future<Item?> createStock() async {
+    loading.value = true;
+    imageBlurhash.value = await uploadImage();
+
+    if (imageBlurhash.value == null) return null;
+
+    final stock = Stock(
+      image: imageBlurhash.value!,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      dimensions: dimension,
+      weight: 20,
+      material: 'Madeira',
+      productQuantity: productQuantity.value,
+      productType: productType.value,
+      title: title.value,
+      description: description.value,
+    );
+
+    final id = await await repository.saveAndGetId(stock);
+
+    if (id != null) {
+      stock.id = id;
+      return stock;
+    }
+
+    loading.value = false;
+
+    return null;
+  }
 }

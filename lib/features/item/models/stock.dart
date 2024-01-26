@@ -15,6 +15,8 @@ class Stock extends Item {
     required super.weight,
     required super.material,
     super.type = ItemType.stock,
+    required super.title,
+    required super.description,
   });
 
   Stock.fromDocument(DocumentSnapshot document)

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:vagali/apps/tenant/features/vehicle/widgets/vehicle_edit_widget.dart';
 import 'package:vagali/features/item/controllers/item_edit_controller.dart';
 import 'package:vagali/features/item/models/item.dart';
+import 'package:vagali/features/item/widgets/stock_edit_widget.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/flat_button.dart';
@@ -25,6 +26,8 @@ class _ItemEditViewState extends State<ItemEditView> {
   final controller = Get.put(ItemEditController());
   late List<Widget> _typeSpecificFields;
 
+  final titleFocus = FocusNode();
+  final descriptionFocus = FocusNode();
   final widthFocus = FocusNode();
   final heightFocus = FocusNode();
   final depthFocus = FocusNode();
@@ -54,38 +57,61 @@ class _ItemEditViewState extends State<ItemEditView> {
   }
 
   List<Widget> _buildStockFields() {
+    final stockFields = <Widget>[];
+    stockFields.add(StockEditWidget(controller: controller));
+    stockFields.addAll(_buildItemFields());
+    return stockFields;
+  }
+
+  List<Widget> _buildItemFields() {
     return [
+      Input(
+        onChanged: controller.title,
+        hintText: 'Nome do Item',
+        currentFocusNode: titleFocus,
+        nextFocusNode: descriptionFocus,
+      ),
+      const SizedBox(height: 16),
+      Input(
+        onChanged: controller.description,
+        hintText: 'Descrição do Item',
+        currentFocusNode: descriptionFocus,
+        nextFocusNode: widthFocus,
+      ),
+      const SizedBox(height: 16),
       Input(
         onChanged: controller.width,
         hintText: 'Largura',
-        // error: controller.getError(controller.licensePlateError),
+        keyboardType: TextInputType.number,
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,
         ],
         currentFocusNode: widthFocus,
         nextFocusNode: heightFocus,
       ),
+      const SizedBox(height: 16),
       Input(
         onChanged: controller.height,
         hintText: 'Altura',
         error: controller.getError(controller.licensePlateError),
+        keyboardType: TextInputType.number,
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,
         ],
         currentFocusNode: heightFocus,
         nextFocusNode: depthFocus,
       ),
-
+      const SizedBox(height: 16),
       Input(
         onChanged: controller.depth,
         hintText: 'Profundidade',
         error: controller.getError(controller.licensePlateError),
+        keyboardType: TextInputType.number,
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,
         ],
         currentFocusNode: depthFocus,
       ),
-      // Add more stock-specific fields as needed
     ];
   }
 
@@ -96,7 +122,7 @@ class _ItemEditViewState extends State<ItemEditView> {
         title: '${widget.selectedType.name}',
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: ListView(
           // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -115,8 +141,13 @@ class _ItemEditViewState extends State<ItemEditView> {
                         await controller.pickImage(source);
 
                         await Future.delayed(const Duration(milliseconds: 500));
-                        showVehicleTypeBottomSheet(context,
-                            onItemSelected: (VehicleType) {});
+                        if (controller.selectedItemType.value ==
+                            ItemType.vehicle) {
+                          showVehicleTypeBottomSheet(
+                            context,
+                            onItemSelected: controller.vehicleTypeController,
+                          );
+                        }
                       }
                     },
                   ),
@@ -142,6 +173,7 @@ class _ItemEditViewState extends State<ItemEditView> {
               },
             ),
             ..._typeSpecificFields,
+            const SizedBox(height: 16),
             Obx(
               () => FlatButton(
                 actionText: controller.loading.isTrue
@@ -177,8 +209,9 @@ class _ItemEditViewState extends State<ItemEditView> {
     Get.back(result: vehicle);
   }
 
-  void _saveStock() {
+  Future<void> _saveStock() async {
     print('Salvei um stock!');
-    // Implement saving logic for Stock type
+    final stock = await controller.createStock();
+    Get.back(result: stock);
   }
 }

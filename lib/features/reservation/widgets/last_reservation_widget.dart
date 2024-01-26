@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vagali/features/item/models/item.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/views/reservation_details_view.dart';
 import 'package:vagali/features/user/models/user.dart';
@@ -10,6 +11,7 @@ import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/date_period.dart';
 import 'package:vagali/widgets/reservation_status_indicator.dart';
+import 'package:vagali/widgets/title_with_icon.dart';
 import 'package:vagali/widgets/user_card.dart';
 
 // ignore: must_be_immutable
@@ -33,13 +35,11 @@ class LastReservationWidget extends StatelessWidget {
       margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        gradient: LinearGradient(
-          colors: [
-            ThemeColors.primary.withOpacity(0.15),
-            ThemeColors.blue.withOpacity(0.15),
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
+        border: Border.all(
+          color: reservation.isUserOnTheWay
+              ? ThemeColors.primary
+              : ThemeColors.grey2,
+          width: reservation.isUserOnTheWay ? 1.5 : 1,
         ),
       ),
       child: Column(
@@ -53,8 +53,7 @@ class LastReservationWidget extends StatelessWidget {
                   children: [
                     Text(
                       'Próxima reserva',
-                      style: ThemeTypography.regular12
-                          .apply(color: ThemeColors.primary),
+                      style: ThemeTypography.regular12,
                     ),
                     const SizedBox(height: 8),
                     Row(
@@ -62,18 +61,18 @@ class LastReservationWidget extends StatelessWidget {
                         // const SizedBox(width: 8),
                         Text(
                           reservation.parking!.name.toUpperCase(),
-                          style: ThemeTypography.semiBold16,
+                          style: ThemeTypography.semiBold14,
                         ),
                         const SizedBox(width: 8),
                         const Coolicon(
                           icon: Coolicons.starFilled,
                           color: ThemeColors.primary,
-
+                          width: 14,
                         ),
                         const SizedBox(width: 4),
                         const Text(
                           '4.7',
-                          style: ThemeTypography.semiBold16,
+                          style: ThemeTypography.semiBold14,
                         ),
                         Expanded(child: Container()),
                       ],
@@ -104,6 +103,14 @@ class LastReservationWidget extends StatelessWidget {
             endDate: reservation.endDate,
           ),
           const SizedBox(height: 16),
+
+
+          TitleWithIcon(
+            title: 'O que vou guardar',
+            icon: Coolicons.circleCheckOutline,
+          ),
+          const SizedBox(height: 8),
+          Text(itemTypes.firstWhere((item) => item.type == reservation.item!.type).name!),
           ReservationStatusIndicator(
             reservation: reservation,
             onReservationChanged: onReservationChanged,

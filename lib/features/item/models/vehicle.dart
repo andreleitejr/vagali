@@ -28,6 +28,8 @@ class Vehicle extends Item {
     required super.weight,
     required super.material,
     super.type = ItemType.vehicle,
+    super.title,
+    super.description,
   });
 
   Vehicle.fromDocument(DocumentSnapshot document)

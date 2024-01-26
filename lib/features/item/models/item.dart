@@ -7,6 +7,8 @@ import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/images.dart';
 
 class Item extends BaseModel {
+  final String? title;
+  final String? description;
   final ImageBlurHash image;
   final Dimension dimensions;
   final double weight;
@@ -15,6 +17,8 @@ class Item extends BaseModel {
 
   Item({
     super.id,
+    this.title,
+    this.description,
     required this.image,
     required this.weight,
     required this.type,
@@ -25,7 +29,9 @@ class Item extends BaseModel {
   });
 
   Item.fromDocument(DocumentSnapshot document)
-      : image = ImageBlurHash.fromMap(document['image']),
+      : title = document['title'],
+        description = document['description'],
+        image = ImageBlurHash.fromMap(document['image']),
         dimensions = Dimension.fromMap(document['dimensions']),
         weight = document['weight'],
         type = document['type'],
@@ -35,6 +41,8 @@ class Item extends BaseModel {
   @override
   Map<String, dynamic> toMap() {
     return {
+      'title': title,
+      'description': description,
       'image': image.toMap(),
       'dimensions': dimensions.toMap(),
       'weight': weight,
@@ -76,53 +84,53 @@ class ItemType extends SelectableItem {
   static const vehicle = 'vehicle';
   static const stock = 'stock';
   static const furniture = 'furniture';
-  static const homeAppliance  = 'homeAppliance';
+  static const homeAppliance = 'homeAppliance';
   static const householdHardware = 'householdHardware';
   static const shopping = 'shopping';
   static const other = 'other';
 }
 
-  final itemTypes = <ItemType>[
-    ItemType(
-      type: ItemType.vehicle,
-      name: 'Veículos',
-      description: 'Carros, vans, pickups, caminhões, etc.',
-      image: Images.carItem,
-    ),
-    ItemType(
-      type: ItemType.stock,
-      name: 'Estoques',
-      description: 'Produtos, materiais, caixas, etc.',
-      image: Images.stock,
-    ),
-    ItemType(
-      type: ItemType.furniture,
-      name: 'Móveis',
-      description: 'Guarda-roupas, sofás, camas, etc.',
-      image: Images.furniture,
-    ),
-    ItemType(
-      type: ItemType.homeAppliance,
-      name: 'Eletrodomésticos',
-      description: 'Geladeiras, fogões, máquinas de lavar, etc.',
-      image: Images.homeAppliance,
-    ),
-    ItemType(
-      type: ItemType.householdHardware,
-      name: 'Materiais de Construção',
-      description: 'Ferramentas, sacos de cimento, areia, etc.',
-      image: Images.householdHardware,
-    ),
-    ItemType(
-      type: ItemType.shopping,
-      name: 'Compras',
-      description: 'Mercado, delivery, internacionais, etc.',
-      image: Images.shopping,
-    ),
-    ItemType(
-      type: ItemType.other,
-      name: 'Outros',
-      description: 'Outros description',
-      image: Images.other,
-    ),
-  ];
+final itemTypes = <ItemType>[
+  ItemType(
+    type: ItemType.vehicle,
+    name: 'Veículo',
+    description: 'Carros, vans, pickups, caminhões, etc.',
+    image: Images.carItem,
+  ),
+  ItemType(
+    type: ItemType.stock,
+    name: 'Estoque',
+    description: 'Produtos, materiais, caixas, etc.',
+    image: Images.stock,
+  ),
+  ItemType(
+    type: ItemType.furniture,
+    name: 'Móveis',
+    description: 'Guarda-roupas, sofás, camas, etc.',
+    image: Images.furniture,
+  ),
+  ItemType(
+    type: ItemType.homeAppliance,
+    name: 'Eletrodomésticos',
+    description: 'Geladeiras, fogões, máquinas de lavar, etc.',
+    image: Images.homeAppliance,
+  ),
+  ItemType(
+    type: ItemType.householdHardware,
+    name: 'Materiais de Construção',
+    description: 'Ferramentas, sacos de cimento, areia, etc.',
+    image: Images.householdHardware,
+  ),
+  ItemType(
+    type: ItemType.shopping,
+    name: 'Compras',
+    description: 'Mercado, delivery, internacionais, etc.',
+    image: Images.shopping,
+  ),
+  ItemType(
+    type: ItemType.other,
+    name: 'Outros',
+    description: 'Outros description',
+    image: Images.other,
+  ),
+];
