@@ -75,43 +75,54 @@ class ItemType extends SelectableItem {
 
   static const vehicle = 'vehicle';
   static const stock = 'stock';
+  static const furniture = 'furniture';
+  static const homeAppliance  = 'homeAppliance';
+  static const householdHardware = 'householdHardware';
+  static const shopping = 'shopping';
+  static const other = 'other';
 }
 
-final itemTypes = <ItemType>[
-  ItemType(
-    type: ItemType.vehicle,
-    name: 'Veiculos',
-    description: 'Veiculos description',
-    image: Images.carItem,
-  ),
-  ItemType(
-    type: ItemType.stock,
-    name: 'Estoques',
-    description: 'Estoques description',
-    image: Images.stock,
-  ),
-  ItemType(
-    type: ItemType.stock,
-    name: 'Móveis',
-    description: 'Móveis description',
-    image: Images.furniture,
-  ),
-  ItemType(
-    type: ItemType.stock,
-    name: 'Materiais de Construção',
-    description: 'Móveis description',
-    image: Images.householdHardware,
-  ),
-  ItemType(
-    type: ItemType.stock,
-    name: 'Compras',
-    description: 'Compras description',
-    image: Images.shopping,
-  ),
-  ItemType(
-    type: ItemType.stock,
-    name: 'Outros',
-    description: 'Outros description',
-    image: Images.other,
-  ),
-];
+  final itemTypes = <ItemType>[
+    ItemType(
+      type: ItemType.vehicle,
+      name: 'Veículos',
+      description: 'Carros, vans, pickups, caminhões, etc.',
+      image: Images.carItem,
+    ),
+    ItemType(
+      type: ItemType.stock,
+      name: 'Estoques',
+      description: 'Produtos, materiais, caixas, etc.',
+      image: Images.stock,
+    ),
+    ItemType(
+      type: ItemType.furniture,
+      name: 'Móveis',
+      description: 'Guarda-roupas, sofás, camas, etc.',
+      image: Images.furniture,
+    ),
+    ItemType(
+      type: ItemType.homeAppliance,
+      name: 'Eletrodomésticos',
+      description: 'Geladeiras, fogões, máquinas de lavar, etc.',
+      image: Images.homeAppliance,
+    ),
+    ItemType(
+      type: ItemType.householdHardware,
+      name: 'Materiais de Construção',
+      description: 'Ferramentas, sacos de cimento, areia, etc.',
+      image: Images.householdHardware,
+    ),
+    ItemType(
+      type: ItemType.shopping,
+      name: 'Compras',
+      description: 'Mercado, delivery, internacionais, etc.',
+      image: Images.shopping,
+    ),
+    ItemType(
+      type: ItemType.other,
+      name: 'Outros',
+      description: 'Outros description',
+      image: Images.other,
+    ),
+  ];

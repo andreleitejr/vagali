@@ -79,8 +79,6 @@ class _ReservationEditViewState extends State<ReservationEditView> {
           return ItemTypeListView(
             onItemSelected: (item) {
               controller.item.value = item;
-              print(
-                  '################################### THIS IS MY ITEM ${controller.item.value?.id}');
               controller.showItemTypeList.value = false;
             },
           );
