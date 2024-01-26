@@ -22,7 +22,6 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(() {
-
         final loading = _controller.loading.value;
         return CustomScrollView(
           slivers: [
@@ -41,7 +40,7 @@ class HomeView extends StatelessWidget {
                     children: [
                       Expanded(
                         child: GestureDetector(
-                          onTap: ()=> Get.to(()=> ParkingSearchView()),
+                          onTap: () => Get.to(() => ParkingSearchView()),
                           child: AbsorbPointer(
                             child: SearchInput(
                               searchText: '',
@@ -129,8 +128,8 @@ class HomeView extends StatelessWidget {
   Widget _buildCategoryButton(ParkingTag? tag) {
     return Obx(
       () {
-        final category = _controller.category;
-        final isSelected = category == tag!.title;
+        var category = _controller.category;
+        final isSelected = category == tag!;
 
         final loading = _controller.loading.value;
 
@@ -144,7 +143,8 @@ class HomeView extends StatelessWidget {
                   loading: loading,
                   child: GestureDetector(
                     onTap: () {
-                      category(tag.tag);
+                      category.value = tag;
+                      print('HUHDAUHUADSHADSUHDASU CAT VALUE ${category.value.tag}');
                     },
                     child: Container(
                       width: 64,

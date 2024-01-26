@@ -27,7 +27,8 @@ class HomeController extends GetxController {
   //
   // String get cleanText => searchText.value.clean;
 
-  final category = ParkingTag.all.obs;
+  final category =
+      Rx<ParkingTag>(parkingTags.firstWhere((t) => t.tag == ParkingTag.all));
 
   final filteredParkings = RxList<Parking>();
 
@@ -78,7 +79,8 @@ class HomeController extends GetxController {
       return parkings;
     } else {
       parkings = parkings
-          .where((parking) => parking.tags.contains(category.value))
+          .where((parking) =>
+              parking.tags.any((tag) => tag.tag == category.value.tag))
           .toList();
       return parkings;
     }
