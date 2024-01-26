@@ -5,14 +5,17 @@ import 'package:image_picker/image_picker.dart';
 import 'package:vagali/apps/tenant/features/vehicle/models/vehicle_type.dart';
 import 'package:vagali/features/item/models/item.dart';
 import 'package:vagali/features/item/models/vehicle.dart';
+import 'package:vagali/features/item/repositories/item_repository.dart';
 import 'package:vagali/models/dimension.dart';
 import 'package:vagali/models/image_blurhash.dart';
+import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/services/image_service.dart';
 
 /// IMPLEMENTAR O SEARCH POSTERIORMENTE NA VERSAO 1.0.1
 
 class ItemEditController extends GetxController {
-  // final controller = Get.put(VehicleEd());
+  final ItemRepository repository = Get.find();
+  final loading = false.obs;
   final selectedItemType = Rx<ItemType?>(null);
   final selectedVehicleType = Rx<VehicleType?>(null);
   final width = ''.obs;
@@ -23,7 +26,7 @@ class ItemEditController extends GetxController {
 
   final imageBlurhash = Rx<ImageBlurHash?>(null);
   final imageFileController = Rx<XFile?>(null);
-  final vehicleTypeController = ''.obs;
+  final vehicleTypeController = Rx<VehicleType?>(null);
   final licensePlateController = ''.obs;
   final yearController = ''.obs;
   final colorController = ''.obs;
@@ -46,7 +49,6 @@ class ItemEditController extends GetxController {
         depth: double.parse(depth.value),
       );
 
-  var loading = false.obs;
   final showErrors = false.obs;
 
   String getError(RxString error) {
@@ -88,6 +90,7 @@ class ItemEditController extends GetxController {
   }
 
   Future<Item?> createVehicle() async {
+    loading.value = true;
     imageBlurhash.value = await uploadImage();
 
     if (imageBlurhash.value == null) return null;
@@ -104,18 +107,28 @@ class ItemEditController extends GetxController {
       image: imageBlurhash.value!,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
-      vehicleType: vehicleType,
+      vehicleType: vehicleType!.name,
       licensePlate: licensePlate,
       year: year,
       color: color,
       brand: brand,
       model: model,
       registrationState: registrationState,
-      dimensions: dimension,
+      dimensions: vehicleType.dimension,
       weight: 20,
       material: 'Madeira',
     );
 
-    return vehicle;
+    final id = await await repository.saveAndGetId(vehicle);
+
+    if (id != null){
+      vehicle.id = id;
+      return vehicle;
+    }
+
+    loading.value = false;
+
+    return null;
   }
+
 }

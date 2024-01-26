@@ -96,7 +96,8 @@ class ParkingSearchView extends StatelessWidget {
               ),
             );
           }
-          return ItemTypeListView();
+          return Container();
+          // return ItemTypeListView();
         },
       ),
     );

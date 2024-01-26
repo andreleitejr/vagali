@@ -6,6 +6,8 @@ import 'package:vagali/apps/tenant/features/payment/controllers/payment_controll
 import 'package:vagali/apps/tenant/features/payment/views/payment_view.dart';
 import 'package:vagali/apps/tenant/features/vehicle/widgets/vehicle_info_widget.dart';
 import 'package:vagali/features/address/widgets/address_card.dart';
+import 'package:vagali/features/item/models/item.dart';
+import 'package:vagali/features/item/views/item_edit_view.dart';
 import 'package:vagali/features/item/views/item_list_view.dart';
 import 'package:vagali/features/reservation/controllers/reservation_edit_controller.dart';
 import 'package:vagali/features/reservation/widgets/reservation_date_widget.dart';
@@ -33,166 +35,203 @@ class ReservationEditView extends StatefulWidget {
 }
 
 class _ReservationEditViewState extends State<ReservationEditView> {
-  late ReservationEditController _controller;
+  late ReservationEditController controller;
 
   @override
   void initState() {
-    _controller = Get.put(ReservationEditController(parking: widget.parking));
+    controller = Get.put(ReservationEditController(parking: widget.parking));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopNavigationBar(
-        title: 'Minha reserva',
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            if (controller.showItemTypeList.isTrue) {
+              controller.showItemTypeList.value = false;
+            } else {
+              Get.back();
+            }
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+            color: ThemeColors.grey4,
+          ),
+        ),
+        title: Obx(
+          () => Text(
+            controller.showItemTypeList.isTrue
+                ? 'O que gostaria de guardar?'
+                : 'Minha reserva',
+            style: ThemeTypography.medium16.apply(
+              color: ThemeColors.grey4,
+            ),
+          ),
+        ),
+        centerTitle: true,
       ),
-      body: Column(
-        children: [
-          GestureDetector(
-            onTap: () => Get.to(() => ItemTypeListView()),
-            child: Padding(
+      body: Obx(() {
+        if (controller.showItemTypeList.isTrue) {
+          return ItemTypeListView(
+            onItemSelected: (item) {
+              controller.item.value = item;
+              print(
+                  '################################### THIS IS MY ITEM ${controller.item.value?.id}');
+              controller.showItemTypeList.value = false;
+            },
+          );
+        }
+        return ListView(
+          children: [
+            GestureDetector(
+              onTap: () => controller.showItemTypeList(true),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'O que gostaria de guardar?',
+                          style: ThemeTypography.semiBold12.apply(
+                            color: ThemeColors.grey4,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          _getItemTitle(),
+                          style: ThemeTypography.regular14.apply(
+                            // color: widget.hasError ? Colors.red : ThemeColors.grey4,
+                            color: ThemeColors.grey4,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              width: double.infinity,
+              height: 0.75,
+              color: ThemeColors.grey3,
+            ),
+            Obx(
+              () => ReservationDateWidget(
+                onDatesSelected: controller.onDatesSelected,
+                initialStartDate: controller.startDate.value,
+                initialEndDate: controller.endDate.value,
+                hasError: controller.showErrors.value,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
+              child: AddressCard(
+                address: controller.parking.address,
+                editModeOn: false,
+              ),
+            ),
+            // SizedBox(
+            //   height: 200,
+            //   child: Obx(
+            //     () {
+            //       if (_controller.parkingMarkerIcon.value == null) {
+            //         return Container();
+            //       }
+            //       return GoogleMap(
+            //         initialCameraPosition: CameraPosition(
+            //           target: LatLng(
+            //             _controller.parking.location.latitude + 0.0010,
+            //             _controller.parking.location.longitude,
+            //           ),
+            //           zoom: 17,
+            //         ),
+            //         markers: {
+            //           Marker(
+            //             markerId: const MarkerId('location'),
+            //             position: LatLng(
+            //               _controller.parking.location.latitude,
+            //               _controller.parking.location.longitude,
+            //             ),
+            //             icon: _controller.parkingMarkerIcon.value!,
+            //           ),
+            //         },
+            //         onMapCreated: (GoogleMapController controller) {
+            //           _controller.loadMapStyle(controller);
+            //         },
+            //       );
+            //     },
+            //   ),
+            // ),
+            // Container(
+            //   padding: const EdgeInsets.all(16),
+            //   decoration: BoxDecoration(
+            //     color: Colors.white,
+            //     borderRadius: const BorderRadius.only(
+            //       topLeft: Radius.circular(24),
+            //       topRight: Radius.circular(24),
+            //     ),
+            //     boxShadow: [
+            //       BoxShadow(
+            //         color: Colors.grey.withOpacity(0.25),
+            //         spreadRadius: -8,
+            //         blurRadius: 20,
+            //         offset: const Offset(0, 0),
+            //       ),
+            //     ],
+            //   ),
+            //   constraints: BoxConstraints(
+            //     maxHeight: MediaQuery.of(context).size.height * 0.4,
+            //   ),
+            //   child: ListView(
+            //     children: [
+            //       // Column(
+            //       //   crossAxisAlignment: CrossAxisAlignment.start,
+            //       //   children: [
+            //       //     const SizedBox(height: 8),
+            //       //     Obx(
+            //       //       () => DatePeriod(
+            //       //           startDate: _controller.startDate.value,
+            //       //           endDate: _controller.endDate.value),
+            //       //     ),
+            //       //   ],
+            //       // ),
+            //       // const SizedBox(height: 16),
+            //       // if (_controller.userHasVehicle()) ...[
+            //       //   VehicleInfoWidget(vehicle: _controller.vehicles.first),
+            //       // ] else
+            //       //   Container(),
+            //     ],
+            //   ),
+            // ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'O que gostaria de guardar?',
-                        style: ThemeTypography.semiBold12.apply(
-                          color: ThemeColors.grey4,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Veículos, estoques, caixas, equipamentos...',
-                        style: ThemeTypography.regular14.apply(
-                          // color: widget.hasError ? Colors.red : ThemeColors.grey4,
-                          color: ThemeColors.grey4,
-                        ),
-                      ),
-                    ],
+                  const SizedBox(height: 16),
+                  TitleWithIcon(
+                    title: 'Mensagem (opcional)',
+                    icon: Coolicons.chatDots,
+                  ),
+                  const SizedBox(height: 12),
+                  Input(
+                    onChanged: controller.reservationMessageController,
+                    hintText: 'Enviar mensagem ao locador (opcional)',
+                    maxLines: 4,
                   ),
                 ],
               ),
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-            width: double.infinity,
-            height: 0.75,
-            color: ThemeColors.grey3,
-          ),
-          Obx(
-            () => ReservationDateWidget(
-              onDatesSelected: _controller.onDatesSelected,
-              initialStartDate: _controller.startDate.value,
-              initialEndDate: _controller.endDate.value,
-              hasError: _controller.showErrors.value,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: AddressCard(
-              address: _controller.parking.address,
-              editModeOn: false,
-            ),
-          ),
-          // SizedBox(
-          //   height: 200,
-          //   child: Obx(
-          //     () {
-          //       if (_controller.parkingMarkerIcon.value == null) {
-          //         return Container();
-          //       }
-          //       return GoogleMap(
-          //         initialCameraPosition: CameraPosition(
-          //           target: LatLng(
-          //             _controller.parking.location.latitude + 0.0010,
-          //             _controller.parking.location.longitude,
-          //           ),
-          //           zoom: 17,
-          //         ),
-          //         markers: {
-          //           Marker(
-          //             markerId: const MarkerId('location'),
-          //             position: LatLng(
-          //               _controller.parking.location.latitude,
-          //               _controller.parking.location.longitude,
-          //             ),
-          //             icon: _controller.parkingMarkerIcon.value!,
-          //           ),
-          //         },
-          //         onMapCreated: (GoogleMapController controller) {
-          //           _controller.loadMapStyle(controller);
-          //         },
-          //       );
-          //     },
-          //   ),
-          // ),
-          // Container(
-          //   padding: const EdgeInsets.all(16),
-          //   decoration: BoxDecoration(
-          //     color: Colors.white,
-          //     borderRadius: const BorderRadius.only(
-          //       topLeft: Radius.circular(24),
-          //       topRight: Radius.circular(24),
-          //     ),
-          //     boxShadow: [
-          //       BoxShadow(
-          //         color: Colors.grey.withOpacity(0.25),
-          //         spreadRadius: -8,
-          //         blurRadius: 20,
-          //         offset: const Offset(0, 0),
-          //       ),
-          //     ],
-          //   ),
-          //   constraints: BoxConstraints(
-          //     maxHeight: MediaQuery.of(context).size.height * 0.4,
-          //   ),
-          //   child: ListView(
-          //     children: [
-          //       // Column(
-          //       //   crossAxisAlignment: CrossAxisAlignment.start,
-          //       //   children: [
-          //       //     const SizedBox(height: 8),
-          //       //     Obx(
-          //       //       () => DatePeriod(
-          //       //           startDate: _controller.startDate.value,
-          //       //           endDate: _controller.endDate.value),
-          //       //     ),
-          //       //   ],
-          //       // ),
-          //       // const SizedBox(height: 16),
-          //       // if (_controller.userHasVehicle()) ...[
-          //       //   VehicleInfoWidget(vehicle: _controller.vehicles.first),
-          //       // ] else
-          //       //   Container(),
-          //     ],
-          //   ),
-          // ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                const SizedBox(height: 16),
-                TitleWithIcon(
-                  title: 'Mensagem (opcional)',
-                  icon: Coolicons.chatDots,
-                ),
-                const SizedBox(height: 12),
-                Input(
-                  onChanged: _controller.reservationMessageController,
-                  hintText: 'Enviar mensagem ao locador (opcional)',
-                  maxLines: 4,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+          ],
+        );
+      }),
       bottomNavigationBar: Container(
         height: 100,
         padding: const EdgeInsets.all(16),
@@ -213,7 +252,7 @@ class _ReservationEditViewState extends State<ReservationEditView> {
                     children: [
                       Obx(
                         () => Text(
-                          'R\$${_controller.totalCost.value}',
+                          'R\$${controller.totalCost.value}',
                           style: ThemeTypography.semiBold22,
                         ),
                       ),
@@ -226,8 +265,8 @@ class _ReservationEditViewState extends State<ReservationEditView> {
               child: FlatButton(
                 actionText: 'Pagar',
                 onPressed: () async {
-                  if (_controller.isValid()) {
-                    final result = await _controller.createReservation();
+                  if (controller.isValid()) {
+                    final result = await controller.createReservation();
                     if (result == SaveResult.success) {
                       initiatePayment();
                     } else {
@@ -235,7 +274,7 @@ class _ReservationEditViewState extends State<ReservationEditView> {
                           'Houve um erro inesperado ao salvar sua reserva. Tenve novamente.');
                     }
                   } else {
-                    _controller.showErrors(true);
+                    controller.showErrors(true);
                     debugPrint('Inválido.');
                     Get.snackbar('Data inválida',
                         'A data de início e a data de fim são obrigatória',
@@ -252,11 +291,22 @@ class _ReservationEditViewState extends State<ReservationEditView> {
     );
   }
 
+  String _getItemTitle() {
+    if (controller.item.value != null) {
+      final title = itemTypes
+          .firstWhere((item) => item.type == controller.item.value!.type)
+          .name!;
+      return title;
+    } else {
+      return 'Veículos, estoques, móveis, compras...';
+    }
+  }
+
   void initiatePayment() async {
-    Get.put(PaymentController(_controller.reservation.value!));
+    Get.put(PaymentController(controller.reservation.value!));
     Get.to(
       () => PaymentView(
-        reservation: _controller.reservation.value!,
+        reservation: controller.reservation.value!,
       ),
     );
   }

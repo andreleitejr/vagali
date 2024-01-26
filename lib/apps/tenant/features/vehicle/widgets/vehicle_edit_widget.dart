@@ -17,12 +17,10 @@ import 'package:vagali/widgets/input_button.dart';
 
 class VehicleEditWidget extends StatelessWidget {
   final ItemEditController controller;
-  final bool allowToSkip;
 
   VehicleEditWidget({
     super.key,
     required this.controller,
-    this.allowToSkip = false,
   });
 
   final FocusNode typeFocus = FocusNode();
@@ -40,12 +38,17 @@ class VehicleEditWidget extends StatelessWidget {
         const SizedBox(height: 16),
         Obx(
           () => InputButton(
-            // onChanged: controller.vehicleTypeController,
-            controller: TextEditingController(),
+            controller: TextEditingController(
+              text: controller.vehicleTypeController.value?.name,
+            ),
+            // controller: TextEditingController(),
             hintText: 'Tipo de veículo',
             error: controller.getError(controller.vehicleTypeError),
-            onTap: () => showVehicleTypeBottomSheet(context,
-                onItemSelected: (VehicleType) {}),
+            onTap: () =>
+                showVehicleTypeBottomSheet(context, onItemSelected: (type) {
+              controller.vehicleTypeController(type);
+              print('# VEHICLE TYPE ${controller.vehicleTypeController.value}');
+            }),
           ),
         ),
         const SizedBox(height: 16),
@@ -100,36 +103,36 @@ class VehicleEditWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
+
         Obx(
-          () => GestureDetector(
-            onTap: () => _showColorBottomSheet(context),
-            child: Input(
-              enabled: false,
-              onChanged: controller.colorController,
-              hintText: 'Cor do Veículo',
-              error: controller.getError(controller.colorError),
-              currentFocusNode: colorFocus,
-              nextFocusNode: stateFocus,
-              onSubmit: () {
-                stateFocus.unfocus();
+          () => InputButton(
+            controller:
+                TextEditingController(text: controller.colorController.value),
+            hintText: 'Cor do Veículo',
+            error: controller.getError(controller.colorError),
+            onTap: () async {
+              await _showColorBottomSheet(context);
+
+              colorFocus.unfocus();
+              if (controller.registrationStateController.isEmpty) {
                 _showStateBottomSheet(context);
-              },
-            ),
+              }
+            },
           ),
         ),
         const SizedBox(height: 16),
+
         Obx(
-          () => GestureDetector(
+          () => InputButton(
+            controller: TextEditingController(
+                text: controller.registrationStateController.value),
+            hintText: 'Estado de Registro',
+            error: controller.getError(controller.registrationStateError),
             onTap: () => _showStateBottomSheet(context),
-            child: Input(
-              enabled: false,
-              onChanged: controller.registrationStateController,
-              hintText: 'Estado de Registro',
-              error: controller.getError(controller.registrationStateError),
-            ),
           ),
         ),
-        const SizedBox(height: 16),
+
+        // Expanded(child: Container()),
         // Obx(
         //   () => FlatButton(
         //     onPressed: () async {
@@ -145,13 +148,6 @@ class VehicleEditWidget extends StatelessWidget {
         //   ),
         // ),
         const SizedBox(height: 16),
-        if (allowToSkip)
-          TextButton(
-            onPressed: () async {
-              Get.toNamed('/base');
-            },
-            child: const Text('Pular'),
-          ),
       ],
     );
   }
@@ -172,8 +168,8 @@ class VehicleEditWidget extends StatelessWidget {
     );
   }
 
-  void _showColorBottomSheet(BuildContext context) {
-    Get.bottomSheet(
+  Future<void> _showColorBottomSheet(BuildContext context) async {
+    await Get.bottomSheet(
       Container(
         constraints:
             BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.8),
@@ -211,7 +207,12 @@ class VehicleEditWidget extends StatelessWidget {
                       controller.colorController.value =
                           vehicleColorsList[index].title;
                       Get.back();
-                      _showStateBottomSheet(context);
+                      print(
+                          'ASDHUHUDSHUHASDUSHHDUHASDUHDUAHSDU ${controller.colorController.value}');
+
+                      if (controller.registrationStateController.isEmpty) {
+                        _showStateBottomSheet(context);
+                      }
                     },
                     child: Container(
                       decoration: BoxDecoration(

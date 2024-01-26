@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
+import 'package:vagali/features/item/models/item.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/repositories/reservation_repository.dart';
 import 'package:vagali/features/user/models/user.dart';
@@ -14,9 +15,11 @@ import 'package:vagali/theme/images.dart';
 
 class ReservationEditController extends GetxController {
   final tenant = Get.find<User>();
+
   // final vehicles = Get.find<List<Vehicle>>(tag: 'vehicles');
 
   final _repository = Get.put(ReservationRepository());
+
   // final vehicleEditController = Get.put(VehicleEditController());
   final reservation = Rx<Reservation?>(null);
 
@@ -26,6 +29,8 @@ class ReservationEditController extends GetxController {
 
   ReservationEditController({required this.parking});
 
+  final showItemTypeList = false.obs;
+
   final nameController = ''.obs;
   final reservationMessageController = ''.obs;
 
@@ -33,8 +38,9 @@ class ReservationEditController extends GetxController {
 
   final RxBool isConfirmed = false.obs;
 
-  final Rx<DateTime?> startDate = Rx<DateTime?>(null);
-  final Rx<DateTime?> endDate = Rx<DateTime?>(null);
+  final item = Rx<Item?>(null);
+  final startDate = Rx<DateTime?>(null);
+  final endDate = Rx<DateTime?>(null);
 
   bool get isDateValid => startDate.value != null && endDate.value != null;
 
@@ -55,7 +61,6 @@ class ReservationEditController extends GetxController {
   }
 
   final Rx<double> totalCost = Rx<double>(0.0);
-  String? vehicleId;
 
   @override
   Future<void> onInit() async {
@@ -204,7 +209,7 @@ class ReservationEditController extends GetxController {
       totalCost: total,
       landlordId: parking.userId,
       reservationMessage: reservationMessage,
-      itemId: vehicleId!,
+      itemId: item.value!.id!,
       locationHistory: [
         LocationHistory(
           latitude: 0,

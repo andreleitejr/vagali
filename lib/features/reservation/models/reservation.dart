@@ -62,7 +62,7 @@ class Reservation extends BaseModel {
     return {
       'parkingId': parkingId,
       'tenantId': tenantId,
-      'vehicleId': itemId,
+      'itemId': itemId,
       'startTime': startDate.toUtc(),
       'endTime': endDate.toUtc(),
       'totalCost': totalCost,
@@ -78,7 +78,7 @@ class Reservation extends BaseModel {
   Reservation.fromDocument(DocumentSnapshot document)
       : parkingId = document['parkingId'],
         tenantId = document['tenantId'],
-        itemId = document['vehicleId'],
+        itemId = document['itemId'],
         startDate = (document['startTime'] as Timestamp).toDate(),
         endDate = (document['endTime'] as Timestamp).toDate(),
         totalCost = document['totalCost'],

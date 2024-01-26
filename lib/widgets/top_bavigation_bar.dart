@@ -25,7 +25,6 @@ class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
       leading: showLeading || onLeadingPressed != null
           ? IconButton(
               onPressed: () {
-                print('sdahauasduhsdauhduhasduasd jesus');
                 if (onLeadingPressed != null) {
                   onLeadingPressed!();
                 } else {

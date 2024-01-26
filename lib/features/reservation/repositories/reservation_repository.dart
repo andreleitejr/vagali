@@ -6,6 +6,7 @@ import 'package:vagali/apps/landlord/repositories/landlord_repository.dart';
 import 'package:vagali/apps/tenant/features/vehicle/repositories/vehicle_repository.dart';
 import 'package:vagali/apps/tenant/models/tenant.dart';
 import 'package:vagali/apps/tenant/repositories/tenant_repository.dart';
+import 'package:vagali/features/item/repositories/item_repository.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/models/flavor_config.dart';
@@ -20,6 +21,70 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
           fromDocument: (document) => Reservation.fromDocument(document),
         );
 
+  // Stream<List<Reservation>> getRealtimeReservationsForUser(String userId) {
+  //   try {
+  //     // Consulta as reservas do usuário em tempo real
+  //     return _firestore
+  //         .collection('reservations')
+  //         .where('tenantId', isEqualTo: userId)
+  //         .snapshots()
+  //         .map((QuerySnapshot reservationQuery) {
+  //       // Mapeia os documentos da consulta para objetos de Reserva
+  //       return reservationQuery.docs
+  //           .map((QueryDocumentSnapshot reservationDoc) {
+  //         Reservation reservation = Reservation.fromSnapshot(reservationDoc);
+  //
+  //         // Busca informações em tempo real para o landlord
+  //         DocumentReference landlordRef =
+  //             _firestore.collection('landlords').doc(reservation.landlordId);
+  //         reservation.landlordRef = landlordRef;
+  //
+  //         // Busca informações em tempo real para o parking
+  //         DocumentReference parkingRef =
+  //             _firestore.collection('parkings').doc(reservation.parkingId);
+  //         reservation.parkingRef = parkingRef;
+  //
+  //         // Busca informações em tempo real para o item
+  //         DocumentReference itemRef =
+  //             _firestore.collection('items').doc(reservation.itemId);
+  //         reservation.itemRef = itemRef;
+  //
+  //         return reservation;
+  //       }).toList();
+  //     });
+  //   } catch (error) {
+  //     print('Erro ao buscar reservas em tempo real: $error');
+  //     return Stream.value([]);
+  //   }
+  // }
+
+  // @override
+  // Stream<List<Reservation>> streamAll() {
+  //   try {
+  //     final User user = Get.find();
+  //
+  //     final collection = firestore.collection(collectionName);
+  //
+  //     final query = collection.where(
+  //         Get.find<FlavorConfig>().flavor == Flavor.tenant
+  //             ? 'tenantId'
+  //             : 'landlordId',
+  //         isEqualTo: user.id);
+  //
+  //     final stream = query.snapshots().map((querySnapshot) =>
+  //         querySnapshot.docs.map((doc) => fromDocument(doc)).toList());
+  //
+  //     return stream;
+  //   } catch (error) {
+  //     print('Error streaming data from $collectionName in Firestore: $error');
+  //     return Stream.value([]);
+  //   }
+  // }
+
+  final LandlordRepository _landlordRepository = Get.find();
+  final ParkingRepository _parkingRepository = Get.find();
+  final ItemRepository _itemRepository = Get.find();
+
   @override
   Stream<List<Reservation>> streamAll() {
     try {
@@ -33,12 +98,31 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
               : 'landlordId',
           isEqualTo: user.id);
 
-      final stream = query.snapshots().map((querySnapshot) =>
-          querySnapshot.docs.map((doc) => fromDocument(doc)).toList());
+      final stream = query.snapshots().asyncMap((querySnapshot) async {
+        final List<Reservation> reservations = [];
+
+        await Future.wait(querySnapshot.docs.map((doc) async {
+          final reservation = fromDocument(doc);
+
+          final landlord =
+              await _landlordRepository.get(reservation.landlordId);
+          reservation.landlord = landlord;
+
+          final parking = await _parkingRepository.get(reservation.parkingId);
+          reservation.parking = parking;
+
+          final item = await _itemRepository.get(reservation.itemId);
+          reservation.item = item;
+
+          reservations.add(reservation);
+        }));
+
+        return reservations;
+      });
 
       return stream;
     } catch (error) {
-      print('Error streaming data from $collectionName in Firestore: $error');
+      print('Error streaming data from Reservations in Firestore: $error');
       return Stream.value([]);
     }
   }

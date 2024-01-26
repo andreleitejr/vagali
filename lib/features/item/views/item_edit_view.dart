@@ -142,12 +142,17 @@ class _ItemEditViewState extends State<ItemEditView> {
               },
             ),
             ..._typeSpecificFields,
-            FlatButton(
-              onPressed: () {
-                // Save the item with the entered data
-                _saveItem();
-              },
-              actionText: 'Salvar ${widget.selectedType.name}',
+            Obx(
+              () => FlatButton(
+                actionText: controller.loading.isTrue
+                    ? 'Salvando ${widget.selectedType.name}...'
+                    : 'Salvar ${widget.selectedType.name}',
+                onPressed: () => _saveItem(),
+                // isValid: controller.isSmsValid.value,
+                backgroundColor: controller.loading.isTrue
+                    ? ThemeColors.secondary
+                    : ThemeColors.primary,
+              ),
             ),
           ],
         ),
@@ -155,8 +160,7 @@ class _ItemEditViewState extends State<ItemEditView> {
     );
   }
 
-  void _saveItem() {
-    // Depending on the selected type, handle saving logic
+  Future<void> _saveItem() async {
     switch (widget.selectedType.type) {
       case ItemType.vehicle:
         _saveVehicle();
@@ -167,9 +171,10 @@ class _ItemEditViewState extends State<ItemEditView> {
     }
   }
 
-  void _saveVehicle() {
+  Future<void> _saveVehicle() async {
     print('Salvei um veiculo!');
-    // Implement saving logic for Vehicle type
+    final vehicle = await controller.createVehicle();
+    Get.back(result: vehicle);
   }
 
   void _saveStock() {
