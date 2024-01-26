@@ -22,6 +22,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       // appBar: TopNavigationBar(
       //   title: '',
       //   showLeading: false,
@@ -34,13 +35,15 @@ class HomeView extends StatelessWidget {
               SliverAppBar(
                 toolbarHeight: 180,
                 expandedHeight: 56,
-                // elevation: 0,
+                elevation: 3,
+                shadowColor: Colors.black54,
+                // forceElevated: true,
                 stretch: true,
                 automaticallyImplyLeading: false,
                 backgroundColor: Colors.white,
                 pinned: true,
                 flexibleSpace: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16,16, 12),
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
                   child: ShimmerBox(
                     loading: loading,
                     child: Column(
@@ -91,7 +94,10 @@ class HomeView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 16,
+                        horizontal: 24,
+                      ),
                       child: ShimmerBox(
                         loading: loading,
                         child: const Text(
@@ -103,7 +109,6 @@ class HomeView extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
                   ],
                 ),
               ),
@@ -112,7 +117,7 @@ class HomeView extends StatelessWidget {
                   (context, index) {
                     final parking = _controller.filteredParkings[index];
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: ShimmerBox(
                         loading: loading,
                         child: ParkingListItem(parking: parking),

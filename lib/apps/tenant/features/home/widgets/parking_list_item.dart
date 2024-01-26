@@ -25,7 +25,7 @@ class ParkingListItem extends StatelessWidget {
         children: [
           Container(
             constraints: BoxConstraints(maxHeight: 326),
-            height: MediaQuery.of(context).size.width - 32,
+            height: MediaQuery.of(context).size.width - 56,
             child: Stack(
               children: [
                 if (parking.images.isNotEmpty)
@@ -51,29 +51,29 @@ class ParkingListItem extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(
-                  top: 16,
-                  right: 16,
-                  child: Opacity(
-                    opacity: 0.35,
-                    child: Coolicon(
-                      height: 24,
-                      width: 24,
-                      icon: Coolicons.heartFill,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 16,
-                  right: 16,
-                  child: Coolicon(
-                    height: 24,
-                    width: 24,
-                    icon: Coolicons.heartOutline,
-                    color: Colors.white,
-                  ),
-                ),
+                // Positioned(
+                //   top: 16,
+                //   right: 16,
+                //   child: Opacity(
+                //     opacity: 0.35,
+                //     child: Coolicon(
+                //       height: 24,
+                //       width: 24,
+                //       icon: Coolicons.heartFill,
+                //       color: Colors.black,
+                //     ),
+                //   ),
+                // ),
+                // Positioned(
+                //   top: 16,
+                //   right: 16,
+                //   child: Coolicon(
+                //     height: 24,
+                //     width: 24,
+                //     icon: Coolicons.heartOutline,
+                //     color: Colors.white,
+                //   ),
+                // ),
               ],
             ),
           ),
