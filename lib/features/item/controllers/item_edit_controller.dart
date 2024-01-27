@@ -15,10 +15,11 @@ import 'package:vagali/services/image_service.dart';
 /// IMPLEMENTAR O SEARCH POSTERIORMENTE NA VERSAO 1.0.1
 
 class ItemEditController extends GetxController {
+  ItemEditController(this.selectedItemType);
+  final ItemType selectedItemType;
   final ItemRepository repository = Get.find();
   final _imageService = ImageService();
   final loading = false.obs;
-  final selectedItemType = Rx<ItemType?>(null);
   final selectedVehicleType = Rx<VehicleType?>(null);
 
   final imageBlurhash = Rx<ImageBlurHash?>(null);
@@ -69,9 +70,12 @@ class ItemEditController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    ever(selectedItemType, (_) {
-      selectedVehicleType.value = null;
-    });
+    print('HUSAHDASUHDSAUDHSUSDAHDASUHDASUHSDAUSADHUSAD ${selectedItemType.type}');
+
+
+    // ever(selectedItemType, (_) {
+    //   selectedVehicleType.value = null;
+    // });
   }
 
   Future<void> pickImage(ImageSource source) async {
@@ -124,7 +128,7 @@ class ItemEditController extends GetxController {
       registrationState: registrationState,
       dimensions: vehicleType.dimension,
       weight: 20,
-      material: 'Madeira',
+      material: 'Outros',
     );
 
     final id = await await repository.saveAndGetId(vehicle);
@@ -151,7 +155,7 @@ class ItemEditController extends GetxController {
       updatedAt: DateTime.now(),
       dimensions: dimension,
       weight: 20,
-      material: 'Madeira',
+      material: 'Outros',
       productQuantity: productQuantity.value,
       productType: productType.value,
       title: title.value,
@@ -163,6 +167,36 @@ class ItemEditController extends GetxController {
     if (id != null) {
       stock.id = id;
       return stock;
+    }
+
+    loading.value = false;
+
+    return null;
+  }
+
+  Future<Item?> createCommonItem() async {
+    loading.value = true;
+    imageBlurhash.value = await uploadImage();
+
+    if (imageBlurhash.value == null) return null;
+
+    final item = Item(
+      image: imageBlurhash.value!,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      dimensions: dimension,
+      weight: 20,
+      material: 'Outros',
+      title: title.value,
+      description: description.value,
+      type: selectedItemType.type,
+    );
+
+    final id = await await repository.saveAndGetId(item);
+
+    if (id != null) {
+      item.id = id;
+      return item;
     }
 
     loading.value = false;

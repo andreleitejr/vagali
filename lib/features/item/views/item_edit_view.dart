@@ -23,7 +23,8 @@ class ItemEditView extends StatefulWidget {
 }
 
 class _ItemEditViewState extends State<ItemEditView> {
-  final controller = Get.put(ItemEditController());
+  late ItemEditController controller;
+
   late List<Widget> _typeSpecificFields;
 
   final titleFocus = FocusNode();
@@ -34,6 +35,7 @@ class _ItemEditViewState extends State<ItemEditView> {
 
   @override
   void initState() {
+    controller = Get.put(ItemEditController(widget.selectedType));
     super.initState();
     _typeSpecificFields = _buildTypeSpecificFields();
   }
@@ -45,14 +47,13 @@ class _ItemEditViewState extends State<ItemEditView> {
       case ItemType.stock:
         return _buildStockFields();
       default:
-        return [];
+        return _buildItemFields();
     }
   }
 
   List<Widget> _buildVehicleFields() {
     return [
       VehicleEditWidget(controller: controller),
-      // Add more vehicle-specific fields as needed
     ];
   }
 
@@ -141,8 +142,7 @@ class _ItemEditViewState extends State<ItemEditView> {
                         await controller.pickImage(source);
 
                         await Future.delayed(const Duration(milliseconds: 500));
-                        if (controller.selectedItemType.value ==
-                            ItemType.vehicle) {
+                        if (controller.selectedItemType == ItemType.vehicle) {
                           showVehicleTypeBottomSheet(
                             context,
                             onItemSelected: controller.vehicleTypeController,
@@ -200,6 +200,9 @@ class _ItemEditViewState extends State<ItemEditView> {
       case ItemType.stock:
         _saveStock();
         break;
+      default:
+        _saveCommonItem();
+        break;
     }
   }
 
@@ -213,5 +216,11 @@ class _ItemEditViewState extends State<ItemEditView> {
     print('Salvei um stock!');
     final stock = await controller.createStock();
     Get.back(result: stock);
+  }
+
+  Future<void> _saveCommonItem() async {
+    print('Salvei um stock!');
+    final item = await controller.createCommonItem();
+    Get.back(result: item);
   }
 }

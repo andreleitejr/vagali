@@ -51,19 +51,14 @@ class HomeView extends StatelessWidget {
                         Row(
                           children: [
                             Expanded(
-                              child: GestureDetector(
-                                onTap: () => Get.to(() => ParkingSearchView()),
-                                child: AbsorbPointer(
-                                  child: SearchInput(
-                                    searchText: '',
-                                    hintText: 'O que deseja guardar?',
-                                    onSearch: (_) {},
-                                  ),
-                                ),
+                              child: SearchInput(
+                                searchText: '',
+                                hintText: 'O que deseja guardar?',
+                                onSearch: (_) {},
                               ),
                             ),
-                            const SizedBox(width: 16),
-                            const Coolicon(icon: Coolicons.slider),
+                            // const SizedBox(width: 16),
+                            // const Coolicon(icon: Coolicons.slider),
                           ],
                         ),
                         Padding(

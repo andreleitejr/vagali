@@ -75,24 +75,35 @@ class ReservationListView extends StatelessWidget {
   }
 
   Widget inProgress() {
-    return ListView.builder(
-      itemCount: _controller.reservationsInProgress.length,
-      itemBuilder: (BuildContext context, int index) {
-        final reservation = _controller.reservationsInProgress[index];
-
-        if (reservation == _controller.reservationsInProgress.first) {
-          return LastReservationWidget(
-            reservation: reservation,
+    return Column(
+      children: [
+        if (_controller.currentReservation.value != null)
+          LastReservationWidget(
+            reservation: _controller.currentReservation.value!,
             onReservationChanged: () =>
-                _controller.verifyStatusAndUpdateReservation(reservation),
-          );
-        }
-        return ReservationHistoryItem(
-          reservation: reservation,
-          onReservationChanged: () =>
-              _controller.verifyStatusAndUpdateReservation(reservation),
-        );
-      },
+                _controller.verifyStatusAndUpdateReservation(
+              _controller.currentReservation.value!,
+            ),
+          ),
+        Expanded(
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: _controller.reservationsInProgress.length,
+            itemBuilder: (BuildContext context, int index) {
+              final reservation = _controller.reservationsInProgress[index];
+
+              if (reservation == _controller.currentReservation.value) {
+                return Container();
+              }
+              return ReservationHistoryItem(
+                reservation: reservation,
+                onReservationChanged: () =>
+                    _controller.verifyStatusAndUpdateReservation(reservation),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 

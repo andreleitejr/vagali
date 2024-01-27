@@ -29,6 +29,7 @@ class ReservationListController extends GetxController {
   final allReservations = <Reservation>[].obs;
   final reservationsInProgress = <Reservation>[].obs;
   final reservationsDone = <Reservation>[].obs;
+  final currentReservation = Rx<Reservation?>(null);
 
   // final landlords = <Landlord>[].obs;
   // final items = <Item>[].obs;
@@ -69,13 +70,16 @@ class ReservationListController extends GetxController {
 
     final inProgress =
         allReservations.where((reservation) => reservation.isOpen);
-
     reservationsInProgress.assignAll(inProgress);
+    reservationsInProgress.sort((b, a) => a.createdAt.compareTo(b.createdAt));
 
     final done = allReservations.where((reservation) => reservation.isDone);
     reservationsDone.assignAll(done);
 
-    reservationsInProgress.sort((b, a) => a.createdAt.compareTo(b.createdAt));
+    if (allReservations.isNotEmpty) {
+      currentReservation.value =
+          allReservations.firstWhereOrNull((reservation) => reservation.isOpen);
+    }
   }
 
   // Future<void> fetchLandlords() async {

@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+
 // import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -12,8 +13,17 @@ import 'package:vagali/models/image_blurhash.dart';
 import 'package:vagali/repositories/storage_repository.dart';
 
 class ImageService {
+  static const double _maxHeight = 512;
+  static const double _maxWidth = 512;
+  static const _quality = 50;
+
   Future<XFile?> pickImage(ImageSource source) async {
-    final pickedImage = await ImagePicker().pickImage(source: source);
+    final pickedImage = await ImagePicker().pickImage(
+      source: source,
+      maxHeight: _maxHeight,
+      maxWidth: _maxWidth,
+      imageQuality: _quality,
+    );
 
     if (pickedImage != null) {
       // final compressedImage = _compressImage(pickedImage);
@@ -40,7 +50,11 @@ class ImageService {
   }
 
   Future<List<File>> pickImages() async {
-    final pickedImages = await ImagePicker().pickMultiImage();
+    final pickedImages = await ImagePicker().pickMultiImage(
+      maxHeight: _maxHeight,
+      maxWidth: _maxWidth,
+      imageQuality: _quality,
+    );
 
     if (pickedImages.isNotEmpty) {
       final compressedImages = <File>[];
@@ -124,7 +138,8 @@ class ImageService {
     }
   }
 
-  Future<List<XFile>> downloadAndSaveImagesToLocal(List<ImageBlurHash> imageUrls) async {
+  Future<List<XFile>> downloadAndSaveImagesToLocal(
+      List<ImageBlurHash> imageUrls) async {
     final List<XFile> localImages = [];
 
     for (final url in imageUrls) {
@@ -133,7 +148,8 @@ class ImageService {
             options: Options(responseType: ResponseType.bytes));
 
         final directory = await getTemporaryDirectory();
-        final filePath = '${directory.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+        final filePath =
+            '${directory.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
 
         await File(filePath).writeAsBytes(response.data!);
         localImages.add(XFile(filePath));
