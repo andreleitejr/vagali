@@ -17,11 +17,11 @@ class LoginView extends StatelessWidget {
 
   LoginView({super.key, required this.controller});
 
-  final focus = FocusNode();
+  final _loginFocus = FocusNode();
 
   @override
   Widget build(BuildContext context) {
-    focus.requestFocus();
+    _loginFocus.requestFocus();
     return Scaffold(
       body: Center(
         child: Padding(
@@ -48,9 +48,12 @@ class LoginView extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               PhoneInput(
-                focus: focus,
+                focus: _loginFocus,
                 value: controller.phone.value,
-                onSubmit: () async => await controller.sendVerificationCode(),
+                onSubmit: () async {
+                  await controller.sendVerificationCode();
+                  _loginFocus.unfocus();
+                },
                 onChanged: controller.phone,
               ),
               const SizedBox(height: 16),

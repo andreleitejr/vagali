@@ -8,6 +8,7 @@ class CodeWidget extends StatelessWidget {
   final VoidCallback onSubmit;
   final String phoneNumber;
   final Function(String) onChanged;
+  final FocusNode focusNode;
 
   CodeWidget({
     super.key,
@@ -15,18 +16,14 @@ class CodeWidget extends StatelessWidget {
     required this.onSubmit,
     required this.phoneNumber,
     required this.onChanged,
+    required this.focusNode,
   });
-
-  final FocusNode _pinFocusNode = FocusNode();
 
   final controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     controller.text = value;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      FocusScope.of(context).requestFocus(_pinFocusNode);
-    });
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -50,7 +47,7 @@ class CodeWidget extends StatelessWidget {
         const SizedBox(height: 16),
         PinInput(
           controller: controller,
-          focusNode: _pinFocusNode,
+          focusNode: focusNode,
           onChanged: onChanged,
           onSubmit: (_) => onSubmit(),
         ),

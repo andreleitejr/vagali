@@ -42,7 +42,9 @@ class _AuthViewState extends State<AuthView> implements AuthNavigator {
   @override
   void initState() {
     controller = Get.put(AuthController(this));
-    if(widget.isLogOut) login();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.isLogOut) login();
+    });
     super.initState();
   }
 
@@ -65,7 +67,6 @@ class _AuthViewState extends State<AuthView> implements AuthNavigator {
 
   @override
   void register() {
-    print('##########3333 Entrou aqui no register!');
     Get.to(
       () => Get.find<FlavorConfig>().flavor == Flavor.tenant
           ? const TenantEditView()

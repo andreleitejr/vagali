@@ -14,8 +14,11 @@ class CodeVerificationView extends StatelessWidget {
 
   CodeVerificationView({super.key, required this.controller});
 
+  final _pinFocus = FocusNode();
+
   @override
   Widget build(BuildContext context) {
+    _pinFocus.requestFocus();
     return Scaffold(
       body: Center(
         child: Padding(
@@ -34,6 +37,7 @@ class CodeVerificationView extends StatelessWidget {
                 onSubmit: () => controller.verifySmsCode(),
                 phoneNumber: controller.phone.value,
                 onChanged: controller.sms,
+                focusNode: _pinFocus,
               ),
               Obx(
                 () {
@@ -44,7 +48,11 @@ class CodeVerificationView extends StatelessWidget {
                     actionText: isVerifying
                         ? 'Verificando os dados...'
                         : 'Verificar código',
-                    onPressed: () => controller.verifySmsCode(),
+                    onPressed: () async {
+                      await controller.verifySmsCode();
+
+                      _pinFocus.unfocus();
+                    },
                     isValid: controller.isSmsValid.value,
                     backgroundColor: isVerifying
                         ? ThemeColors.secondary
