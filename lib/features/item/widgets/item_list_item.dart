@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:vagali/features/item/models/item.dart';
 import 'package:vagali/features/item/models/vehicle.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 
-class VehicleListItem extends StatelessWidget {
-  final Vehicle vehicle;
+class ItemListItem extends StatelessWidget {
+  final Item item;
 
-  const VehicleListItem({super.key, required this.vehicle});
+  const ItemListItem({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class VehicleListItem extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(96),
                   image: DecorationImage(
-                    image: NetworkImage(vehicle.image.image),
+                    image: NetworkImage(item.image.image),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -43,16 +44,17 @@ class VehicleListItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      vehicle.model,
+                      item.type,
                       style: ThemeTypography.semiBold16,
                     ),
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        Text(
-                          'Placa: ${vehicle.licensePlate}',
-                          style: ThemeTypography.regular14,
-                        ),
+                        if (item.description != null)
+                          Text(
+                            item.description!,
+                            style: ThemeTypography.regular14,
+                          ),
                         const SizedBox(width: 8),
                         Container(
                           height: 4,
@@ -63,7 +65,7 @@ class VehicleListItem extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          'Cor: ${vehicle.color}',
+                          'Cor: ${item.createdAt}',
                           style: ThemeTypography.regular14,
                         ),
                       ],

@@ -14,6 +14,7 @@ class Stock extends Item {
     required super.dimensions,
     required super.weight,
     required super.material,
+    required super.userId,
     super.type = ItemType.stock,
     required super.title,
     required super.description,

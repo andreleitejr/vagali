@@ -37,6 +37,7 @@ class Parking extends BaseModel {
 
   double get distance {
     /// APENAS PARA TESTES
+    ///
     final userCoordinates = _locationService.userLocation;
 
     if (userCoordinates == null) {

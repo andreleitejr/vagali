@@ -14,6 +14,7 @@ class Item extends BaseModel {
   final double weight;
   final String type;
   final String material;
+  final String userId;
 
   Item({
     super.id,
@@ -26,6 +27,7 @@ class Item extends BaseModel {
     required this.dimensions,
     required super.createdAt,
     required super.updatedAt,
+    required this.userId,
   });
 
   Item.fromDocument(DocumentSnapshot document)
@@ -36,6 +38,7 @@ class Item extends BaseModel {
         weight = document['weight'],
         type = document['type'],
         material = document['material'],
+        userId = document['userId'],
         super.fromDocument(document);
 
   @override
@@ -48,6 +51,7 @@ class Item extends BaseModel {
       'weight': weight,
       'type': type.toString(),
       'material': material,
+      'userId': userId,
       ...super.toMap(),
     };
   }

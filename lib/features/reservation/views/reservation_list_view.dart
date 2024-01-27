@@ -75,32 +75,36 @@ class ReservationListView extends StatelessWidget {
   }
 
   Widget inProgress() {
-    return Column(
-      children: [
-        if (_controller.currentReservation.value != null)
-          LastReservationWidget(
-            reservation: _controller.currentReservation.value!,
-            onReservationChanged: () =>
-                _controller.verifyStatusAndUpdateReservation(
-              _controller.currentReservation.value!,
-            ),
-          ),
-        Expanded(
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: _controller.reservationsInProgress.length,
-            itemBuilder: (BuildContext context, int index) {
-              final reservation = _controller.reservationsInProgress[index];
+    return CustomScrollView(
+      slivers: [
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+              if (index == 0 && _controller.currentReservation.value != null) {
+                return LastReservationWidget(
+                  reservation: _controller.currentReservation.value!,
+                  onReservationChanged: () =>
+                      _controller.verifyStatusAndUpdateReservation(
+                        _controller.currentReservation.value!,
+                      ),
+                );
+              }
+
+              final reservation = _controller.reservationsInProgress[
+              index - (_controller.currentReservation.value != null ? 1 : 0)];
 
               if (reservation == _controller.currentReservation.value) {
                 return Container();
               }
+
               return ReservationHistoryItem(
                 reservation: reservation,
                 onReservationChanged: () =>
                     _controller.verifyStatusAndUpdateReservation(reservation),
               );
             },
+            childCount: _controller.reservationsInProgress.length +
+                (_controller.currentReservation.value != null ? 1 : 0),
           ),
         ),
       ],

@@ -8,7 +8,7 @@ import 'package:vagali/apps/tenant/features/vehicle/widgets/vehicle_info_widget.
 import 'package:vagali/features/address/widgets/address_card.dart';
 import 'package:vagali/features/item/models/item.dart';
 import 'package:vagali/features/item/views/item_edit_view.dart';
-import 'package:vagali/features/item/views/item_list_view.dart';
+import 'package:vagali/features/item/views/item_type_list_view.dart';
 import 'package:vagali/features/reservation/controllers/reservation_edit_controller.dart';
 import 'package:vagali/features/reservation/widgets/reservation_date_widget.dart';
 import 'package:vagali/features/search/views/search_view.dart';

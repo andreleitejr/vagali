@@ -66,9 +66,11 @@ class FirestoreRepository<T extends BaseModel> {
       final dataList =
           querySnapshot.docs.map((doc) => fromDocument(doc)).toList();
 
+      debugPrint(
+          'Successful fetch ${dataList.length} documents for $collectionName in Firestore.');
       return dataList;
     } catch (error) {
-      print(
+      debugPrint(
           'Error fetching all data from $collectionName in Firestore: $error');
       return [];
     }

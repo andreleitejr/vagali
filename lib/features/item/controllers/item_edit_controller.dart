@@ -7,6 +7,7 @@ import 'package:vagali/features/item/models/item.dart';
 import 'package:vagali/features/item/models/stock.dart';
 import 'package:vagali/features/item/models/vehicle.dart';
 import 'package:vagali/features/item/repositories/item_repository.dart';
+import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/models/dimension.dart';
 import 'package:vagali/models/image_blurhash.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
@@ -15,7 +16,10 @@ import 'package:vagali/services/image_service.dart';
 /// IMPLEMENTAR O SEARCH POSTERIORMENTE NA VERSAO 1.0.1
 
 class ItemEditController extends GetxController {
+  final User tenant = Get.find();
+
   ItemEditController(this.selectedItemType);
+
   final ItemType selectedItemType;
   final ItemRepository repository = Get.find();
   final _imageService = ImageService();
@@ -52,7 +56,8 @@ class ItemEditController extends GetxController {
   final registrationStateError = ''.obs;
   final imageError = ''.obs;
 
-  Dimension get dimension => Dimension(
+  Dimension get dimension =>
+      Dimension(
         width: double.parse(width.value),
         height: double.parse(height.value),
         depth: double.parse(depth.value),
@@ -67,16 +72,6 @@ class ItemEditController extends GetxController {
     return '';
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    print('HUSAHDASUHDSAUDHSUSDAHDASUHDASUHSDAUSADHUSAD ${selectedItemType.type}');
-
-
-    // ever(selectedItemType, (_) {
-    //   selectedVehicleType.value = null;
-    // });
-  }
 
   Future<void> pickImage(ImageSource source) async {
     final imageUrl = await _imageService.pickImage(source);
@@ -116,6 +111,7 @@ class ItemEditController extends GetxController {
     final registrationState = registrationStateController.value;
 
     final vehicle = Vehicle(
+      userId: tenant.id!,
       image: imageBlurhash.value!,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
@@ -150,6 +146,7 @@ class ItemEditController extends GetxController {
     if (imageBlurhash.value == null) return null;
 
     final stock = Stock(
+      userId: tenant.id!,
       image: imageBlurhash.value!,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
@@ -181,6 +178,7 @@ class ItemEditController extends GetxController {
     if (imageBlurhash.value == null) return null;
 
     final item = Item(
+      userId: tenant.id!,
       image: imageBlurhash.value!,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),

@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:flutter/services.dart';
@@ -13,7 +15,7 @@ import 'package:vagali/services/search_service.dart';
 import 'package:vagali/theme/images.dart';
 
 class MapController extends GetxController {
-  final LocationService locationService = Get.find();
+  final LocationService _locationService = Get.find();
   final ParkingRepository _parkingRepository = Get.find();
   final LandlordRepository _landlordRepository = Get.find();
   final SearchService _searchService = Get.find();
@@ -31,22 +33,33 @@ class MapController extends GetxController {
   var loading = false.obs;
   var searchText = ''.obs;
 
+  late StreamSubscription<Position?> _locationSubscription;
+  Marker? userMarker;
+
   @override
   Future<void> onInit() async {
     super.onInit();
     loading(true);
+
+    await fetchNearbyParkings();
     await _loadParkingMarkers();
     await _loadUserMarker();
 
-    userCurrentLocation.value = locationService.userLocation;
-
-    await fetchNearbyParkings();
+    // _addUserMarker();
     _addMarkers();
-    _addUserMarker();
+
+    _locationSubscription =
+        _locationService.startListeningToLocationChanges((position) {
+      userCurrentLocation.value = position;
+
+      _updateUserMarker();
+      loading(false);
+    });
 
     ever(searchText, (_) {
       updateFilteredParkings();
     });
+
     ever(filteredParkings, (_) {
       if (googleMapController != null && filteredParkings.isNotEmpty) {
         final location = filteredParkings.first.location;
@@ -61,7 +74,14 @@ class MapController extends GetxController {
     });
 
     await Future.delayed(const Duration(seconds: 1));
-    loading(false);
+  }
+
+  @override
+  void onClose() {
+    // Cancela a escuta contínua da localização ao fechar o controller
+    _locationSubscription.cancel();
+
+    super.onClose();
   }
 
   Future<void> loadMapStyle(GoogleMapController controller) async {
@@ -135,15 +155,19 @@ class MapController extends GetxController {
   void _addUserMarker() {
     final marker = Marker(
       markerId: const MarkerId('user'),
-      position: const LatLng(
-        // userCurrentLocation.value!.latitude,
-        // userCurrentLocation.value!.longitude,
-        -23.5488823, -46.6461734,
+      position: LatLng(
+        userCurrentLocation.value!.latitude,
+        userCurrentLocation.value!.longitude,
       ),
       icon: userMarkerIcon,
     );
 
     markers.add(marker);
+  }
+
+  void _updateUserMarker() {
+    markers.remove(userMarker);
+    _addUserMarker();
   }
 
   void _addMarkers() {

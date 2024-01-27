@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
@@ -6,16 +8,17 @@ import 'package:vagali/models/location_history.dart';
 
 class LocationService {
   final ReservationRepository _reservationRepository = ReservationRepository();
+
   Position? _userLocation;
 
   Position? get userLocation => _userLocation;
+  StreamSubscription<Position>? _positionStreamSubscription;
 
-  Future<void> getUserLocation() async {
+  Future<Position?> getCurrentLocation() async {
     try {
-      _userLocation = await Geolocator.getCurrentPosition(
+      return await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
-      // return position;
     } catch (e) {
       print('Erro ao obter a localização: $e');
       return null;
@@ -55,6 +58,8 @@ class LocationService {
       }
     }
 
+    final userLocation = await getCurrentLocation();
+
     isTracking = true;
 
     while (isTracking) {
@@ -66,8 +71,8 @@ class LocationService {
         const proximityThresholdMeters = 100;
 
         final distanceToParking = Geolocator.distanceBetween(
-          userLocation!.latitude,
-          userLocation!.longitude,
+          userLocation.latitude,
+          userLocation.longitude,
           reservation.parking!.location.latitude,
           reservation.parking!.location.longitude,
         );
@@ -77,7 +82,7 @@ class LocationService {
         }
 
         await updateUserLocationInReservationDatabase(
-            reservation, userLocation!);
+            reservation, userLocation);
       }
 
       await Future.delayed(const Duration(seconds: 5));
@@ -86,6 +91,26 @@ class LocationService {
 
   void stopLocationTracking() {
     isTracking = false;
+  }
+  StreamSubscription<Position?> startListeningToLocationChanges(void Function(Position) onLocationChanged) {
+    // final hasPermission = await checkLocationPermission();
+    // if (!hasPermission) {
+    //   final permissionGranted = await requestLocationPermission();
+    //   if (!permissionGranted) {
+    //     return StreamSubscription<Position?>.empty();
+    //   }
+    // }
+
+    _positionStreamSubscription?.cancel();
+
+    return Geolocator.getPositionStream(
+      locationSettings: LocationSettings(
+        accuracy: LocationAccuracy.best,
+        distanceFilter: 3,
+      ),
+    ).listen((Position position) {
+      onLocationChanged(position);
+    });
   }
 
   Future<void> updateUserLocationInReservationDatabase(
@@ -110,23 +135,26 @@ class LocationService {
     double originLatitude,
     double originLongitude,
   ) async {
-    await getUserLocation();
+    final userLocation = await getCurrentLocation();
 
-    try {
-      final distanceInMeters = Geolocator.distanceBetween(
-        _userLocation!.latitude,
-        _userLocation!.longitude,
-        originLatitude,
-        originLongitude,
-      );
+    if (userLocation != null) {
+      try {
+        final distanceInMeters = Geolocator.distanceBetween(
+          userLocation.latitude,
+          userLocation.longitude,
+          originLatitude,
+          originLongitude,
+        );
 
-      final double estimatedTimeInSeconds =
-          distanceInMeters / averageSpeedMetersPerSecond;
+        final double estimatedTimeInSeconds =
+            distanceInMeters / averageSpeedMetersPerSecond;
 
-      return estimatedTimeInSeconds;
-    } catch (e) {
-      debugPrint('Erro ao calcular o tempo estimado: $e');
-      return null;
+        return estimatedTimeInSeconds;
+      } catch (e) {
+        debugPrint('Erro ao calcular o tempo estimado: $e');
+        return null;
+      }
     }
+    return null;
   }
 }

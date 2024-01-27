@@ -30,16 +30,8 @@ class _MapViewState extends State<MapView> {
         }
 
         /// PARA TESTES
-        late double latitude;
-        late double longitude;
-
-        if (kDebugMode) {
-          latitude = -23.5488823;
-          longitude = -46.6461734;
-        } else {
-          latitude = _controller.userCurrentLocation.value!.latitude;
-          longitude = _controller.userCurrentLocation.value!.longitude;
-        }
+        final latitude = _controller.userCurrentLocation.value!.latitude;
+        final longitude = _controller.userCurrentLocation.value!.longitude;
 
         return Stack(
           children: [
@@ -54,29 +46,29 @@ class _MapViewState extends State<MapView> {
                 _controller.loadMapStyle(controller);
               },
             ),
-            Positioned(
-              top: 48,
-              left: 0,
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.25),
-                      spreadRadius: -8,
-                      blurRadius: 20,
-                      offset: const Offset(0, 0),
-                    ),
-                  ],
-                ),
-                child: SearchInput(
-                  searchText: _controller.searchText.value,
-                  hintText: 'Busque estacionamentos próximos',
-                  onSearch: _controller.searchText,
-                ),
-              ),
-            ),
+            // Positioned(
+            //   top: 48,
+            //   left: 0,
+            //   right: 0,
+            //   child: Container(
+            //     padding: const EdgeInsets.all(16),
+            //     decoration: BoxDecoration(
+            //       boxShadow: [
+            //         BoxShadow(
+            //           color: Colors.grey.withOpacity(0.25),
+            //           spreadRadius: -8,
+            //           blurRadius: 20,
+            //           offset: const Offset(0, 0),
+            //         ),
+            //       ],
+            //     ),
+            //     child: SearchInput(
+            //       searchText: _controller.searchText.value,
+            //       hintText: 'Busque estacionamentos próximos',
+            //       onSearch: _controller.searchText,
+            //     ),
+            //   ),
+            // ),
             Obx(() {
               if (_controller.selectedParking.value != null) {
                 return Positioned(
