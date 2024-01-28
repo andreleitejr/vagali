@@ -1,7 +1,9 @@
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/support/models/support.dart';
+import 'package:vagali/models/flavor_config.dart';
 import 'package:vagali/theme/theme_colors.dart';
 
 extension TimeOfDayExtension on TimeOfDay {
@@ -269,6 +271,10 @@ extension ReservationStatusExtension on ReservationStatus {
         return "A reserva está em andamento";
       case ReservationStatus.userOnTheWay:
         return "O locatário à caminho. Fique atento para abrir o portão.";
+      case ReservationStatus.arrived:
+        return Get.find<FlavorConfig>().flavor == Flavor.tenant
+            ? "O locatário chegou. Abra o portão para recebe-lo."
+            : "Você chegou à vaga. Aguarde o locatário abrir o portão.";
       case ReservationStatus.parked:
         return "O veículo está estacionado na vaga.";
       case ReservationStatus.concluded:

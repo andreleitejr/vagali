@@ -77,8 +77,14 @@ class ReservationListController extends GetxController {
     reservationsDone.assignAll(done);
 
     if (allReservations.isNotEmpty) {
-      currentReservation.value =
-          allReservations.firstWhereOrNull((reservation) => reservation.isOpen);
+      final reservationWithUserOnTheWay = allReservations
+          .firstWhereOrNull((reservation) => reservation.isUserOnTheWay);
+      if (reservationWithUserOnTheWay != null) {
+        currentReservation.value = reservationWithUserOnTheWay;
+      } else {
+        currentReservation.value = allReservations
+            .firstWhereOrNull((reservation) => reservation.isOpen);
+      }
     }
   }
 
@@ -114,26 +120,26 @@ class ReservationListController extends GetxController {
   //   }
   // }
 
-  Future<void> verifyStatusAndUpdateReservation(Reservation reservation) async {
-    if (reservation.isConfirmed) {
-      await confirmReservationStarted(reservation);
-    } else if (reservation.isParked) {
-      await confirmReservationConclusion(reservation);
-    }
-  }
+  // Future<void> verifyStatusAndUpdateReservation(Reservation reservation) async {
+  //   if (reservation.isConfirmed) {
+  //     await confirmReservationStarted(reservation);
+  //   } else if (reservation.isParked) {
+  //     await confirmReservationConclusion(reservation);
+  //   }
+  // }
 
-  Future<void> confirmReservationStarted(Reservation reservation) async {
-    try {
-      await _reservationRepository.updateReservationStatus(
-        reservation.id!,
-        ReservationStatus.userOnTheWay,
-      );
-
-      checkAndStartLocationTracking(reservation);
-    } catch (error) {
-      debugPrint('Erro ao confirmar a reserva: $error');
-    }
-  }
+  // Future<void> confirmReservationStarted(Reservation reservation) async {
+  //   try {
+  //     await _reservationRepository.updateReservationStatus(
+  //       reservation.id!,
+  //       ReservationStatus.userOnTheWay,
+  //     );
+  //
+  //     startLocationTracking(reservation);
+  //   } catch (error) {
+  //     debugPrint('Erro ao confirmar a reserva: $error');
+  //   }
+  // }
 
   Future<void> confirmReservationConclusion(Reservation reservation) async {
     try {
@@ -146,13 +152,19 @@ class ReservationListController extends GetxController {
     }
   }
 
-  void checkAndStartLocationTracking(Reservation reservation) {
-    final currentTime = DateTime.now();
-    final timeDifference = reservation.startDate.difference(currentTime);
+  Future<void> updateReservation(ReservationStatus status) async {
+    await _reservationRepository.updateReservationStatus(
+      currentReservation.value!.id!,
+      status,
+    );
+    print(
+        '############################### Controller | CURRENT STATUs ${currentReservation.value?.status}');
+  }
 
-    if (timeDifference <= const Duration(hours: 1)) {
-      locationService.startLocationTracking(reservation);
-    }
+  void startLocationTracking(Reservation reservation) {
+    print('############################### Controller | startLocationTracking');
+    locationService.startLocationTracking(reservation);
+    print('############################### Controller | startLocationTracking completed');
   }
 
   void checkPaymentTimeout(Reservation reservation) {

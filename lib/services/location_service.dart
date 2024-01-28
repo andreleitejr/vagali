@@ -17,7 +17,7 @@ class LocationService {
   Future<Position?> getCurrentLocation() async {
     try {
       return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
+        desiredAccuracy: LocationAccuracy.best,
       );
     } catch (e) {
       print('Erro ao obter a localização: $e');
@@ -50,24 +50,30 @@ class LocationService {
   bool isTracking = false;
 
   Future<void> startLocationTracking(Reservation reservation) async {
-    final hasPermission = await checkLocationPermission();
-    if (!hasPermission) {
-      final permissionGranted = await requestLocationPermission();
-      if (!permissionGranted) {
-        return;
-      }
-    }
-
+    print('############################### Service | startLocationTracking');
     final userLocation = await getCurrentLocation();
 
+    print(
+        '############################### Service | startLocationTracking | ${userLocation?.latitude} ${userLocation?.longitude}');
     isTracking = true;
 
+    print(
+        '############################### Service | startLocationTracking | Is Tracking: $isTracking');
     while (isTracking) {
+      print(
+          '############################### Service | startLocationTracking |  Is user on the way: ${reservation.status} ${reservation.isUserOnTheWay}');
+
       if (!reservation.isUserOnTheWay) {
+        print('Breaking loop because user is not on the way');
         break;
       }
 
+      print(
+          '############################### Service | startLocationTracking | Inside While');
       if (userLocation != null) {
+        debugPrint(
+            'Location start to track: ${userLocation.latitude}, ${userLocation.longitude}');
+
         const proximityThresholdMeters = 100;
 
         final distanceToParking = Geolocator.distanceBetween(
@@ -78,6 +84,7 @@ class LocationService {
         );
 
         if (distanceToParking <= proximityThresholdMeters) {
+          print('Breaking loop because distance to parking is within threshold');
           break;
         }
 
@@ -85,14 +92,18 @@ class LocationService {
             reservation, userLocation);
       }
 
-      await Future.delayed(const Duration(seconds: 5));
+      await Future.delayed(const Duration(seconds: 30));
     }
+    print('############################### Service | startLocationTracking completed');
   }
+
 
   void stopLocationTracking() {
     isTracking = false;
   }
-  StreamSubscription<Position?> startListeningToLocationChanges(void Function(Position) onLocationChanged) {
+
+  StreamSubscription<Position?> startListeningToLocationChanges(
+      void Function(Position) onLocationChanged) {
     // final hasPermission = await checkLocationPermission();
     // if (!hasPermission) {
     //   final permissionGranted = await requestLocationPermission();

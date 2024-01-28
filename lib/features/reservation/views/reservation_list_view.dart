@@ -79,19 +79,13 @@ class ReservationListView extends StatelessWidget {
       slivers: [
         SliverList(
           delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
+            (BuildContext context, int index) {
               if (index == 0 && _controller.currentReservation.value != null) {
-                return LastReservationWidget(
-                  reservation: _controller.currentReservation.value!,
-                  onReservationChanged: () =>
-                      _controller.verifyStatusAndUpdateReservation(
-                        _controller.currentReservation.value!,
-                      ),
-                );
+                return LastReservationWidget(controller: _controller);
               }
 
-              final reservation = _controller.reservationsInProgress[
-              index - (_controller.currentReservation.value != null ? 1 : 0)];
+              final reservation = _controller.reservationsInProgress[index -
+                  (_controller.currentReservation.value != null ? 1 : 0)];
 
               if (reservation == _controller.currentReservation.value) {
                 return Container();
@@ -99,8 +93,7 @@ class ReservationListView extends StatelessWidget {
 
               return ReservationHistoryItem(
                 reservation: reservation,
-                onReservationChanged: () =>
-                    _controller.verifyStatusAndUpdateReservation(reservation),
+                onReservationChanged: () {},
               );
             },
             childCount: _controller.reservationsInProgress.length +

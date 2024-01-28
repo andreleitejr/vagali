@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/item/models/item.dart';
+import 'package:vagali/features/reservation/controllers/reservation_list_controller.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/views/reservation_details_view.dart';
 import 'package:vagali/features/user/models/user.dart';
@@ -16,15 +17,14 @@ import 'package:vagali/widgets/user_card.dart';
 
 // ignore: must_be_immutable
 class LastReservationWidget extends StatelessWidget {
-  final Reservation reservation;
-  final VoidCallback onReservationChanged;
+  final ReservationListController controller;
 
   LastReservationWidget({
     super.key,
-    required this.reservation,
-    required this.onReservationChanged,
+    required this.controller,
   });
 
+  Reservation get reservation => controller.currentReservation.value!;
   final carouselController = CarouselController();
   var currentCarouselImage = 0.obs;
 
@@ -80,19 +80,19 @@ class LastReservationWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              TextButton(
-                onPressed: () => Get.to(
-                  () => ReservationView(
-                      reservation: reservation,
-                      onReservationChanged: onReservationChanged),
-                ),
-                child: Text('Ver mais'),
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  alignment: Alignment.topRight,
-                  // backgroundColor: Colors.blue,
-                ),
-              ),
+              // TextButton(
+              //   onPressed: () => Get.to(
+              //     () => ReservationView(
+              //         reservation: reservation,
+              //         onReservationChanged: onReservationChanged),
+              //   ),
+              //   child: Text('Ver mais'),
+              //   style: TextButton.styleFrom(
+              //     padding: EdgeInsets.zero,
+              //     alignment: Alignment.topRight,
+              //     // backgroundColor: Colors.blue,
+              //   ),
+              // ),
             ],
           ),
           const SizedBox(height: 12),
@@ -120,10 +120,7 @@ class LastReservationWidget extends StatelessWidget {
                 .name!,
           ),
           const SizedBox(height: 24),
-          ReservationStatusIndicator(
-            reservation: reservation,
-            onReservationChanged: onReservationChanged,
-          ),
+          ReservationStatusIndicator(controller: controller),
           const SizedBox(height: 16),
           // const SizedBox(height: 16),
           // if (reservation.vehicle != null)

@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:vagali/apps/landlord/features/parking/views/parking_details_view.dart';
 import 'package:vagali/apps/tenant/features/payment/views/payment_view.dart';
 import 'package:vagali/features/chat/views/chat_view.dart';
+import 'package:vagali/features/reservation/controllers/reservation_list_controller.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/services/location_service.dart';
 import 'package:vagali/theme/coolicons.dart';
@@ -14,15 +15,12 @@ import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/title_with_icon.dart';
 
 class ReservationStatusIndicator extends StatelessWidget {
-  final Reservation reservation;
-  final VoidCallback onReservationChanged;
-  final LocationService locationService = Get.find();
+  final ReservationListController controller;
 
-  ReservationStatusIndicator({
-    Key? key,
-    required this.reservation,
-    required this.onReservationChanged,
-  }) : super(key: key);
+  ReservationStatusIndicator({Key? key, required this.controller})
+      : super(key: key);
+
+  Reservation get reservation => controller.currentReservation.value!;
 
   bool get isRed =>
       reservation.isCanceled ||
@@ -106,17 +104,18 @@ class ReservationStatusIndicator extends StatelessWidget {
 
   Text _buildStatusMessage() {
     return Text(
-      reservation.status.message,
-      style: reservation.status == ReservationStatus.concluded
+      controller.currentReservation.value!.status.message,
+      style: controller.currentReservation.value!.status ==
+              ReservationStatus.concluded
           ? ThemeTypography.medium14.apply(color: _textColor())
           : ThemeTypography.regular14.apply(color: _textColor()),
     );
   }
 
   Color _textColor() {
-    if (reservation.isConfirmed) {
+    if (controller.currentReservation.value!.isConfirmed) {
       return ThemeColors.primary;
-    } else if (reservation.isPaymentDenied) {
+    } else if (controller.currentReservation.value!.isPaymentDenied) {
       return Colors.red;
     }
     return ThemeColors.grey4;
@@ -126,14 +125,32 @@ class ReservationStatusIndicator extends StatelessWidget {
     List<Widget> buttons = [];
 
     if (reservation.isConfirmed) {
-      buttons.add(_buildFlatButton(
-          'Estou à caminho', onReservationChanged, ThemeColors.primary));
+      buttons.add(
+        _buildFlatButton('Estou à caminho', () async {
+          await controller.updateReservation(ReservationStatus.userOnTheWay);
+          print('Calling startLocationTracking');
+          await Future.delayed(const Duration(seconds: 2));
+          controller
+              .startLocationTracking(controller.currentReservation.value!);
+          print('startLocationTracking completed');
+        }, ThemeColors.primary),
+      );
     }
 
     if (reservation.isUserOnTheWay) {
       buttons.add(
-        _buildFlatButton('Abrir no Waze', openWaze, ThemeColors.primary),
+        _buildFlatButton(
+          'Confirmar estacionamento',
+          () {
+            controller.updateReservation(ReservationStatus.parked);
+          },
+          ThemeColors.primary,
+        ),
       );
+      buttons.add(
+        _buildFlatButton('Abrir no Waze', openWaze, ThemeColors.secondary),
+      );
+
     }
 
     if (reservation.isPaymentTimeOut) {
@@ -178,15 +195,15 @@ class ReservationStatusIndicator extends StatelessWidget {
       );
     }
 
-    if (reservation.isConcluded) {
-      buttons.add(
-        _buildFlatButton(
-          'Avaliar experiência',
-          () {},
-          ThemeColors.blue,
-        ),
-      );
-    }
+    // if (reservation.isConcluded) {
+    //   buttons.add(
+    //     _buildFlatButton(
+    //       'Avaliar experiência',
+    //       () {},
+    //       ThemeColors.blue,
+    //     ),
+    //   );
+    // }
 
     return buttons;
   }

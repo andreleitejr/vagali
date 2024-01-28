@@ -86,14 +86,16 @@ class LandlordHomeController extends GetxController {
     scheduledReservations.assignAll(scheduled);
 
     if (allReservations.isNotEmpty) {
-      currentReservation.value = allReservations
-          .firstWhereOrNull((reservation) => reservation.isOpen);
-
-      if (currentReservation.value != null &&
-          currentReservation.value!.isUserOnTheWay) {
+      final reservationWithUserOnTheWay = allReservations
+          .firstWhereOrNull((reservation) => reservation.isUserOnTheWay);
+      if (reservationWithUserOnTheWay != null) {
+        currentReservation.value = reservationWithUserOnTheWay;
         _updateMarker();
         await _animateCameraToLocation();
         await _calculateAndSetEstimatedArrivalTime();
+      } else {
+        currentReservation.value = allReservations
+            .firstWhereOrNull((reservation) => reservation.isOpen);
       }
     }
   }
@@ -135,40 +137,40 @@ class LandlordHomeController extends GetxController {
     }
   }
 
-  // Future<void> _handleReservationsUpdate(
-  //     Stream<List<Reservation>> stream) async {
-  //   stream.listen((event) async {
-  //     allReservations.assignAll(event);
-  //
-  //     if (currentReservation.value != null &&
-  //         currentReservation.value!.isUserOnTheWay) {
-  //       _updateMarker();
-  //       await _animateCameraToLocation();
-  //       await _calculateAndSetEstimatedArrivalTime();
-  //     }
-  //
-  //     scheduledReservations.value = allReservations
-  //         .where((reservation) => reservation.isScheduled)
-  //         .toList();
-  //
-  //     scheduledReservations.sort((a, b) => a.startDate.compareTo(b.startDate));
-  //
-  //     if (scheduledReservations.isNotEmpty) {
-  //       currentReservation.value = scheduledReservations.first;
-  //     }
-  //     loading(false);
-  //   });
-  // }
+// Future<void> _handleReservationsUpdate(
+//     Stream<List<Reservation>> stream) async {
+//   stream.listen((event) async {
+//     allReservations.assignAll(event);
+//
+//     if (currentReservation.value != null &&
+//         currentReservation.value!.isUserOnTheWay) {
+//       _updateMarker();
+//       await _animateCameraToLocation();
+//       await _calculateAndSetEstimatedArrivalTime();
+//     }
+//
+//     scheduledReservations.value = allReservations
+//         .where((reservation) => reservation.isScheduled)
+//         .toList();
+//
+//     scheduledReservations.sort((a, b) => a.startDate.compareTo(b.startDate));
+//
+//     if (scheduledReservations.isNotEmpty) {
+//       currentReservation.value = scheduledReservations.first;
+//     }
+//     loading(false);
+//   });
+// }
 
-  // Future<void> _handleVehicleUpdate(Reservation reservation) async {
-  //   if (reservation.item == null && reservation.tenant != null) {
-  //     final tenantId = reservation.tenantId;
-  //     final vehicleId = reservation.itemId;
-  //     final vehicles = await _vehicleRepository.getVehiclesFromTenant(tenantId);
-  //     reservation.item =
-  //         vehicles?.firstWhereOrNull((vehicle) => vehicle.id == vehicleId);
-  //   }
-  // }
+// Future<void> _handleVehicleUpdate(Reservation reservation) async {
+//   if (reservation.item == null && reservation.tenant != null) {
+//     final tenantId = reservation.tenantId;
+//     final vehicleId = reservation.itemId;
+//     final vehicles = await _vehicleRepository.getVehiclesFromTenant(tenantId);
+//     reservation.item =
+//         vehicles?.firstWhereOrNull((vehicle) => vehicle.id == vehicleId);
+//   }
+// }
 
   Future<void> _animateCameraToLocation() async {
     await _mapController?.animateCamera(CameraUpdate.newLatLng(location.value));
@@ -187,22 +189,21 @@ class LandlordHomeController extends GetxController {
     _mapController = controller;
   }
 
-  Future<void> updateReservation(
-      ReservationStatus status) async {
+  Future<void> updateReservation(ReservationStatus status) async {
     await _reservationRepository.updateReservationStatus(
       currentReservation.value!.id!,
       status,
     );
   }
 
-  // Future<void> _getCurrentLandlordLocation() async {
-  //   await _locationService.getUserLocation();
-  //   final position = _locationService.userLocation;
-  //
-  //   if (position != null) {
-  //     location.value = LatLng(position.latitude, position.longitude);
-  //   }
-  // }
+// Future<void> _getCurrentLandlordLocation() async {
+//   await _locationService.getUserLocation();
+//   final position = _locationService.userLocation;
+//
+//   if (position != null) {
+//     location.value = LatLng(position.latitude, position.longitude);
+//   }
+// }
 
   var location = const LatLng(-23.5504533, -46.6339112).obs;
 
@@ -216,7 +217,7 @@ class LandlordHomeController extends GetxController {
       position: location.value,
       icon: carMarkerIcon,
       rotation:
-          currentReservation.value!.locationHistory.last.heading as double,
+          currentReservation.value!.locationHistory.last.heading.toDouble(),
     );
   }
 

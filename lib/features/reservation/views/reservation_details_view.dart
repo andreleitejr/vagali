@@ -76,11 +76,11 @@ class ReservationDetailsView extends StatelessWidget {
           const SizedBox(height: 16),
           UserCard(user: reservation.landlord as User),
           const SizedBox(height: 16),
-          if (onReservationChanged != null)
-            ReservationStatusIndicator(
-              reservation: reservation,
-              onReservationChanged: onReservationChanged!,
-            ),
+          // if (onReservationChanged != null)
+          //   ReservationStatusIndicator(
+          //     reservation: reservation,
+          //     onReservationChanged: onReservationChanged!,
+          //   ),
           const SizedBox(height: 16),
           DatePeriod(
             startDate: reservation.startDate,
@@ -152,11 +152,11 @@ class ReservationView extends StatelessWidget {
                 const SizedBox(height: 16),
                 UserCard(user: reservation.tenant as User),
                 const SizedBox(height: 16),
-                if (onReservationChanged != null)
-                  ReservationStatusIndicator(
-                    reservation: reservation,
-                    onReservationChanged: onReservationChanged!,
-                  ),
+                // if (onReservationChanged != null)
+                //   ReservationStatusIndicator(
+                //     reservation: reservation,
+                //     onReservationChanged: onReservationChanged!,
+                //   ),
                 const SizedBox(height: 16),
                 DatePeriod(
                   startDate: reservation.startDate,

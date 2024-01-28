@@ -170,10 +170,31 @@ class ConfirmationWidget extends StatelessWidget {
       );
     }
 
-    if (reservation.isUserOnTheWay) {
+    if (reservation.isUserOnTheWay || reservation.isArrived) {
       buttons.add(
         _buildFlatButton(
           'Acompanhar veículo',
+          () => Get.to(
+            () => TrackingLocation(controller: controller),
+          ),
+          ThemeColors.primary,
+        ),
+      );
+      buttons.add(
+        _buildFlatButton(
+          'Confirmar estacionamento',
+              () {
+            controller.updateReservation(ReservationStatus.parked);
+          },
+          ThemeColors.secondary,
+        ),
+      );
+    }
+
+    if (reservation.isArrived) {
+      buttons.add(
+        _buildFlatButton(
+          'Confirmar estacionamento',
           () => Get.to(
             () => TrackingLocation(controller: controller),
           ),

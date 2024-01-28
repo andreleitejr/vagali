@@ -17,6 +17,7 @@ enum ReservationStatus {
   confirmed,
   inProgress,
   userOnTheWay,
+  arrived,
   parked,
   concluded,
   error,
@@ -91,7 +92,7 @@ class Reservation extends BaseModel {
         super.fromDocument(document);
 
   bool get isHandshakeMade =>
-      isConfirmed || isUserOnTheWay || isParked || isInProgress;
+      isConfirmed || /*isUserOnTheWay ||*/ isParked || isInProgress;
 
   bool get isWaitingToGo =>
       isConfirmed && isOpen && !isUserOnTheWay && !isParked;
@@ -110,6 +111,8 @@ class Reservation extends BaseModel {
   bool get isConfirmed => status == ReservationStatus.confirmed;
 
   bool get isUserOnTheWay => status == ReservationStatus.userOnTheWay;
+
+  bool get isArrived => status == ReservationStatus.arrived;
 
   bool get isParked => status == ReservationStatus.parked;
 
