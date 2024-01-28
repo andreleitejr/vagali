@@ -29,12 +29,9 @@ class _MapViewState extends State<MapView> {
           return const Loader();
         }
 
-        /// PARA TESTES
         final latitude = _controller.userCurrentLocation.value!.latitude;
         final longitude = _controller.userCurrentLocation.value!.longitude;
 
-        print('########################## L0atitude $latitude');
-        print('########################## L0ngitude $longitude');
         return Stack(
           children: [
             GoogleMap(

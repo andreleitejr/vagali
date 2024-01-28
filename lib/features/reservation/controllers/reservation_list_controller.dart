@@ -82,6 +82,8 @@ class ReservationListController extends GetxController {
       if (reservationWithUserOnTheWay != null) {
         currentReservation.value = reservationWithUserOnTheWay;
       } else {
+
+        locationService.stopLocationTracking();
         currentReservation.value = allReservations
             .firstWhereOrNull((reservation) => reservation.isOpen);
       }

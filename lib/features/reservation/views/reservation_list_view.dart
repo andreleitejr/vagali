@@ -28,11 +28,6 @@ class ReservationListView extends StatelessWidget {
           return const Loader();
         }
 
-        if (_controller.reservationsInProgress.isEmpty) {
-          return Center(
-            child: Text('Nenhuma reserva encontrada'),
-          );
-        }
         return DefaultTabController(
           length: 2,
           child: Column(
@@ -75,6 +70,13 @@ class ReservationListView extends StatelessWidget {
   }
 
   Widget inProgress() {
+
+    if (_controller.reservationsInProgress.isEmpty) {
+      return Center(
+        child: Text('Nenhuma reserva em aberto'),
+      );
+    }
+
     return CustomScrollView(
       slivers: [
         SliverList(
@@ -105,6 +107,12 @@ class ReservationListView extends StatelessWidget {
   }
 
   Widget done() {
+
+    if (_controller.reservationsDone.isEmpty) {
+      return Center(
+        child: Text('Nenhuma reserva encontrada'),
+      );
+    }
     return ListView.builder(
       itemCount: _controller.reservationsDone.length,
       itemBuilder: (BuildContext context, int index) {

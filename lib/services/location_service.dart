@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/repositories/reservation_repository.dart';
 import 'package:vagali/models/location_history.dart';
@@ -16,12 +17,51 @@ class LocationService {
 
   Future<Position?> getCurrentLocation() async {
     try {
-      return await Geolocator.getCurrentPosition(
+      if (!await Geolocator.isLocationServiceEnabled()) {
+        print('Serviço de localização desativado.');
+        return null;
+      }
+
+      final LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        final LocationPermission permission =
+            await Geolocator.requestPermission();
+        if (permission != LocationPermission.always &&
+            permission != LocationPermission.whileInUse) {
+          print('Permissões de localização não concedidas.');
+          return null;
+        }
+      }
+
+      final position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
       );
+
+      return position;
     } catch (e) {
       print('Erro ao obter a localização: $e');
       return null;
+    }
+  }
+
+  Future<double> _getHeadingFromGyroscope() async {
+    try {
+      final gyroscopeEvents =
+          gyroscopeEventStream(samplingPeriod: SensorInterval.normalInterval);
+      await for (GyroscopeEvent event in gyroscopeEvents) {
+        // Use o valor do eixo Z como heading
+        double rawHeading = event.z;
+
+        // Normaliza o valor para a escala de 0 a 360 graus
+        double heading = (rawHeading + 1.0) * 180.0;
+
+        print('Heading from Gyroscope: $heading');
+        return heading;
+      }
+      return 0.0; // Valor padrão se não conseguir obter do giroscópio
+    } catch (e) {
+      print('Erro ao obter heading do giroscópio: $e');
+      return 0.0; // Valor padrão em caso de erro
     }
   }
 
@@ -50,61 +90,44 @@ class LocationService {
   bool isTracking = false;
 
   Future<void> startLocationTracking(Reservation reservation) async {
-    print('############################### Service | startLocationTracking');
-
-    print(
-        '############################### Service | startLocationTracking | ${userLocation?.latitude} ${userLocation?.longitude}');
     isTracking = true;
-
-    print(
-        '############################### Service | startLocationTracking | Is Tracking: $isTracking');
     while (isTracking) {
-      print(
-          '############################### Service | startLocationTracking |  Is user on the way: ${reservation.status} ${reservation.isUserOnTheWay}');
-
       if (!reservation.isUserOnTheWay) {
-        print('Breaking loop because user is not on the way');
-        stopLocationTracking();
         break;
       }
 
       final userLocation = await getCurrentLocation();
 
-      print(
-          '############################### Service | startLocationTracking | Inside While');
       if (userLocation != null) {
         debugPrint(
             'Location start to track: ${userLocation.latitude}, ${userLocation.longitude}');
 
-        // const proximityThresholdMeters = 100;
-        //
-        // final distanceToParking = Geolocator.distanceBetween(
-        //   userLocation.latitude,
-        //   userLocation.longitude,
-        //   reservation.parking!.location.latitude,
-        //   reservation.parking!.location.longitude,
-        // );
-        //
-        // if (distanceToParking <= proximityThresholdMeters) {
-        //   print(
-        //       'Breaking loop because distance to parking is within threshold');
-        //   break;
-        // }
+        const proximityThresholdMeters = 100;
 
-        print(
-            '####### Location Service | Updating Location | New Location: ${userLocation.latitude}, ${userLocation.longitude},');
+        final distanceToParking = Geolocator.distanceBetween(
+          userLocation.latitude,
+          userLocation.longitude,
+          reservation.parking!.location.latitude,
+          reservation.parking!.location.longitude,
+        );
+
+        if (distanceToParking <= proximityThresholdMeters) {
+          print(
+              'Breaking loop because distance to parking is within threshold');
+          break;
+        }
 
         await updateUserLocationInReservationDatabase(
             reservation, userLocation);
       }
 
-      await Future.delayed(const Duration(seconds: 30));
+      /// Tempo de update da localização
+      await Future.delayed(const Duration(seconds: 10));
     }
-    print(
-        '############################### Service | startLocationTracking completed');
   }
 
   void stopLocationTracking() {
+    print('Location Service | Stopping Tracking Location');
     isTracking = false;
   }
 
@@ -122,7 +145,7 @@ class LocationService {
 
     return Geolocator.getPositionStream(
       locationSettings: LocationSettings(
-        accuracy: LocationAccuracy.best,
+        accuracy: LocationAccuracy.bestForNavigation,
         distanceFilter: 3,
       ),
     ).listen((Position position) {
@@ -134,11 +157,11 @@ class LocationService {
       Reservation reservation, Position position) async {
     try {
       print(
-          'Location Service | updateUserLocationInReservationDatabase | Location: ${position.latitude}, ${position.longitude}');
+          'Location Service | updateUserLocationInReservationDatabase | Location: ${position.heading} - ${position.latitude}, ${position.longitude}');
       final locationHistory = LocationHistory(
         latitude: position.latitude,
         longitude: position.longitude,
-        heading: position.heading,
+        heading: await _getHeadingFromGyroscope(),
         timestamp: DateTime.now(),
       );
       await _reservationRepository.updateReservationLocation(

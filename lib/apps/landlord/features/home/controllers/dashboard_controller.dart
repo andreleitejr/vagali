@@ -179,14 +179,24 @@ class LandlordHomeController extends GetxController {
 // }
 
   Future<void> _animateCameraToLocation() async {
-    await _mapController?.animateCamera(CameraUpdate.newLatLng(location.value));
+    final currentPosition = CameraPosition(
+      target: LatLng(
+        currentReservation.value!.locationHistory.last.latitude.toDouble(),
+        currentReservation.value!.locationHistory.last.longitude.toDouble(),
+      ),
+      zoom: 16,
+      // bearing:
+      //     currentReservation.value!.locationHistory.last.heading.toDouble(),
+    );
+    await _mapController
+        ?.animateCamera(CameraUpdate.newCameraPosition(currentPosition));
     await Future.delayed(const Duration(seconds: 1));
   }
 
   Future<void> _calculateAndSetEstimatedArrivalTime() async {
     estimatedArrivalTime.value = await _locationService.calculateEstimatedTime(
-      location.value.latitude,
-      location.value.longitude,
+      currentReservation.value!.locationHistory.last.latitude.toDouble(),
+      currentReservation.value!.locationHistory.last.longitude.toDouble(),
       currentReservation.value!.parking!.location.latitude,
       currentReservation.value!.parking!.location.longitude,
     );
@@ -215,7 +225,7 @@ class LandlordHomeController extends GetxController {
 //   }
 // }
 
-  var location = const LatLng(-23.5504533, -46.6339112).obs;
+  // var location = const LatLng(-23.5504533, -46.6339112).obs;
 
   void _updateMarker() {
     marker.value = null;
@@ -225,16 +235,16 @@ class LandlordHomeController extends GetxController {
 
     print(
         'CURRENT USER LONGITUDE: ${currentReservation.value!.locationHistory.last.latitude.toDouble()}');
-    location.value = LatLng(
+    final location = LatLng(
       currentReservation.value!.locationHistory.last.latitude.toDouble(),
       currentReservation.value!.locationHistory.last.longitude.toDouble(),
     );
     marker.value = Marker(
       markerId: const MarkerId('userMarker'),
-      position: location.value,
+      position: location,
       icon: carMarkerIcon,
-      rotation:
-          currentReservation.value!.locationHistory.last.heading.toDouble(),
+      rotation: 0,
+      anchor: Offset(0.5, 0.45),
     );
   }
 

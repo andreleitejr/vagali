@@ -59,6 +59,7 @@ class MapController extends GetxController {
           target: LatLng(userCurrentLocation.value!.latitude,
             userCurrentLocation.value!.longitude,),
           zoom: 16,
+          bearing: userCurrentLocation.value!.heading,
         );
         googleMapController!
             .animateCamera(CameraUpdate.newCameraPosition(currentPosition));

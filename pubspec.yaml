@@ -73,6 +73,7 @@ dependencies:
   fl_chart: ^0.63.0
   table_calendar: ^3.0.0
   flutter_native_splash: ^2.3.7
+  sensors_plus: ^4.0.2
 
 dependency_overrides:
   firebase_core_platform_interface: 4.8.0
