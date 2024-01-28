@@ -53,6 +53,16 @@ class MapController extends GetxController {
       userCurrentLocation.value = position;
 
       _updateUserMarker();
+
+      if(googleMapController != null){
+        final currentPosition = CameraPosition(
+          target: LatLng(userCurrentLocation.value!.latitude,
+            userCurrentLocation.value!.longitude,),
+          zoom: 16,
+        );
+        googleMapController!
+            .animateCamera(CameraUpdate.newCameraPosition(currentPosition));
+      }
       loading(false);
     });
 
@@ -168,13 +178,6 @@ class MapController extends GetxController {
   void _updateUserMarker() {
     markers.remove(userMarker);
     _addUserMarker();
-    final currentPosition = CameraPosition(
-      target: LatLng(userCurrentLocation.value!.latitude,
-          userCurrentLocation.value!.longitude),
-      zoom: 16,
-    );
-    googleMapController!
-        .animateCamera(CameraUpdate.newCameraPosition(currentPosition));
   }
 
   void _addMarkers() {

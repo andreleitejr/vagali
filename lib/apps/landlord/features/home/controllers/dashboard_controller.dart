@@ -90,7 +90,13 @@ class LandlordHomeController extends GetxController {
           .firstWhereOrNull((reservation) => reservation.isUserOnTheWay);
       if (reservationWithUserOnTheWay != null) {
         currentReservation.value = reservationWithUserOnTheWay;
+        print(
+            '######################################## LISTENING LATITUDE ${currentReservation.value!.locationHistory.last.latitude.toDouble()}');
+
+        print(
+            '######################################## LISTENING LONGITUDE ${currentReservation.value!.locationHistory.last.latitude.toDouble()}');
         _updateMarker();
+
         await _animateCameraToLocation();
         await _calculateAndSetEstimatedArrivalTime();
       } else {
@@ -179,7 +185,11 @@ class LandlordHomeController extends GetxController {
 
   Future<void> _calculateAndSetEstimatedArrivalTime() async {
     estimatedArrivalTime.value = await _locationService.calculateEstimatedTime(
-        location.value.latitude, location.value.longitude);
+      location.value.latitude,
+      location.value.longitude,
+      currentReservation.value!.parking!.location.latitude,
+      currentReservation.value!.parking!.location.longitude,
+    );
   }
 
   bool get hasOpenReservation =>
@@ -208,6 +218,13 @@ class LandlordHomeController extends GetxController {
   var location = const LatLng(-23.5504533, -46.6339112).obs;
 
   void _updateMarker() {
+    marker.value = null;
+
+    print(
+        'CURRENT USER LATITUDE: ${currentReservation.value!.locationHistory.last.latitude.toDouble()}');
+
+    print(
+        'CURRENT USER LONGITUDE: ${currentReservation.value!.locationHistory.last.latitude.toDouble()}');
     location.value = LatLng(
       currentReservation.value!.locationHistory.last.latitude.toDouble(),
       currentReservation.value!.locationHistory.last.longitude.toDouble(),

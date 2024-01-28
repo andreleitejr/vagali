@@ -51,7 +51,6 @@ class LocationService {
 
   Future<void> startLocationTracking(Reservation reservation) async {
     print('############################### Service | startLocationTracking');
-    final userLocation = await getCurrentLocation();
 
     print(
         '############################### Service | startLocationTracking | ${userLocation?.latitude} ${userLocation?.longitude}');
@@ -65,8 +64,11 @@ class LocationService {
 
       if (!reservation.isUserOnTheWay) {
         print('Breaking loop because user is not on the way');
+        stopLocationTracking();
         break;
       }
+
+      final userLocation = await getCurrentLocation();
 
       print(
           '############################### Service | startLocationTracking | Inside While');
@@ -74,19 +76,23 @@ class LocationService {
         debugPrint(
             'Location start to track: ${userLocation.latitude}, ${userLocation.longitude}');
 
-        const proximityThresholdMeters = 100;
+        // const proximityThresholdMeters = 100;
+        //
+        // final distanceToParking = Geolocator.distanceBetween(
+        //   userLocation.latitude,
+        //   userLocation.longitude,
+        //   reservation.parking!.location.latitude,
+        //   reservation.parking!.location.longitude,
+        // );
+        //
+        // if (distanceToParking <= proximityThresholdMeters) {
+        //   print(
+        //       'Breaking loop because distance to parking is within threshold');
+        //   break;
+        // }
 
-        final distanceToParking = Geolocator.distanceBetween(
-          userLocation.latitude,
-          userLocation.longitude,
-          reservation.parking!.location.latitude,
-          reservation.parking!.location.longitude,
-        );
-
-        if (distanceToParking <= proximityThresholdMeters) {
-          print('Breaking loop because distance to parking is within threshold');
-          break;
-        }
+        print(
+            '####### Location Service | Updating Location | New Location: ${userLocation.latitude}, ${userLocation.longitude},');
 
         await updateUserLocationInReservationDatabase(
             reservation, userLocation);
@@ -94,9 +100,9 @@ class LocationService {
 
       await Future.delayed(const Duration(seconds: 30));
     }
-    print('############################### Service | startLocationTracking completed');
+    print(
+        '############################### Service | startLocationTracking completed');
   }
-
 
   void stopLocationTracking() {
     isTracking = false;
@@ -127,6 +133,8 @@ class LocationService {
   Future<void> updateUserLocationInReservationDatabase(
       Reservation reservation, Position position) async {
     try {
+      print(
+          'Location Service | updateUserLocationInReservationDatabase | Location: ${position.latitude}, ${position.longitude}');
       final locationHistory = LocationHistory(
         latitude: position.latitude,
         longitude: position.longitude,
@@ -145,14 +153,16 @@ class LocationService {
   Future<double?> calculateEstimatedTime(
     double originLatitude,
     double originLongitude,
+    double destinationLatitude,
+    double destinationLongitude,
   ) async {
     final userLocation = await getCurrentLocation();
 
     if (userLocation != null) {
       try {
         final distanceInMeters = Geolocator.distanceBetween(
-          userLocation.latitude,
-          userLocation.longitude,
+          destinationLatitude,
+          destinationLongitude,
           originLatitude,
           originLongitude,
         );
