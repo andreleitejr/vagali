@@ -83,7 +83,6 @@ class ParkingDetailsView extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: UserCard(user: parking.owner!),
             ),
-
           const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
