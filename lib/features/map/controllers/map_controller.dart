@@ -168,6 +168,13 @@ class MapController extends GetxController {
   void _updateUserMarker() {
     markers.remove(userMarker);
     _addUserMarker();
+    final currentPosition = CameraPosition(
+      target: LatLng(userCurrentLocation.value!.latitude,
+          userCurrentLocation.value!.longitude),
+      zoom: 16,
+    );
+    googleMapController!
+        .animateCamera(CameraUpdate.newCameraPosition(currentPosition));
   }
 
   void _addMarkers() {
