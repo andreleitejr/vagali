@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:vagali/features/item/models/item.dart';
-import 'package:vagali/features/item/models/vehicle.dart';
 import 'package:vagali/features/item/repositories/item_repository.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/models/image_blurhash.dart';

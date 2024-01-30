@@ -1,14 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
-import 'package:vagali/apps/landlord/features/parking/repositories/parking_repository.dart';
-import 'package:vagali/apps/landlord/models/landlord.dart';
-import 'package:vagali/apps/landlord/repositories/landlord_repository.dart';
-import 'package:vagali/apps/tenant/features/vehicle/models/vehicle.dart';
-import 'package:vagali/apps/tenant/features/vehicle/repositories/vehicle_repository.dart';
-import 'package:vagali/features/item/models/item.dart';
-import 'package:vagali/features/item/models/vehicle.dart';
-import 'package:vagali/features/item/repositories/item_repository.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/repositories/reservation_repository.dart';
 import 'package:vagali/features/user/models/user.dart';

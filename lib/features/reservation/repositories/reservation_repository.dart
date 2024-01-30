@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:vagali/apps/landlord/features/parking/repositories/parking_repository.dart';
 import 'package:vagali/apps/landlord/models/landlord.dart';
 import 'package:vagali/apps/landlord/repositories/landlord_repository.dart';
-import 'package:vagali/apps/tenant/features/vehicle/repositories/vehicle_repository.dart';
 import 'package:vagali/apps/tenant/models/tenant.dart';
 import 'package:vagali/apps/tenant/repositories/tenant_repository.dart';
 import 'package:vagali/features/item/repositories/item_repository.dart';

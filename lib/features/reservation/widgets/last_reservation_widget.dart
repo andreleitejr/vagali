@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:vagali/features/item/models/item.dart';
 import 'package:vagali/features/reservation/controllers/reservation_list_controller.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
-import 'package:vagali/features/reservation/views/reservation_details_view.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';

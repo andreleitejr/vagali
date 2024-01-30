@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:vagali/features/item/models/item.dart';
-import 'package:vagali/features/item/models/vehicle.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 

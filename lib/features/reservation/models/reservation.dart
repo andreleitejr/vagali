@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/apps/landlord/models/landlord.dart';
-import 'package:vagali/apps/tenant/features/vehicle/models/vehicle.dart';
 import 'package:vagali/apps/tenant/models/tenant.dart';
 import 'package:vagali/features/item/models/item.dart';
 import 'package:vagali/models/base_model.dart';

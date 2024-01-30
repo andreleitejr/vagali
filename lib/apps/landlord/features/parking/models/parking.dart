@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking_tag.dart';
 import 'package:vagali/apps/landlord/features/parking/models/price.dart';
-import 'package:vagali/apps/landlord/models/landlord.dart';
 import 'package:vagali/features/address/models/address.dart';
 import 'package:vagali/features/rating/models/rating.dart';
 import 'package:vagali/features/user/models/user.dart';

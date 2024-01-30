@@ -10,7 +10,6 @@ import 'package:vagali/features/item/repositories/item_repository.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/models/dimension.dart';
 import 'package:vagali/models/image_blurhash.dart';
-import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/services/image_service.dart';
 
 /// IMPLEMENTAR O SEARCH POSTERIORMENTE NA VERSAO 1.0.1

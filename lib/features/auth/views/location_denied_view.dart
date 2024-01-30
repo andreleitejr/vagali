@@ -4,7 +4,6 @@ import 'package:vagali/theme/images.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/gradient_text.dart';
-import 'package:vagali/widgets/rounded_gradient_button.dart';
 
 class LocationDeniedView extends StatelessWidget {
   const LocationDeniedView({super.key});

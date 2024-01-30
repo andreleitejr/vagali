@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:blurhash/blurhash.dart';
 import 'package:dio/dio.dart';
@@ -11,7 +10,6 @@ import 'package:image/image.dart'
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:vagali/models/image_blurhash.dart';
-import 'package:vagali/repositories/storage_repository.dart';
 
 class ImageService {
   static const double _maxHeight = 512;

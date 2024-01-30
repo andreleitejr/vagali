@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vagali/apps/tenant/features/home/views/base_view.dart';
 import 'package:vagali/features/item/models/item.dart';
 import 'package:vagali/features/item/views/item_edit_view.dart';
 import 'package:vagali/utils/extensions.dart';
-import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/search_input.dart';
-import 'package:vagali/widgets/top_bavigation_bar.dart';
 
 class ItemTypeListController extends GetxController {
   final searchText = ''.obs;

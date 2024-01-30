@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
-import 'package:vagali/apps/landlord/features/parking/repositories/parking_repository.dart';
 
 class ParkingDetailsController extends GetxController {
   // final ParkingRepository _repository = Get.find();

@@ -6,7 +6,6 @@ import 'package:vagali/apps/tenant/features/payment/views/payment_view.dart';
 import 'package:vagali/features/chat/views/chat_view.dart';
 import 'package:vagali/features/reservation/controllers/reservation_list_controller.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
-import 'package:vagali/services/location_service.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';

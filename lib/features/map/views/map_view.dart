@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:get/get.dart';
@@ -9,9 +8,7 @@ import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/image_gallery_dialog.dart';
 import 'package:vagali/widgets/loader.dart';
-import 'package:vagali/widgets/search_input.dart';
 import 'package:vagali/widgets/tag_list.dart';
-import 'package:vagali/widgets/user_card.dart';
 
 class MapView extends StatefulWidget {
   @override

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vagali/features/item/models/item.dart';
-import 'package:vagali/models/image_blurhash.dart';
 
 class Vehicle extends Item {
   final String vehicleType;

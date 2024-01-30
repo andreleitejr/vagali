@@ -10,7 +10,6 @@ import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/carousel_image_slider.dart';
 import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/over_image_button.dart';
-import 'package:vagali/widgets/rounded_gradient_button.dart';
 import 'package:vagali/widgets/tag_list.dart';
 import 'package:vagali/widgets/user_card.dart';
 

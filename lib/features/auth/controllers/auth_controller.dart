@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:vagali/apps/landlord/features/parking/repositories/parking_repository.dart';
 import 'package:vagali/apps/landlord/repositories/landlord_repository.dart';
 import 'package:vagali/apps/tenant/repositories/tenant_repository.dart';
-
 // Features
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/auth/views/auth_view.dart';

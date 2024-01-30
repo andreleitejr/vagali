@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vagali/apps/tenant/features/vehicle/widgets/vehicle_info_widget.dart';
 import 'package:vagali/features/address/widgets/address_card.dart';
 import 'package:vagali/features/chat/views/chat_view.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
@@ -13,7 +12,6 @@ import 'package:vagali/widgets/carousel_image_slider.dart';
 import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/date_period.dart';
 import 'package:vagali/widgets/flat_button.dart';
-import 'package:vagali/widgets/reservation_status_indicator.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 import 'package:vagali/widgets/user_card.dart';
 import 'package:vagali/widgets/warning_dialog.dart';

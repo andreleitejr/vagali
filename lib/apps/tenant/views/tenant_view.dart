@@ -2,13 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/apps/tenant/controllers/tenant_controller.dart';
-import 'package:vagali/apps/tenant/features/vehicle/views/vehicle_list_view.dart';
 import 'package:vagali/features/config/views/config_view.dart';
 import 'package:vagali/features/config/widgets/config_list_tile.dart';
 import 'package:vagali/features/faq/views/faq_view.dart';
-import 'package:vagali/features/item/models/item.dart';
-import 'package:vagali/features/item/views/item_list_view.dart';
-import 'package:vagali/features/support/views/support_edit_view.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/loader.dart';

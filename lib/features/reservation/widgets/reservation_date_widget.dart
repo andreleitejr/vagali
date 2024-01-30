@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/utils/extensions.dart';
-import 'package:vagali/widgets/coolicon.dart';
 
 class ReservationDateWidget extends StatefulWidget {
   final Function(DateTime?, DateTime?) onDatesSelected;

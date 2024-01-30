@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jumping_dot/jumping_dot.dart';
 import 'package:vagali/apps/landlord/features/home/views/landlord_base_view.dart';
 import 'package:vagali/apps/landlord/features/parking/controllers/parking_edit_controller.dart';
 import 'package:vagali/apps/landlord/features/parking/widgets/parking_edit_step_five.dart';
@@ -12,7 +11,6 @@ import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/loading_view.dart';
-import 'package:vagali/widgets/logo.dart';
 import 'package:vagali/widgets/snackbar.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
