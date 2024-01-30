@@ -17,7 +17,7 @@ import 'package:vagali/theme/images.dart';
 class MapController extends GetxController {
   final LocationService _locationService = Get.find();
   final ParkingRepository _parkingRepository = Get.find();
-  final  _landlordRepository = Get.put(LandlordRepository());
+  final _landlordRepository = Get.put(LandlordRepository());
   final SearchService _searchService = Get.find();
   GoogleMapController? googleMapController;
 
@@ -54,10 +54,12 @@ class MapController extends GetxController {
 
       _updateUserMarker();
 
-      if(googleMapController != null){
+      if (googleMapController != null) {
         final currentPosition = CameraPosition(
-          target: LatLng(userCurrentLocation.value!.latitude,
-            userCurrentLocation.value!.longitude,),
+          target: LatLng(
+            userCurrentLocation.value!.latitude,
+            userCurrentLocation.value!.longitude,
+          ),
           zoom: 16,
           bearing: userCurrentLocation.value!.heading,
         );
