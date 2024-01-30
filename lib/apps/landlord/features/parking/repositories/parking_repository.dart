@@ -106,20 +106,20 @@ class ParkingRepository extends FirestoreRepository<Parking> {
   //   }
   // }
 
-  final ImageService _imageService = ImageService();
+  // final ImageService _imageService = ImageService();
 
-  Future<void> saveParkingWithImages(
-      Parking parking, List<File> imageFiles) async {
-    try {
-      final docReference =
-          await firestore.collection(collectionName).add(parking.toMap());
-
-      final imageUrls =
-          await _imageService.uploadImages(imageFiles, 'parking_images');
-
-      await docReference.update({'imageUrls': imageUrls});
-    } catch (error) {
-      debugPrint('Erro ao salvar estacionamento com imagens: $error');
-    }
-  }
+  // Future<void> saveParkingWithImages(
+  //     Parking parking, List<File> imageFiles) async {
+  //   try {
+  //     final docReference =
+  //         await firestore.collection(collectionName).add(parking.toMap());
+  //
+  //     final imageUrls =
+  //         await _imageService.uploadImages(imageFiles, 'parking_images');
+  //
+  //     await docReference.update({'imageUrls': imageUrls});
+  //   } catch (error) {
+  //     debugPrint('Erro ao salvar estacionamento com imagens: $error');
+  //   }
+  // }
 }

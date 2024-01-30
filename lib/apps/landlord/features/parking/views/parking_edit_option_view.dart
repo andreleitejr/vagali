@@ -71,10 +71,8 @@ class _ParkingEditOptionViewState extends State<ParkingEditOptionView> {
                 body: StepTwoWidget(controller: controller),
                 onSave: () async {
                   if (controller.isImageValid.isTrue) {
-                    await controller.uploadImages();
                     final result = await controller.save();
                     if (result == SaveResult.success) {
-                      print('SaveResult asdhusdahsaduahuhuhdasu $result');
                       Get.back();
                     } else {
                       snackBar('Erro', controller.imageError.value);

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
@@ -33,7 +35,7 @@ class ParkingEditController extends GetxController {
   final _priceService = PriceService();
   final scheduleService = ScheduleService();
 
-  final Parking? parking;
+  Parking? parking;
 
   final currentParking = Rx<Parking?>(null);
 
@@ -77,6 +79,9 @@ class ParkingEditController extends GetxController {
   final currentStep = 0.obs;
   final selectedGalleryImages = <XFile>[].obs;
   final selectedImagesBlurhash = <ImageBlurHash>[].obs;
+
+  // final selectedBlurhash = <String>[].obs;
+  // final selectedImageUrls = <String>[].obs;
 
   final nameController = ''.obs;
   final descriptionController = ''.obs;
@@ -332,28 +337,20 @@ class ParkingEditController extends GetxController {
       if (xFiles.isNotEmpty) {
         selectedGalleryImages.clear();
         selectedGalleryImages.addAll(xFiles);
+
+        for (final galleryImage in selectedGalleryImages) {
+          final blurhash = await _getBlurhash(galleryImage);
+          final imageUrl = await _getImageUrls(galleryImage);
+          if (blurhash != null && imageUrl != null) {
+            final imageBlurhash =
+                ImageBlurHash(image: imageUrl, blurHash: blurhash);
+            selectedImagesBlurhash.add(imageBlurhash);
+          }
+        }
       } else {
         // Nenhuma imagem selecionada
       }
     }
-  }
-
-  Future<void> uploadImages() async {
-    final blurhashImages = <ImageBlurHash>[];
-
-    /// ARRUMAR PARA FAZER UPLOAD APENAS DA IMAGEM ADICIONADA QUANDO FOR UPDATE
-    for (final selectedImage in selectedGalleryImages) {
-      final image = await _imageService.buildImageBlurHash(
-        selectedImage,
-        'users',
-      );
-
-      if (image != null) {
-        blurhashImages.add(image);
-      }
-    }
-
-    selectedImagesBlurhash.value = blurhashImages;
   }
 
   // void addSelectedImage(File image) {
@@ -428,7 +425,7 @@ class ParkingEditController extends GetxController {
 
     final isAutomatic = isAutomaticController.value;
 
-    final parking = Parking(
+    final newParking = Parking(
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
       name: nameController.value,
@@ -463,12 +460,24 @@ class ParkingEditController extends GetxController {
     //     selectedGalleryImages.map((xFile) => File(xFile.path)).toList();
 
     if (currentParking.value != null) {
-      parking.id = currentParking.value!.id;
+      newParking.id = currentParking.value!.id;
     }
-    final result = await _repository.save(parking, docId: parking.id);
+    final result = await _repository.save(newParking, docId: newParking.id);
 
     loading(false);
     return result;
+  }
+
+  Future<String?> _getImageUrls(XFile file) async {
+    final url = await _imageService.uploadImage(file, 'parkings');
+
+    return url;
+  }
+
+  Future<String?> _getBlurhash(XFile file) async {
+    final blurhash = await _imageService.getBlurhash(file);
+
+    return blurhash;
   }
 
   @override

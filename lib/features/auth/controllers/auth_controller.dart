@@ -56,15 +56,19 @@ class AuthController extends GetxController {
 
     /// TEMPO DA ANIMACAO
     if (isAuthenticated) {
-      final isRegisteredInDatabase = await _checkUserInDatabase();
-      if (isRegisteredInDatabase) {
-        navigator.home();
-      } else {
-        navigator.register();
-      }
+      await _checkAndRedirect();
     } else {
       navigator.login();
       // authStatus.value = AuthStatus.unauthenticated;
+    }
+  }
+
+  Future<void> _checkAndRedirect() async {
+    final isRegisteredInDatabase = await _checkUserInDatabase();
+    if (isRegisteredInDatabase) {
+      navigator.home();
+    } else {
+      navigator.register();
     }
   }
 
@@ -73,11 +77,15 @@ class AuthController extends GetxController {
       final user = Get.find<FlavorConfig>().flavor == Flavor.tenant
           ? await _tenantRepository.get(_authRepository.authUser!.uid)
           : await _landlordRepository.get(_authRepository.authUser!.uid);
+
+      print('################################################ error auth view');
       if (user != null) {
         Get.put(user);
         return true;
       }
 
+      print(
+          '################################################ error auth view oH NICE');
       return false;
     } catch (e) {
       return false;
@@ -87,7 +95,6 @@ class AuthController extends GetxController {
   Future<void> sendVerificationCode() async {
     try {
       await _authRepository.sendVerificationCode('+55${phone.value}');
-      // authStatus.value = newAuthStatus;
       navigator.verification();
       startCountdown();
     } catch (e) {
@@ -120,8 +127,7 @@ class AuthController extends GetxController {
       var newAuthStatus = await _authRepository.verifySmsCode(sms.value);
 
       if (newAuthStatus == AuthStatus.authenticated) {
-        final isRegisteredInDatabase = await _checkUserInDatabase();
-        if (isRegisteredInDatabase) navigator.home();
+        await _checkAndRedirect();
       } else {
         navigator.register();
       }

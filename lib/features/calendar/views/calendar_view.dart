@@ -128,12 +128,26 @@ class _CalendarViewState extends State<CalendarView> {
                     ),
                     child: Text(
                       date.day.toString(),
-                      style: ThemeTypography.semiBold12
-                          .apply(color: ThemeColors.primary),
+                      style: ThemeTypography.semiBold12.apply(
+                        color: ThemeColors.primary,
+                      ),
                     ),
                   );
                 }
-                return Container();
+                return Container(
+                  margin: const EdgeInsets.all(4),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: ThemeColors.grey1,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Text(
+                    date.day.toString(),
+                    style: ThemeTypography.regular12.apply(
+                      color: ThemeColors.grey3,
+                    ),
+                  ),
+                );
               },
               selectedBuilder: (context, date, events) {
                 return Container(

@@ -24,7 +24,7 @@ class ParkingTag extends SelectableItem {
   }
 
   @override
-  String get title => tag;
+  String get title => name;
 
   static const all = 'all';
   static const closedGate = 'closedGate';

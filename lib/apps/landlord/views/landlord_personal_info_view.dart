@@ -34,10 +34,6 @@ class _LandlordPersonalInfoViewState extends State<LandlordPersonalInfoView> {
           TextButton(
             onPressed: () async {
               if (controller.isPersonalInfoValid.isTrue) {
-                if (controller.imageFile.value != null) {
-                  controller.uploadImage();
-                }
-
                 Get.back();
 
                 final result = await controller.save();

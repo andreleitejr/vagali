@@ -29,10 +29,12 @@ class StepFiveWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Aviso: Os preços são apenas sugestões da plataforma.',
-                style: ThemeTypography.regular14.apply(
-                  color: ThemeColors.grey4,
+              Expanded(
+                child: Text(
+                  'Aviso: Os preços são apenas sugestões da plataforma.',
+                  style: ThemeTypography.regular14.apply(
+                    color: ThemeColors.grey4,
+                  ),
                 ),
               ),
             ],
@@ -40,7 +42,7 @@ class StepFiveWidget extends StatelessWidget {
           const SizedBox(height: 16),
           Obx(
             () => PriceInput(
-              initialValue:controller.pricePerHourController.value,
+              initialValue: controller.pricePerHourController.value,
               hintText: 'Preco por hora',
               keyboardType: TextInputType.number,
               error: controller.getError(controller.priceError),

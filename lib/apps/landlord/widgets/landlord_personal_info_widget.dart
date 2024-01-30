@@ -29,14 +29,14 @@ class LandlordPersonalInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final focus = FocusScope.of(context);
     return Obx(() {
-      if(controller.loading.isTrue){
+      if (controller.loading.isTrue) {
         return Container();
       }
       return ListView(
         children: [
           const SizedBox(height: 32),
           Obx(
-                () => Row(
+            () => Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ImageButton(
@@ -61,42 +61,40 @@ class LandlordPersonalInfoWidget extends StatelessWidget {
             ),
           ),
           Obx(() {
-            if (controller.imageBlurhash.value != null) {
-              return Container();
-            }
-            return Column(
-              children: [
-                const SizedBox(height: 8),
-                Text(
-                  'Tire uma foto',
-                  style: ThemeTypography.regular14.apply(
-                    color: controller.isImageValid.isTrue ||
-                        controller.showErrors.isFalse
-                        ? ThemeColors.primary
-                        : ThemeColors.red,
+            if (controller.imageFile.value == null) {
+              return Column(
+                children: [
+                  const SizedBox(height: 8),
+                  Text(
+                    'Tire uma foto',
+                    style: ThemeTypography.regular14.apply(
+                      color: controller.isImageValid.isTrue ||
+                              controller.showErrors.isFalse
+                          ? ThemeColors.primary
+                          : ThemeColors.red,
+                    ),
                   ),
-                ),
-              ],
-            );
+                ],
+              );
+            }
+            return Container();
           }),
           const SizedBox(height: 32),
-          Obx(
-                  () {
-                return Input(
-                  initialValue: controller.firstNameController.value,
-                  enabled: controller.hasCurrentUser.isFalse,
-                  onChanged: controller.firstNameController,
-                  hintText: 'Nome',
-                  keyboardType: TextInputType.name,
-                  error: controller.getError(controller.firstNameError),
-                  currentFocusNode: firstNameFocus,
-                  nextFocusNode: lastNameFocus,
-                );
-              }
-          ),
+          Obx(() {
+            return Input(
+              initialValue: controller.firstNameController.value,
+              enabled: controller.hasCurrentUser.isFalse,
+              onChanged: controller.firstNameController,
+              hintText: 'Nome',
+              keyboardType: TextInputType.name,
+              error: controller.getError(controller.firstNameError),
+              currentFocusNode: firstNameFocus,
+              nextFocusNode: lastNameFocus,
+            );
+          }),
           const SizedBox(height: 16),
           Obx(
-                () => Input(
+            () => Input(
               initialValue: controller.lastNameController.value,
               enabled: controller.hasCurrentUser.isFalse,
               onChanged: controller.lastNameController,
@@ -109,7 +107,7 @@ class LandlordPersonalInfoWidget extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Obx(
-                () => Input(
+            () => Input(
               initialValue: controller.documentController.value,
               enabled: controller.hasCurrentUser.isFalse,
               onChanged: controller.documentController,
@@ -126,7 +124,7 @@ class LandlordPersonalInfoWidget extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Obx(
-                () => Input(
+            () => Input(
               initialValue: controller.emailController.value,
               onChanged: controller.emailController,
               hintText: 'Email',
@@ -135,7 +133,7 @@ class LandlordPersonalInfoWidget extends StatelessWidget {
               currentFocusNode: emailFocus,
               onSubmit: () {
                 emailFocus.unfocus();
-                if(controller.currentUser.value == null){
+                if (controller.currentUser.value == null) {
                   showGenderBottomSheet(context);
                 }
               },
@@ -149,7 +147,7 @@ class LandlordPersonalInfoWidget extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Obx(
-                () => DateInput(
+            () => DateInput(
               date: controller.birthday.value,
               dateInputType: DateInputType.birthday,
               hintText: 'Data de aniversário',
@@ -189,14 +187,5 @@ class LandlordPersonalInfoWidget extends StatelessWidget {
       ),
       enableDrag: true,
     );
-  }
-}
-
-class GenderSelectionInpu extends StatelessWidget {
-  const GenderSelectionInpu({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }

@@ -26,6 +26,7 @@ class ItemEditController extends GetxController {
   final loading = false.obs;
   final selectedVehicleType = Rx<VehicleType?>(null);
 
+  final blurhash = Rx<String?>(null);
   final imageBlurhash = Rx<ImageBlurHash?>(null);
   final imageFileController = Rx<XFile?>(null);
   final title = ''.obs;
@@ -56,8 +57,7 @@ class ItemEditController extends GetxController {
   final registrationStateError = ''.obs;
   final imageError = ''.obs;
 
-  Dimension get dimension =>
-      Dimension(
+  Dimension get dimension => Dimension(
         width: double.parse(width.value),
         height: double.parse(height.value),
         depth: double.parse(depth.value),
@@ -72,7 +72,6 @@ class ItemEditController extends GetxController {
     return '';
   }
 
-
   Future<void> pickImage(ImageSource source) async {
     final imageUrl = await _imageService.pickImage(source);
 
@@ -83,22 +82,19 @@ class ItemEditController extends GetxController {
     }
   }
 
-  Future<ImageBlurHash?> uploadImage() async {
-    final image = await _imageService.buildImageBlurHash(
-      imageFileController.value!,
-      'users',
-    );
+  Future<void> uploadImage() async {
+    final image = await _imageService.getBlurhash(imageFileController.value!);
 
     if (image == null) {
       imageError.value = 'Falha ao carregar a imagem';
     }
 
-    return image;
+    blurhash.value = image;
   }
 
   Future<Item?> createVehicle() async {
     loading.value = true;
-    imageBlurhash.value = await uploadImage();
+    // imageBlurhash.value = await uploadImage();
 
     if (imageBlurhash.value == null) return null;
 
@@ -141,7 +137,7 @@ class ItemEditController extends GetxController {
 
   Future<Item?> createStock() async {
     loading.value = true;
-    imageBlurhash.value = await uploadImage();
+    // imageBlurhash.value = await uploadImage();
 
     if (imageBlurhash.value == null) return null;
 
@@ -173,7 +169,7 @@ class ItemEditController extends GetxController {
 
   Future<Item?> createCommonItem() async {
     loading.value = true;
-    imageBlurhash.value = await uploadImage();
+    // imageBlurhash.value = await uploadImage();
 
     if (imageBlurhash.value == null) return null;
 

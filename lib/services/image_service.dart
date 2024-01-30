@@ -1,12 +1,13 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:blurhash/blurhash.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-
-// import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image/image.dart'
+    as img; // Importa a biblioteca de manipulação de imagens
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:vagali/models/image_blurhash.dart';
@@ -25,21 +26,14 @@ class ImageService {
       imageQuality: _quality,
     );
 
-    if (pickedImage != null) {
-      // final compressedImage = _compressImage(pickedImage);
-      return pickedImage;
-    } else {
-      // Nenhum arquivo de imagem selecionado
-      return null;
-    }
+    return pickedImage;
   }
 
-  Future<String?> uploadImage(String fileName, XFile file) async {
+  Future<String?> uploadImage(XFile file, String folderName) async {
     try {
-      // final compressedFile = await _compressImage(file);
-
+      final fileName = DateTime.now().millisecondsSinceEpoch.toString();
       final reference =
-          FirebaseStorage.instance.ref().child('user_images/$fileName.jpg');
+          FirebaseStorage.instance.ref().child('$folderName/$fileName.jpg');
       await reference.putFile(File(file.path));
       final imageUrl = await reference.getDownloadURL();
       return imageUrl;
@@ -57,14 +51,7 @@ class ImageService {
     );
 
     if (pickedImages.isNotEmpty) {
-      final compressedImages = <File>[];
-      for (final image in pickedImages) {
-        compressedImages.add(File(image.path));
-      }
-      final files =
-          compressedImages.map((compressed) => File(compressed.path)).toList();
-
-      return files;
+      return pickedImages.map((pickedImage) => File(pickedImage.path)).toList();
     } else {
       print('Nenhuma imagem foi selecionada.');
       return [];
@@ -75,27 +62,36 @@ class ImageService {
     final storage = FirebaseStorage.instance;
     final imageUrls = <String>[];
 
-    for (final file in files) {
+    // Envio paralelo das imagens
+    await Future.wait(files.map((file) async {
       final fileName = DateTime.now().millisecondsSinceEpoch.toString();
       final reference = storage.ref().child('$folderName/$fileName.jpg');
-      await reference.putFile(file);
+
+      // Comprime a imagem antes do upload
+      final compressedFile = await _compressImage(file);
+
+      // Envio da imagem comprimida
+      await reference.putFile(compressedFile);
       final imageUrl = await reference.getDownloadURL();
       imageUrls.add(imageUrl);
-    }
+    }));
 
     return imageUrls;
   }
 
-  // Future<XFile> _compressImage(XFile file) async {
-  //   final result = await FlutterImageCompress.compressAndGetFile(
-  //     file.path,
-  //     file.path.replaceFirst(".jpg", "_compressed.jpg"),
-  //     quality: 75,
-  //     minHeight: 512,
-  //     minWidth: 512,
-  //   );
-  //   return result!;
-  // }
+  Future<File> _compressImage(File file) async {
+    final image = img.decodeImage(file.readAsBytesSync())!;
+
+    final compressedImage = img.encodeJpg(image, quality: 55);
+
+    final directory = await getTemporaryDirectory();
+    final compressedFilePath =
+        '${directory.path}/${DateTime.now().millisecondsSinceEpoch}_compressed.jpg';
+
+    File(compressedFilePath).writeAsBytesSync(compressedImage);
+
+    return File(compressedFilePath);
+  }
 
   Future<String> encode(File file) async {
     Uint8List pixels = await file.readAsBytes();
@@ -115,21 +111,14 @@ class ImageService {
     }
   }
 
-  Future<ImageBlurHash?> buildImageBlurHash(
-      XFile xfile, String repositoryName) async {
+  Future<String?> getBlurhash(XFile xfile) async {
     try {
-      final storage = StorageRepository(name: repositoryName);
-      // TESTAR COMPRESSAO
-      // final compressedFile = await _compressImage(xfile);
       final file = File(xfile.path);
       final blurHash = await encode(file);
+
       if (blurHash.isNotEmpty) {
-        debugPrint('Image de Blurhash codificada com sucesso...');
-        final url = await storage.uploadAndGetUrl(file);
-        if (url != null && url.isNotEmpty) {
-          debugPrint('Upload de Image de Blurhash realizado com sucesso...');
-          return ImageBlurHash(image: url, blurHash: blurHash);
-        }
+        debugPrint('Imagem Blurhash codificada com sucesso...');
+        return blurHash;
       }
       return null;
     } catch (e) {
@@ -138,14 +127,25 @@ class ImageService {
     }
   }
 
+  // final storage = StorageRepository(name: repositoryName);
+  // final url = await storage.uploadAndGetUrl(file);
+  //
+  // if (url != null && url.isNotEmpty) {
+  // debugPrint('Upload de Imagem Blurhash realizado com sucesso...');
+  // return ImageBlurHash(image: url, blurHash: blurHash);
+  // }
+
   Future<List<XFile>> downloadAndSaveImagesToLocal(
       List<ImageBlurHash> imageUrls) async {
     final List<XFile> localImages = [];
 
-    for (final url in imageUrls) {
+    // Envio paralelo das imagens
+    await Future.wait(imageUrls.map((url) async {
       try {
-        final response = await Dio().get<List<int>>(url.image,
-            options: Options(responseType: ResponseType.bytes));
+        final response = await Dio().get<List<int>>(
+          url.image,
+          options: Options(responseType: ResponseType.bytes),
+        );
 
         final directory = await getTemporaryDirectory();
         final filePath =
@@ -156,7 +156,7 @@ class ImageService {
       } catch (e) {
         debugPrint('Erro ao baixar e salvar imagem: $e');
       }
-    }
+    }));
 
     return localImages;
   }

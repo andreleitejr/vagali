@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -139,28 +141,45 @@ class LandlordEditController extends GetxController {
   }
 
   Future<void> pickImage(ImageSource source) async {
-    final imageUrl = await _imageService.pickImage(source);
+    final image = await _imageService.pickImage(source);
 
-    if (imageUrl != null) {
-      imageFile.value = imageUrl;
+    if (image != null) {
+      imageFile.value = image;
+      final blurhash = await _getBlurhash();
+      final imageUrl = await _getImageUrl();
+      if (blurhash != null && imageUrl != null) {
+        imageBlurhash.value =
+            ImageBlurHash(image: imageUrl, blurHash: blurhash);
+      }
     } else {
       imageError.value = 'Falha ao carregar a imagem';
     }
   }
 
-  Future<void> uploadImage() async {
+  Future<String?> _getBlurhash() async {
     if (imageFile.value != null) {
-      final image = await _imageService.buildImageBlurHash(
-        imageFile.value!,
-        'users',
-      );
+      final blurhash = await _imageService.getBlurhash(imageFile.value!);
 
-      if (image == null) {
+      if (blurhash == null) {
         imageError.value = 'Falha ao carregar a imagem';
-        return;
+        return null;
       }
 
-      imageBlurhash.value = image;
+      return blurhash;
+    }
+  }
+
+  Future<String?> _getImageUrl() async {
+    if (imageFile.value != null) {
+      final imageUrl =
+          await _imageService.uploadImage(imageFile.value!, 'landlords');
+
+      if (imageUrl == null) {
+        imageError.value = 'Falha ao carregar a imagem';
+        return null;
+      }
+
+      return imageUrl;
     }
   }
 

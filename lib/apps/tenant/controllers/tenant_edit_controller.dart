@@ -56,6 +56,7 @@ class TenantEditController extends GetxController {
 
   final Rx<DateTime?> birthday = Rx<DateTime?>(null);
 
+  var blurhash = Rx<String?>(null);
   var imageBlurhash = Rx<ImageBlurHash?>(null);
   final imageFile = Rx<XFile?>(null);
 
@@ -127,18 +128,18 @@ class TenantEditController extends GetxController {
       (isPersonalInfoValid.isTrue && isAddressValid.isTrue).obs;
 
   RxBool get isPersonalInfoValid => (isImageValid.isTrue &&
-      isFirstNameValid.isTrue &&
-      isLastNameValid.isTrue &&
-      isDocumentValid.isTrue &&
-      isEmailValid.isTrue &&
-      isBirthdayValid.isTrue)
+          isFirstNameValid.isTrue &&
+          isLastNameValid.isTrue &&
+          isDocumentValid.isTrue &&
+          isEmailValid.isTrue &&
+          isBirthdayValid.isTrue)
       .obs;
 
   RxBool get isAddressValid => (isPostalCodeValid.isTrue &&
-      isNumberValid.isTrue &&
-      isStreetValid.isTrue &&
-      isCityValid.isTrue &&
-      isStateValid.isTrue)
+          isNumberValid.isTrue &&
+          isStreetValid.isTrue &&
+          isCityValid.isTrue &&
+          isStateValid.isTrue)
       .obs;
 
   RxBool get isImageValid {
@@ -160,7 +161,7 @@ class TenantEditController extends GetxController {
   }
 
   RxBool get isEmailValid => (emailController.value.isNotEmpty &&
-      emailRegExp.hasMatch(emailController.value))
+          emailRegExp.hasMatch(emailController.value))
       .obs;
 
   RxBool get isBirthdayValid => (birthday.value != null).obs;
@@ -174,7 +175,7 @@ class TenantEditController extends GetxController {
     if (isPostalCodeValid.isTrue) {
       isPostalCodeLoading.value = true;
       final addressDetails =
-      await _addressService.getAddressDetails(postalCodeClean.value);
+          await _addressService.getAddressDetails(postalCodeClean.value);
 
       if (addressDetails != null) {
         streetController.value = addressDetails['logradouro'] ?? '';
@@ -218,17 +219,14 @@ class TenantEditController extends GetxController {
 
   Future<void> uploadImage() async {
     if (imageFile.value != null) {
-      final image = await _imageService.buildImageBlurHash(
-        imageFile.value!,
-        'users',
-      );
+      final image = await _imageService.getBlurhash(imageFile.value!);
 
       if (image == null) {
         imageError.value = 'Falha ao carregar a imagem';
         return;
       }
 
-      imageBlurhash.value = image;
+      blurhash.value = image;
     }
   }
 
@@ -261,8 +259,7 @@ class TenantEditController extends GetxController {
       // type: UserType.landlord,
     );
 
-    final result =
-    await _tenantRepository.save(user as Tenant, docId: user.id);
+    final result = await _tenantRepository.save(user as Tenant, docId: user.id);
 
     if (result == SaveResult.success) {
       Get.put<User>(user);

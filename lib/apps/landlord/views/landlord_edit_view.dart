@@ -36,6 +36,7 @@ class _LandlordEditViewState extends State<LandlordEditView> {
 
     if (isValidStep) {
       if (_currentPage < 1) {
+        if (_currentPage == 0) {}
         _controller.showErrors(false);
         _navigateToNextPage();
       } else {
@@ -58,7 +59,7 @@ class _LandlordEditViewState extends State<LandlordEditView> {
 
   Future<void> _handleNavigationOnValidStep() async {
     if (_controller.isValid()) {
-      await _controller.uploadImage();
+      // await _controller.uploadImage();
       final result = await _controller.save();
       if (result == SaveResult.success) {
         _navigateToEditView();
