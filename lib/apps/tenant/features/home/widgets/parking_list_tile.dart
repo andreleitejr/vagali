@@ -40,7 +40,7 @@ class ParkingListTile extends StatelessWidget {
                 width: 64,
                 height: 64,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(8),
                   child: BlurHash(
                     imageFit: BoxFit.cover,
                     image: parking.images.first.image,
@@ -73,11 +73,14 @@ class ParkingListTile extends StatelessWidget {
                                 const Coolicon(
                                   icon: Coolicons.mapPin,
                                   color: ThemeColors.primary,
+                                  width: 16,
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
                                   parking.distance.formatDistance,
-                                  style: ThemeTypography.semiBold14,
+                                  style: ThemeTypography.semiBold14.apply(
+                                    color: ThemeColors.grey4,
+                                  ),
                                 ),
                               ],
                             ),
@@ -101,67 +104,68 @@ class ParkingListTile extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8.0),
+                  const SizedBox(height: 4),
                   ShimmerBox(
                     loading: loading,
                     child: Text(
-                      '${parking.address.street}, ${parking.address.city}',
-                      style: const TextStyle(fontSize: 14, color: Colors.grey),
+                      parking.description,
+                      style: ThemeTypography.regular12,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   ShimmerBox(
-                      loading: loading,
-                      child: Stack(
-                        children: [
-                          Row(
-                            children: [
-                              const Coolicon(
-                                icon: Coolicons.starFilled,
-                                color: ThemeColors.primary,
-                              ),
-                              const SizedBox(width: 4),
-                              const Text(
-                                '4.7',
-                                style: ThemeTypography.semiBold14,
-                              ),
-                              const SizedBox(width: 8),
-                              Container(
-                                width: 4,
-                                height: 4,
-                                decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                'R\$${parking.price.hour?.toStringAsFixed(0)}',
-                                style: ThemeTypography.semiBold14,
-                              ),
-                              const SizedBox(width: 4),
-                              const Text(
-                                '/ hora',
-                                style: ThemeTypography.regular12,
-                              ),
-                            ],
-                          ),
-                          Positioned(
-                            left: 0,
-                            top: 0,
-                            right: 0,
-                            bottom: 0,
-                            child: Container(
-                              height: 18,
-                              decoration: BoxDecoration(
-                                color:
-                                    loading ? Colors.black : Colors.transparent,
-                                borderRadius: BorderRadius.circular(100),
-                              ),
+                    loading: loading,
+                    child: Stack(
+                      children: [
+                        Row(
+                          children: [
+                            // const Coolicon(
+                            //   icon: Coolicons.starFilled,
+                            //   color: ThemeColors.primary,
+                            // ),
+                            // const SizedBox(width: 4),
+                            // const Text(
+                            //   '4.7',
+                            //   style: ThemeTypography.semiBold14,
+                            // ),
+                            // const SizedBox(width: 8),
+                            // Container(
+                            //   width: 4,
+                            //   height: 4,
+                            //   decoration: BoxDecoration(
+                            //     color: Colors.black,
+                            //     borderRadius: BorderRadius.circular(8),
+                            //   ),
+                            // ),
+                            // const SizedBox(width: 8),
+                            Text(
+                              'A partir de R\$${parking.price.hour?.toStringAsFixed(0)}',
+                              style: ThemeTypography.semiBold14,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              'por hora',
+                              style: ThemeTypography.regular14,
+                            ),
+                          ],
+                        ),
+                        Positioned(
+                          left: 0,
+                          top: 0,
+                          right: 0,
+                          bottom: 0,
+                          child: Container(
+                            height: 18,
+                            decoration: BoxDecoration(
+                              color:
+                                  loading ? Colors.black : Colors.transparent,
+                              borderRadius: BorderRadius.circular(100),
                             ),
                           ),
-                        ],
-                      )),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

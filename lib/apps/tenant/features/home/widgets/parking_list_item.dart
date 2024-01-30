@@ -30,7 +30,7 @@ class ParkingListItem extends StatelessWidget {
               children: [
                 if (parking.images.isNotEmpty)
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(24),
+                    borderRadius: BorderRadius.circular(12),
                     child: CarouselImageSlider(
                       images: parking.images,
                     ),
@@ -43,7 +43,7 @@ class ParkingListItem extends StatelessWidget {
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.75),
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
                       '${Random().nextInt(6) + 1} pessoas de olho',
@@ -88,7 +88,7 @@ class ParkingListItem extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  '${parking.distance.formatDistance} ${parking.address.street} de distância',
+                  '${parking.distance.formatDistance} de distância',
                   style: ThemeTypography.regular14.apply(
                     color: ThemeColors.grey4,
                   ),

@@ -27,112 +27,114 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: TopNavigationBar(
-      //   title: '',
-      //   showLeading: false,
-      // ),
       body: SafeArea(
-        child: Obx(() {
-          final loading = _controller.loading.value;
+        child: Obx(
+          () {
+            final loading = _controller.loading.value;
 
-          return CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                toolbarHeight: _controller.searchText.isEmpty ? 180 : 76,
-                expandedHeight: 56,
-                elevation: 3,
-                shadowColor: Colors.black54,
-                // forceElevated: true,
-                stretch: true,
-                automaticallyImplyLeading: false,
-                backgroundColor: Colors.white,
-                pinned: true,
-                flexibleSpace: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 16, 0, 12),
-                  child: ShimmerBox(
-                    loading: loading,
-                    child: Column(
-                      children: [
-                        Row(
+            return CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  toolbarHeight: _controller.searchText.isEmpty ? 180 : 76,
+                  expandedHeight: 56,
+                  elevation: 3,
+                  shadowColor: Colors.black54,
+                  stretch: true,
+                  automaticallyImplyLeading: false,
+                  backgroundColor: Colors.white,
+                  pinned: true,
+                  flexibleSpace: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 16, 0, 12),
+                    child: ShimmerBox(
+                      loading: loading,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 24),
+                                  child: SearchInput(
+                                    searchText: _controller.searchText.value,
+                                    hintText:
+                                        'Busque por rua, bairro, cidade...',
+                                    onSearch: _controller.searchText,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          if (_controller.searchText.isEmpty) ...[
+                            const SizedBox(height: 16),
+                            SizedBox(
+                              height: 88,
+                              child: ListView.builder(
+                                padding: const EdgeInsets.only(left: 24),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: parkingTags.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  final tag = parkingTags[index];
+                                  return _buildCategoryButton(
+                                    tag,
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: _controller.searchText.isEmpty
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 24),
-                                child: SearchInput(
-                                  searchText: _controller.searchText.value,
-                                  hintText: 'Busque por rua, bairro, cidade...',
-                                  onSearch: _controller.searchText,
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(24, 0, 16, 16),
+                              child: ShimmerBox(
+                                loading: loading,
+                                child: const Text(
+                                  'Próximos de você',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
                           ],
-                        ),
-                        if (_controller.searchText.isEmpty) ...[
-                          const SizedBox(height: 16),
-                          SizedBox(
-                            height: 88,
-                            child: ListView.builder(
-                              padding: const EdgeInsets.only(left: 24),
-                              scrollDirection: Axis.horizontal,
-                              itemCount: parkingTags.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                final tag = parkingTags[index];
-                                return _buildCategoryButton(tag);
-                              },
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
+                        )
+                      : Container(),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      if (loading) {
+                        return ShimmerBox(
+                          loading: loading,
+                          child: parkingListShimmerItem(context),
+                        );
+                      }
+                      final parking = _controller.filteredParkings[index];
+                      return _controller.searchText.isEmpty
+                          ? Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 24),
+                              child: ParkingListItem(parking: parking),
+                            )
+                          : ParkingListTile(parking: parking);
+                    },
+                    childCount:
+                        loading ? 4 : _controller.filteredParkings.length,
                   ),
                 ),
-              ),
-              SliverToBoxAdapter(
-                child: _controller.searchText.isEmpty
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(24, 0, 16, 16),
-                            child: ShimmerBox(
-                              loading: loading,
-                              child: const Text(
-                                'Próximos de você',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    : Container(),
-              ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    if (loading) {
-                      return ShimmerBox(
-                        loading: loading,
-                        child: parkingListShimmerItem(context),
-                      );
-                    }
-                    final parking = _controller.filteredParkings[index];
-                    return _controller.searchText.isEmpty
-                        ? Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24),
-                            child: ParkingListItem(parking: parking),
-                          )
-                        : ParkingListTile(parking: parking);
-                  },
-                  childCount: loading ? 4 : _controller.filteredParkings.length,
-                ),
-              ),
-            ],
-          );
-        }),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -161,7 +163,7 @@ class HomeView extends StatelessWidget {
                       width: 56,
                       height: 56,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(12),
                         color: isSelected
                             ? ThemeColors.primary
                             : ThemeColors.grey1,
@@ -213,7 +215,7 @@ class HomeView extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.black,
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(12),
             ),
           ),
           Padding(

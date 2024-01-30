@@ -201,4 +201,23 @@ class LocationService {
     }
     return null;
   }
+
+  Future<double> getDistanceFromUserLocation(Position position) async {
+    final userLocation = await getCurrentLocation();
+
+    if (userLocation != null) {
+      return _calculateDistance(userLocation, position);
+    } else {
+      return 0.0;
+    }
+  }
+
+  double _calculateDistance(Position origin, Position destination) {
+    return Geolocator.distanceBetween(
+      origin.latitude,
+      origin.longitude,
+      destination.latitude,
+      destination.longitude,
+    );
+  }
 }

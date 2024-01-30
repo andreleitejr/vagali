@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking_tag.dart';
@@ -14,7 +15,7 @@ class HomeController extends GetxController {
 
   // final _reservationRepository = Get.put(ReservationRepository());
 
-  final locationService = Get.put(LocationService());
+  final _locationService = Get.put(LocationService());
 
   final _searchService = Get.put(SearchService());
 
@@ -37,7 +38,7 @@ class HomeController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     loading(true);
-    await locationService.requestLocationPermission();
+    await _locationService.requestLocationPermission();
     await Future.delayed(const Duration(milliseconds: 500));
     await fetchNearbyParkings();
     //
@@ -56,11 +57,30 @@ class HomeController extends GetxController {
     try {
       final parkings = await _parkingRepository.getAll();
 
+      // Calcular a distância do usuário para cada estacionamento
+      for (var parking in parkings) {
+        parking.distance = await _locationService.getDistanceFromUserLocation(
+          Position(
+            latitude: parking.location.latitude,
+            longitude: parking.location.longitude,
+            accuracy: 0.0,
+            altitude: 0.0,
+            altitudeAccuracy: 0.0,
+            heading: 0.0,
+            headingAccuracy: 0.0,
+            speed: 0.0,
+            speedAccuracy: 0.0,
+            timestamp: DateTime.now(),
+          ),
+        );
+      }
+
+      // Ordenar os estacionamentos com base na distância
       parkings.sort((a, b) => a.distance.compareTo(b.distance));
 
       nearbyParkings.assignAll(parkings);
 
-      Get.put<List<Parking>>(nearbyParkings, tag: 'nearbyParkings');
+      // Restante do seu código...
     } catch (error) {
       debugPrint('Error fetching nearby parkings: $error');
     }

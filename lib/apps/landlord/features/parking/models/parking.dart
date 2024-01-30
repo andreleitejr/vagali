@@ -35,23 +35,7 @@ class Parking extends BaseModel {
 
   final LocationService _locationService = Get.put(LocationService());
 
-  double get distance {
-    /// APENAS PARA TESTES
-    ///
-    final userCoordinates = _locationService.userLocation;
-
-    print(' USER LOC IS NULL ${userCoordinates}');
-    if (userCoordinates == null) {
-      return 0.0;
-    }
-
-    return Geolocator.distanceBetween(
-      location.latitude,
-      location.longitude,
-      userCoordinates.latitude,
-      userCoordinates.longitude,
-    );
-  }
+  double distance = 0;
 
   Parking({
     required DateTime createdAt,
