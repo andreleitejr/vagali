@@ -18,7 +18,7 @@ class LocationService {
   Future<Position?> getCurrentLocation() async {
     try {
       if (!await Geolocator.isLocationServiceEnabled()) {
-        print('Serviço de localização desativado.');
+        debugPrint('Serviço de localização desativado.');
         return null;
       }
 
@@ -28,7 +28,7 @@ class LocationService {
             await Geolocator.requestPermission();
         if (permission != LocationPermission.always &&
             permission != LocationPermission.whileInUse) {
-          print('Permissões de localização não concedidas.');
+          debugPrint('Permissões de localização não concedidas.');
           return null;
         }
       }
@@ -39,7 +39,7 @@ class LocationService {
 
       return position;
     } catch (e) {
-      print('Erro ao obter a localização: $e');
+      debugPrint('Erro ao obter a localização: $e');
       return null;
     }
   }
@@ -55,12 +55,12 @@ class LocationService {
         // Normaliza o valor para a escala de 0 a 360 graus
         double heading = (rawHeading + 1.0) * 180.0;
 
-        print('Heading from Gyroscope: $heading');
+        debugPrint('Heading from Gyroscope: $heading');
         return heading;
       }
       return 0.0; // Valor padrão se não conseguir obter do giroscópio
     } catch (e) {
-      print('Erro ao obter heading do giroscópio: $e');
+      debugPrint('Erro ao obter heading do giroscópio: $e');
       return 0.0; // Valor padrão em caso de erro
     }
   }
@@ -82,7 +82,7 @@ class LocationService {
       return permission == LocationPermission.always ||
           permission == LocationPermission.whileInUse;
     } catch (e) {
-      print('Erro ao solicitar permissão de localização: $e');
+      debugPrint('Erro ao solicitar permissão de localização: $e');
       return false;
     }
   }
@@ -112,7 +112,7 @@ class LocationService {
         );
 
         if (distanceToParking <= proximityThresholdMeters) {
-          print(
+          debugPrint(
               'Breaking loop because distance to parking is within threshold');
           break;
         }
@@ -133,13 +133,6 @@ class LocationService {
 
   StreamSubscription<Position?> startListeningToLocationChanges(
       void Function(Position) onLocationChanged) {
-    // final hasPermission = await checkLocationPermission();
-    // if (!hasPermission) {
-    //   final permissionGranted = await requestLocationPermission();
-    //   if (!permissionGranted) {
-    //     return StreamSubscription<Position?>.empty();
-    //   }
-    // }
 
     _positionStreamSubscription?.cancel();
 

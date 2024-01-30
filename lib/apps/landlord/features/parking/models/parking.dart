@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/get.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking_tag.dart';
 import 'package:vagali/apps/landlord/features/parking/models/price.dart';
 import 'package:vagali/features/address/models/address.dart';
@@ -7,7 +6,6 @@ import 'package:vagali/features/rating/models/rating.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/models/base_model.dart';
 import 'package:vagali/models/image_blurhash.dart';
-import 'package:vagali/services/location_service.dart';
 
 class Parking extends BaseModel {
   final String name;
@@ -30,8 +28,6 @@ class Parking extends BaseModel {
   final bool isAutomatic;
   List<Rating> ratings = <Rating>[];
   final bool isOpen;
-
-  final LocationService _locationService = Get.put(LocationService());
 
   double distance = 0;
 

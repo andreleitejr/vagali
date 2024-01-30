@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vagali/apps/landlord/features/parking/controllers/parking_details_controller.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/features/address/widgets/address_card.dart';
 import 'package:vagali/features/reservation/views/reservation_edit_view.dart';
 import 'package:vagali/services/share_service.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/widgets/carousel_image_slider.dart';
+import 'package:vagali/widgets/carousel_im'
+    'age_slider.dart';
 import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/over_image_button.dart';
 import 'package:vagali/widgets/tag_list.dart';
@@ -15,11 +15,8 @@ import 'package:vagali/widgets/user_card.dart';
 
 class ParkingDetailsView extends StatelessWidget {
   final Parking parking;
-  final ParkingDetailsController controller;
 
-  ParkingDetailsView({Key? key, required this.parking})
-      : controller = Get.put(ParkingDetailsController(parking)),
-        super(key: key);
+  ParkingDetailsView({Key? key, required this.parking}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,16 +50,9 @@ class ParkingDetailsView extends StatelessWidget {
                         icon: Coolicons.share,
                         onTap: () async {
                           final shareService = ShareService();
-                          await shareService.shareParking(
-                            controller.parking.value!
-                          );
+                          await shareService.shareParking(parking);
                         },
                       ),
-                      // const SizedBox(width: 8),
-                      // _appBarButtons(
-                      //   icon: Coolicons.heartOutline,
-                      //   onTap: () => Get.back(),
-                      // ),
                     ],
                   ),
                 ),
@@ -106,29 +96,6 @@ class ParkingDetailsView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          // 8. Horários de operação.
-          // Column(
-          //   crossAxisAlignment: CrossAxisAlignment.start,
-          //   children:  controller.parking.operatingHours.daysAndHours.keys
-          //       .map((day) {
-          //     final hours =
-          //          controller.parking.operatingHours.daysAndHours[day];
-          //     return ListTile(
-          //       title: Text(day),
-          //       subtitle: Text(hours!.values.toString()),
-          //     );
-          //   }).toList(),
-          // ),
-          // ElevatedButton(
-          //   onPressed: () {
-          //     Get.to(() =>
-          //         ReservationEditView(parking:parking));
-          //   },
-          //   style: ElevatedButton.styleFrom(
-          //     backgroundColor: Colors.blue,
-          //   ),
-          //   child: Text('Fazer Reserva'),
-          // ),
         ],
       ),
       bottomNavigationBar: Container(
