@@ -6,6 +6,7 @@ import 'package:vagali/apps/landlord/features/parking/repositories/parking_repos
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/services/location_service.dart';
 import 'package:vagali/services/search_service.dart';
+import 'package:vagali/utils/extensions.dart';
 
 class HomeController extends GetxController {
   final User tenant = Get.find();
@@ -23,9 +24,9 @@ class HomeController extends GetxController {
 
   // final showItemSelection = false.obs;
 
-  // final searchText = ''.obs;
-  //
-  // String get cleanText => searchText.value.clean;
+  final searchText = ''.obs;
+
+  String get cleanText => searchText.value.clean;
 
   final category =
       Rx<ParkingTag>(parkingTags.firstWhere((t) => t.tag == ParkingTag.all));
@@ -42,6 +43,9 @@ class HomeController extends GetxController {
     //
     // await fetchReservations();
     filteredParkings.value = nearbyParkings;
+    ever(searchText, (_) {
+      filteredParkings(filterParkingsBySearchText());
+    });
     ever(category, (_) {
       filteredParkings(filterParkingsByCategory(nearbyParkings));
     });
@@ -62,18 +66,19 @@ class HomeController extends GetxController {
     }
   }
 
-  // List<Parking> filterParkingsBySearchText() {
-  //   return _searchService.filterBySearchText<Parking>(
-  //     nearbyParkings,
-  //     searchText.value,
-  //     (parking) => [
-  //       parking.address.city,
-  //       parking.address.state,
-  //       parking.address.street,
-  //       parking.address.postalCode,
-  //     ],
-  //   );
-  // }
+  List<Parking> filterParkingsBySearchText() {
+    return _searchService.filterBySearchText<Parking>(
+      nearbyParkings,
+      searchText.value,
+      (parking) => [
+        parking.address.street,
+        parking.address.county,
+        parking.address.city,
+        parking.address.state,
+        parking.address.postalCode,
+      ],
+    );
+  }
 
   List<Parking> filterParkingsByCategory(List<Parking> parkings) {
     if (category.value == ParkingTag.all) {

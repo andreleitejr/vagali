@@ -88,7 +88,7 @@ class ParkingListItem extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  '${parking.distance.formatDistance} de distância',
+                  '${parking.distance.formatDistance} ${parking.address.street} de distância',
                   style: ThemeTypography.regular14.apply(
                     color: ThemeColors.grey4,
                   ),

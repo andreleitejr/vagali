@@ -90,6 +90,7 @@ class ParkingEditController extends GetxController {
   final postalCodeController = ''.obs;
   final streetController = ''.obs;
   final numberController = ''.obs;
+  final countyController = ''.obs;
   final cityController = ''.obs;
   final stateController = ''.obs;
   final countryController = ''.obs;
@@ -305,6 +306,7 @@ class ParkingEditController extends GetxController {
     postalCodeController.value = landlordAddress.postalCode;
     streetController.value = landlordAddress.street;
     numberController.value = landlordAddress.number;
+    countyController.value = landlordAddress.county;
     cityController.value = landlordAddress.city;
     stateController.value = landlordAddress.state;
     countryController.value = landlordAddress.country;
@@ -366,6 +368,7 @@ class ParkingEditController extends GetxController {
           await _addressService.getAddressDetails(postalCodeController.value);
       if (addressDetails != null) {
         streetController.value = addressDetails['logradouro'] ?? '';
+        countyController.value = addressDetails['bairro'] ?? '';
         cityController.value = addressDetails['localidade'] ?? '';
         stateController.value = addressDetails['uf'] ?? '';
         countryController.value = 'Brasil';
@@ -378,6 +381,7 @@ class ParkingEditController extends GetxController {
       postalCode: postalCodeController.value,
       street: streetController.value,
       number: numberController.value,
+      county: numberController.value,
       city: cityController.value,
       state: stateController.value,
       country: countryController.value,

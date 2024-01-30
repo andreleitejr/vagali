@@ -2,6 +2,7 @@ class Address {
   final String postalCode;
   final String street;
   final String number;
+  final String county;
   final String city;
   final String state;
   final String country;
@@ -11,6 +12,7 @@ class Address {
     required this.postalCode,
     required this.street,
     required this.number,
+    required this.county,
     required this.city,
     required this.state,
     required this.country,
@@ -22,6 +24,7 @@ class Address {
       postalCode: map['postalCode'],
       street: map['street'],
       number: map['number'],
+      county: map['county'],
       city: map['city'],
       state: map['state'],
       country: map['country'],
@@ -34,6 +37,7 @@ class Address {
       'postalCode': postalCode,
       'street': street,
       'number': number,
+      'county': county,
       'city': city,
       'state': state,
       'country': country,

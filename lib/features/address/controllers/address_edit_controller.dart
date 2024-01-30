@@ -23,6 +23,7 @@ class AddressEditController extends GetxController {
   final postalCodeController = ''.obs;
   final streetController = ''.obs;
   final numberController = ''.obs;
+  final countyController = ''.obs;
   final cityController = ''.obs;
   final stateController = ''.obs;
   final countryController = ''.obs;
@@ -48,6 +49,7 @@ class AddressEditController extends GetxController {
 
       if (addressDetails != null) {
         streetController.value = addressDetails['logradouro'] ?? '';
+        countyController.value = addressDetails['bairro'] ?? '';
         cityController.value = addressDetails['localidade'] ?? '';
         stateController.value = addressDetails['uf'] ?? '';
         countryController.value = 'Brasil';
@@ -99,11 +101,11 @@ class AddressEditController extends GetxController {
           isStateValid.isTrue)
       .obs;
 
-
   Address get address => Address(
         postalCode: postalCodeController.value,
         street: streetController.value,
         number: numberController.value,
+        county: countyController.value,
         city: cityController.value,
         state: stateController.value,
         country: countryController.value,

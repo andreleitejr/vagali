@@ -76,7 +76,7 @@ class _AuthViewState extends State<AuthView> implements AuthNavigator {
 
   @override
   void home() {
-    Get.to(() => Get.find<FlavorConfig>().flavor == Flavor.tenant
+    Get.offAll(() => Get.find<FlavorConfig>().flavor == Flavor.tenant
         ? const BaseView()
         : LandlordBaseView());
   }

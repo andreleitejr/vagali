@@ -51,7 +51,7 @@ class _SearchInputState extends State<SearchInput> {
             height: 20,
           ),
         ),
-        suffix: widget.searchText.isNotEmpty
+        suffixIcon: widget.searchText.isNotEmpty
             ? TextButton(
                 onPressed: () {
                   widget.onSearch('');

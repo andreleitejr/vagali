@@ -64,6 +64,7 @@ class TenantEditController extends GetxController {
   final postalCodeController = ''.obs;
   final streetController = ''.obs;
   final numberController = ''.obs;
+  final countyController = ''.obs;
   final cityController = ''.obs;
   final stateController = ''.obs;
   final countryController = ''.obs;
@@ -179,6 +180,7 @@ class TenantEditController extends GetxController {
 
       if (addressDetails != null) {
         streetController.value = addressDetails['logradouro'] ?? '';
+        countyController.value = addressDetails['bairro'] ?? '';
         cityController.value = addressDetails['localidade'] ?? '';
         stateController.value = addressDetails['uf'] ?? '';
         countryController.value = 'Brasil';
@@ -276,6 +278,7 @@ class TenantEditController extends GetxController {
         street: streetController.value,
         number: numberController.value,
         city: cityController.value,
+        county: countyController.value,
         state: stateController.value,
         country: countryController.value,
         complement: complementController.value,
