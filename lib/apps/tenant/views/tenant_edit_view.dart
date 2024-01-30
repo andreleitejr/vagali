@@ -58,10 +58,9 @@ class _TenantEditViewState extends State<TenantEditView> {
 
   Future<void> _handleNavigationOnValidStep() async {
     if (_controller.isValid()) {
-      await _controller.uploadImage();
       final result = await _controller.save();
       if (result == SaveResult.success) {
-        Get.to(() => BaseView());
+        Get.offAll(() => BaseView());
       }
     } else {
       _controller.showErrors(true);

@@ -140,19 +140,24 @@ class LandlordEditController extends GetxController {
     }
   }
 
+
   Future<void> pickImage(ImageSource source) async {
     final image = await _imageService.pickImage(source);
 
     if (image != null) {
       imageFile.value = image;
-      final blurhash = await _getBlurhash();
-      final imageUrl = await _getImageUrl();
-      if (blurhash != null && imageUrl != null) {
-        imageBlurhash.value =
-            ImageBlurHash(image: imageUrl, blurHash: blurhash);
-      }
+      buildImageBlurhash();
     } else {
       imageError.value = 'Falha ao carregar a imagem';
+    }
+  }
+
+  Future<void> buildImageBlurhash() async {
+    final blurhash = await _getBlurhash();
+    final imageUrl = await _getImageUrl();
+    if (blurhash != null && imageUrl != null) {
+      imageBlurhash.value =
+          ImageBlurHash(image: imageUrl, blurHash: blurhash);
     }
   }
 
@@ -162,11 +167,11 @@ class LandlordEditController extends GetxController {
 
       if (blurhash == null) {
         imageError.value = 'Falha ao carregar a imagem';
-        return null;
       }
 
       return blurhash;
     }
+    return null;
   }
 
   Future<String?> _getImageUrl() async {
@@ -176,11 +181,11 @@ class LandlordEditController extends GetxController {
 
       if (imageUrl == null) {
         imageError.value = 'Falha ao carregar a imagem';
-        return null;
       }
 
       return imageUrl;
     }
+    return null;
   }
 
   Future<SaveResult?> save() async {

@@ -4,7 +4,7 @@ import 'package:vagali/repositories/firestore_repository.dart';
 class TenantRepository extends FirestoreRepository<Tenant>  {
   TenantRepository()
       : super(
-    collectionName: 'users',
+    collectionName: 'tenants',
     fromDocument: (document) => Tenant.fromDocument(document),
   );
 }

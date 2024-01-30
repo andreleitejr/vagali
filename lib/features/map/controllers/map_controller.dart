@@ -17,7 +17,7 @@ import 'package:vagali/theme/images.dart';
 class MapController extends GetxController {
   final LocationService _locationService = Get.find();
   final ParkingRepository _parkingRepository = Get.find();
-  final LandlordRepository _landlordRepository = Get.find();
+  final  _landlordRepository = Get.put(LandlordRepository());
   final SearchService _searchService = Get.find();
   GoogleMapController? googleMapController;
 

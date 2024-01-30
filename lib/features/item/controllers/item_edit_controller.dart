@@ -26,7 +26,6 @@ class ItemEditController extends GetxController {
   final loading = false.obs;
   final selectedVehicleType = Rx<VehicleType?>(null);
 
-  final blurhash = Rx<String?>(null);
   final imageBlurhash = Rx<ImageBlurHash?>(null);
   final imageFileController = Rx<XFile?>(null);
   final title = ''.obs;
@@ -73,23 +72,42 @@ class ItemEditController extends GetxController {
   }
 
   Future<void> pickImage(ImageSource source) async {
-    final imageUrl = await _imageService.pickImage(source);
+    final image = await _imageService.pickImage(source);
 
-    if (imageUrl != null) {
-      imageFileController.value = imageUrl;
+    if (image != null) {
+      imageFileController.value = image;
+      final blurhash = await _getBlurhash();
+      final imageUrl = await _getImageUrl();
+      if (blurhash != null && imageUrl != null) {
+        imageBlurhash.value =
+            ImageBlurHash(image: imageUrl, blurHash: blurhash);
+      }
     } else {
       imageError.value = 'Falha ao carregar a imagem';
     }
   }
 
-  Future<void> uploadImage() async {
-    final image = await _imageService.getBlurhash(imageFileController.value!);
+  Future<String?> _getBlurhash() async {
+    final blurhash =
+        await _imageService.getBlurhash(imageFileController.value!);
 
-    if (image == null) {
-      imageError.value = 'Falha ao carregar a imagem';
+    if (blurhash == null) {
+      imageError.value = 'Falha ao carregar a imagem blurhash';
+      return null;
     }
 
-    blurhash.value = image;
+    return blurhash;
+  }
+
+  Future<String?> _getImageUrl() async {
+    final url = await _imageService.getBlurhash(imageFileController.value!);
+
+    if (url == null) {
+      imageError.value = 'Falha ao carregar a imagem';
+      return null;
+    }
+
+    return url;
   }
 
   Future<Item?> createVehicle() async {

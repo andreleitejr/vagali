@@ -83,7 +83,7 @@ class Parking extends BaseModel {
       'name': name,
       'price': price.toMap(),
       'isAvailable': isAvailable,
-      'tags': tags.map((tag) => tag.name).toList(),
+      'tags': tags.map((tag) => tag.tag).toList(),
       'description': description,
       'images': images.map((image) => image.toMap()).toList(),
       'userId': userId,

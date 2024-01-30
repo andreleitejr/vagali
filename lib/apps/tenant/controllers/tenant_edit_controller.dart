@@ -208,26 +208,50 @@ class TenantEditController extends GetxController {
   }
 
   Future<void> pickImage(ImageSource source) async {
-    final imageUrl = await _imageService.pickImage(source);
+    final image = await _imageService.pickImage(source);
 
-    if (imageUrl != null) {
-      imageFile.value = imageUrl;
+    if (image != null) {
+      imageFile.value = image;
+      buildImageBlurhash();
     } else {
       imageError.value = 'Falha ao carregar a imagem';
     }
   }
 
-  Future<void> uploadImage() async {
-    if (imageFile.value != null) {
-      final image = await _imageService.getBlurhash(imageFile.value!);
+  Future<void> buildImageBlurhash() async {
+    final blurhash = await _getBlurhash();
+    final imageUrl = await _getImageUrl();
+    if (blurhash != null && imageUrl != null) {
+      imageBlurhash.value =
+          ImageBlurHash(image: imageUrl, blurHash: blurhash);
+    }
+  }
 
-      if (image == null) {
+  Future<String?> _getBlurhash() async {
+    if (imageFile.value != null) {
+      final blurhash = await _imageService.getBlurhash(imageFile.value!);
+
+      if (blurhash == null) {
         imageError.value = 'Falha ao carregar a imagem';
-        return;
       }
 
-      blurhash.value = image;
+      return blurhash;
     }
+    return null;
+  }
+
+  Future<String?> _getImageUrl() async {
+    if (imageFile.value != null) {
+      final imageUrl =
+          await _imageService.uploadImage(imageFile.value!, 'landlords');
+
+      if (imageUrl == null) {
+        imageError.value = 'Falha ao carregar a imagem';
+      }
+
+      return imageUrl;
+    }
+    return null;
   }
 
   Future<SaveResult?> save() async {
@@ -259,7 +283,8 @@ class TenantEditController extends GetxController {
       // type: UserType.landlord,
     );
 
-    final result = await _tenantRepository.save(user as Tenant, docId: user.id);
+    final result =
+        await _tenantRepository.save(Tenant.fromUser(user), docId: user.id);
 
     if (result == SaveResult.success) {
       Get.put<User>(user);
@@ -271,7 +296,7 @@ class TenantEditController extends GetxController {
       //   final landlord = Landlord.fromUser(user);
       //   Get.put<Landlord>(landlord);
       // }
-      loading(false);
+      // loading(false);
       return SaveResult.success;
     }
     loading(false);
@@ -280,13 +305,13 @@ class TenantEditController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    loading.value = true;
+    // loading.value = true;
     await verifyUser();
     ever(postalCodeController, (_) {
       fetchAddressDetails();
       update();
     });
-    loading.value = false;
+    // loading.value = false;
     super.onInit();
   }
 

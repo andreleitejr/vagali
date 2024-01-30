@@ -12,8 +12,7 @@ class TenantPersonalInfoView extends StatefulWidget {
   TenantPersonalInfoView({super.key});
 
   @override
-  State<TenantPersonalInfoView> createState() =>
-      _TenantPersonalInfoViewState();
+  State<TenantPersonalInfoView> createState() => _TenantPersonalInfoViewState();
 }
 
 class _TenantPersonalInfoViewState extends State<TenantPersonalInfoView> {
@@ -34,10 +33,6 @@ class _TenantPersonalInfoViewState extends State<TenantPersonalInfoView> {
           TextButton(
             onPressed: () async {
               if (controller.isPersonalInfoValid.isTrue) {
-                if (controller.imageFile.value != null) {
-                  controller.uploadImage();
-                }
-
                 Get.back();
 
                 final result = await controller.save();
@@ -54,7 +49,7 @@ class _TenantPersonalInfoViewState extends State<TenantPersonalInfoView> {
               }
             },
             child: Obx(
-                  () => Text(
+              () => Text(
                 'Salvar',
                 style: ThemeTypography.medium14.apply(
                   color: controller.isPersonalInfoValid.isTrue

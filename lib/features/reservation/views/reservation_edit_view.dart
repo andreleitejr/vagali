@@ -3,12 +3,13 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/apps/tenant/features/payment/controllers/payment_controller.dart';
-import 'package:vagali/apps/tenant/features/payment/views/payment_view.dart';
+// import 'package:vagali/apps/tenant/features/payment/views/payment_view.dart';
 import 'package:vagali/apps/tenant/features/vehicle/widgets/vehicle_info_widget.dart';
 import 'package:vagali/features/address/widgets/address_card.dart';
 import 'package:vagali/features/item/models/item.dart';
 import 'package:vagali/features/item/views/item_edit_view.dart';
 import 'package:vagali/features/item/views/item_type_list_view.dart';
+import 'package:vagali/features/payment/views/payment_view.dart';
 import 'package:vagali/features/reservation/controllers/reservation_edit_controller.dart';
 import 'package:vagali/features/reservation/widgets/reservation_date_widget.dart';
 import 'package:vagali/features/search/views/search_view.dart';
@@ -302,7 +303,7 @@ class _ReservationEditViewState extends State<ReservationEditView> {
   }
 
   void initiatePayment() async {
-    Get.put(PaymentController(controller.reservation.value!));
+    // Get.put(PaymentController(controller.reservation.value!));
     Get.to(
       () => PaymentView(
         reservation: controller.reservation.value!,

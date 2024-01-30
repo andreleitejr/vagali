@@ -41,15 +41,15 @@ class HomeController extends GetxController {
     //
     // await fetchReservations();
     filteredParkings.value = nearbyParkings;
-    loading(false);
     ever(category, (_) {
       filteredParkings(filterParkingsByCategory(nearbyParkings));
     });
+    loading(false);
   }
 
   Future<void> fetchNearbyParkings() async {
     try {
-      final parkings = await _parkingRepository.getGroup();
+      final parkings = await _parkingRepository.getAll();
 
       parkings.sort((a, b) => a.distance.compareTo(b.distance));
 

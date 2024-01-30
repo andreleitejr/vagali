@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking_tag.dart';
-import 'package:vagali/apps/landlord/features/parking/models/parking_type.dart';
 import 'package:vagali/apps/tenant/features/home/controllers/home_controller.dart';
 import 'package:vagali/apps/tenant/features/home/widgets/parking_list_item.dart';
-import 'package:vagali/features/item/views/item_type_list_view.dart';
-import 'package:vagali/features/search/views/search_view.dart';
-import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/search_input.dart';
 import 'package:vagali/widgets/shimmer_box.dart';
-import 'package:vagali/widgets/top_bavigation_bar.dart';
 
 class HomeView extends StatelessWidget {
   final HomeController _controller = Get.put(HomeController());
@@ -30,6 +25,8 @@ class HomeView extends StatelessWidget {
       body: SafeArea(
         child: Obx(() {
           final loading = _controller.loading.value;
+
+          print('HASUHUDHSAUDASHUDHSDUHSDU ${_controller.nearbyParkings}');
           return CustomScrollView(
             slivers: [
               SliverAppBar(
@@ -110,6 +107,7 @@ class HomeView extends StatelessWidget {
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
+
                     final parking = _controller.filteredParkings[index];
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),

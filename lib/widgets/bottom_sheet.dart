@@ -34,17 +34,23 @@ class CustomBottomSheet<T extends SelectableItem> extends StatelessWidget {
           topRight: Radius.circular(24),
         ),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      child: ListView(
+        // mainAxisSize: MainAxisSize.min,
+        shrinkWrap: true,
         children: [
           const SizedBox(height: 8),
-          Text(
-            title,
-            style: ThemeTypography.medium16.apply(
-              color: ThemeColors.primary,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Center(
+              child: Text(
+                title,
+                style: ThemeTypography.medium16.apply(
+                  color: ThemeColors.primary,
+                ),
+              ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 8),
           ...items.map((item) => _buildListItem(item)).toList(),
         ],
       ),
@@ -100,18 +106,27 @@ class CustomBottomSheet<T extends SelectableItem> extends StatelessWidget {
         onItemSelected(item);
         Get.back();
       },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-        decoration: const BoxDecoration(
-            border: Border(
-                bottom: BorderSide(
-          width: 0.75,
-          color: ThemeColors.grey2,
-        ))),
-        child: Text(
-          item.title,
-          // textAlign: TextAlign.center,
-          style: ThemeTypography.medium14,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          children: [
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: Text(
+                item.title,
+                // textAlign: TextAlign.center,
+                style: ThemeTypography.medium14,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Container(
+              height: 0.75,
+              width: double.infinity,
+              color: ThemeColors.grey2,
+            ),
+            const SizedBox(height: 16),
+          ],
         ),
       ),
     );

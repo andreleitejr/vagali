@@ -59,11 +59,11 @@ class ParkingDetailsView extends StatelessWidget {
                           );
                         },
                       ),
-                      const SizedBox(width: 8),
-                      _appBarButtons(
-                        icon: Coolicons.heartOutline,
-                        onTap: () => Get.back(),
-                      ),
+                      // const SizedBox(width: 8),
+                      // _appBarButtons(
+                      //   icon: Coolicons.heartOutline,
+                      //   onTap: () => Get.back(),
+                      // ),
                     ],
                   ),
                 ),

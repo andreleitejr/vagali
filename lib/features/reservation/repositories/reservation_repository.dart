@@ -81,10 +81,10 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
   //   }
   // }
 
-  final LandlordRepository _landlordRepository = Get.find();
-  final TenantRepository _tenantRepository = Get.find();
-  final ParkingRepository _parkingRepository = Get.find();
-  final ItemRepository _itemRepository = Get.find();
+  final _landlordRepository = Get.put(LandlordRepository());
+  final  _tenantRepository = Get.put(TenantRepository());
+  final  _parkingRepository = Get.put(ParkingRepository());
+  final  _itemRepository =  Get.put(ItemRepository());
 
   @override
   Stream<List<Reservation>> streamAll() {

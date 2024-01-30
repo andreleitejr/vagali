@@ -19,7 +19,6 @@ class ReservationListController extends GetxController {
   final _reservationRepository = Get.put(ReservationRepository());
 
   // final _parkingRepository = Get.find<ParkingRepository>();
-  // final _landlordRepository = Get.put(LandlordRepository());
   // final _itemRepository = Get.put(ItemRepository());
   final locationService = Get.find<LocationService>();
 
