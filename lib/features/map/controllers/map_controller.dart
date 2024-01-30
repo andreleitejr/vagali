@@ -164,7 +164,7 @@ class MapController extends GetxController {
   }
 
   void _addUserMarker() {
-    final marker = Marker(
+    userMarker = Marker(
       markerId: const MarkerId('user'),
       position: LatLng(
         userCurrentLocation.value!.latitude,
@@ -173,7 +173,7 @@ class MapController extends GetxController {
       icon: userMarkerIcon,
     );
 
-    markers.add(marker);
+    markers.add(userMarker!);
   }
 
   void _updateUserMarker() {

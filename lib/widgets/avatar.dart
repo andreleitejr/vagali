@@ -12,7 +12,7 @@ class Avatar extends StatelessWidget {
     return Container(
       height: 42,
       width: 42,
-      padding: const EdgeInsets.all(1.5),
+      padding: const EdgeInsets.all(1),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [

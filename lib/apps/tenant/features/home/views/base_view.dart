@@ -42,6 +42,7 @@ class _BaseViewState extends State<BaseView> {
       body: Obx(() => _pages[controller.selectedIndex.value]),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
+          backgroundColor: Colors.white,
           type: BottomNavigationBarType.fixed,
           selectedFontSize: 0,
           items: <BottomNavigationBarItem>[
