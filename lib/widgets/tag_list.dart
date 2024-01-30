@@ -30,12 +30,12 @@ class TagList extends StatelessWidget {
                       children: [
                         Coolicon(
                           icon: filteredTag.icon,
-
+                          width: 16,
                         ),
                         const SizedBox(width: 8),
                         Text(
                           filteredTag.name,
-                          style: ThemeTypography.semiBold14.apply(
+                          style: ThemeTypography.regular12.apply(
                             color: ThemeColors.grey4,
                           ),
                         ),

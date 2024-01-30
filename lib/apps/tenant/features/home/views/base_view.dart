@@ -7,6 +7,7 @@ import 'package:vagali/features/map/views/map_view.dart';
 import 'package:vagali/features/reservation/views/reservation_list_view.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/avatar.dart';
 import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/shimmer_box.dart';
@@ -45,36 +46,60 @@ class _BaseViewState extends State<BaseView> {
           backgroundColor: Colors.white,
           type: BottomNavigationBarType.fixed,
           selectedFontSize: 0,
+          selectedLabelStyle: ThemeTypography.regular9.apply(
+            color: ThemeColors.primary,
+          ),
+          unselectedLabelStyle: ThemeTypography.regular9.apply(
+            color: ThemeColors.grey4,
+          ),
           items: <BottomNavigationBarItem>[
             const BottomNavigationBarItem(
-              icon: Coolicon(
-                icon: Coolicons.house,
+              icon: Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Coolicon(
+                  icon: Coolicons.house,
+                ),
               ),
-              activeIcon: Coolicon(
-                icon: Coolicons.house,
-                color: ThemeColors.primary,
+              activeIcon: Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Coolicon(
+                  icon: Coolicons.house,
+                  color: ThemeColors.primary,
+                ),
               ),
-              label: '',
+              label: 'Home',
             ),
             const BottomNavigationBarItem(
-              icon: Coolicon(
-                icon: Coolicons.map,
+              icon:  Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Coolicon(
+                  icon: Coolicons.map,
+                ),
               ),
-              activeIcon: Coolicon(
-                icon: Coolicons.map,
-                color: ThemeColors.primary,
+              activeIcon:Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child:  Coolicon(
+                  icon: Coolicons.map,
+                  color: ThemeColors.primary,
+                ),
               ),
-              label: '',
+              label: 'Mapa',
             ),
             const BottomNavigationBarItem(
-              icon: Coolicon(
-                icon: Coolicons.calendar,
+              icon: Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Coolicon(
+                  icon: Coolicons.calendar,
+                ),
               ),
-              activeIcon: Coolicon(
-                icon: Coolicons.calendar,
-                color: ThemeColors.primary,
+              activeIcon: Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Coolicon(
+                  icon: Coolicons.calendar,
+                  color: ThemeColors.primary,
+                ),
               ),
-              label: '',
+              label: 'Reservas',
             ),
             BottomNavigationBarItem(
               icon: SizedBox(

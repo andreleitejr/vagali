@@ -81,7 +81,7 @@ class HomeController extends GetxController {
   }
 
   List<Parking> filterParkingsByCategory(List<Parking> parkings) {
-    if (category.value == ParkingTag.all) {
+    if (category.value.tag == ParkingTag.all) {
       return parkings;
     } else {
       parkings = parkings

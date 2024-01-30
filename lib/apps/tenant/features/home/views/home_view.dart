@@ -48,7 +48,7 @@ class HomeView extends StatelessWidget {
                 backgroundColor: Colors.white,
                 pinned: true,
                 flexibleSpace: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+                  padding: const EdgeInsets.fromLTRB(0, 16, 0, 12),
                   child: ShimmerBox(
                     loading: loading,
                     child: Column(
@@ -56,35 +56,33 @@ class HomeView extends StatelessWidget {
                         Row(
                           children: [
                             Expanded(
-                              child: SearchInput(
-                                searchText: _controller.searchText.value,
-                                hintText: 'Busque por rua, bairro, cidade...',
-                                onSearch: _controller.searchText,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 24),
+                                child: SearchInput(
+                                  searchText: _controller.searchText.value,
+                                  hintText: 'Busque por rua, bairro, cidade...',
+                                  onSearch: _controller.searchText,
+                                ),
                               ),
                             ),
-                            // const SizedBox(width: 16),
-                            // const Coolicon(icon: Coolicons.slider),
                           ],
                         ),
-                        if (_controller.searchText.isEmpty)
-                          Padding(
-                            padding: const EdgeInsets.only(left: 16, top: 16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: [
-                                      for (final type in parkingTags) ...[
-                                        _buildCategoryButton(type),
-                                      ],
-                                    ],
-                                  ),
-                                ),
-                              ],
+                        if (_controller.searchText.isEmpty) ...[
+                          const SizedBox(height: 16),
+                          SizedBox(
+                            height: 88,
+                            child: ListView.builder(
+                              padding: const EdgeInsets.only(left: 24),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: parkingTags.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final tag = parkingTags[index];
+                                return _buildCategoryButton(tag);
+                              },
                             ),
                           ),
+                        ],
                       ],
                     ),
                   ),
@@ -96,10 +94,7 @@ class HomeView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 16,
-                              horizontal: 24,
-                            ),
+                            padding: const EdgeInsets.fromLTRB(24, 0, 16, 16),
                             child: ShimmerBox(
                               loading: loading,
                               child: const Text(

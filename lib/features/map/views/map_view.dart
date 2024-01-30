@@ -108,7 +108,7 @@ class _MapViewState extends State<MapView> {
     return Container(
       // color: Colors.white,
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(24)),
+          color: Colors.white, borderRadius: BorderRadius.circular(16)),
       // padding: const EdgeInsets.all(24),
       margin: const EdgeInsets.all(24),
       child: Column(
@@ -119,19 +119,16 @@ class _MapViewState extends State<MapView> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               _controller.selectedParking.value!.name,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: ThemeTypography.semiBold14,
             ),
           ),
           const SizedBox(height: 16),
           TagList(tags: _controller.selectedParking.value!.tags),
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: UserCard(user: _controller.selectedParking.value!.owner!),
-          ),
+          // const SizedBox(height: 16),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 16),
+          //   child: UserCard(user: _controller.selectedParking.value!.owner!),
+          // ),
           const SizedBox(height: 16),
           _parkingImages(),
           const SizedBox(height: 16),
@@ -179,22 +176,8 @@ class _MapViewState extends State<MapView> {
               height: 80,
               width: 80,
               margin: const EdgeInsets.only(right: 8),
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.5),
-                    spreadRadius: -8,
-                    blurRadius: 20,
-                    offset: const Offset(0, 0),
-                  ),
-                ],
-              ),
-              child: Container(
-                height: 58,
-                width: 58,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
                 child: BlurHash(
                   imageFit: BoxFit.cover,
                   image: image.image,
@@ -216,12 +199,12 @@ class _MapViewState extends State<MapView> {
         children: [
           Text(
             'Descrição',
-            style: ThemeTypography.semiBold16,
+            style: ThemeTypography.semiBold14,
           ),
           SizedBox(height: 8),
           Text(
             _controller.selectedParking.value!.description,
-            style: ThemeTypography.regular14,
+            style: ThemeTypography.regular12,
           ),
         ],
       ),

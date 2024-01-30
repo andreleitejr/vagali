@@ -40,6 +40,7 @@ class Parking extends BaseModel {
     ///
     final userCoordinates = _locationService.userLocation;
 
+    print(' USER LOC IS NULL ${userCoordinates}');
     if (userCoordinates == null) {
       return 0.0;
     }
