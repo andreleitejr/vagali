@@ -37,6 +37,7 @@ class HomeController extends GetxController {
     super.onInit();
     loading(true);
     await locationService.requestLocationPermission();
+    await Future.delayed(const Duration(milliseconds: 500));
     await fetchNearbyParkings();
     //
     // await fetchReservations();

@@ -93,7 +93,7 @@ class ParkingListItem extends StatelessWidget {
                     color: ThemeColors.grey4,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 8),
                 Row(
                   children: [
                     Text(
@@ -104,7 +104,7 @@ class ParkingListItem extends StatelessWidget {
                     Text('por hora', style: ThemeTypography.regular16),
                   ],
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 16),
               ],
             ),
           )
