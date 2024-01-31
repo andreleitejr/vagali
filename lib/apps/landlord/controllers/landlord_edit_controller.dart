@@ -220,7 +220,7 @@ class LandlordEditController extends GetxController {
       //   final landlord = Landlord.fromUser(user);
       //   Get.put<Landlord>(landlord);
       // }
-      loading(false);
+      // loading(false);
       return SaveResult.success;
     }
     loading(false);

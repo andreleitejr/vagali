@@ -23,8 +23,6 @@ abstract class AuthNavigator {
   void home();
 
   void locationDenied();
-
-  void createParking();
 }
 
 class AuthView extends StatefulWidget {
@@ -51,7 +49,7 @@ class _AuthViewState extends State<AuthView> implements AuthNavigator {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AnimationView(),
+      body: widget.isLogOut ? Container() : AnimationView(),
     );
   }
 
@@ -76,14 +74,9 @@ class _AuthViewState extends State<AuthView> implements AuthNavigator {
 
   @override
   void home() {
-    Get.to(() => Get.find<FlavorConfig>().flavor == Flavor.tenant
-        ? const BaseView()
-        : LandlordBaseView());
-  }
+    print('######################################### Goint to Tenant Pages!');
+    Get.offAllNamed('/home');
 
-  @override
-  void createParking() {
-    Get.to(() => const ParkingEditView());
   }
 
   @override

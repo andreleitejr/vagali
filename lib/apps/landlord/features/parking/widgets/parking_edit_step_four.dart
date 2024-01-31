@@ -17,9 +17,10 @@ class StepFourWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Obx(() {
-
             return ChipSelector<ParkingTag>(
-              items: parkingTags,
+              items: parkingTags
+                  .where((tag) => tag.tag != ParkingTag.all)
+                  .toList(),
               selectedItems: controller.parkingTags,
               error: controller.getError(controller.tagsError),
             );

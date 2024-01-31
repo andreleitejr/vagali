@@ -65,7 +65,7 @@ class _ParkingEditViewState extends State<ParkingEditView> {
       return Scaffold(
         appBar: TopNavigationBar(
           // showLeading: false,
-          title: 'Editar Usuário',
+          title: 'Editar Vaga',
           onLeadingPressed: () {
             _pageController.previousPage(
               duration: const Duration(milliseconds: 500),

@@ -38,7 +38,10 @@ class StepOneWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16.0),
-            AddressCard(address: controller.landlord.address),
+            AddressCard(
+              address: controller.landlord.address,
+              isReservationActive: true,
+            ),
           ],
         ),
       ),

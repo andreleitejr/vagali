@@ -17,7 +17,7 @@ class AddressCard extends StatelessWidget {
   AddressCard({
     super.key,
     required this.address,
-    this.editModeOn = true,
+    this.editModeOn = false,
     this.isReservationActive = false,
   }) {
     addressController = Get.put(AddressCardController(address));

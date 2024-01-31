@@ -19,10 +19,7 @@ class TenantController extends GetxController {
   final loading = false.obs;
 
   Future<void> _fetchItems() async {
-    print(' HUSDHUASDHASUDHASDUHAUAHSDAUDSHAUDHADSU TENANT ID ${tenant.id!}');
     final tenantItems = await _itemRepository.getAll(userId: tenant.id!);
-
-    print('HUSADHASUHADSUDHUDASHDSUHUHASDUDHUHUHDASU TENANT ITENS ${tenantItems.length}');
     items.addAll(tenantItems);
   }
 

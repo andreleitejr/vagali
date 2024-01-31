@@ -170,7 +170,7 @@ class ParkingEditController extends GetxController {
     updateCompatibleCarTypes();
 
     pricePerHourController.value = 5.toString();
-
+    calculateSuggestedPrices();
     ever(pricePerHourController, (_) => calculateSuggestedPrices());
     ever(gateHeight, (_) => updateCompatibleCarTypes());
     ever(gateWidth, (_) => updateCompatibleCarTypes());
@@ -325,6 +325,8 @@ class ParkingEditController extends GetxController {
     if (file != null) {
       final xFile = XFile(file.path);
       selectedGalleryImages.add(xFile);
+
+      _buildImageBlurhash(xFile);
     }
   }
 
@@ -339,17 +341,20 @@ class ParkingEditController extends GetxController {
         selectedGalleryImages.addAll(xFiles);
 
         for (final galleryImage in selectedGalleryImages) {
-          final blurhash = await _getBlurhash(galleryImage);
-          final imageUrl = await _getImageUrls(galleryImage);
-          if (blurhash != null && imageUrl != null) {
-            final imageBlurhash =
-                ImageBlurHash(image: imageUrl, blurHash: blurhash);
-            selectedImagesBlurhash.add(imageBlurhash);
-          }
+          _buildImageBlurhash(galleryImage);
         }
       } else {
         // Nenhuma imagem selecionada
       }
+    }
+  }
+
+  Future<void> _buildImageBlurhash(XFile image) async {
+    final blurhash = await _getBlurhash(image);
+    final imageUrl = await _getImageUrls(image);
+    if (blurhash != null && imageUrl != null) {
+      final imageBlurhash = ImageBlurHash(image: imageUrl, blurHash: blurhash);
+      selectedImagesBlurhash.add(imageBlurhash);
     }
   }
 
@@ -414,6 +419,7 @@ class ParkingEditController extends GetxController {
   Future<SaveResult> save() async {
     loading(true);
 
+    print('##################################################### 1');
     final address = getAddressFromFields();
     final location = await _addressService.getCoordinatesFromAddress(address);
 
@@ -422,9 +428,11 @@ class ParkingEditController extends GetxController {
       Get.snackbar('Erro inesperado', addressError.value);
       return SaveResult.failed;
     }
+    print('##################################################### 2');
 
     if (selectedImagesBlurhash.isEmpty) return SaveResult.failed;
 
+    print('##################################################### 3');
     final isAutomatic = isAutomaticController.value;
 
     final newParking = Parking(
@@ -461,13 +469,19 @@ class ParkingEditController extends GetxController {
     // final List<File> selectedImageFiles =
     //     selectedGalleryImages.map((xFile) => File(xFile.path)).toList();
 
+    print('##################################################### 4');
     if (currentParking.value != null) {
       newParking.id = currentParking.value!.id;
     }
     final result = await _repository.save(newParking, docId: newParking.id);
 
+    if (result == SaveResult.success) {
+      return SaveResult.success;
+    }
+
+    print('##################################################### 5');
     loading(false);
-    return result;
+    return SaveResult.failed;
   }
 
   Future<String?> _getImageUrls(XFile file) async {

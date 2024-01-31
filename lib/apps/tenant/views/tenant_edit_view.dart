@@ -60,7 +60,7 @@ class _TenantEditViewState extends State<TenantEditView> {
     if (_controller.isValid()) {
       final result = await _controller.save();
       if (result == SaveResult.success) {
-        Get.offAll(() => BaseView());
+        Get.offAllNamed('/home');
       }
     } else {
       _controller.showErrors(true);

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:vagali/apps/landlord/features/parking/repositories/parking_repository.dart';
 import 'package:vagali/apps/landlord/repositories/landlord_repository.dart';
 import 'package:vagali/apps/tenant/repositories/tenant_repository.dart';
+
 // Features
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/auth/views/auth_view.dart';
@@ -17,7 +18,7 @@ class AuthController extends GetxController {
   AuthController(this.navigator);
 
   final AuthNavigator navigator;
-  final _authRepository = Get.put(AuthRepository());
+  final _authRepository = Get.put(AuthRepository(), permanent: true);
   final _tenantRepository = Get.put(TenantRepository());
   final _landlordRepository = Get.put(LandlordRepository());
 
@@ -77,14 +78,10 @@ class AuthController extends GetxController {
           ? await _tenantRepository.get(_authRepository.authUser!.uid)
           : await _landlordRepository.get(_authRepository.authUser!.uid);
 
-      print('################################################ error auth view');
       if (user != null) {
-        Get.put(user);
+        Get.put(user, permanent: true);
         return true;
       }
-
-      print(
-          '################################################ error auth view oH NICE');
       return false;
     } catch (e) {
       return false;

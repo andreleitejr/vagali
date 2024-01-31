@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/apps/landlord/features/home/controllers/dashboard_controller.dart';
 import 'package:vagali/apps/landlord/features/home/widgets/confirmation_widget.dart';
+import 'package:vagali/apps/landlord/features/parking/repositories/parking_repository.dart';
 import 'package:vagali/features/reservation/widgets/reservation_item.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/empty_list.dart';
+import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/loader.dart';
 import 'package:vagali/widgets/title_with_action.dart';
 import 'package:vagali/widgets/user_app_bar.dart';
@@ -41,9 +43,16 @@ class LandlordHomeView extends StatelessWidget {
 
           if (controller.scheduledReservations.isEmpty &&
               controller.allReservations.isEmpty) {
-            return Center(child: EmptyList());
-          }
+            // return Center(child: EmptyList());
 
+            return FlatButton(
+              actionText: 'Iniciar Testes',
+              onPressed: () {
+                final repository = ParkingRepository();
+                repository.generateRandomParkings();
+              },
+            );
+          }
 
           return SingleChildScrollView(
             child: Column(

@@ -290,7 +290,7 @@ class TenantEditController extends GetxController {
         await _tenantRepository.save(Tenant.fromUser(user), docId: user.id);
 
     if (result == SaveResult.success) {
-      Get.put<User>(user);
+      Get.put<User>(user, permanent: true);
       // debugPrint('Successful saved user with id ${user.id}...');
       // if (user.type == UserType.tenant) {
       //   final tenant = Tenant.fromUser(user);

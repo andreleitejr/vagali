@@ -35,6 +35,7 @@ class App extends StatelessWidget {
   }
 
   List<GetPage<dynamic>> tenantPages() {
+    print('Returning Tenant Pages');
     return [
       GetPage(
         name: '/auth',
@@ -42,7 +43,7 @@ class App extends StatelessWidget {
       ),
       GetPage(
         name: '/home',
-        page: () => const LandlordBaseView(),
+        page: () => const BaseView(),
       ),
     ];
   }
@@ -55,7 +56,7 @@ class App extends StatelessWidget {
       ),
       GetPage(
         name: '/home',
-        page: () => const BaseView(),
+        page: () => const LandlordBaseView(),
       ),
     ];
   }
