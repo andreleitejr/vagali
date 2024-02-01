@@ -8,6 +8,69 @@ import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/utils/extensions.dart';
 import 'package:vagali/widgets/date_card.dart';
 
+class ReservationDoneItem extends StatelessWidget {
+  final Reservation reservation;
+  final bool isMonetary;
+
+  const ReservationDoneItem({
+    super.key,
+    required this.reservation,
+    this.isMonetary = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ListTile(
+          onTap: () => Get.to(() => ReservationView(reservation: reservation)),
+          leading: Container(
+            width: 50,
+            height: 50,
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+                color: ThemeColors.grey1, borderRadius: BorderRadius.circular(8)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                DateCard(date: reservation.startDate),
+              ],
+            ),
+          ),
+          title: Row(
+            children: [
+              Text(
+                  "${reservation.tenant?.firstName}'"
+                  " ${reservation.tenant?.lastName}",
+                  style: ThemeTypography.medium14),
+            ],
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 4),
+              Text(
+                "${reservation.startDate.toMonthlyFormattedString()}"
+                " até ${reservation.endDate.toMonthlyFormattedString()}",
+                style: ThemeTypography.regular10,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                reservation.status.title,
+                style: ThemeTypography.semiBold12.apply(
+                  color: reservation.status.color,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 24),
+      ],
+    );
+  }
+}
+
 class ReservationItem extends StatelessWidget {
   final Reservation reservation;
   final bool isMonetary;

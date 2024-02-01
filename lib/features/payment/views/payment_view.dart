@@ -38,8 +38,7 @@ class _PaymentViewState extends State<PaymentView> {
       ),
       body: Column(
         children: [
-          /// QR CODE
-
+          const SizedBox(height: 24),
           Container(
             decoration: BoxDecoration(
                 border: Border.all(
@@ -54,7 +53,6 @@ class _PaymentViewState extends State<PaymentView> {
               ),
             ),
           ),
-
           const SizedBox(height: 24),
           CopyButton(
             title: 'Chave Pix',

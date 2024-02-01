@@ -236,6 +236,8 @@ extension ReservationStatusExtension on ReservationStatus {
         return ReservationStatus.paymentDenied;
       case 'paymentTimeOut':
         return ReservationStatus.paymentTimeOut;
+      case 'confirmationTimeOut':
+        return ReservationStatus.confirmationTimeOut;
       case 'canceled':
         return ReservationStatus.canceled;
       case 'confirmed':
@@ -263,6 +265,8 @@ extension ReservationStatusExtension on ReservationStatus {
         return "Pagamento Negado. Tente novamente.";
       case ReservationStatus.paymentTimeOut:
         return "Tempo de pagamento. Faça uma nova reserva.";
+      case ReservationStatus.confirmationTimeOut:
+        return "Tempo de confirmação excedido. Seu dinheiro será extornado em breve.";
       case ReservationStatus.canceled:
         return "A reserva foi cancelada.";
       case ReservationStatus.confirmed:
@@ -292,7 +296,9 @@ extension ReservationStatusExtension on ReservationStatus {
     } else if (this == ReservationStatus.canceled) {
       return "Cancelada";
     } else if (this == ReservationStatus.paymentTimeOut) {
-      return "Tempo excedido";
+      return "Tempo de pagamento excedido";
+    } else if (this == ReservationStatus.confirmationTimeOut) {
+      return "Tempo de confirmação excedido";
     } else if (this == ReservationStatus.concluded) {
       return "Concluída";
     } else if (this == ReservationStatus.pendingPayment) {
@@ -315,7 +321,8 @@ extension ReservationStatusExtension on ReservationStatus {
   Color get color {
     if (this == ReservationStatus.paymentDenied ||
         this == ReservationStatus.canceled ||
-        this == ReservationStatus.paymentTimeOut) {
+        this == ReservationStatus.paymentTimeOut ||
+        this == ReservationStatus.confirmationTimeOut) {
       return Colors.red;
     } else if (this == ReservationStatus.pendingPayment) {
       return Colors.amber;

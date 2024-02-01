@@ -47,6 +47,7 @@ class ReservationListController extends GetxController {
 
   void _listenToReservationsStream() {
     _reservationRepository.streamAll().listen((dataList) {
+      print('############################## DATA LIST: ${dataList.first.status}');
       _processReservationData(dataList);
     });
   }
@@ -60,6 +61,7 @@ class ReservationListController extends GetxController {
 
     final inProgress =
         allReservations.where((reservation) => reservation.isOpen);
+
     reservationsInProgress.assignAll(inProgress);
     reservationsInProgress.sort((b, a) => a.createdAt.compareTo(b.createdAt));
 
@@ -72,7 +74,6 @@ class ReservationListController extends GetxController {
       if (reservationWithUserOnTheWay != null) {
         currentReservation.value = reservationWithUserOnTheWay;
       } else {
-
         locationService.stopLocationTracking();
         currentReservation.value = allReservations
             .firstWhereOrNull((reservation) => reservation.isOpen);
@@ -149,7 +150,7 @@ class ReservationListController extends GetxController {
       currentReservation.value!.id!,
       status,
     );
-   }
+  }
 
   void startLocationTracking(Reservation reservation) {
     locationService.startLocationTracking(reservation);

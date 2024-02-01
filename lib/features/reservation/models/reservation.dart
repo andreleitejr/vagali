@@ -12,13 +12,14 @@ enum ReservationStatus {
   paymentApproved,
   paymentDenied,
   paymentTimeOut,
-  canceled,
+  confirmationTimeOut,
   confirmed,
   inProgress,
   userOnTheWay,
   arrived,
   parked,
   concluded,
+  canceled,
   error,
 }
 
@@ -116,17 +117,16 @@ class Reservation extends BaseModel {
   bool get isParked => status == ReservationStatus.parked;
 
   bool get isOpen =>
-      !isConcluded &&
-      !isCanceled &&
-      !isPaymentDenied &&
-      !isExpired &&
-      !isPendingPayment;
+      // !isConfirmationExpired &&
+      !isDone && !isPendingPayment;
+
+  bool get isConfirmationExpired =>
+      isPaymentApproved && endDate.isAfter(DateTime.now());
 
   bool get isExpired => endDate.isBefore(DateTime.now());
 
   /// MEU IS IN PROGRESS
-  bool get isInProgress =>
-      status == ReservationStatus.inProgress;
+  bool get isInProgress => status == ReservationStatus.inProgress;
 
   bool get isScheduled =>
       isOpen && startDate.difference(DateTime.now()).inSeconds > 0;
@@ -135,12 +135,14 @@ class Reservation extends BaseModel {
 
   bool get isPaymentTimeOut => status == ReservationStatus.paymentTimeOut;
 
+  bool get isConfirmationTimeOut => status == ReservationStatus.confirmationTimeOut;
+
   bool get isCanceled =>
       status == ReservationStatus.canceled || isPaymentTimeOut;
 
   bool get isPaymentDenied => status == ReservationStatus.paymentDenied;
 
-  bool get isDone => isConcluded || isCanceled || isPaymentDenied;
+  bool get isDone => isConcluded || isCanceled || isPaymentDenied || isExpired || isConfirmationTimeOut;
 
   bool get isError => status == ReservationStatus.error;
 }

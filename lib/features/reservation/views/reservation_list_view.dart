@@ -114,11 +114,12 @@ class ReservationListView extends StatelessWidget {
       );
     }
     return ListView.builder(
+      padding: const EdgeInsets.only(top: 16),
       itemCount: _controller.reservationsDone.length,
       itemBuilder: (BuildContext context, int index) {
         final reservation = _controller.reservationsDone[index];
 
-        return ReservationItem(reservation: reservation);
+        return ReservationDoneItem(reservation: reservation);
       },
     );
   }
