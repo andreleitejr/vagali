@@ -19,6 +19,7 @@ class HomeController extends GetxController {
 
   final _searchService = Get.put(SearchService());
 
+  Position? currentLocation;
   final nearbyParkings = <Parking>[].obs;
 
   final loading = false.obs;
@@ -39,6 +40,7 @@ class HomeController extends GetxController {
     super.onInit();
     loading(true);
     await _locationService.requestLocationPermission();
+    currentLocation = await _locationService.getCurrentLocation();
     await Future.delayed(const Duration(milliseconds: 500));
     await fetchNearbyParkings();
     //
@@ -58,25 +60,28 @@ class HomeController extends GetxController {
       final parkings = await _parkingRepository.getAll();
 
       // Calcular a distância do usuário para cada estacionamento
-      for (var parking in parkings) {
-        parking.distance = await _locationService.getDistanceFromUserLocation(
-          Position(
-            latitude: parking.location.latitude,
-            longitude: parking.location.longitude,
-            accuracy: 0.0,
-            altitude: 0.0,
-            altitudeAccuracy: 0.0,
-            heading: 0.0,
-            headingAccuracy: 0.0,
-            speed: 0.0,
-            speedAccuracy: 0.0,
-            timestamp: DateTime.now(),
-          ),
-        );
-      }
+      if (currentLocation != null) {
+        for (var parking in parkings) {
+          parking.distance = await _locationService.getDistanceFromUserLocation(
+            currentLocation!,
+            Position(
+              latitude: parking.location.latitude,
+              longitude: parking.location.longitude,
+              accuracy: 0.0,
+              altitude: 0.0,
+              altitudeAccuracy: 0.0,
+              heading: 0.0,
+              headingAccuracy: 0.0,
+              speed: 0.0,
+              speedAccuracy: 0.0,
+              timestamp: DateTime.now(),
+            ),
+          );
+        }
 
-      // Ordenar os estacionamentos com base na distância
-      parkings.sort((a, b) => a.distance.compareTo(b.distance));
+        // Ordenar os estacionamentos com base na distância
+        parkings.sort((a, b) => a.distance.compareTo(b.distance));
+      }
 
       nearbyParkings.assignAll(parkings);
 

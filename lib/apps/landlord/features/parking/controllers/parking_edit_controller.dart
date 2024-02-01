@@ -419,7 +419,6 @@ class ParkingEditController extends GetxController {
   Future<SaveResult> save() async {
     loading(true);
 
-    print('##################################################### 1');
     final address = getAddressFromFields();
     final location = await _addressService.getCoordinatesFromAddress(address);
 
@@ -428,11 +427,9 @@ class ParkingEditController extends GetxController {
       Get.snackbar('Erro inesperado', addressError.value);
       return SaveResult.failed;
     }
-    print('##################################################### 2');
 
     if (selectedImagesBlurhash.isEmpty) return SaveResult.failed;
 
-    print('##################################################### 3');
     final isAutomatic = isAutomaticController.value;
 
     final newParking = Parking(
@@ -469,7 +466,6 @@ class ParkingEditController extends GetxController {
     // final List<File> selectedImageFiles =
     //     selectedGalleryImages.map((xFile) => File(xFile.path)).toList();
 
-    print('##################################################### 4');
     if (currentParking.value != null) {
       newParking.id = currentParking.value!.id;
     }

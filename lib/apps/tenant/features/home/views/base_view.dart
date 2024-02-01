@@ -33,7 +33,10 @@ class _BaseViewState extends State<BaseView> {
 
   @override
   void initState() {
-    controller = Get.put(BaseController(widget.selectedIndex));
+    controller = Get.put(BaseController());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.selectedIndex(widget.selectedIndex);
+    });
     super.initState();
   }
 

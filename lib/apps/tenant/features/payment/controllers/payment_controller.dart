@@ -71,10 +71,6 @@ class PaymentController extends GetxController {
       final typeLabel = result.typeLabel;
       final description = result.description;
 
-      // Faça o que for necessário com as informações do pagamento
-      print('Nonce: $nonce');
-      print('Type label: $typeLabel');
-      print('Description: $description');
 
       // Você pode realizar ações adicionais, como enviar os detalhes do pagamento para o servidor,
       // atualizar o estado do seu aplicativo, etc.

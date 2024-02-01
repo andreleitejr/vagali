@@ -74,7 +74,6 @@ class _AuthViewState extends State<AuthView> implements AuthNavigator {
 
   @override
   void home() {
-    print('######################################### Goint to Tenant Pages!');
     Get.offAllNamed('/home');
 
   }

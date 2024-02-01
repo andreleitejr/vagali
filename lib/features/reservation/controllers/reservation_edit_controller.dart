@@ -254,8 +254,6 @@ class ReservationEditController extends GetxController {
     final Uint8List markerIconData =
         await getBytesFromAsset(Images.marker, 128);
     parkingMarkerIcon.value = BitmapDescriptor.fromBytes(markerIconData);
-    print(
-        ' JISJISDAJISDAJDSHDSAUHDASUDSHAUDSAHUHDSAIJASISJOSDAJSDA ${parkingMarkerIcon}');
   }
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {

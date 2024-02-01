@@ -44,7 +44,6 @@ class VehicleEditWidget extends StatelessWidget {
             onTap: () =>
                 showVehicleTypeBottomSheet(context, onItemSelected: (type) {
               controller.vehicleTypeController(type);
-              print('# VEHICLE TYPE ${controller.vehicleTypeController.value}');
             }),
           ),
         ),
@@ -204,9 +203,6 @@ class VehicleEditWidget extends StatelessWidget {
                       controller.colorController.value =
                           vehicleColorsList[index].title;
                       Get.back();
-                      print(
-                          'ASDHUHUDSHUHASDUSHHDUHASDUHDUAHSDU ${controller.colorController.value}');
-
                       if (controller.registrationStateController.isEmpty) {
                         _showStateBottomSheet(context);
                       }

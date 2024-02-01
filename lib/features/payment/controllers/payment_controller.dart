@@ -1,75 +1,59 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
+import 'package:vagali/features/reservation/repositories/reservation_repository.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/services/payment_service.dart';
 
 class PaymentController extends GetxController {
   PaymentController(this.reservation);
 
+  final _reservationRepository = Get.put(ReservationRepository());
+
   final Reservation reservation;
+  final status = Rx<ReservationStatus?>(null);
+  final minutes = 15.obs;
+  final seconds = 0.obs;
+  final isCountdownFinished = false.obs;
+
+  RxBool get isApproved => (status.value != null &&
+          status.value == ReservationStatus.paymentApproved)
+      .obs;
+
   final User tenant = Get.find();
-  var requestBody = <String, dynamic>{}.obs;
-  final paymentService = PaymentService();
-
-  var paymentMethods = <Map<String, dynamic>>[].obs;
-  final paymentMethodId = ''.obs;
-
-  TextEditingController cardNumberController = TextEditingController();
-  TextEditingController expirationDateController = TextEditingController();
-  TextEditingController ccvController = TextEditingController();
-
-  void selectPaymentMethod(String methodId) {
-    paymentMethodId.value = methodId;
-  }
-
-  void updateRequestBody() {
-    final newData = {
-      "application_fee": 6,
-      "binary_mode": false,
-      "campaign_id": null,
-      "capture": false,
-      "coupon_amount": null,
-      "description": "Reserva de vaga",
-      "differential_pricing_id": null,
-      "external_reference": "MP0001",
-      "installments": 1,
-      "metadata": null,
-      "payer": {
-        "entity_type": "individual",
-        "type": "customer",
-        "email": tenant.email,
-        "identification": {
-          "type": "CPF",
-          "number": tenant.document,
-        }
-      },
-      "payment_method_id": paymentMethodId.value,
-      "token": "ff8080814c11e237014c1ff593b57b4d",
-      "transaction_amount": reservation.totalCost,
-    };
-
-    requestBody.value = newData;
-  }
-
-  Future<void> makePayment() async {
-    updateRequestBody();
-    final response = await paymentService.makePayment(requestBody);
-    print('Payment Response: $response');
-  }
 
   @override
   void onInit() {
     super.onInit();
-    fetchPaymentMethods();
+    // fetchPaymentMethods();
+    _listenToReservationsStream();
+    _startCountdown();
   }
 
-  Future<void> fetchPaymentMethods() async {
-    try {
-      final methods = await paymentService.fetchPaymentMethods();
-      paymentMethods.assignAll(methods);
-    } catch (e) {
-      print('Error fetching payment methods: $e');
-    }
+  void _listenToReservationsStream() {
+    _reservationRepository
+        .stream(reservation.id!)
+        .listen((databaseReservation) {
+      status.value = databaseReservation.status;
+    });
+  }
+
+  void _startCountdown() {
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      if (minutes.value == 0 && seconds.value == 0) {
+        timer.cancel();
+
+        isCountdownFinished.value = true;
+      } else {
+        if (seconds.value == 0) {
+          minutes.value--;
+          seconds.value = 59;
+        } else {
+          seconds.value--;
+        }
+      }
+    });
   }
 }

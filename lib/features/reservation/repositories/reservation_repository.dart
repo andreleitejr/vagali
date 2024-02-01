@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:vagali/apps/landlord/features/parking/repositories/parking_repository.dart';
 import 'package:vagali/apps/landlord/models/landlord.dart';
@@ -128,7 +129,7 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
 
       return stream;
     } catch (error) {
-      print('Error streaming data from Reservations in Firestore: $error');
+      debugPrint('Error streaming data from Reservations in Firestore: $error');
       return Stream.value([]);
     }
   }
@@ -146,7 +147,7 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
 
       return stream;
     } catch (error) {
-      print('Error streaming data from $collectionName in Firestore: $error');
+      debugPrint('Error streaming data from $collectionName in Firestore: $error');
       return Stream.value([]);
     }
   }
@@ -172,7 +173,7 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
 
       return reservations;
     } catch (error) {
-      print('Error fetching reservations: $error');
+      debugPrint('Error fetching reservations: $error');
       return [];
     }
   }

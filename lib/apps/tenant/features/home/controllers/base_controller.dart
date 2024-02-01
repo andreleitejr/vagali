@@ -5,18 +5,11 @@ import 'package:vagali/features/user/models/user.dart';
 class BaseController extends GetxController {
 
   final HomeController homeController = HomeController();
-  BaseController(this.index);
+  // BaseController();
 
   final User tenant = Get.find();
 
-  final int? index;
+  // final int? index;
 
   var selectedIndex = 0.obs;
-
-  @override
-  Future<void> onInit() async {
-    super.onInit();
-
-    if (index != null) selectedIndex(index);
-  }
 }

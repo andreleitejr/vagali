@@ -207,19 +207,16 @@ class _ItemEditViewState extends State<ItemEditView> {
   }
 
   Future<void> _saveVehicle() async {
-    print('Salvei um veiculo!');
     final vehicle = await controller.createVehicle();
     Get.back(result: vehicle);
   }
 
   Future<void> _saveStock() async {
-    print('Salvei um stock!');
     final stock = await controller.createStock();
     Get.back(result: stock);
   }
 
   Future<void> _saveCommonItem() async {
-    print('Salvei um stock!');
     final item = await controller.createCommonItem();
     Get.back(result: item);
   }

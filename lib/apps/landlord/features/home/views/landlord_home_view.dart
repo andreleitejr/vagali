@@ -43,15 +43,7 @@ class LandlordHomeView extends StatelessWidget {
 
           if (controller.scheduledReservations.isEmpty &&
               controller.allReservations.isEmpty) {
-            // return Center(child: EmptyList());
-
-            return FlatButton(
-              actionText: 'Iniciar Testes',
-              onPressed: () {
-                final repository = ParkingRepository();
-                repository.generateRandomParkings();
-              },
-            );
+            return Center(child: EmptyList());
           }
 
           return SingleChildScrollView(

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking_tag.dart';
 import 'package:vagali/apps/landlord/features/parking/models/price.dart';
@@ -15,6 +16,44 @@ class ParkingRepository extends FirestoreRepository<Parking> {
           fromDocument: (document) => Parking.fromDocument(document),
         );
 
+  Future<List<Parking>> getNearbyDocuments(
+      double userLatitude, double userLongitude) async {
+    final double radiusInKm = 10;
+
+    // Criar um ponto central da busca
+    GeoPoint center = GeoPoint(userLatitude, userLongitude);
+
+    // Calcular limites do quadrado que circunda a área de busca
+    double lowerLat = center.latitude - (radiusInKm / 110.574);
+    double lowerLon = center.longitude -
+        (radiusInKm / (111.32 * cos(center.latitude * pi / 180)));
+    double upperLat = center.latitude + (radiusInKm / 110.574);
+    double upperLon = center.longitude +
+        (radiusInKm / (111.32 * cos(center.latitude * pi / 180)));
+
+    // Consulta Firestore ordenada pela proximidade
+    QuerySnapshot querySnapshot = await firestore
+        .collection(collectionName)
+        .where('location', isGreaterThan: GeoPoint(lowerLat, lowerLon))
+        .where('location', isLessThan: GeoPoint(upperLat, upperLon))
+        .orderBy('location', descending: false)
+        .get();
+
+    final dataList =
+        querySnapshot.docs.map((doc) => fromDocument(doc)).toList();
+
+    debugPrint(
+        'Parkings Repository | Found ${dataList.length} parkings near by user.');
+    return dataList;
+  }
+
+  /// O CODIGO ABAIXO SERVE APENAS PARA TESTES!
+  /// O CODIGO ABAIXO SERVE APENAS PARA TESTES!
+  /// O CODIGO ABAIXO SERVE APENAS PARA TESTES!
+  /// O CODIGO ABAIXO SERVE APENAS PARA TESTES!
+  /// O CODIGO ABAIXO SERVE APENAS PARA TESTES!
+  /// O CODIGO ABAIXO SERVE APENAS PARA TESTES!
+  ///
   final List<String> userIds = [
     'ZH1CTUqTVfhq1p32Y6oe2fwcOLu1',
     'kfUpQSoSXRg2PTSqlHJ7Aed40ie2',

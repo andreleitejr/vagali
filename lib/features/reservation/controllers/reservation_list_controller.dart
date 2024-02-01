@@ -149,14 +149,10 @@ class ReservationListController extends GetxController {
       currentReservation.value!.id!,
       status,
     );
-    print(
-        '############################### Controller | CURRENT STATUs ${currentReservation.value?.status}');
-  }
+   }
 
   void startLocationTracking(Reservation reservation) {
-    print('############################### Controller | startLocationTracking');
     locationService.startLocationTracking(reservation);
-    print('############################### Controller | startLocationTracking completed');
   }
 
   void checkPaymentTimeout(Reservation reservation) {

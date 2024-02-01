@@ -35,7 +35,6 @@ class App extends StatelessWidget {
   }
 
   List<GetPage<dynamic>> tenantPages() {
-    print('Returning Tenant Pages');
     return [
       GetPage(
         name: '/auth',

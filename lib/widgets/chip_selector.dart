@@ -41,9 +41,6 @@ class _ChipSelectorState<T extends SelectableItem>
 
   @override
   Widget build(BuildContext context) {
-    print(
-        'HUASDHUHSUHUADSHUADSHADSUH SELECTED ITEMS dd3 ${widget.selectedItems.length}');
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

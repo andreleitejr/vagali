@@ -29,7 +29,6 @@ class AuthRepository {
   auth.User? authUser;
 
   bool isUserAuthenticated() {
-
     authUser = _auth.currentUser;
 
     if (authUser != null) {
@@ -58,8 +57,6 @@ class AuthRepository {
         return AuthStatus.unauthenticated;
       }
     } catch (error) {
-      print(
-          'Performing sign in error error with function ${signInFunction.toString()}: $error');
       return AuthStatus.failed;
     }
   }
@@ -180,7 +177,6 @@ class AuthRepository {
   Future<AuthStatus> sendVerificationCode(
     String phoneNumber,
   ) async {
-
     try {
       var authStatus = AuthStatus.codeSent;
       await _auth.verifyPhoneNumber(
@@ -209,7 +205,7 @@ class AuthRepository {
     }
   }
 
-  Future<void> signOut() async{
+  Future<void> signOut() async {
     await _auth.signOut();
   }
 }

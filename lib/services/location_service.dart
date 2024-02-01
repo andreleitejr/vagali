@@ -133,7 +133,6 @@ class LocationService {
 
   StreamSubscription<Position?> startListeningToLocationChanges(
       void Function(Position) onLocationChanged) {
-
     _positionStreamSubscription?.cancel();
 
     return Geolocator.getPositionStream(
@@ -195,14 +194,9 @@ class LocationService {
     return null;
   }
 
-  Future<double> getDistanceFromUserLocation(Position position) async {
-    final userLocation = await getCurrentLocation();
-
-    if (userLocation != null) {
-      return _calculateDistance(userLocation, position);
-    } else {
-      return 0.0;
-    }
+  Future<double> getDistanceFromUserLocation(
+      Position userLocation, Position position) async {
+    return _calculateDistance(userLocation, position);
   }
 
   double _calculateDistance(Position origin, Position destination) {

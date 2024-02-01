@@ -143,7 +143,6 @@ class AuthController extends GetxController {
   RxBool get isPhoneValid {
     final cleanPhone = phone.value.clean.removeParenthesis.removeAllWhitespace;
 
-    print('${cleanPhone.length == 11}');
     return (cleanPhone.length == 11).obs;
   }
 

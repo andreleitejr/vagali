@@ -83,11 +83,6 @@ class LandlordHomeController extends GetxController {
           .firstWhereOrNull((reservation) => reservation.isUserOnTheWay);
       if (reservationWithUserOnTheWay != null) {
         currentReservation.value = reservationWithUserOnTheWay;
-        print(
-            '######################################## LISTENING LATITUDE ${currentReservation.value!.locationHistory.last.latitude.toDouble()}');
-
-        print(
-            '######################################## LISTENING LONGITUDE ${currentReservation.value!.locationHistory.last.latitude.toDouble()}');
         _updateMarker();
 
         await _animateCameraToLocation();
@@ -223,11 +218,6 @@ class LandlordHomeController extends GetxController {
   void _updateMarker() {
     marker.value = null;
 
-    print(
-        'CURRENT USER LATITUDE: ${currentReservation.value!.locationHistory.last.latitude.toDouble()}');
-
-    print(
-        'CURRENT USER LONGITUDE: ${currentReservation.value!.locationHistory.last.latitude.toDouble()}');
     final location = LatLng(
       currentReservation.value!.locationHistory.last.latitude.toDouble(),
       currentReservation.value!.locationHistory.last.longitude.toDouble(),

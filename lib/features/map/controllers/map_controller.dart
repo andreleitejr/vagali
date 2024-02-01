@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:brasil_fields/brasil_fields.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -12,6 +14,8 @@ import 'package:vagali/apps/landlord/repositories/landlord_repository.dart';
 import 'package:vagali/services/location_service.dart';
 import 'package:vagali/services/search_service.dart';
 import 'package:vagali/theme/images.dart';
+import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
 
 class MapController extends GetxController {
   final LocationService _locationService = Get.find();
@@ -22,7 +26,8 @@ class MapController extends GetxController {
 
   final userCurrentLocation = Rx<Position?>(null);
   final nearbyParkings = <Parking>[].obs;
-  final filteredParkings = <Parking>[].obs;
+
+  // final filteredParkings = <Parking>[].obs;
   final selectedParking = Rx<Parking?>(null);
 
   var markers = <Marker>{}.obs;
@@ -30,7 +35,8 @@ class MapController extends GetxController {
   late BitmapDescriptor userMarkerIcon;
 
   var loading = false.obs;
-  var searchText = ''.obs;
+
+  // var searchText = ''.obs;
 
   late StreamSubscription<Position?> _locationSubscription;
   Marker? userMarker;
@@ -40,9 +46,8 @@ class MapController extends GetxController {
     super.onInit();
     loading(true);
 
+    _loadUserMarker();
     await fetchNearbyParkings();
-    await _loadParkingMarkers();
-    await _loadUserMarker();
 
     // _addUserMarker();
     _addMarkers();
@@ -60,7 +65,7 @@ class MapController extends GetxController {
             userCurrentLocation.value!.longitude,
           ),
           zoom: 16,
-          bearing: userCurrentLocation.value!.heading,
+          // bearing: userCurrentLocation.value!.heading,
         );
         googleMapController!
             .animateCamera(CameraUpdate.newCameraPosition(currentPosition));
@@ -68,22 +73,22 @@ class MapController extends GetxController {
       loading(false);
     });
 
-    ever(searchText, (_) {
-      updateFilteredParkings();
-    });
+    // ever(searchText, (_) {
+    //   updateFilteredParkings();
+    // });
 
-    ever(filteredParkings, (_) {
-      if (googleMapController != null && filteredParkings.isNotEmpty) {
-        final location = filteredParkings.first.location;
-        final currentPosition = CameraPosition(
-          target: LatLng(location.latitude, location.longitude),
-          zoom: 16,
-        );
-        googleMapController!
-            .animateCamera(CameraUpdate.newCameraPosition(currentPosition));
-      }
-      _addMarkers();
-    });
+    // ever(filteredParkings, (_) {
+    //   if (googleMapController != null && filteredParkings.isNotEmpty) {
+    //     final location = filteredParkings.first.location;
+    //     final currentPosition = CameraPosition(
+    //       target: LatLng(location.latitude, location.longitude),
+    //       zoom: 16,
+    //     );
+    //     googleMapController!
+    //         .animateCamera(CameraUpdate.newCameraPosition(currentPosition));
+    //   }
+    //   _addMarkers();
+    // });
 
     await Future.delayed(const Duration(seconds: 1));
   }
@@ -103,15 +108,14 @@ class MapController extends GetxController {
     controller.setMapStyle(styleString);
   }
 
-  Future<void> _loadParkingMarkers() async {
-    final Uint8List markerIconData =
-        await getBytesFromAsset(Images.marker, 128);
-    parkingMarkerIcon = BitmapDescriptor.fromBytes(markerIconData);
+  Future<BitmapDescriptor> _loadParkingMarkers(String title) async {
+    final Uint8List markerIconData = await getBytesFromCanvas(title);
+    return BitmapDescriptor.fromBytes(markerIconData);
   }
 
   Future<void> _loadUserMarker() async {
     final Uint8List markerIconData =
-        await getBytesFromAsset(Images.userMarker, 128);
+        await getBytesFromAsset(Images.userMarker, 64);
     userMarkerIcon = BitmapDescriptor.fromBytes(markerIconData);
   }
 
@@ -125,15 +129,59 @@ class MapController extends GetxController {
     return byteData!.buffer.asUint8List();
   }
 
+  Future<Uint8List> getBytesFromCanvas(String title) async {
+    final width = 100.0;
+    final height = 125.0;
+
+    // Carregue o ícone de pin como uma imagem
+    ByteData? data = await rootBundle.load(Images.marker);
+    final bytes = data.buffer.asUint8List();
+
+    // Decodifique a imagem para um objeto ui.Image
+    final codec = await instantiateImageCodec(bytes,
+        targetWidth: width.toInt(), targetHeight: height.toInt());
+    final frameInfo = await codec.getNextFrame();
+    final image = frameInfo.image;
+
+    final pictureRecorder = PictureRecorder();
+    final canvas = Canvas(pictureRecorder);
+
+    // Desenhe a imagem de pin
+    canvas.drawImage(image, Offset(0.0, 0.0), Paint());
+
+    TextPainter painter = TextPainter(textDirection: TextDirection.ltr);
+    painter.text = TextSpan(
+      text: title,
+      style: ThemeTypography.semiBold32,
+    );
+    painter.layout();
+
+    // Posicione o texto abaixo do ícone de pin
+    painter.paint(
+      canvas,
+      Offset(
+        (width * 0.5) - painter.width * 0.5,
+        height - ((height / 2) + 28),
+      ),
+    );
+
+    final img = await pictureRecorder.endRecording().toImage(
+        width.toInt(), (height * 1.5).toInt()); // Ajuste conforme necessário
+
+    // Converta a imagem para bytes no formato PNG
+    data = await img.toByteData(format: ImageByteFormat.png);
+    return data!.buffer.asUint8List();
+  }
+
   Future<void> fetchNearbyParkings() async {
     try {
       final allParkings = await _parkingRepository.getAll();
-      await fetchLandlordsForParkings(allParkings);
+      // await fetchLandlordsForParkings(allParkings);
       allParkings.sort((a, b) => a.distance.compareTo(b.distance));
       nearbyParkings.assignAll(allParkings);
-      updateFilteredParkings();
+      // updateFilteredParkings();
     } catch (error) {
-      print('Error fetching nearby parkings: $error');
+      debugPrint('Error fetching nearby parkings: $error');
     }
   }
 
@@ -149,20 +197,20 @@ class MapController extends GetxController {
     return landlord;
   }
 
-  void updateFilteredParkings() {
-    filteredParkings.assignAll(
-      _searchService.filterBySearchText<Parking>(
-        nearbyParkings,
-        searchText.value,
-        (parking) => [
-          parking.address.city,
-          parking.address.state,
-          parking.address.street,
-          parking.address.postalCode,
-        ],
-      ),
-    );
-  }
+  // void updateFilteredParkings() {
+  //   filteredParkings.assignAll(
+  //     _searchService.filterBySearchText<Parking>(
+  //       nearbyParkings,
+  //       searchText.value,
+  //       (parking) => [
+  //         parking.address.city,
+  //         parking.address.state,
+  //         parking.address.street,
+  //         parking.address.postalCode,
+  //       ],
+  //     ),
+  //   );
+  // }
 
   void _addUserMarker() {
     userMarker = Marker(
@@ -182,18 +230,21 @@ class MapController extends GetxController {
     _addUserMarker();
   }
 
-  void _addMarkers() {
+  Future<void> _addMarkers() async {
     markers.clear();
-    for (int i = 0; i < filteredParkings.length; i++) {
+    for (int i = 0; i < nearbyParkings.length; i++) {
+      final title = 'R\$${nearbyParkings[i].price.hour!}';
+      final icon = await _loadParkingMarkers(title);
+
       final marker = Marker(
         markerId: MarkerId('marker_$i'),
         position: LatLng(
-          filteredParkings[i].location.latitude,
-          filteredParkings[i].location.longitude,
+          nearbyParkings[i].location.latitude,
+          nearbyParkings[i].location.longitude,
         ),
-        onTap: () => selectedParking(filteredParkings[i]),
-        icon: parkingMarkerIcon,
-        infoWindow: InfoWindow(title: '\$${filteredParkings[i].price}'),
+        onTap: () => selectedParking(nearbyParkings[i]),
+        icon: icon,
+        // infoWindow: InfoWindow(title: '\$${UtilBrasilFields.obterReal(nearbyParkings[i].price.hour!.toDouble())}'),
       );
       markers.add(marker);
     }

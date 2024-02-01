@@ -31,16 +31,22 @@ class _MapViewState extends State<MapView> {
 
         return Stack(
           children: [
-            GoogleMap(
-              initialCameraPosition: CameraPosition(
-                target: LatLng(latitude, longitude),
-                zoom: 16,
+            Obx(
+              () => GoogleMap(
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(
+                    latitude,
+                    longitude,
+                  ),
+                  zoom: 16,
+                ),
+                // ignore: invalid_use_of_protected_member
+                markers: _controller.markers.value,
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.googleMapController = controller;
+                  _controller.loadMapStyle(controller);
+                },
               ),
-              markers: _controller.markers,
-              onMapCreated: (GoogleMapController controller) {
-                _controller.googleMapController = controller;
-                _controller.loadMapStyle(controller);
-              },
             ),
             // Positioned(
             //   top: 48,
