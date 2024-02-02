@@ -14,7 +14,7 @@ class EmptyList extends StatelessWidget {
         Opacity(
           opacity: 0.75,
           child: Image.asset(
-            Images.empty,
+            Images.emptyGrey,
             width: MediaQuery.of(context).size.width * 0.6,
           ),
         ),
@@ -24,7 +24,7 @@ class EmptyList extends StatelessWidget {
         Text(
           'Sua garagem está vazia',
           style: ThemeTypography.semiBold14.apply(
-            color: ThemeColors.grey4,
+            color: ThemeColors.grey3,
           ),
         ),
       ],

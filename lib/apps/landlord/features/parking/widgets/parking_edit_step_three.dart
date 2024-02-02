@@ -22,9 +22,9 @@ class StepThreeWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Expanded(
+               Expanded(
                 child: Text(
-                  'O seu portão é automático?',
+                  'O seu portão é automático? ${controller.garageDepth.value}',
                   style: ThemeTypography.semiBold16,
                 ),
               ),
@@ -39,27 +39,27 @@ class StepThreeWidget extends StatelessWidget {
           const SizedBox(height: 32),
           Obx(
             () => GradientSlider(
-              value: controller.gateHeight.value,
-              min: 2,
-              max: 10,
+              value: controller.gateHeight.value < 1 ? 1 : controller.gateHeight.value,
+              min: 1,
+              max: 100,
               onChanged: controller.gateHeight,
               label: 'Altura do Portão',
             ),
           ),
           Obx(
             () => GradientSlider(
-              value: controller.gateWidth.value,
-              min: 2,
-              max: 10,
+              value: controller.gateWidth.value < 1 ? 1 : controller.gateWidth.value,
+              min: 1,
+              max: 100,
               onChanged: controller.gateWidth,
               label: 'Largura do Portão',
             ),
           ),
           Obx(
             () => GradientSlider(
-              value: controller.garageDepth.value,
-              min: 2,
-              max: 20,
+              value: controller.garageDepth.value < 1 ? 1 : controller.garageDepth.value,
+              min: 1,
+              max: 200,
               onChanged: controller.garageDepth,
               label: 'Profundidade da Garagem',
             ),

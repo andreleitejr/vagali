@@ -8,6 +8,7 @@ import 'package:vagali/apps/landlord/views/landlord_view.dart';
 import 'package:vagali/features/calendar/views/calendar_view.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/avatar.dart';
 import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/shimmer_box.dart';
@@ -55,36 +56,60 @@ class _LandlordBaseViewState extends State<LandlordBaseView>
         () => BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           selectedFontSize: 0,
+          selectedLabelStyle: ThemeTypography.regular9.apply(
+            color: ThemeColors.primary,
+          ),
+          unselectedLabelStyle: ThemeTypography.regular9.apply(
+            color: ThemeColors.grey4,
+          ),
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Coolicon(
-                icon: Coolicons.house,
+              icon: Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Coolicon(
+                  icon: Coolicons.house,
+                ),
               ),
-              activeIcon: Coolicon(
-                icon: Coolicons.house,
-                color: ThemeColors.primary,
+              activeIcon: Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Coolicon(
+                  icon: Coolicons.house,
+                  color: ThemeColors.primary,
+                ),
               ),
-              label: '',
+              label: 'Home',
             ),
             const BottomNavigationBarItem(
-              icon: Coolicon(
-                icon: Coolicons.creditCard,
+              icon:  Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Coolicon(
+                  icon: Coolicons.creditCard,
+                ),
               ),
-              activeIcon: Coolicon(
-                icon: Coolicons.creditCard,
-                color: ThemeColors.primary,
+              activeIcon: Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Coolicon(
+                  icon: Coolicons.creditCard,
+                  color: ThemeColors.primary,
+                ),
               ),
-              label: '',
+              label: 'Dashboard',
             ),
             const BottomNavigationBarItem(
-              icon: Coolicon(
-                icon: Coolicons.calendar,
+              icon:  Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Coolicon(
+                  icon: Coolicons.calendar,
+                ),
               ),
-              activeIcon: Coolicon(
-                icon: Coolicons.calendar,
-                color: ThemeColors.primary,
+              activeIcon: Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Coolicon(
+                  icon: Coolicons.calendar,
+                  color: ThemeColors.primary,
+                ),
               ),
-              label: '',
+              label: 'Calendar',
             ),
             BottomNavigationBarItem(
               icon: SizedBox(

@@ -61,6 +61,7 @@ class _DashboardViewState extends State<DashboardView> {
                     children: [
                       Row(
                         children: [
+                          const SizedBox(width: 8),
                           Coolicon(
                             icon: Coolicons.creditCard,
                             width: 18,
@@ -77,10 +78,11 @@ class _DashboardViewState extends State<DashboardView> {
                         () => Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
+                            const SizedBox(width: 8),
                             Expanded(
                               child: Text(
                                 '${UtilBrasilFields.obterReal(_controller.balance)}',
-                                style: ThemeTypography.semiBold32,
+                                style: ThemeTypography.semiBold30,
                               ),
                             ),
                             if (_controller.balance > 0)
@@ -164,6 +166,7 @@ class _DashboardViewState extends State<DashboardView> {
                 ],
               ),
             ),
+            const SizedBox(height: 8),
             TitleWithAction(
               title: 'Meu extrato',
               icon: Coolicons.calendar,

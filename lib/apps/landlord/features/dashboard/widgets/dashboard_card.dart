@@ -23,6 +23,7 @@ class DashboardCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Card(
+        elevation: 0,
         color: cardColor,
         child: Padding(
           padding: EdgeInsets.all(12),

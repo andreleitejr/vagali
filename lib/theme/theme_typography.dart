@@ -5,6 +5,10 @@ class ThemeTypography {
     fontSize: 32,
     fontWeight: FontWeight.w600,
   );
+  static const semiBold30 = TextStyle(
+    fontSize: 30,
+    fontWeight: FontWeight.w600,
+  );
   static const semiBold22 = TextStyle(
     fontSize: 22,
     fontWeight: FontWeight.w600,

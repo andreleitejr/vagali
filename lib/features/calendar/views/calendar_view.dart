@@ -179,13 +179,6 @@ class _CalendarViewState extends State<CalendarView> {
                 ),
               ],
             ),
-          ] else ...[
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: EmptyList(),
-              ),
-            ),
           ],
           if (controller.selectedReservations.isNotEmpty)
             Expanded(
