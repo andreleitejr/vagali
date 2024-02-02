@@ -1,6 +1,7 @@
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vagali/features/cashout/models/cashout.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/support/models/support.dart';
 import 'package:vagali/models/flavor_config.dart';
@@ -304,7 +305,7 @@ extension ReservationStatusExtension on ReservationStatus {
     } else if (this == ReservationStatus.pendingPayment) {
       return "Pendente de pagamento";
     } else if (this == ReservationStatus.paymentApproved) {
-      return "Aguardando confirmacao";
+      return "Aguardando confirmação";
     } else if (this == ReservationStatus.confirmed) {
       return "Confirmado";
     } else if (this == ReservationStatus.inProgress) {
@@ -328,6 +329,48 @@ extension ReservationStatusExtension on ReservationStatus {
       return Colors.amber;
     } else {
       return ThemeColors.primary;
+    }
+  }
+}
+
+extension CashOutStatusExtension on CashOutStatus {
+  String toStringSimplified() => toString().split('.').last;
+
+  static CashOutStatus fromString(String value) {
+    switch (value) {
+      case 'approved':
+        return CashOutStatus.approved;
+      case 'paid':
+        return CashOutStatus.paid;
+      case 'rejected':
+        return CashOutStatus.rejected;
+      default:
+        return CashOutStatus.pending;
+    }
+  }
+
+  String get message {
+    switch (this) {
+      case CashOutStatus.approved:
+        return "Pagamento aprovado. Aguarde a transferência do valor.";
+      case CashOutStatus.paid:
+        return "Pagamento realizado. Verifique sua conta bancária.";
+      case CashOutStatus.rejected:
+        return "Pagamento rejeitado.";
+      default:
+        return "Aguardando aprovação do pagamento.";
+    }
+  }
+
+  String get title {
+    if (this == CashOutStatus.approved) {
+      return "Pagamento aprovado";
+    } else if (this == CashOutStatus.paid) {
+      return "Pagamento realizado";
+    } else if (this == CashOutStatus.rejected) {
+      return "Pagamento rejeitado";
+    } else {
+      return "Pagamento pendente";
     }
   }
 }

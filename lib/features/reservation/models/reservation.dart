@@ -58,6 +58,21 @@ class Reservation extends BaseModel {
           updatedAt: updatedAt,
         );
 
+  Reservation.fromDocument(DocumentSnapshot document)
+      : parkingId = document['parkingId'],
+        tenantId = document['tenantId'],
+        itemId = document['itemId'],
+        startDate = (document['startTime'] as Timestamp).toDate(),
+        endDate = (document['endTime'] as Timestamp).toDate(),
+        totalCost = document['totalCost'],
+        landlordId = document['landlordId'],
+        reservationMessage = document['reservationMessage'],
+        locationHistory = (document['locationHistory'] as List<dynamic>)
+            .map((locationData) => LocationHistory.fromDocument(locationData))
+            .toList(),
+        status = ReservationStatusExtension.fromString(document['status']),
+        super.fromDocument(document);
+
   @override
   Map<String, dynamic> toMap() {
     return {
@@ -76,20 +91,6 @@ class Reservation extends BaseModel {
     };
   }
 
-  Reservation.fromDocument(DocumentSnapshot document)
-      : parkingId = document['parkingId'],
-        tenantId = document['tenantId'],
-        itemId = document['itemId'],
-        startDate = (document['startTime'] as Timestamp).toDate(),
-        endDate = (document['endTime'] as Timestamp).toDate(),
-        totalCost = document['totalCost'],
-        landlordId = document['landlordId'],
-        reservationMessage = document['reservationMessage'],
-        locationHistory = (document['locationHistory'] as List<dynamic>)
-            .map((locationData) => LocationHistory.fromDocument(locationData))
-            .toList(),
-        status = ReservationStatusExtension.fromString(document['status']),
-        super.fromDocument(document);
 
   bool get isHandshakeMade =>
       isConfirmed || /*isUserOnTheWay ||*/ isParked || isInProgress;

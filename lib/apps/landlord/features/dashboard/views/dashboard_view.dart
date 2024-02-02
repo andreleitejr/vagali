@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/apps/landlord/features/dashboard/controllers/dashboard_controller.dart';
 import 'package:vagali/apps/landlord/features/dashboard/widgets/dashboard_card.dart';
+import 'package:vagali/features/cashout/views/cashout_list_view.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/widgets/reservation_item.dart';
+import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/widgets/snackbar.dart';
 import 'package:vagali/widgets/title_with_action.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
@@ -36,6 +39,13 @@ class _DashboardViewState extends State<DashboardView> {
     return Scaffold(
       appBar: TopNavigationBar(
         title: 'Dashboard',
+        actions: [
+          Coolicon(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            icon: Coolicons.creditCard,
+            onTap: () => Get.to(() => CashOutListView()),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         // padding: EdgeInsets.all(16.0),
@@ -63,43 +73,56 @@ class _DashboardViewState extends State<DashboardView> {
                           ),
                         ],
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              '${UtilBrasilFields.obterReal(_controller.balance)}',
-                              style: ThemeTypography.semiBold32,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {},
-                            style: TextButton.styleFrom(
-                              backgroundColor: ThemeColors.grey1,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                      Obx(
+                        () => Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                '${UtilBrasilFields.obterReal(_controller.balance)}',
+                                style: ThemeTypography.semiBold32,
                               ),
                             ),
-                            child: Row(
-                              children: [
-                                SizedBox(width: 4),
-                                Coolicon(
-                                  icon: Coolicons.download,
-                                  color: ThemeColors.primary,
-                                  width: 18,
-                                ),
-                                SizedBox(width: 8),
-                                Text(
-                                  "Realizar saque",
-                                  style: ThemeTypography.medium14.apply(
-                                    color: ThemeColors.primary,
+                            if (_controller.balance > 0)
+                              TextButton(
+                                onPressed: () async {
+                                  final result =
+                                      await _controller.requestCashOut();
+                                  if (result == SaveResult.success) {
+                                    Get.to(() => CashOutListView());
+                                    snackBar(
+                                        'Saque solicitado com sucesso',
+                                        'O seu saque foi solicitado com sucesso.'
+                                            'Fique de olho no status para receber seu dinheiro.');
+                                  }
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor: ThemeColors.grey1,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                                SizedBox(width: 8),
-                              ],
-                            ),
-                          ),
-                        ],
+                                child: Row(
+                                  children: [
+                                    SizedBox(width: 4),
+                                    Coolicon(
+                                      icon: Coolicons.download,
+                                      color: ThemeColors.primary,
+                                      width: 18,
+                                    ),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      "Realizar saque",
+                                      style: ThemeTypography.medium14.apply(
+                                        color: ThemeColors.primary,
+                                      ),
+                                    ),
+                                    SizedBox(width: 8),
+                                  ],
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

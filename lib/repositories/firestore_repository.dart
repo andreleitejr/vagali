@@ -131,9 +131,13 @@ class FirestoreRepository<T extends BaseModel> {
     }
   }
 
-  Stream<List<T>> streamAll() {
+  Stream<List<T>> streamAll({String? userId}) {
     try {
-      final query = firestore.collection(collectionName);
+      Query query = firestore.collection(collectionName);
+
+      if (userId != null) {
+        query = query.where('userId', isEqualTo: userId);
+      }
 
       final stream = query.snapshots().map(
         (querySnapshot) {

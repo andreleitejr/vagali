@@ -82,12 +82,12 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
   // }
 
   final _landlordRepository = Get.put(LandlordRepository());
-  final  _tenantRepository = Get.put(TenantRepository());
-  final  _parkingRepository = Get.put(ParkingRepository());
-  final  _itemRepository =  Get.put(ItemRepository());
+  final _tenantRepository = Get.put(TenantRepository());
+  final _parkingRepository = Get.put(ParkingRepository());
+  final _itemRepository = Get.put(ItemRepository());
 
   @override
-  Stream<List<Reservation>> streamAll() {
+  Stream<List<Reservation>> streamAll({String? userId}) {
     try {
       final User user = Get.find();
 
@@ -124,7 +124,8 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
           reservations.add(reservation);
         }));
 
-        print('################################################## ${reservations.first.status}');
+        print(
+            '################################################## ${reservations.first.status}');
 
         return reservations;
       });
@@ -149,7 +150,8 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
 
       return stream;
     } catch (error) {
-      debugPrint('Error streaming data from $collectionName in Firestore: $error');
+      debugPrint(
+          'Error streaming data from $collectionName in Firestore: $error');
       return Stream.value([]);
     }
   }

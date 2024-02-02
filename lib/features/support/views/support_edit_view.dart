@@ -110,7 +110,6 @@ class SupportEditView extends StatelessWidget {
     );
   }
 
-  // Função para exibir um Snackbar
   void showSnackbar(String title, String message) {
     snackBar(
       title,
@@ -122,17 +121,14 @@ class SupportEditView extends StatelessWidget {
     );
   }
 
-// Função para exibir um Snackbar de erro
   void showErrorMessageSnackbar(String title, String message) {
     showSnackbar(title, message);
   }
 
-// Função para exibir um Snackbar de sucesso
   void showSuccessMessageSnackbar(String title, String message) {
     showSnackbar(title, message);
   }
 
-// Função para processar o clique do botão
   void handleButtonPress() async {
     if (controller.isValid.isTrue) {
       final result = await controller.save();

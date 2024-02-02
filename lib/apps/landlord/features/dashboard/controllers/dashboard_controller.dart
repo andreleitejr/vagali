@@ -1,19 +1,38 @@
 import 'package:get/get.dart';
+import 'package:vagali/features/cashout/controllers/cashout_edit_controller.dart';
+import 'package:vagali/features/cashout/models/cashout.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
+import 'package:vagali/repositories/firestore_repository.dart';
 
 class DashboardController extends GetxController {
   DashboardController(this.reservations);
+
+  final _cashOutController = Get.put(CashOutController());
 
   final List<Reservation> reservations;
 
   final doneReservations = <Reservation>[].obs;
   final openReservations = <Reservation>[].obs;
+  final cashOuts = <CashOut>[].obs;
 
   double get balance {
     double totalBalance = 0;
 
     for (final reservation in doneReservations) {
       totalBalance += reservation.totalCost;
+    }
+
+    if (cashOuts.isNotEmpty) {
+      print('################################ CASH OUT IS NOT NULL');
+      final pendingCashOut = cashOuts.firstWhereOrNull(
+          (cashOut) => cashOut.status == CashOutStatus.pending);
+
+      if (pendingCashOut != null) {
+        print(
+            '################################ HAS PENDING CASH OUT ${pendingCashOut.amount}');
+        totalBalance -= pendingCashOut.amount;
+        print('################################ TOTAL AMOUNT  ${totalBalance}');
+      }
     }
 
     return totalBalance;
@@ -30,7 +49,6 @@ class DashboardController extends GetxController {
   }
 
   Duration get totalTime {
-
     Duration totalTime = Duration.zero;
 
     for (var reservation in openReservations) {
@@ -54,14 +72,19 @@ class DashboardController extends GetxController {
     }).toList();
   }
 
+  Future<SaveResult> requestCashOut() async {
+    return _cashOutController.save(balance);
+  }
+
   @override
   void onInit() {
-
     doneReservations.value =
         reservations.where((reservation) => reservation.isDone).toList();
 
     openReservations.value =
         reservations.where((reservation) => reservation.isOpen).toList();
+
+    cashOuts.value = _cashOutController.cashOuts;
     super.onInit();
   }
 }
