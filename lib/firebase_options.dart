@@ -67,6 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '474910118931',
     projectId: 'vagali-8385f',
     storageBucket: 'vagali-8385f.appspot.com',
+    androidClientId: '474910118931-jrg7ab4n9cvhk7ev5irt1s3fvesc1dek.apps.googleusercontent.com',
+    iosClientId: '474910118931-g8j0dh1gr4kr5bqpakc7docpd5cacp6q.apps.googleusercontent.com',
     iosBundleId: 'com.vagali.vagali',
   );
 
@@ -76,6 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '474910118931',
     projectId: 'vagali-8385f',
     storageBucket: 'vagali-8385f.appspot.com',
+    androidClientId: '474910118931-jrg7ab4n9cvhk7ev5irt1s3fvesc1dek.apps.googleusercontent.com',
+    iosClientId: '474910118931-ht94kg3r6kqp0ca75guu94uh7adljauf.apps.googleusercontent.com',
     iosBundleId: 'com.vagali.vagali.RunnerTests',
   );
 }

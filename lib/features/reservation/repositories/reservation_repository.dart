@@ -124,9 +124,6 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
           reservations.add(reservation);
         }));
 
-        print(
-            '################################################## ${reservations.first.status}');
-
         return reservations;
       });
 

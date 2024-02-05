@@ -47,7 +47,6 @@ class ReservationListController extends GetxController {
 
   void _listenToReservationsStream() {
     _reservationRepository.streamAll().listen((dataList) {
-      print('############################## DATA LIST: ${dataList.first.status}');
       _processReservationData(dataList);
     });
   }

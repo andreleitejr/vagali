@@ -66,7 +66,7 @@ dependencies:
   diacritic: ^0.1.4
   dio: ^5.4.0
   blurhash: ^1.1.1
-  flutter_blurhash: ^0.7.0
+  flutter_blurhash: ^0.8.2
   shimmer: ^3.0.0
   rive: ^0.12.1
   package_info_plus: ^4.2.0
