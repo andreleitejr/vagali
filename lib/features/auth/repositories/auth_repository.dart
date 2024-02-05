@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -182,14 +183,20 @@ class AuthRepository {
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (auth.AuthCredential authResult) {
+          debugPrint(
+              "Auth Repository | Send Verification Code | User Authenticated ${authResult.accessToken}");
+
           authStatus = AuthStatus.authenticated;
         },
         verificationFailed: (auth.FirebaseAuthException authException) {
-          print("Phone verification failed: ${authException.message}");
+          debugPrint(
+              "Auth Repository | Send Verification Code | Phone verification failed: ${authException.message}");
           authStatus = AuthStatus.failed;
         },
         codeSent: (String verificationId, [int? forceResendingToken]) {
           _verificationId = verificationId;
+          debugPrint("Auth Repository | Send Verification Code | Code sent: ${verificationId}");
+
           authStatus = AuthStatus.verifying;
         },
         codeAutoRetrievalTimeout: (String verificationId) {
@@ -199,8 +206,7 @@ class AuthRepository {
       );
       return authStatus;
     } catch (error) {
-      print('Error sending verification code: $error');
-      // Trate os erros de envio de SMS aqui
+      debugPrint('Error sending verification code: $error');
       return AuthStatus.failed;
     }
   }
