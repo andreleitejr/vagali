@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -46,7 +47,6 @@ class AuthRepository {
       Future<auth.UserCredential> Function() signInFunction) async {
     try {
 
-      print('################################# PHONE SIGN IN sdffdsdssd');
       final userCredential = await signInFunction();
       final user = userCredential.user;
 
@@ -165,18 +165,15 @@ class AuthRepository {
 
   Future<AuthStatus> verifySmsCode(String smsCode) async {
 
-    print('################################# PHONE SIGN IN  ${smsCode}');
     Future<auth.UserCredential> phoneSignIn() async {
       final auth.AuthCredential credential = auth.PhoneAuthProvider.credential(
         verificationId: _verificationId,
         smsCode: smsCode,
       );
 
-      print('################################# PHONE SIGN IN 2  ${smsCode}');
       return await _auth.signInWithCredential(credential);
     }
 
-    print('################################# PHONE SIGN IN 3  ${smsCode}');
     return await _performSignIn(phoneSignIn);
   }
 
@@ -188,15 +185,21 @@ class AuthRepository {
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (auth.AuthCredential authResult) {
+          debugPrint(
+              "Auth Repository | Send Verification Code | User Authenticated ${authResult.accessToken}");
+
           authStatus = AuthStatus.authenticated;
         },
         verificationFailed: (auth.FirebaseAuthException authException) {
-          print("Phone verification failed: ${authException.message}");
+          debugPrint(
+              "Auth Repository | Send Verification Code | Phone verification failed: ${authException.message}");
           authStatus = AuthStatus.failed;
         },
         codeSent: (String verificationId, [int? forceResendingToken]) {
           _verificationId = verificationId;
-          print('################################# ${_verificationId}');
+
+          debugPrint("Auth Repository | Send Verification Code | Code sent: ${verificationId}");
+
           authStatus = AuthStatus.verifying;
         },
         codeAutoRetrievalTimeout: (String verificationId) {
@@ -209,8 +212,7 @@ class AuthRepository {
       );
       return authStatus;
     } catch (error) {
-      print('Error sending verification code: $error');
-      // Trate os erros de envio de SMS aqui
+      debugPrint('Error sending verification code: $error');
       return AuthStatus.failed;
     }
   }
