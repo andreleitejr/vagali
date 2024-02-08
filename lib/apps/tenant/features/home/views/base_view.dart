@@ -44,8 +44,8 @@ class _BaseViewState extends State<BaseView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(() => _pages[controller.selectedIndex.value]),
-      bottomNavigationBar: Obx(
-        () => BottomNavigationBar(
+      bottomNavigationBar:Obx(
+            () => BottomNavigationBar(
           backgroundColor: Colors.white,
           type: BottomNavigationBarType.fixed,
           selectedFontSize: 0,
@@ -55,75 +55,74 @@ class _BaseViewState extends State<BaseView> {
           unselectedLabelStyle: ThemeTypography.regular9.apply(
             color: ThemeColors.grey4,
           ),
-          items: <BottomNavigationBarItem>[
-            const BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Coolicon(
-                  icon: Coolicons.house,
-                ),
-              ),
-              activeIcon: Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: Coolicon(
-                  icon: Coolicons.house,
-                  color: ThemeColors.primary,
-                ),
-              ),
-              label: 'Home',
-            ),
-            const BottomNavigationBarItem(
-              icon:  Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: Coolicon(
-                  icon: Coolicons.map,
-                ),
-              ),
-              activeIcon:Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child:  Coolicon(
-                  icon: Coolicons.map,
-                  color: ThemeColors.primary,
-                ),
-              ),
-              label: 'Mapa',
-            ),
-            const BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: Coolicon(
-                  icon: Coolicons.calendar,
-                ),
-              ),
-              activeIcon: Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: Coolicon(
-                  icon: Coolicons.calendar,
-                  color: ThemeColors.primary,
-                ),
-              ),
-              label: 'Reservas',
-            ),
-            BottomNavigationBarItem(
-              icon: SizedBox(
-                height: 38,
-                width: 38,
-                child: Obx(
-                  () => ShimmerBox(
-                    loading: controller.homeController.loading.value,
-                    child: Avatar(image: controller.tenant.image),
-                  ),
-                ),
-              ),
-              label: '',
-            ),
-          ],
+          items: _buildBottomNavBarItems(),
           currentIndex: controller.selectedIndex.value,
           unselectedItemColor: ThemeColors.grey3,
           selectedItemColor: ThemeColors.primary,
           onTap: controller.selectedIndex,
         ),
       ),
+    );
+  }
+
+
+  List<BottomNavigationBarItem> _buildBottomNavBarItems() {
+    return [
+      _buildNavBarItem(Coolicons.house, 'Home'),
+      _buildNavBarItem(Coolicons.map, 'Mapa'),
+      _buildNavBarItem(Coolicons.calendar, 'Reservas'),
+      _buildNavBarItemWithAvatar(),
+    ];
+  }
+
+  BottomNavigationBarItem _buildNavBarItem(String icon, String label) {
+    return BottomNavigationBarItem(
+      icon: Padding(
+        padding: const EdgeInsets.only(bottom: 4),
+        child: Coolicon(
+          icon: icon,
+        ),
+      ),
+      activeIcon: Padding(
+        padding: const EdgeInsets.only(bottom: 4),
+        child: Coolicon(
+          icon: icon,
+          color: ThemeColors.primary,
+        ),
+      ),
+      label: label,
+    );
+  }
+
+  BottomNavigationBarItem _buildNavBarItemWithAvatar() {
+    return BottomNavigationBarItem(
+      icon: Container(
+        margin: const EdgeInsets.only(top: 8),
+        height: 38,
+        width: 38,
+        child: Obx(
+              () => ShimmerBox(
+            loading: controller.homeController.loading.value,
+            child: Avatar(image: controller.tenant.image),
+          ),
+        ),
+      ),
+      activeIcon: Container(
+
+        margin: const EdgeInsets.only(top: 8),
+        height: 38,
+        width: 38,
+        child: Obx(
+              () => ShimmerBox(
+            loading: controller.homeController.loading.value,
+            child: Avatar(
+              image: controller.tenant.image,
+              isSelected: controller.selectedIndex == 3,
+            ),
+          ),
+        ),
+      ),
+      label: '',
     );
   }
 }

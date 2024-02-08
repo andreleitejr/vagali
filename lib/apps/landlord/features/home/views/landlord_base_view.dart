@@ -52,85 +52,79 @@ class _LandlordBaseViewState extends State<LandlordBaseView>
     ];
     return Scaffold(
       body: Obx(() => _pages[controller.selectedIndex.value]),
-      bottomNavigationBar: Obx(
-        () => BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          selectedFontSize: 0,
-          selectedLabelStyle: ThemeTypography.regular9.apply(
-            color: ThemeColors.primary,
-          ),
-          unselectedLabelStyle: ThemeTypography.regular9.apply(
-            color: ThemeColors.grey4,
-          ),
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Coolicon(
-                  icon: Coolicons.house,
-                ),
-              ),
-              activeIcon: Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Coolicon(
-                  icon: Coolicons.house,
-                  color: ThemeColors.primary,
-                ),
-              ),
-              label: 'Home',
-            ),
-            const BottomNavigationBarItem(
-              icon:  Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Coolicon(
-                  icon: Coolicons.creditCard,
-                ),
-              ),
-              activeIcon: Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Coolicon(
-                  icon: Coolicons.creditCard,
-                  color: ThemeColors.primary,
-                ),
-              ),
-              label: 'Dashboard',
-            ),
-            const BottomNavigationBarItem(
-              icon:  Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Coolicon(
-                  icon: Coolicons.calendar,
-                ),
-              ),
-              activeIcon: Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Coolicon(
-                  icon: Coolicons.calendar,
-                  color: ThemeColors.primary,
-                ),
-              ),
-              label: 'Calendar',
-            ),
-            BottomNavigationBarItem(
-              icon: SizedBox(
-                height: 38,
-                width: 38,
-                child: Obx(
-                  () => ShimmerBox(
-                    loading: controller.loading.value,
-                    child: Avatar(image: controller.landlord.image),
-                  ),
-                ),
-              ),
-              label: '',
-            ),
-          ],
-          currentIndex: controller.selectedIndex.value,
-          unselectedItemColor: ThemeColors.grey3,
-          selectedItemColor: ThemeColors.primary,
-          onTap: (index) => controller.selectedIndex(index),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
+        type: BottomNavigationBarType.fixed,
+        selectedFontSize: 0,
+        selectedLabelStyle: ThemeTypography.regular9.apply(
+          color: ThemeColors.primary,
+        ),
+        unselectedLabelStyle: ThemeTypography.regular9.apply(
+          color: ThemeColors.grey4,
+        ),
+        items: _buildBottomNavBarItems(),
+        currentIndex: controller.selectedIndex.value,
+        unselectedItemColor: ThemeColors.grey3,
+        selectedItemColor: ThemeColors.primary,
+        onTap: controller.selectedIndex,
+      ),
+    );
+  }
+
+  List<BottomNavigationBarItem> _buildBottomNavBarItems() {
+    return [
+      _buildNavBarItem(Coolicons.house, 'Home'),
+      _buildNavBarItem(Coolicons.creditCard, 'Dashboard'),
+      _buildNavBarItem(Coolicons.calendar, 'Reservas'),
+      _buildNavBarItemWithAvatar(),
+    ];
+  }
+
+  BottomNavigationBarItem _buildNavBarItem(String icon, String label) {
+    return BottomNavigationBarItem(
+      icon: Padding(
+        padding: const EdgeInsets.only(bottom: 4),
+        child: Coolicon(
+          icon: icon,
         ),
       ),
+      activeIcon: Padding(
+        padding: const EdgeInsets.only(bottom: 4),
+        child: Coolicon(
+          icon: icon,
+          color: ThemeColors.primary,
+        ),
+      ),
+      label: label,
+    );
+  }
+
+  BottomNavigationBarItem _buildNavBarItemWithAvatar() {
+    return BottomNavigationBarItem(
+      icon: SizedBox(
+        height: 38,
+        width: 38,
+        child: Obx(
+          () => ShimmerBox(
+            loading: controller.loading.value,
+            child: Avatar(image: controller.landlord.image),
+          ),
+        ),
+      ),
+      activeIcon: SizedBox(
+        height: 38,
+        width: 38,
+        child: Obx(
+          () => ShimmerBox(
+            loading: controller.loading.value,
+            child: Avatar(
+              image: controller.landlord.image,
+              isSelected: controller.selectedIndex == 3,
+            ),
+          ),
+        ),
+      ),
+      label: '',
     );
   }
 

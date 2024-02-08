@@ -7,6 +7,7 @@ import 'package:vagali/features/config/widgets/config_list_tile.dart';
 import 'package:vagali/features/faq/views/faq_view.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
+import 'package:vagali/widgets/avatar.dart';
 import 'package:vagali/widgets/loader.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
@@ -29,16 +30,37 @@ class TenantView extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // TenantHeader(controller: controller),
-            const SizedBox(height: 16),
             Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '${controller.tenant.firstName} ${controller.tenant.lastName}',
-                      style: ThemeTypography.medium16,
+                    Row(
+                      children: [
+                        Avatar(
+                          image: controller.tenant.image,
+                          width: 64,
+                          height: 64,
+                          isSelected: true,
+                        ),
+                        const SizedBox(width: 8),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${controller.tenant.firstName} ${controller.tenant.lastName}',
+                              style: ThemeTypography.medium16,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              '${controller.tenant.address.city}, ${controller.tenant.address.country}',
+                              style: ThemeTypography.regular14.apply(
+                                color: ThemeColors.grey4,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
                     ),
                     // const SizedBox(height: 8),
                     // Text(

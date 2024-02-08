@@ -4,24 +4,36 @@ import 'package:vagali/models/image_blurhash.dart';
 
 class Avatar extends StatelessWidget {
   final ImageBlurHash image;
+  final bool isSelected;
+  final double height;
+  final double width;
 
-  const Avatar({super.key, required this.image});
+
+  const Avatar({
+    super.key,
+    required this.image,
+    this.height = 42,
+    this.width = 42,
+    this.isSelected = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 42,
-      width: 42,
+      height: height,
+      width: width,
       padding: const EdgeInsets.all(1),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [
-            Color(0xFF02C39A),
-            Color(0xFF0077B6),
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
+        gradient: isSelected
+            ? const LinearGradient(
+                colors: [
+                  Color(0xFF02C39A),
+                  Color(0xFF0077B6),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              )
+            : null,
         borderRadius: BorderRadius.circular(100),
       ),
       child: Container(

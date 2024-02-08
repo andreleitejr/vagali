@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:vagali/features/address/controllers/address_card_controller.dart';
 import 'package:vagali/features/address/models/address.dart';
 import 'package:vagali/theme/coolicons.dart';
+import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/coolicon.dart';
 
@@ -48,8 +49,10 @@ class AddressCard extends StatelessWidget {
         const SizedBox(height: 8),
         Row(
           children: [
-            const Coolicon(
+            Coolicon(
               icon: Coolicons.mapPin,
+              width: 16,
+              color: ThemeColors.grey4,
             ),
             const SizedBox(width: 4),
             Expanded(
@@ -58,7 +61,9 @@ class AddressCard extends StatelessWidget {
                 isReservationActive
                     ? fullAddress
                     : 'O endereço ficará visível após a confirmação da reserva',
-                style: ThemeTypography.regular14,
+                style: ThemeTypography.regular14.apply(
+                  color: ThemeColors.grey4,
+                ),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -83,16 +88,18 @@ class AddressCard extends StatelessWidget {
                       ),
                       zoom: isReservationActive ? 18 : 13,
                     ),
-                    markers: isReservationActive ? {
-                      addressController.marker.value ??
-                          Marker(
-                            markerId: MarkerId('location'),
-                            position: LatLng(
-                              currentCoordinates.latitude,
-                              currentCoordinates.longitude,
-                            ),
-                          ),
-                    } : {},
+                    markers: isReservationActive
+                        ? {
+                            addressController.marker.value ??
+                                Marker(
+                                  markerId: MarkerId('location'),
+                                  position: LatLng(
+                                    currentCoordinates.latitude,
+                                    currentCoordinates.longitude,
+                                  ),
+                                ),
+                          }
+                        : {},
                     onMapCreated: (GoogleMapController controller) {
                       addressController.loadMapStyle(controller);
                     },
