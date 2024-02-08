@@ -33,14 +33,14 @@ class ItemTypeListView extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: SearchInput(
             searchText: controller.searchText.value,
             hintText: 'Buscar objetos',
             onSearch: controller.searchText,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
         Expanded(
           child: Obx(
             () => ListView.builder(

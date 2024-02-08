@@ -99,14 +99,17 @@ class ItemEditController extends GetxController {
   }
 
   Future<String?> _getImageUrl() async {
-    final url = await _imageService.getBlurhash(imageFileController.value!);
+    if (imageFileController.value != null) {
+      final imageUrl =
+      await _imageService.uploadImage(imageFileController.value!, 'items');
 
-    if (url == null) {
-      imageError.value = 'Falha ao carregar a imagem';
-      return null;
+      if (imageUrl == null) {
+        imageError.value = 'Falha ao carregar a imagem';
+      }
+
+      return imageUrl;
     }
-
-    return url;
+    return null;
   }
 
   Future<Item?> createVehicle() async {
