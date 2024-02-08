@@ -4,13 +4,16 @@ import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/features/address/widgets/address_card.dart';
 import 'package:vagali/features/item/models/item.dart';
 import 'package:vagali/features/item/views/item_type_list_view.dart';
-import 'package:vagali/features/payment/views/payment_view.dart';
+import 'package:vagali/features/payment/models/payment_method.dart';
+import 'package:vagali/features/payment/views/payment_method_selection_view.dart';
+import 'package:vagali/features/payment/views/payment_pix_view.dart';
 import 'package:vagali/features/reservation/controllers/reservation_edit_controller.dart';
 import 'package:vagali/features/reservation/widgets/reservation_date_widget.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
+import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/input.dart';
 import 'package:vagali/widgets/title_with_icon.dart';
@@ -119,6 +122,84 @@ class _ReservationEditViewState extends State<ReservationEditView> {
               ),
             ),
             const SizedBox(height: 16),
+            GestureDetector(
+              onTap: () async {
+                final paymentMethod =
+                    await Get.to(() => PaymentMethodSelectionView());
+                if (paymentMethod != null) {
+                  controller.paymentMethod(paymentMethod);
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    border: Border.all(color: ThemeColors.grey3),
+                    borderRadius: BorderRadius.circular(8)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Método de pagamento',
+                            style: ThemeTypography.semiBold16,
+                          ),
+                        ),
+                        Icon(
+                          Icons.more_horiz,
+                          color: Colors.black,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Obx(
+                      () => Row(
+                        children: [
+                          if (controller.paymentMethod.value != null)
+                            Image.asset(
+                              controller.paymentMethod.value!.image,
+                              width: 24,
+                            ),
+                          const SizedBox(width: 8),
+                          Text(
+                            controller.paymentMethod.value?.name ??
+                                'Selecionar método de pagamento',
+                            style: ThemeTypography.regular14.apply(
+                              // color: widget.hasError ? Colors.red : ThemeColors.grey4,
+                              color: ThemeColors.grey4,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  const SizedBox(height: 16),
+                  TitleWithIcon(
+                    title: 'Mensagem (opcional)',
+                    icon: Coolicons.chatDots,
+                  ),
+                  const SizedBox(height: 12),
+                  Input(
+                    onChanged: controller.reservationMessageController,
+                    hintText: 'Enviar mensagem ao locador (opcional)',
+                    maxLines: 3,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: AddressCard(
@@ -199,24 +280,6 @@ class _ReservationEditViewState extends State<ReservationEditView> {
             //     ],
             //   ),
             // ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  const SizedBox(height: 16),
-                  TitleWithIcon(
-                    title: 'Mensagem (opcional)',
-                    icon: Coolicons.chatDots,
-                  ),
-                  const SizedBox(height: 12),
-                  Input(
-                    onChanged: controller.reservationMessageController,
-                    hintText: 'Enviar mensagem ao locador (opcional)',
-                    maxLines: 4,
-                  ),
-                ],
-              ),
-            ),
           ],
         );
       }),
@@ -294,10 +357,18 @@ class _ReservationEditViewState extends State<ReservationEditView> {
 
   void initiatePayment() async {
     // Get.put(PaymentController(controller.reservation.value!));
-    Get.to(
-      () => PaymentView(
-        reservation: controller.reservation.value!,
-      ),
-    );
+    if (controller.paymentMethod.value!.title == PaymentMethodItem.pix) {
+      Get.to(
+        () => PaymentPixView(
+          reservation: controller.reservation.value!,
+        ),
+      );
+    } else {
+      Get.to(
+        () => PaymentCreditCardView(
+          reservation: controller.reservation.value!,
+        ),
+      );
+    }
   }
 }

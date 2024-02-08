@@ -3,6 +3,7 @@ import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/apps/landlord/models/landlord.dart';
 import 'package:vagali/apps/tenant/models/tenant.dart';
 import 'package:vagali/features/item/models/item.dart';
+import 'package:vagali/features/payment/models/payment_method.dart';
 import 'package:vagali/models/base_model.dart';
 import 'package:vagali/models/location_history.dart';
 import 'package:vagali/utils/extensions.dart';
@@ -34,6 +35,7 @@ class Reservation extends BaseModel {
   final String reservationMessage;
   final List<LocationHistory> locationHistory;
   final ReservationStatus status;
+  final String paymentMethod;
 
   Landlord? landlord;
   Tenant? tenant;
@@ -53,6 +55,7 @@ class Reservation extends BaseModel {
     required this.reservationMessage,
     required this.locationHistory,
     required this.status,
+    required this.paymentMethod,
   }) : super(
           createdAt: createdAt,
           updatedAt: updatedAt,
@@ -71,6 +74,7 @@ class Reservation extends BaseModel {
             .map((locationData) => LocationHistory.fromDocument(locationData))
             .toList(),
         status = ReservationStatusExtension.fromString(document['status']),
+        paymentMethod = document['paymentMethod'],
         super.fromDocument(document);
 
   @override
@@ -87,10 +91,10 @@ class Reservation extends BaseModel {
       'locationHistory':
           locationHistory.map((location) => location.toMap()).toList(),
       'status': status.toStringSimplified(),
+      'paymentMethod': paymentMethod,
       ...super.toMap(),
     };
   }
-
 
   bool get isHandshakeMade =>
       isConfirmed || /*isUserOnTheWay ||*/ isParked || isInProgress;
@@ -119,7 +123,7 @@ class Reservation extends BaseModel {
 
   bool get isOpen =>
       // !isConfirmationExpired &&
-      !isDone && !isPendingPayment;
+      !isDone;
 
   bool get isConfirmationExpired =>
       isPaymentApproved && endDate.isAfter(DateTime.now());
@@ -136,14 +140,20 @@ class Reservation extends BaseModel {
 
   bool get isPaymentTimeOut => status == ReservationStatus.paymentTimeOut;
 
-  bool get isConfirmationTimeOut => status == ReservationStatus.confirmationTimeOut;
+  bool get isConfirmationTimeOut =>
+      status == ReservationStatus.confirmationTimeOut;
 
   bool get isCanceled =>
       status == ReservationStatus.canceled || isPaymentTimeOut;
 
   bool get isPaymentDenied => status == ReservationStatus.paymentDenied;
 
-  bool get isDone => isConcluded || isCanceled || isPaymentDenied || isExpired || isConfirmationTimeOut;
+  bool get isDone =>
+      isConcluded ||
+      isCanceled ||
+      isPaymentDenied ||
+      isExpired ||
+      isConfirmationTimeOut;
 
   bool get isError => status == ReservationStatus.error;
 }

@@ -58,11 +58,11 @@ class ReservationListController extends GetxController {
 
     allReservations.addAll(reservations);
 
+    allReservations.sort((b, a) => a.createdAt.compareTo(b.createdAt));
     final inProgress =
         allReservations.where((reservation) => reservation.isOpen);
 
     reservationsInProgress.assignAll(inProgress);
-    reservationsInProgress.sort((b, a) => a.createdAt.compareTo(b.createdAt));
 
     final done = allReservations.where((reservation) => reservation.isDone);
     reservationsDone.assignAll(done);

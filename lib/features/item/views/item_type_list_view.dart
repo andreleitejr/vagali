@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/item/models/item.dart';
 import 'package:vagali/features/item/views/item_edit_view.dart';
+import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/utils/extensions.dart';
 import 'package:vagali/widgets/search_input.dart';
 
@@ -53,11 +55,19 @@ class ItemTypeListView extends StatelessWidget {
                   },
                   child: ListTile(
                     leading: Image.asset(itemType.image),
-                    title: Text(itemType.name!),
+                    title: Text(
+                      itemType.name!,
+                      style: ThemeTypography.semiBold16,
+                    ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(itemType.description!),
+                        Text(
+                          itemType.description!,
+                          style: ThemeTypography.regular12.apply(
+                            color: ThemeColors.grey4,
+                          ),
+                        ),
                         SizedBox(height: 8),
                         // Text('Type: ${itemTypes[index].type}'),
                       ],

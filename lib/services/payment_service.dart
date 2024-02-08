@@ -1,50 +1,72 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class PaymentService {
   final Dio _dio = Dio();
+  final String _kApiUrl = 'https://api.stripe.com/v1';
 
-  static const apiUrl = 'https://api.mercadopago.com/v1';
-  //
-  // Future<List<Map<String, dynamic>>> fetchPaymentMethods() async {
-  //   try {
-  //     final response = await _dio.get(
-  //       '$apiUrl/payment_methods',
-  //       options: Options(
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           'Authorization':
-  //               'Bearer TEST-1907768545117654-020106-9eae7cce04406eece447d8d79e58e910-604569102',
-  //         },
-  //       ),
-  //     );
-  //
-  //     return List<Map<String, dynamic>>.from(response.data);
-  //   } catch (e) {
-  //     print('Error fetching payment methods: $e');
-  //     throw e;
-  //   }
-  // }
-  //
-  // Future<Map<String, dynamic>> makePayment(
-  //     Map<String, dynamic> requestBody) async {
-  //   try {
-  //     final response = await _dio.post(
-  //       '$apiUrl/payments',
-  //       data: requestBody,
-  //       options: Options(
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           'X-Idempotency-Key': '0d5020ed-1af6-469c-ae06-c3bec19954bb',
-  //           'Authorization':
-  //               'Bearer TEST-1907768545117654-020106-9eae7cce04406eece447d8d79e58e910-604569102',
-  //         },
-  //       ),
-  //     );
-  //
-  //     return response.data;
-  //   } catch (error) {
-  //     print('Error making payment: $error');
-  //     throw error;
-  //   }
-  // }
+  Future<Map<String, dynamic>> callNoWebhookPayEndpointIntentId({
+    required String paymentIntentId,
+  }) async {
+    try {
+      final response = await _dio.post(
+        '$_kApiUrl/charge-card-off-session',
+        options: Options(
+          receiveTimeout: Duration(seconds: 60),
+          headers: {
+            'Authorization': 'Bearer ${dotenv.env['STRIPE_SECRET']}',
+            'Content-Type': 'application/json',
+          },
+        ),
+        data: {'paymentIntentId': paymentIntentId},
+      );
+
+      return response.data;
+    } catch (error) {
+      // Handle DioError or other exceptions here
+      print('Error in callNoWebhookPayEndpointIntentId: $error');
+      throw error;
+    }
+  }
+
+  Future<Map<String, dynamic>> callNoWebhookPayEndpointMethodId({
+    required bool useStripeSdk,
+    required String paymentMethodId,
+    required String currency,
+    List<String>? items,
+  }) async {
+    final url = '$_kApiUrl/payment_intents';
+
+    Map<String, dynamic> body = {
+      "amount": 2000,
+      "currency": "usd",
+    };
+
+    try {
+      final response = await _dio.post(
+        url,
+        options: Options(
+          receiveTimeout: Duration(seconds: 60),
+          headers: {
+            'Authorization': 'Bearer ${dotenv.env['STRIPE_SECRET']}',
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+        ),
+        data: body,
+      );
+
+      return response.data;
+    } on DioException catch (error) {
+      if (error.type == DioExceptionType.connectionTimeout) {
+        debugPrint(
+            'Error in callNoWebhookPayEndpointMethodId - Connection Time Out: $error');
+      }
+      if (error.type == DioExceptionType.receiveTimeout) {
+        debugPrint(
+            'Error in callNoWebhookPayEndpointMethodId - Receive Time Out: $error');
+      }
+      throw error;
+    }
+  }
 }

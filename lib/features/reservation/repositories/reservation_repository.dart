@@ -106,7 +106,7 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
           final reservation = fromDocument(doc);
 
           final tenant = Get.find<FlavorConfig>().flavor == Flavor.tenant
-              ? user as Tenant
+              ? Tenant.fromUser(user)
               : await _tenantRepository.get(reservation.tenantId);
           reservation.tenant = tenant;
 

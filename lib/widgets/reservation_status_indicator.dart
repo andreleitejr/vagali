@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:vagali/apps/landlord/features/parking/views/parking_details_view.dart';
 import 'package:vagali/apps/tenant/features/payment/views/payment_view.dart';
 import 'package:vagali/features/chat/views/chat_view.dart';
+import 'package:vagali/features/payment/views/payment_method_selection_view.dart';
 import 'package:vagali/features/reservation/controllers/reservation_list_controller.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/theme/coolicons.dart';
@@ -149,7 +150,6 @@ class ReservationStatusIndicator extends StatelessWidget {
       buttons.add(
         _buildFlatButton('Abrir no Waze', openWaze, ThemeColors.secondary),
       );
-
     }
 
     if (reservation.isPaymentTimeOut) {
@@ -171,9 +171,7 @@ class ReservationStatusIndicator extends StatelessWidget {
         _buildFlatButton(
           'Tentar novo pagamento',
           () => Get.to(
-            () => PaymentView(
-              reservation: reservation,
-            ),
+            () => PaymentMethodSelectionView(),
           ),
           Colors.red,
         ),

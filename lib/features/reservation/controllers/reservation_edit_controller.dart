@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/features/item/models/item.dart';
+import 'package:vagali/features/payment/models/payment_method.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/repositories/reservation_repository.dart';
 import 'package:vagali/features/user/models/user.dart';
@@ -41,8 +42,13 @@ class ReservationEditController extends GetxController {
   final item = Rx<Item?>(null);
   final startDate = Rx<DateTime?>(null);
   final endDate = Rx<DateTime?>(null);
+  final paymentMethod = Rx<PaymentMethodItem?>(null);
+
+  bool get isItemValid => item.value != null;
 
   bool get isDateValid => startDate.value != null && endDate.value != null;
+
+  bool get isPaymentMethodValid => paymentMethod.value != null;
 
   void onDatesSelected(DateTime? start, DateTime? end) {
     startDate.value = start;
@@ -175,7 +181,7 @@ class ReservationEditController extends GetxController {
     // final isVehicleIdValid =
     //     isVehicleValid(); // Adicionando verificação de veículo
 
-    return isDateValid;
+    return isItemValid && isDateValid && isPaymentMethodValid;
   }
 
   Future<SaveResult?> createReservation() async {
@@ -219,6 +225,7 @@ class ReservationEditController extends GetxController {
         ),
       ],
       status: ReservationStatus.pendingPayment,
+      paymentMethod: paymentMethod.value!.title,
     );
 
     final reservationId = await _repository.saveAndGetId(reservation.value!);

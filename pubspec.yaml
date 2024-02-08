@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: '>=3.1.2 <4.0.0'
@@ -34,46 +34,41 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
-  firebase_auth: ^4.10.1
-  flutter_facebook_auth: ^6.0.2
-  google_sign_in: ^6.1.5
-  sign_in_with_apple: ^5.0.0
-  get: ^4.6.6
-  cloud_firestore: ^4.9.3
-  firebase_core: ^2.24.2
-  geocoding: ^2.1.0
-  image_picker: ^1.0.4
-  firebase_storage: ^11.2.7
-  http: ^1.1.0
-  geolocator: ^10.1.0
-  intl: ^0.18.1
-  carousel_slider: ^4.2.1
-  rxdart: ^0.27.7
-  flutter_credit_card: ^3.0.7
-  flutter_braintree: ^3.0.0
-  firebase_messaging: ^14.6.9
-  #  background_locator_2: ^2.0.6
-  brasil_fields: ^1.14.0
-  pin_input_text_field: ^4.5.1
-  jumping_dot: ^0.0.6
-  google_maps_flutter: ^2.5.0
-  flutter_xlider: ^3.5.0
-  share: ^2.0.4
   app_settings: ^5.1.1
-  url_launcher: ^6.1.14
-#  flutter_image_compress: ^2.1.0
-  diacritic: ^0.1.4
-  dio: ^5.4.0
   blurhash: ^1.1.1
+  brasil_fields: ^1.14.0
+  carousel_slider: ^4.2.1
+  cloud_firestore: ^4.9.3
+  dio: ^5.4.0
+  diacritic: ^0.1.4
+  firebase_auth: ^4.10.1
+  firebase_core: ^2.24.2
+  firebase_messaging: ^14.6.9
+  firebase_storage: ^11.2.7
   flutter_blurhash: ^0.8.2
-  shimmer: ^3.0.0
-  rive: ^0.12.1
-  package_info_plus: ^4.2.0
-  fl_chart: ^0.63.0
-  table_calendar: ^3.0.0
+  flutter_facebook_auth: ^6.0.2
   flutter_native_splash: ^2.3.7
+  flutter_stripe: ^9.1.1
+  flutter_xlider: ^3.5.0
+  fl_chart: ^0.63.0
+  geocoding: ^2.1.0
+  geolocator: ^10.1.0
+  get: ^4.6.6
+  google_maps_flutter: ^2.5.0
+  image_picker: ^1.0.4
+  intl: ^0.18.1
+  jumping_dot: ^0.0.6
+  package_info_plus: ^4.2.0
+  pin_input_text_field: ^4.5.1
+  rive: ^0.12.1
+  rxdart: ^0.27.7
   sensors_plus: ^4.0.2
+  share: ^2.0.4
+  shimmer: ^3.0.0
+  table_calendar: ^3.0.0
+  url_launcher: ^6.1.14
+  flutter_dotenv: ^5.1.0
+
 
 dependency_overrides:
   firebase_core_platform_interface: 4.8.0
@@ -84,10 +79,10 @@ dev_dependencies:
   flutter_launcher_icons: "^0.13.1"
 
 flutter_native_splash:
-    color: "#02C39A"
-    image: "images/splash-logo.png"
-    android: true
-    ios: true
+  color: "#02C39A"
+  image: "images/splash-logo.png"
+  android: true
+  ios: true
 
 flutter_launcher_icons:
   path: ../..
@@ -119,6 +114,7 @@ flutter:
     - images/vehicles/
     - images/items/
     - assets/map_style.json
+    - assets/.env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

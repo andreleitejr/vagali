@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
+// import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 enum AuthStatus {
   uninitialized,
@@ -23,7 +23,7 @@ class AuthRepository {
   AuthRepository();
 
   final auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  // final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FacebookAuth _facebookAuth = FacebookAuth.instance;
   String _verificationId = "";
 
@@ -110,24 +110,24 @@ class AuthRepository {
     return await _performSignUp(emailPasswordSignUp);
   }
 
-  Future<AuthStatus?> signInWithGoogle() async {
-    Future<auth.UserCredential> googleSignIn() async {
-      final GoogleSignInAccount? googleSignInAccount =
-          await _googleSignIn.signIn();
-      if (googleSignInAccount != null) {
-        final GoogleSignInAuthentication googleSignInAuthentication =
-            await googleSignInAccount.authentication;
-        final credential = auth.GoogleAuthProvider.credential(
-          accessToken: googleSignInAuthentication.accessToken,
-          idToken: googleSignInAuthentication.idToken,
-        );
-        return await _auth.signInWithCredential(credential);
-      }
-      throw 'Google Sign-In failed';
-    }
-
-    return await _performSignIn(googleSignIn);
-  }
+  // Future<AuthStatus?> signInWithGoogle() async {
+  //   Future<auth.UserCredential> googleSignIn() async {
+  //     final GoogleSignInAccount? googleSignInAccount =
+  //         await _googleSignIn.signIn();
+  //     if (googleSignInAccount != null) {
+  //       final GoogleSignInAuthentication googleSignInAuthentication =
+  //           await googleSignInAccount.authentication;
+  //       final credential = auth.GoogleAuthProvider.credential(
+  //         accessToken: googleSignInAuthentication.accessToken,
+  //         idToken: googleSignInAuthentication.idToken,
+  //       );
+  //       return await _auth.signInWithCredential(credential);
+  //     }
+  //     throw 'Google Sign-In failed';
+  //   }
+  //
+  //   return await _performSignIn(googleSignIn);
+  // }
 
   Future<AuthStatus?> signInWithFacebook() async {
     Future<auth.UserCredential> facebookSignIn() async {
@@ -145,23 +145,23 @@ class AuthRepository {
     return await _performSignIn(facebookSignIn);
   }
 
-  Future<AuthStatus?> signInWithApple() async {
-    Future<auth.UserCredential> appleSignIn() async {
-      final result = await SignInWithApple.getAppleIDCredential(
-        scopes: [
-          AppleIDAuthorizationScopes.email,
-          AppleIDAuthorizationScopes.fullName,
-        ],
-      );
-      final credential = auth.OAuthProvider("apple.com").credential(
-        idToken: result.identityToken,
-        accessToken: result.authorizationCode,
-      );
-      return await _auth.signInWithCredential(credential);
-    }
-
-    return await _performSignIn(appleSignIn);
-  }
+  // Future<AuthStatus?> signInWithApple() async {
+  //   Future<auth.UserCredential> appleSignIn() async {
+  //     final result = await SignInWithApple.getAppleIDCredential(
+  //       scopes: [
+  //         AppleIDAuthorizationScopes.email,
+  //         AppleIDAuthorizationScopes.fullName,
+  //       ],
+  //     );
+  //     final credential = auth.OAuthProvider("apple.com").credential(
+  //       idToken: result.identityToken,
+  //       accessToken: result.authorizationCode,
+  //     );
+  //     return await _auth.signInWithCredential(credential);
+  //   }
+  //
+  //   return await _performSignIn(appleSignIn);
+  // }
 
   Future<AuthStatus> verifySmsCode(String smsCode) async {
 
@@ -203,10 +203,11 @@ class AuthRepository {
           authStatus = AuthStatus.verifying;
         },
         codeAutoRetrievalTimeout: (String verificationId) {
-
           _verificationId = verificationId;
-          print('################################# 2 ${_verificationId}');
-          authStatus = AuthStatus.timeout;
+
+          debugPrint("Auth Repository | Auto Retrieval TimeOut Code | Code sent: ${verificationId}");
+
+          authStatus = AuthStatus.verifying;
         },
         timeout: const Duration(seconds: 60),
       );

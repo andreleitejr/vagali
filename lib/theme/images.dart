@@ -24,10 +24,12 @@ class Images {
   static const boxes = 'images/items/boxes.png';
   static const bus = 'images/items/bus.png';
   static const carItem = 'images/items/car.png';
+  static const creditCard = 'images/items/credit-card.png';
   static const homeAppliance = 'images/items/home appliance.png';
   static const furniture = 'images/items/furniture.png';
   static const gym = 'images/items/gym.png';
   static const householdHardware = 'images/items/household-hardware.png';
+  static const money = 'images/items/money.png';
   static const other = 'images/items/other.png';
   static const pallet = 'images/items/pallet.png';
   static const shopping = 'images/items/shopping.png';
