@@ -66,7 +66,7 @@ extension DateTimeExtensions on DateTime {
     return '$day de $month';
   }
 
-  String toFriendlyDateTimeString({bool showTime = true}) {
+  String toCompleteDateTimeString({bool showTime = true}) {
     final day = this.day.toString();
     final month = [
       'Janeiro',
@@ -87,6 +87,29 @@ extension DateTimeExtensions on DateTime {
     final minute = this.minute.toString().padLeft(2, '0');
 
     return '$day de $month de $year${showTime ? ' às $hour:$minute' : ''}';
+  }
+
+  String toDateAndHourDateTimeString({bool showTime = true}) {
+    final day = this.day.toString();
+    final month = [
+      'Janeiro',
+      'Fevereiro',
+      'Março',
+      'Abril',
+      'Maio',
+      'Junho',
+      'Julho',
+      'Agosto',
+      'Setembro',
+      'Outubro',
+      'Novembro',
+      'Dezembro'
+    ][this.month - 1];
+    final year = this.year.toString();
+    final hour = this.hour.toString().padLeft(2, '0');
+    final minute = this.minute.toString().padLeft(2, '0');
+
+    return '$day de $month às $hour:$minute';
   }
 
   String toTimeString() {

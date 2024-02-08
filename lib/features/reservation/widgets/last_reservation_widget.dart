@@ -1,9 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vagali/features/item/widgets/item_info_widget.dart';
+import 'package:vagali/features/address/widgets/address_card.dart';
 import 'package:vagali/features/item/models/item.dart';
+import 'package:vagali/features/item/models/vehicle.dart';
 import 'package:vagali/features/reservation/controllers/reservation_list_controller.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
+import 'package:vagali/features/reservation/views/reservation_details_view.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
@@ -57,81 +61,76 @@ class LastReservationWidget extends StatelessWidget {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        // const SizedBox(width: 8),
                         Text(
-                          reservation.parking!.name.toUpperCase(),
-                          style: ThemeTypography.semiBold14,
+                          reservation.parking!.name,
+                          style: ThemeTypography.semiBold16,
                         ),
-                        const SizedBox(width: 8),
-                        const Coolicon(
-                          icon: Coolicons.starFilled,
-                          color: ThemeColors.primary,
-                          width: 14,
-                        ),
-                        const SizedBox(width: 4),
-                        const Text(
-                          '4.7',
-                          style: ThemeTypography.semiBold14,
-                        ),
-                        Expanded(child: Container()),
                       ],
                     ),
                   ],
                 ),
               ),
-              // TextButton(
-              //   onPressed: () => Get.to(
-              //     () => ReservationView(
-              //         reservation: reservation,
-              //         onReservationChanged: onReservationChanged),
-              //   ),
-              //   child: Text('Ver mais'),
-              //   style: TextButton.styleFrom(
-              //     padding: EdgeInsets.zero,
-              //     alignment: Alignment.topRight,
-              //     // backgroundColor: Colors.blue,
-              //   ),
-              // ),
+              TextButton(
+                onPressed: () => Get.to(
+                  () => ReservationDetailsView(
+                    reservation: reservation,
+                    controller: controller,
+                  ),
+                ),
+                child: Text(
+                  'Detalhes',
+                  style: ThemeTypography.regular12,
+                ),
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  alignment: Alignment.topRight,
+                  // backgroundColor: Colors.blue,
+                ),
+              ),
             ],
           ),
-          const SizedBox(height: 12),
-          UserCard(user: reservation.landlord as User),
-          const SizedBox(height: 16),
+          const SizedBox(height: 8),
           DatePeriod(
+            showTitle: false,
             startDate: reservation.startDate,
             endDate: reservation.endDate,
           ),
-          const SizedBox(height: 8),
-
-          const Divider(
-            color: ThemeColors.grey2,
-            thickness: 1,
-          ),
-          const SizedBox(height: 8),
-          TitleWithIcon(
-            title: 'O que vou guardar',
-            icon: Coolicons.circleCheckOutline,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            itemTypes
-                .firstWhere((item) => item.type == reservation.item!.type)
-                .name!,
-          ),
-          const SizedBox(height: 24),
-          ReservationStatusIndicator(controller: controller),
           const SizedBox(height: 16),
-          // const SizedBox(height: 16),
-          // if (reservation.vehicle != null)
-          //   VehicleInfoWidget(vehicle: reservation.vehicle!),
+          UserCard(user: reservation.landlord as User),
+          const SizedBox(height: 16),
+          ReservationStatusIndicator(controller: controller),
+          // const SizedBox(height: 12),
+          // const Divider(
+          //   color: ThemeColors.grey2,
+          //   thickness: 1,
+          // ),
+          // const SizedBox(height: 12),
+          // if (reservation.item != null) ...[
+          //   ItemInfoWidget(item: reservation.item as Vehicle),
+          // ],
           // const SizedBox(height: 16),
           // AddressCard(
+          //   isReservationActive: true,
           //   address: reservation.parking!.address,
-          //   editionModeOn: false,
           // ),
           // const SizedBox(height: 16),
         ],
       ),
     );
+  }
+
+  String _getItemTitle() {
+    if (reservation.item != null) {
+      final item = reservation.item!;
+
+      if (item.type == ItemType.vehicle) {
+        final vehicle = reservation.item as Vehicle;
+        return '${vehicle.brand} ${vehicle.model} (${vehicle.licensePlate})';
+      }
+    }
+
+    return itemTypes
+        .firstWhere((item) => item.type == reservation.item!.type)
+        .name!;
   }
 }

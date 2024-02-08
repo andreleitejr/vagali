@@ -119,8 +119,8 @@ class ReservationItem extends StatelessWidget {
         ],
       ),
       subtitle: Text(
-        "${reservation.startDate.toFriendlyDateTimeString()}"
-        " até ${reservation.endDate.toFriendlyDateTimeString()}",
+        "${reservation.startDate.toCompleteDateTimeString()}"
+        " até ${reservation.endDate.toCompleteDateTimeString()}",
         style: ThemeTypography.regular10,
       ),
     );

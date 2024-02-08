@@ -37,7 +37,7 @@ class AddressCardController extends GetxController {
 
   Future<void> _loadParkingMarker() async {
     final Uint8List markerIconData =
-        await getBytesFromAsset(Images.marker, 128);
+        await getBytesFromAsset(Images.markerWithIcon, 64);
     parkingMarkerIcon = BitmapDescriptor.fromBytes(markerIconData);
   }
 

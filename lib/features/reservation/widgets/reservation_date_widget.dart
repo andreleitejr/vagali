@@ -127,7 +127,7 @@ class _ReservationWidgetState extends State<ReservationDateWidget> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  date?.toFriendlyDateTimeString() ??
+                  date?.toCompleteDateTimeString() ??
                       'Selecione a data de ${isEndDate ? 'saída' : 'entrada'}',
                   style: ThemeTypography.regular14.apply(
                     color: widget.hasError ? Colors.red : ThemeColors.grey4,
@@ -206,7 +206,7 @@ class _ReservationWidgetState extends State<ReservationDateWidget> {
       } else {
         _handleStartDateSelected(pickedDateTime);
       }
-      _dateTimeController.text = pickedDateTime.toFriendlyDateTimeString();
+      _dateTimeController.text = pickedDateTime.toCompleteDateTimeString();
     }
   }
 }

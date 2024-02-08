@@ -51,7 +51,7 @@ class AddressCard extends StatelessWidget {
           children: [
             Coolicon(
               icon: Coolicons.mapPin,
-              width: 16,
+              width: 14,
               color: ThemeColors.grey4,
             ),
             const SizedBox(width: 4),
@@ -61,7 +61,7 @@ class AddressCard extends StatelessWidget {
                 isReservationActive
                     ? fullAddress
                     : 'O endereço ficará visível após a confirmação da reserva',
-                style: ThemeTypography.regular14.apply(
+                style: ThemeTypography.regular12.apply(
                   color: ThemeColors.grey4,
                 ),
                 overflow: TextOverflow.ellipsis,
@@ -86,7 +86,7 @@ class AddressCard extends StatelessWidget {
                         currentCoordinates.latitude,
                         currentCoordinates.longitude,
                       ),
-                      zoom: isReservationActive ? 18 : 13,
+                      zoom: isReservationActive ? 15 : 13,
                     ),
                     markers: isReservationActive
                         ? {

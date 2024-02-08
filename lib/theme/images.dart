@@ -7,6 +7,7 @@ class Images {
   static const logo = 'images/logo.png';
   static const logoWhite = 'images/logo-white.png';
   static const marker = 'images/marker.png';
+  static const markerWithIcon = 'images/marker_icon.png';
   static const disconnected = 'images/draw/disconnected.jpg';
   static const userMarker = 'images/user_marker.png';
   static const motorcycle = 'images/vehicles/motorcycle.jpg';

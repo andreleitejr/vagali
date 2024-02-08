@@ -33,33 +33,31 @@ class DatePeriod extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (showTitle)...[
-
+        if (showTitle) ...[
           TitleWithIcon(
             title: 'Data de Agendamento',
             icon: Coolicons.clock,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 4),
         ],
         if (isDateValid) ...[
           Row(
             children: [
               Text(
-                startDate!.toMonthlyFormattedString(),
-                style: ThemeTypography.regular14.apply(
+                startDate!.toDateAndHourDateTimeString(),
+                style: ThemeTypography.regular12.apply(
                   color: ThemeColors.grey4,
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
+              Expanded(
                 child: Icon(
                   Icons.arrow_right_alt,
                   color: ThemeColors.primary,
                 ),
               ),
               Text(
-                endDate!.toMonthlyFormattedString(),
-                style: ThemeTypography.regular14.apply(
+                endDate!.toDateAndHourDateTimeString(),
+                style: ThemeTypography.regular12.apply(
                   color: ThemeColors.grey4,
                 ),
               ),

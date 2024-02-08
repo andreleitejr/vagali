@@ -6,6 +6,8 @@ import 'package:vagali/apps/landlord/models/landlord.dart';
 import 'package:vagali/apps/landlord/repositories/landlord_repository.dart';
 import 'package:vagali/apps/tenant/models/tenant.dart';
 import 'package:vagali/apps/tenant/repositories/tenant_repository.dart';
+import 'package:vagali/features/item/models/item.dart';
+import 'package:vagali/features/item/models/vehicle.dart';
 import 'package:vagali/features/item/repositories/item_repository.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/user/models/user.dart';
@@ -118,8 +120,15 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
           final parking = await _parkingRepository.get(reservation.parkingId);
           reservation.parking = parking;
 
-          final item = await _itemRepository.get(reservation.itemId);
-          reservation.item = item;
+          final document = await firestore
+              .collection(_itemRepository.collectionName)
+              .doc(reservation.itemId)
+              .get();
+          if (document['type'] == ItemType.vehicle) {
+            reservation.item = Vehicle.fromDocument(document);
+          } else {
+            reservation.item = _itemRepository.fromDocument(document);
+          }
 
           reservations.add(reservation);
         }));
