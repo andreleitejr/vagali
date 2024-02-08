@@ -110,7 +110,7 @@ class SupportEditView extends StatelessWidget {
     );
   }
 
-  void showSnackbar(String title, String message) {
+  void showSnackBar(String title, String message) {
     snackBar(
       title,
       message,
@@ -122,11 +122,11 @@ class SupportEditView extends StatelessWidget {
   }
 
   void showErrorMessageSnackbar(String title, String message) {
-    showSnackbar(title, message);
+    showSnackBar(title, message);
   }
 
   void showSuccessMessageSnackbar(String title, String message) {
-    showSnackbar(title, message);
+    showSnackBar(title, message);
   }
 
   void handleButtonPress() async {

@@ -221,20 +221,6 @@ class ChartWidget extends StatelessWidget {
           topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          // leftTitles: AxisTitles(
-          //   sideTitles: SideTitles(
-          //     reservedSize: 40,
-          //     showTitles: true,
-          //     getTitlesWidget: (double value, TitleMeta titleMeta) {
-          //       return Text(
-          //         'R\$${value}',
-          //         style: ThemeTypography.regular10.apply(
-          //           color: ThemeColors.grey4,
-          //         ),
-          //       );
-          //     },
-          //   ),
-          // ),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,

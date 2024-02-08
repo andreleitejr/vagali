@@ -23,15 +23,11 @@ class DashboardController extends GetxController {
     }
 
     if (cashOuts.isNotEmpty) {
-      print('################################ CASH OUT IS NOT NULL');
       final pendingCashOut = cashOuts.firstWhereOrNull(
           (cashOut) => cashOut.status == CashOutStatus.pending);
 
       if (pendingCashOut != null) {
-        print(
-            '################################ HAS PENDING CASH OUT ${pendingCashOut.amount}');
         totalBalance -= pendingCashOut.amount;
-        print('################################ TOTAL AMOUNT  ${totalBalance}');
       }
     }
 
@@ -62,14 +58,23 @@ class DashboardController extends GetxController {
 
   List<Reservation> getReservationsForCurrentWeek() {
     final now = DateTime.now();
+
     final startOfWeek =
         DateTime(now.year, now.month, now.day - now.weekday + 1);
-    final endOfWeek = DateTime(now.year, now.month, now.day - now.weekday + 7);
 
-    return reservations.where((reservation) {
-      return reservation.startDate.isAfter(startOfWeek) &&
-          reservation.startDate.isBefore(endOfWeek);
-    }).toList();
+    final endOfWeek = DateTime(
+      now.year,
+      now.month,
+      now.day - now.weekday + 7,
+    );
+
+    return reservations
+        .where(
+          (reservation) =>
+              reservation.startDate.isAfter(startOfWeek) &&
+              reservation.startDate.isBefore(endOfWeek),
+        )
+        .toList();
   }
 
   Future<SaveResult> requestCashOut() async {
@@ -85,6 +90,7 @@ class DashboardController extends GetxController {
         reservations.where((reservation) => reservation.isOpen).toList();
 
     cashOuts.value = _cashOutController.cashOuts;
+
     super.onInit();
   }
 }

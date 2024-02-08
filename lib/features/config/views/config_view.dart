@@ -9,6 +9,7 @@ import 'package:vagali/features/auth/views/auth_view.dart';
 import 'package:vagali/features/config/widgets/config_list_tile.dart';
 import 'package:vagali/features/legal/terms_and_conditions.dart';
 import 'package:vagali/features/user/models/user.dart';
+import 'package:vagali/features/user/views/user_delete_view.dart';
 import 'package:vagali/models/flavor_config.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
@@ -73,6 +74,12 @@ class ConfigView extends StatelessWidget {
             onTap: () => Get.to(() => TermsAndConditions()),
           ),
           divider(),
+          ConfigListTile(
+            title: 'Minha conta',
+            onTap: () => Get.to(() => UserAccountView()),
+          ),
+          divider(),
+          Expanded(child: Container()),
           ListTile(
             title: Text(
               'Sair do aplicativo',
@@ -90,8 +97,7 @@ class ConfigView extends StatelessWidget {
               // Get.reset();
             },
           ),
-          divider(),
-          Expanded(child: Container()),
+          const SizedBox(height: 16),
           Obx(
             () => Text(
               'Versão ${controller.packageInfo.value?.version}',

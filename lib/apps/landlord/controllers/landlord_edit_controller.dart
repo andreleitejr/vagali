@@ -138,7 +138,6 @@ class LandlordEditController extends GetxController {
     }
   }
 
-
   Future<void> pickImage(ImageSource source) async {
     final image = await _imageService.pickImage(source);
 
@@ -154,8 +153,7 @@ class LandlordEditController extends GetxController {
     final blurhash = await _getBlurhash();
     final imageUrl = await _getImageUrl();
     if (blurhash != null && imageUrl != null) {
-      imageBlurhash.value =
-          ImageBlurHash(image: imageUrl, blurHash: blurhash);
+      imageBlurhash.value = ImageBlurHash(image: imageUrl, blurHash: blurhash);
     }
   }
 
@@ -212,15 +210,6 @@ class LandlordEditController extends GetxController {
 
     if (result == SaveResult.success) {
       Get.put<User>(user);
-      // debugPrint('Successful saved user with id ${user.id}...');
-      // if (user.type == UserType.tenant) {
-      //   final tenant = Tenant.fromUser(user);
-      //   Get.put<Tenant>(tenant);
-      // } else if (user.type == UserType.landlord) {
-      //   final landlord = Landlord.fromUser(user);
-      //   Get.put<Landlord>(landlord);
-      // }
-      // loading(false);
       return SaveResult.success;
     }
     loading(false);
