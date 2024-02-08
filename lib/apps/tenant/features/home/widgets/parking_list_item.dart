@@ -14,6 +14,9 @@ class ParkingListItem extends StatelessWidget {
 
   ParkingListItem({required this.parking});
 
+  final random = Random().nextInt(6);
+  final visibleRandom = Random().nextInt(2);
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -32,22 +35,23 @@ class ParkingListItem extends StatelessWidget {
                       images: parking.images,
                     ),
                   ),
-                Positioned(
-                  top: 16,
-                  left: 16,
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.75),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      '${Random().nextInt(6) + 1} pessoas de olho',
-                      style: ThemeTypography.regular12,
+                if (random > 0 && visibleRandom != 0)
+                  Positioned(
+                    top: 16,
+                    left: 16,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.75),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        '$random pessoas de olho',
+                        style: ThemeTypography.regular12,
+                      ),
                     ),
                   ),
-                ),
                 // Positioned(
                 //   top: 16,
                 //   right: 16,
