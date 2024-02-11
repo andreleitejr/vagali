@@ -29,6 +29,7 @@ class _MapViewState extends State<MapView> {
         final latitude = _controller.userCurrentLocation.value!.latitude;
         final longitude = _controller.userCurrentLocation.value!.longitude;
 
+        print('################################ ${_controller.zoom}');
         return Stack(
           children: [
             Obx(
@@ -38,7 +39,7 @@ class _MapViewState extends State<MapView> {
                     latitude,
                     longitude,
                   ),
-                  zoom: 16,
+                  zoom: _controller.zoom.value,
                 ),
                 // ignore: invalid_use_of_protected_member
                 markers: _controller.markers.value,

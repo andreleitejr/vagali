@@ -37,6 +37,7 @@ class MapController extends GetxController {
   var loading = false.obs;
 
   // var searchText = ''.obs;
+  final zoom = 16.toDouble().obs;
 
   late StreamSubscription<Position?> _locationSubscription;
   Marker? userMarker;
@@ -60,16 +61,12 @@ class MapController extends GetxController {
       _updateUserMarker();
 
       if (googleMapController != null) {
-        final currentPosition = CameraPosition(
-          target: LatLng(
-            userCurrentLocation.value!.latitude,
-            userCurrentLocation.value!.longitude,
-          ),
-          zoom: 16,
-          // bearing: userCurrentLocation.value!.heading,
+        final currentPosition = LatLng(
+          userCurrentLocation.value!.latitude,
+          userCurrentLocation.value!.longitude,
         );
         googleMapController!
-            .animateCamera(CameraUpdate.newCameraPosition(currentPosition));
+            .animateCamera(CameraUpdate.newLatLng(currentPosition));
       }
       loading(false);
     });
@@ -91,7 +88,7 @@ class MapController extends GetxController {
     //   _addMarkers();
     // });
 
-    await Future.delayed(const Duration(seconds: 1));
+    // await Future.delayed(const Duration(seconds: 1));
   }
 
   @override
@@ -134,11 +131,9 @@ class MapController extends GetxController {
     final width = 100.0;
     final height = 125.0;
 
-    // Carregue o ícone de pin como uma imagem
     ByteData? data = await rootBundle.load(Images.marker);
     final bytes = data.buffer.asUint8List();
 
-    // Decodifique a imagem para um objeto ui.Image
     final codec = await instantiateImageCodec(bytes,
         targetWidth: width.toInt(), targetHeight: height.toInt());
     final frameInfo = await codec.getNextFrame();
@@ -147,17 +142,16 @@ class MapController extends GetxController {
     final pictureRecorder = PictureRecorder();
     final canvas = Canvas(pictureRecorder);
 
-    // Desenhe a imagem de pin
     canvas.drawImage(image, Offset(0.0, 0.0), Paint());
 
     TextPainter painter = TextPainter(textDirection: TextDirection.ltr);
+
     painter.text = TextSpan(
       text: title,
       style: ThemeTypography.semiBold32,
     );
     painter.layout();
 
-    // Posicione o texto abaixo do ícone de pin
     painter.paint(
       canvas,
       Offset(
@@ -167,9 +161,8 @@ class MapController extends GetxController {
     );
 
     final img = await pictureRecorder.endRecording().toImage(
-        width.toInt(), (height * 1.5).toInt()); // Ajuste conforme necessário
+        width.toInt(), (height * 1.5).toInt());
 
-    // Converta a imagem para bytes no formato PNG
     data = await img.toByteData(format: ImageByteFormat.png);
     return data!.buffer.asUint8List();
   }
