@@ -52,7 +52,7 @@ class AuthController extends GetxController {
   Future<void> checkCurrentUser() async {
     final isAuthenticated = await _authRepository.isUserAuthenticated();
 
-    await Future.delayed(const Duration(milliseconds: 2800));
+    await Future.delayed(const Duration(milliseconds: 4700));
 
     /// TEMPO DA ANIMACAO
     if (isAuthenticated) {
