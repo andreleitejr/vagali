@@ -3,18 +3,18 @@ import 'package:jumping_dot/jumping_dot.dart';
 import 'package:rive/rive.dart';
 import 'package:vagali/theme/animations.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
 
 class Loader extends StatefulWidget {
-  final Color dotColor;
+  final String? message;
 
-  const Loader({super.key, this.dotColor = ThemeColors.primary});
+  const Loader({super.key, this.message});
 
   @override
   State<Loader> createState() => _LoaderState();
 }
 
 class _LoaderState extends State<Loader> {
-
   late RiveAnimationController openController;
 
   final loading = 'loading';
@@ -34,21 +34,33 @@ class _LoaderState extends State<Loader> {
       body: Container(
         padding: EdgeInsets.symmetric(
             horizontal: (MediaQuery.of(context).size.height * 100) / 1152),
-
         alignment: Alignment.center,
-        child: RiveAnimation.asset(
-          Animations.loading,
-          // fit: BoxFit.scaleDown,
+        child: Stack(
           alignment: Alignment.center,
-          useArtboardSize: true,
-          animations: [loading],
-          controllers: [
-            openController,
+          children: [
+            RiveAnimation.asset(
+              Animations.loading,
+              // fit: BoxFit.scaleDown,
+              alignment: Alignment.center,
+              useArtboardSize: true,
+              animations: [loading],
+              controllers: [
+                openController,
+              ],
+            ),
+            if (widget.message != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 100),
+                child: Text(
+                  widget.message!,
+                  style: ThemeTypography.semiBold16.apply(
+                    color: ThemeColors.primary,
+                  ),
+                ),
+              ),
           ],
         ),
       ),
     );
   }
 }
-
-

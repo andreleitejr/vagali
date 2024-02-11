@@ -23,7 +23,7 @@ class _MapViewState extends State<MapView> {
     return Scaffold(
       body: Obx(() {
         if (_controller.loading.isTrue) {
-          return const Loader();
+          return const Loader(message: 'Carregando mapa',);
         }
 
         final latitude = _controller.userCurrentLocation.value!.latitude;

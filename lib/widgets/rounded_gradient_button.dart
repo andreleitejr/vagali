@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jumping_dot/jumping_dot.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/loader.dart';
@@ -44,9 +45,12 @@ class RoundedGradientButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         child: loading
-            ? const SizedBox(
+            ? SizedBox(
                 height: 24,
-                child: Loader(dotColor: Colors.white),
+                child: JumpingDots(
+                  color: Colors.white,
+                  radius: 8,
+                ),
               )
             : Text(
                 actionText,
