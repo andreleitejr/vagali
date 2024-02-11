@@ -38,7 +38,7 @@ class _AnimationViewState extends State<AnimationView> {
         ),
         alignment: Alignment.center,
         child: RiveAnimation.asset(
-          Animations.logo,
+          Animations.open,
           // fit: BoxFit.scaleDown,
           alignment: Alignment.center,
           useArtboardSize: true,

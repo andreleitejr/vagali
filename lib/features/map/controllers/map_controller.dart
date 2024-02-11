@@ -49,6 +49,7 @@ class MapController extends GetxController {
     _loadUserMarker();
     await fetchNearbyParkings();
 
+    await Future.delayed(const Duration(seconds: 1));
     // _addUserMarker();
     _addMarkers();
 
