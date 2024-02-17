@@ -65,8 +65,9 @@ class MapController extends GetxController {
           userCurrentLocation.value!.latitude,
           userCurrentLocation.value!.longitude,
         );
-        googleMapController!
-            .animateCamera(CameraUpdate.newLatLng(currentPosition));
+        googleMapController!.animateCamera(
+          CameraUpdate.newLatLng(currentPosition),
+        );
       }
       loading(false);
     });
@@ -160,8 +161,9 @@ class MapController extends GetxController {
       ),
     );
 
-    final img = await pictureRecorder.endRecording().toImage(
-        width.toInt(), (height * 1.5).toInt());
+    final img = await pictureRecorder
+        .endRecording()
+        .toImage(width.toInt(), (height * 1.5).toInt());
 
     data = await img.toByteData(format: ImageByteFormat.png);
     return data!.buffer.asUint8List();
