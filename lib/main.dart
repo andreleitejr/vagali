@@ -1,6 +1,4 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -9,10 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:vagali/app.dart';
-import 'package:vagali/apps/tenant/features/payment/views/payment_view.dart';
-import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/models/flavor_config.dart';
-import 'package:vagali/widgets/top_bavigation_bar.dart';
 import 'firebase_options.dart';
 
 final kApiUrl = defaultTargetPlatform == TargetPlatform.android
@@ -20,9 +15,10 @@ final kApiUrl = defaultTargetPlatform == TargetPlatform.android
     : 'http://localhost:4242';
 
 Future<void> main() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  WidgetsFlutterBinding.ensureInitialized();
 
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await FirebaseAppCheck.instance.activate();
   // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   Get.put(FlavorConfig(flavor: Flavor.tenant));
