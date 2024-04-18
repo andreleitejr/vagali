@@ -232,8 +232,8 @@ extension DoubleExtension on double {
   String toMonetaryString() => 'R\$${this}';
 
   String toFormattedTime() {
-    int hours = (this / 3600).floor();
-    int minutes = ((this % 3600) / 60).floor();
+    final hours = (this / 3600).floor();
+    final minutes = ((this % 3600) / 60).floor();
 
     String formattedTime = '';
     if (hours > 0) {

@@ -48,16 +48,7 @@ class _ReservationWidgetState extends State<ReservationDateWidget> {
       height: 141,
       width: double.infinity,
       decoration: BoxDecoration(
-        // color: Colors.white,
         borderRadius: BorderRadius.circular(8),
-        // boxShadow: [
-        //   BoxShadow(
-        //     color: Colors.black.withOpacity(0.5),
-        //     spreadRadius: -8,
-        //     blurRadius: 20,
-        //     offset: const Offset(0, 0),
-        //   ),
-        // ],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -103,21 +94,6 @@ class _ReservationWidgetState extends State<ReservationDateWidget> {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Row(
           children: [
-            // const SizedBox(width: 16),
-            // Container(
-            //   height: 32,
-            //   width: 32,
-            //   padding: const EdgeInsets.all(5),
-            //   decoration: BoxDecoration(
-            //     color: isEndDate ? ThemeColors.primary : ThemeColors.blue,
-            //     borderRadius: BorderRadius.circular(64),
-            //   ),
-            //   child: const Coolicon(
-            //     icon: Coolicons.calendar,
-            //     color: Colors.white,
-            //   ),
-            // ),
-            // const SizedBox(width: 16),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

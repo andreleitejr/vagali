@@ -50,7 +50,8 @@ class ItemTypeListView extends StatelessWidget {
                 return InkWell(
                   onTap: () async {
                     final item = await Get.to(
-                        () => ItemEditView(selectedType: itemType));
+                      () => ItemEditView(selectedType: itemType),
+                    );
                     onItemSelected(item);
                   },
                   child: ListTile(

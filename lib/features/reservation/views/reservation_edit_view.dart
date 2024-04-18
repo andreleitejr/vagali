@@ -85,7 +85,7 @@ class _ReservationEditViewState extends State<ReservationEditView> {
                     final item = controller.tenantItems[index];
 
                     return GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         controller.item(item);
                         controller.showTenantItemsList(false);
                       },
@@ -109,83 +109,93 @@ class _ReservationEditViewState extends State<ReservationEditView> {
         }
         if (controller.showItemTypeList.isTrue) {
           return ItemTypeListView(
-            onItemSelected: (item) {
+            onItemSelected: (item) async {
               controller.item.value = item;
               controller.showItemTypeList.value = false;
+              if (item is Vehicle) {
+                await controller.fetchItems();
+                await controller.fetchVehicles();
+              }
             },
           );
         }
         return ListView(
           children: [
             itemSelection(),
-            // const SizedBox(height: 16),
             Obx(
               () => ReservationDateWidget(
                 onDatesSelected: controller.onDatesSelected,
                 initialStartDate: controller.startDate.value,
                 initialEndDate: controller.endDate.value,
-                hasError: controller.showErrors.value,
+                hasError:
+                    !controller.isDateValid && controller.showErrors.isTrue,
               ),
             ),
             const SizedBox(height: 16),
-            GestureDetector(
-              onTap: () async {
-                final paymentMethod =
-                    await Get.to(() => PaymentMethodSelectionView());
-                if (paymentMethod != null) {
-                  controller.paymentMethod(paymentMethod);
-                }
-              },
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    border: Border.all(color: ThemeColors.grey3),
-                    borderRadius: BorderRadius.circular(8)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            'Método de pagamento',
-                            style: ThemeTypography.semiBold16,
-                          ),
-                        ),
-                        Icon(
-                          Icons.more_horiz,
-                          color: Colors.black,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Obx(
-                      () => Row(
+            Obx(() {
+              final hasError = !controller.isPaymentMethodValid &&
+                  controller.showErrors.isTrue;
+              return GestureDetector(
+                onTap: () async {
+                  final paymentMethod =
+                      await Get.to(() => PaymentMethodSelectionView());
+                  if (paymentMethod != null) {
+                    controller.paymentMethod(paymentMethod);
+                  }
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        color: hasError ? Colors.red : ThemeColors.grey3,
+                      ),
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
                         children: [
-                          if (controller.paymentMethod.value != null) ...[
-                            Image.asset(
-                              controller.paymentMethod.value!.image,
-                              width: 24,
+                          Expanded(
+                            child: Text(
+                              'Método de pagamento',
+                              style: ThemeTypography.semiBold16,
                             ),
-                            const SizedBox(width: 8),
-                          ],
-                          Text(
-                            controller.paymentMethod.value?.name ??
-                                'Selecionar método de pagamento',
-                            style: ThemeTypography.regular14.apply(
-                              // color: widget.hasError ? Colors.red : ThemeColors.grey4,
-                              color: ThemeColors.grey4,
-                            ),
+                          ),
+                          Icon(
+                            Icons.more_horiz,
+                            color: Colors.black,
                           ),
                         ],
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 8),
+                      Obx(
+                        () => Row(
+                          children: [
+                            if (controller.paymentMethod.value != null) ...[
+                              Image.asset(
+                                controller.paymentMethod.value!.image,
+                                width: 24,
+                              ),
+                              const SizedBox(width: 8),
+                            ],
+                            Text(
+                              controller.paymentMethod.value?.name ??
+                                  'Selecionar método de pagamento',
+                              style: ThemeTypography.regular14.apply(
+                                color:
+                                    hasError ? Colors.red : ThemeColors.grey4,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ),
+              );
+            }),
             const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -251,6 +261,7 @@ class _ReservationEditViewState extends State<ReservationEditView> {
               ),
               Expanded(
                 child: FlatButton(
+                  isValid: controller.isValid(),
                   actionText: 'Pagar',
                   onPressed: () async {
                     if (controller.isValid()) {
@@ -259,13 +270,12 @@ class _ReservationEditViewState extends State<ReservationEditView> {
                         initiatePayment();
                       } else {
                         Get.snackbar('Erro ao salvar reserva',
-                            'Houve um erro inesperado ao salvar sua reserva. Tenve novamente.');
+                            'Houve um erro inesperado ao salvar sua reserva. Tente novamente.');
                       }
                     } else {
                       controller.showErrors(true);
-                      debugPrint('Inválido.');
-                      Get.snackbar('Data inválida',
-                          'A data de início e a data de fim são obrigatória',
+                      Get.snackbar(
+                          controller.errorTitle, controller.errorMessage,
                           backgroundColor: Colors.red.withOpacity(0.75),
                           colorText: Colors.white,
                           margin: const EdgeInsets.all(16));
@@ -313,6 +323,23 @@ class _ReservationEditViewState extends State<ReservationEditView> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
+                  Obx(() {
+                    if (!controller.isItemValid &&
+                        controller.showErrors.isTrue) {
+                      return Column(
+                        children: [
+                          const SizedBox(height: 8),
+                          Text(
+                            'Selecione um item para guardar.',
+                            style: ThemeTypography.regular14.apply(
+                              color: Colors.red,
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                    return Container();
+                  })
                 ],
               ),
             ),
@@ -329,17 +356,21 @@ class _ReservationEditViewState extends State<ReservationEditView> {
   }
 
   String _getItemTitle() {
-    if (controller.item.value != null) {
-      final item = controller.item.value!;
+    final item = controller.item.value;
+    if (item != null) {
+      print('Get Item Title | Item is not null: ${item.type}');
 
       if (item.type == ItemType.vehicle) {
         final vehicle =
             controller.tenantVehicles.firstWhereOrNull((v) => v.id == item.id!);
+
+        print('Get Item Title | Tenant Vehicles: ${controller.tenantVehicles}');
+        print('Get Item Title | Item is not null: ${vehicle?.brand}');
         return '${vehicle?.brand} ${vehicle?.model}';
       }
 
       return itemTypes
-          .firstWhere((item) => item.type == controller.item.value!.type)
+          .firstWhere((i) => i.type == controller.item.value!.type)
           .name!;
     }
 

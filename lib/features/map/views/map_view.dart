@@ -23,13 +23,16 @@ class _MapViewState extends State<MapView> {
     return Scaffold(
       body: Obx(() {
         if (_controller.loading.isTrue) {
-          return const Loader(message: 'Carregando mapa',);
+          return const Loader(
+            message: 'Carregando mapa',
+          );
         }
 
-        final latitude = _controller.userCurrentLocation.value!.latitude;
-        final longitude = _controller.userCurrentLocation.value!.longitude;
+        final currentLocation = _controller.userCurrentLocation.value!;
 
-        print('################################ ${_controller.zoom}');
+        final latitude = currentLocation.latitude;
+        final longitude = currentLocation.longitude;
+
         return Stack(
           children: [
             Obx(
@@ -49,29 +52,6 @@ class _MapViewState extends State<MapView> {
                 },
               ),
             ),
-            // Positioned(
-            //   top: 48,
-            //   left: 0,
-            //   right: 0,
-            //   child: Container(
-            //     padding: const EdgeInsets.all(16),
-            //     decoration: BoxDecoration(
-            //       boxShadow: [
-            //         BoxShadow(
-            //           color: Colors.grey.withOpacity(0.25),
-            //           spreadRadius: -8,
-            //           blurRadius: 20,
-            //           offset: const Offset(0, 0),
-            //         ),
-            //       ],
-            //     ),
-            //     child: SearchInput(
-            //       searchText: _controller.searchText.value,
-            //       hintText: 'Busque estacionamentos próximos',
-            //       onSearch: _controller.searchText,
-            //     ),
-            //   ),
-            // ),
             Obx(() {
               if (_controller.selectedParking.value != null) {
                 return Positioned(
@@ -112,7 +92,9 @@ class _MapViewState extends State<MapView> {
     return Container(
       // color: Colors.white,
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(16)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+      ),
       // padding: const EdgeInsets.all(24),
       margin: const EdgeInsets.all(24),
       child: Column(
@@ -120,14 +102,18 @@ class _MapViewState extends State<MapView> {
         children: [
           const SizedBox(height: 16),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+            ),
             child: Text(
               _controller.selectedParking.value!.name,
               style: ThemeTypography.semiBold14,
             ),
           ),
           const SizedBox(height: 16),
-          TagList(tags: _controller.selectedParking.value!.tags),
+          TagList(
+            tags: _controller.selectedParking.value!.tags,
+          ),
           // const SizedBox(height: 16),
           // Padding(
           //   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -139,7 +125,9 @@ class _MapViewState extends State<MapView> {
           _description(),
           const SizedBox(height: 16),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+            ),
             child: FlatButton(
               actionText: 'Ver Estacionamento',
               onPressed: () => Get.to(
@@ -197,7 +185,9 @@ class _MapViewState extends State<MapView> {
 
   Widget _description() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

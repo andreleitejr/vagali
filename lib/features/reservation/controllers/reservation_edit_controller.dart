@@ -1,8 +1,4 @@
-import 'dart:ui';
-
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/features/item/models/item.dart';
 import 'package:vagali/features/item/models/vehicle.dart';
@@ -14,7 +10,6 @@ import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/models/location_history.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/services/price_service.dart';
-import 'package:vagali/theme/images.dart';
 
 class ReservationEditController extends GetxController {
   ReservationEditController({required this.parking});
@@ -57,8 +52,8 @@ class ReservationEditController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    await _fetchTenants();
-    await _fetchVehicles();
+    await fetchItems();
+    await fetchVehicles();
 
     if (tenantItems.isNotEmpty) {
       tenantItems.sort((a, b) => a.createdAt.compareTo(b.createdAt));
@@ -72,24 +67,17 @@ class ReservationEditController extends GetxController {
     super.onInit();
   }
 
-  Future<void> _fetchTenants() async {
+  Future<void> fetchItems() async {
     final items = await _itemRepository.getAll(userId: tenant.id!);
     tenantItems.assignAll(items.where((i) => i.type != ItemType.vehicle));
-
-    print(
-        'HSDUHDSUDSHSUAHDSU HEHEHEHEHEHEHE ${tenantItems.any((element) => element is Vehicle)}');
-    print('Successfull fetch ${tenantItems.length} tenant itens.');
   }
 
-  Future<void> _fetchVehicles() async {
+  Future<void> fetchVehicles() async {
     final vehicles = await _itemRepository.getVehicles(userId: tenant.id!);
 
     tenantVehicles.assignAll(vehicles);
     tenantItems.addAll(tenantVehicles);
     tenantItems.toSet().toList();
-    print(
-        'HSDUHDSUDSHSUAHDSU HEHEHEHEHEHEHE ${tenantItems.any((element) => element is Vehicle)}');
-    print('Successfull fetch ${tenantItems.length} tenant vehicleeeeeeeees.');
   }
 
   void onDatesSelected(DateTime? start, DateTime? end) {
@@ -133,6 +121,30 @@ class ReservationEditController extends GetxController {
   }
 
   bool isValid() => isItemValid && isDateValid && isPaymentMethodValid;
+
+  String get errorTitle {
+    if (!isItemValid) {
+      return 'Nenhum item selecionado';
+    } else if (!isDateValid) {
+      return 'Data inválida';
+    } else if (isPaymentMethodValid) {
+      return 'Método de pagamento inválido';
+    } else {
+      return 'Erro desconhecido.';
+    }
+  }
+
+  String get errorMessage {
+    if (!isItemValid) {
+      return 'É obrigatório selecionar ao menos item para guardar.';
+    } else if (!isDateValid) {
+      return 'A data de início e a data de fim são obrigatórias';
+    } else if (isPaymentMethodValid) {
+      return 'É obrigatório selecionar um meio de pagamento.';
+    } else {
+      return 'Ocorreu um erro desconhecido. Contate o suporte.';
+    }
+  }
 
   Future<SaveResult?> createReservation() async {
     if (!isValid()) {

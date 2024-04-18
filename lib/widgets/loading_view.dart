@@ -30,7 +30,7 @@ class _LoadingViewState extends State<LoadingView> {
             GradientText(
               widget.message,
               style: ThemeTypography.semiBold14,
-            )
+            ),
           ],
         ));
   }

@@ -30,36 +30,34 @@ class _LoaderState extends State<Loader> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        padding: EdgeInsets.symmetric(
-            horizontal: (MediaQuery.of(context).size.height * 100) / 1152),
+    return Container(
+      padding: EdgeInsets.symmetric(
+          horizontal: (MediaQuery.of(context).size.height * 100) / 1152),
+      alignment: Alignment.center,
+      child: Stack(
         alignment: Alignment.center,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            RiveAnimation.asset(
-              Animations.loading,
-              // fit: BoxFit.scaleDown,
-              alignment: Alignment.center,
-              useArtboardSize: true,
-              animations: [loading],
-              controllers: [
-                openController,
-              ],
-            ),
-            if (widget.message != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 100),
-                child: Text(
-                  widget.message!,
-                  style: ThemeTypography.semiBold16.apply(
-                    color: ThemeColors.primary,
-                  ),
+        children: [
+          RiveAnimation.asset(
+            Animations.loading,
+            // fit: BoxFit.scaleDown,
+            alignment: Alignment.center,
+            useArtboardSize: true,
+            animations: [loading],
+            controllers: [
+              openController,
+            ],
+          ),
+          if (widget.message != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 100),
+              child: Text(
+                widget.message!,
+                style: ThemeTypography.semiBold16.apply(
+                  color: ThemeColors.primary,
                 ),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
