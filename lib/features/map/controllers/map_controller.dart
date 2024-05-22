@@ -48,7 +48,7 @@ class MapController extends GetxController {
     loading(true);
 
     _loadUserMarker();
-    await fetchNearbyParkings();
+    await _fetchNearbyParkings();
 
     await Future.delayed(const Duration(seconds: 1));
     // _addUserMarker();
@@ -169,7 +169,7 @@ class MapController extends GetxController {
     return data!.buffer.asUint8List();
   }
 
-  Future<void> fetchNearbyParkings() async {
+  Future<void> _fetchNearbyParkings() async {
     try {
       final allParkings = await _parkingRepository.getAll();
       // await fetchLandlordsForParkings(allParkings);

@@ -8,6 +8,7 @@ class Stock extends Item {
   Stock({
     required this.productQuantity,
     required this.productType,
+    required super.id,
     required super.image,
     required super.createdAt,
     required super.updatedAt,

@@ -32,17 +32,18 @@ class Parking extends BaseModel {
   double distance = 0;
 
   Parking({
-    required DateTime createdAt,
-    required DateTime updatedAt,
+    required super.id,
+    required super.createdAt,
+    required super.updatedAt,
     required this.name,
     required this.price,
     required this.isAvailable,
     required this.tags,
     required this.description,
     required this.images,
+    this.owner,
     required this.userId,
     required this.type,
-    // required this.operatingHours,
     required this.location,
     required this.address,
     required this.gateHeight,
@@ -51,10 +52,7 @@ class Parking extends BaseModel {
     required this.isAutomatic,
     required this.isOpen,
     required this.reservationType,
-  }) : super(
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-        );
+  });
 
   @override
   Map<String, dynamic> toMap() {
@@ -103,4 +101,30 @@ class Parking extends BaseModel {
         isAutomatic = document['isAutomatic'],
         reservationType = document['reservationType'],
         super.fromDocument(document);
+
+  Parking copyWith() {
+    return Parking(
+      id: id,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      name: name,
+      price: price,
+      isAvailable: isAvailable,
+      tags: tags,
+      description: description,
+      images: images,
+      owner: owner ?? this.owner,
+      userId: userId,
+      type: type,
+      reservationType: reservationType,
+      location: location,
+      address: address,
+      gateHeight: gateHeight,
+      gateWidth: gateWidth,
+      garageDepth: garageDepth,
+      isAutomatic: isAutomatic,
+      // ratings: ratings,
+      isOpen: isOpen,
+    );
+  }
 }

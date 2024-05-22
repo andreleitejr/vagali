@@ -4,10 +4,10 @@ import 'package:vagali/apps/landlord/features/parking/controllers/parking_edit_c
 import 'package:vagali/apps/landlord/features/parking/models/parking_tag.dart';
 import 'package:vagali/widgets/chip_selector.dart';
 
-class StepFourWidget extends StatelessWidget {
+class ParkingEditTags extends StatelessWidget {
   final ParkingEditController controller;
 
-  const StepFourWidget({super.key, required this.controller});
+  const ParkingEditTags({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {

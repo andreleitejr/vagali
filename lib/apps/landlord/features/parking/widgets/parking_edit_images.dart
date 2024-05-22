@@ -11,10 +11,10 @@ import 'package:vagali/widgets/image_picker_bottom_sheet.dart';
 import 'package:vagali/widgets/over_image_button.dart';
 import 'package:vagali/widgets/warning_dialog.dart';
 
-class StepTwoWidget extends StatelessWidget {
+class ParkingEditImages extends StatelessWidget {
   final ParkingEditController controller;
 
-  const StepTwoWidget({super.key, required this.controller});
+  const ParkingEditImages({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {

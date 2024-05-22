@@ -5,13 +5,15 @@ import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/gradient_slider.dart';
 import 'package:vagali/widgets/switch_button.dart';
 
-class StepThreeWidget extends StatelessWidget {
+class ParkingEditGate extends StatelessWidget {
   final ParkingEditController controller;
 
-  const StepThreeWidget({super.key, required this.controller});
+  const ParkingEditGate({super.key, required this.controller});
 
   final Color activeBackgroundColor = const Color(0xFF0077B6);
   final Color inactiveBackgroundColor = const Color(0xFFBDBDBD);
+
+  final double minValue = 100;
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +24,9 @@ class StepThreeWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-               Expanded(
+              Expanded(
                 child: Text(
-                  'O seu portão é automático? ${controller.garageDepth.value}',
+                  'O seu portão é automático?',
                   style: ThemeTypography.semiBold16,
                 ),
               ),
@@ -37,33 +39,48 @@ class StepThreeWidget extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 32),
-          Obx(
-            () => GradientSlider(
-              value: controller.gateHeight.value < 1 ? 1 : controller.gateHeight.value,
-              min: 1,
-              max: 100,
-              onChanged: controller.gateHeight,
+          Obx(() {
+            final value = controller.gateHeight.value;
+            final valueFormatted = value / 100;
+
+            return GradientSlider(
+              title: '${valueFormatted.toStringAsFixed(1)} metros',
               label: 'Altura do Portão',
-            ),
-          ),
-          Obx(
-            () => GradientSlider(
-              value: controller.gateWidth.value < 1 ? 1 : controller.gateWidth.value,
-              min: 1,
-              max: 100,
-              onChanged: controller.gateWidth,
+              tooltip:  '${value.toStringAsFixed(0)} cm',
+              value: value < minValue ? minValue : value,
+              min: minValue,
+              max: 1000,
+              onChanged: controller.gateHeight,
+            );
+          }),
+          Obx(() {
+            final value = controller.gateWidth.value;
+            final valueFormatted = value / 100;
+
+            return GradientSlider(
+              title: '${valueFormatted.toStringAsFixed(1)} metros',
               label: 'Largura do Portão',
-            ),
-          ),
-          Obx(
-            () => GradientSlider(
-              value: controller.garageDepth.value < 1 ? 1 : controller.garageDepth.value,
-              min: 1,
-              max: 200,
-              onChanged: controller.garageDepth,
+              tooltip:  '${value.toStringAsFixed(0)} cm',
+              value: value < minValue ? minValue : value,
+              min: minValue,
+              max: 1000,
+              onChanged: controller.gateWidth,
+            );
+          }),
+          Obx(() {
+            final value = controller.garageDepth.value;
+            final valueFormatted = value / 100;
+
+            return GradientSlider(
+              title: '${valueFormatted.toStringAsFixed(1)} metros',
               label: 'Profundidade da Garagem',
-            ),
-          ),
+              tooltip:  '${value.toStringAsFixed(0)} cm',
+              value: value < minValue ? minValue : value,
+              min: 100,
+              max: 8000,
+              onChanged: controller.garageDepth,
+            );
+          }),
           const SizedBox(height: 16),
           const Text(
             'Veículos compativeis:',

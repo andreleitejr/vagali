@@ -10,7 +10,7 @@ class CashOut extends BaseModel {
   final CashOutStatus status;
 
   CashOut({
-    super.id,
+    required super.id,
     required this.userId,
     required this.amount,
     required this.status,

@@ -6,6 +6,7 @@ import 'package:vagali/apps/landlord/features/parking/models/parking_type.dart';
 import 'package:vagali/apps/landlord/features/parking/models/price.dart';
 import 'package:vagali/apps/landlord/features/parking/repositories/parking_repository.dart';
 import 'package:vagali/apps/tenant/features/vehicle/models/vehicle_type.dart';
+import 'package:vagali/features/address/controllers/address_edit_controller.dart';
 import 'package:vagali/features/address/models/address.dart';
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/reservation/models/reservation_type.dart';
@@ -19,68 +20,70 @@ import 'package:vagali/services/price_service.dart';
 import 'package:vagali/services/schedule_service.dart';
 
 class ParkingEditController extends GetxController {
-  ParkingEditController({this.parking}) {
-    if (parking != null) setParkingToEdit(parking!);
+  ParkingEditController(this.originalParking) {
+    if (originalParking != null) {
+      print(' HUASDHADSUHSDUADSHUADSHUDASHA ${originalParking!.name}');
+      parking = originalParking!.copyWith();
+      print(' HUASDHADSUHSDUADSHUADSHUDASHA3233232 ${parking!.name}');
+      // addressController.fillFormWithUserData(parking.address);
+      // fillFormWithParkingData();
+    }
   }
 
+  Parking? originalParking;
+  late Parking parking;
   final User landlord = Get.find();
   final ParkingRepository _repository = ParkingRepository();
   final AuthRepository _authRepository = Get.find();
+  final addressController = Get.put(AddressEditController());
 
   final _imageService = ImageService();
-  final _addressService = AddressService();
   final _garageService = GarageService();
   final _priceService = PriceService();
   final scheduleService = ScheduleService();
-
-  Parking? parking;
 
   final currentParking = Rx<Parking?>(null);
 
   RxBool get hasCurrentUser => (currentParking.value != null).obs;
 
-  void setParkingToEdit(Parking parking) {
-    currentParking.value = parking;
-    fillFormWithParkingData();
-  }
-
-  Future<void> fillFormWithParkingData() async {
-    final parking = currentParking.value!;
-
-    nameController.value = parking.name;
-    descriptionController.value = parking.description;
-    // coordinatesController.value = parking.name;
-
-    postalCodeController.value = parking.address.postalCode;
-    streetController.value = parking.address.street;
-    numberController.value = parking.address.number;
-    cityController.value = parking.address.city;
-    stateController.value = parking.address.state;
-    countryController.value = parking.address.country;
-    complementController.value = parking.address.complement ?? '';
-    selectedImagesBlurhash.value = parking.images;
-    selectedGalleryImages.value =
-        await _imageService.downloadAndSaveImagesToLocal(parking.images);
-
-    pricePerHourController.value = parking.price.hour.toString();
-    pricePerSixHoursController.value = parking.price.sixHours.toString();
-    pricePerTwelveHoursController.value = parking.price.twelveHours.toString();
-    pricePerDayController.value = parking.price.day.toString();
-    pricePerMonthController.value = parking.price.month.toString();
-    gateHeight.value = parking.gateHeight.toDouble();
-    gateWidth.value = parking.gateWidth.toDouble();
-    garageDepth.value = parking.garageDepth.toDouble();
-
-    parkingTags.value = parking.tags;
-  }
+  // void setParkingToEdit(Parking parking) {
+  //   currentParking.value = parking;
+  //   fillFormWithParkingData();
+  // }
+  //
+  // Future<void> fillFormWithParkingData() async {
+  //   parking = currentParking.value!;
+  //
+  //   nameController.value = parking.name;
+  //   descriptionController.value = parking.description;
+  //   // coordinatesController.value = parking.name;
+  //
+  //   postalCodeController.value = parking.address.postalCode;
+  //   streetController.value = parking.address.street;
+  //   numberController.value = parking.address.number;
+  //   cityController.value = parking.address.city;
+  //   stateController.value = parking.address.state;
+  //   countryController.value = parking.address.country;
+  //   complementController.value = parking.address.complement ?? '';
+  //   selectedImagesBlurhash.value = parking.images;
+  //   selectedGalleryImages.value =
+  //       await _imageService.downloadAndSaveImagesToLocal(parking.images);
+  //
+  //   pricePerHourController.value = parking.price.hour.toString();
+  //   pricePerSixHoursController.value = parking.price.sixHours.toString();
+  //   pricePerTwelveHoursController.value = parking.price.twelveHours.toString();
+  //   pricePerDayController.value = parking.price.day.toString();
+  //   pricePerMonthController.value = parking.price.month.toString();
+  //   gateHeight.value = parking.gateHeight.toDouble();
+  //   gateWidth.value = parking.gateWidth.toDouble();
+  //   garageDepth.value = parking.garageDepth.toDouble();
+  //
+  //   parkingTags.value = parking.tags;
+  // }
 
   final currentStep = 0.obs;
   final selectedGalleryImages = <XFile>[].obs;
   final selectedImagesBlurhash = <ImageBlurHash>[].obs;
-
-  // final selectedBlurhash = <String>[].obs;
-  // final selectedImageUrls = <String>[].obs;
-
   final nameController = ''.obs;
   final descriptionController = ''.obs;
 
@@ -96,9 +99,9 @@ class ParkingEditController extends GetxController {
 
   final parkingType = Rx<ParkingType?>(null);
   final parkingTags = <ParkingTag>[].obs;
-  final gateHeight = 3.0.obs;
-  final gateWidth = 3.0.obs;
-  final garageDepth = 6.0.obs;
+  final gateHeight = 300.0.obs;
+  final gateWidth = 300.0.obs;
+  final garageDepth = 1000.0.obs;
   final isAutomaticController = RxBool(false);
   final compatibleCarTypes = <VehicleType>[].obs;
 
@@ -165,7 +168,6 @@ class ParkingEditController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fillAddressFromLandlord();
     selectType(parkingTypes[1]); // Casas
     updateCompatibleCarTypes();
 
@@ -180,14 +182,16 @@ class ParkingEditController extends GetxController {
   RxBool validateCurrentStep(int currentStep) {
     switch (currentStep) {
       case 0:
-        return (isNameValid.isTrue && isDescriptionValid.isTrue).obs;
+        return (addressController.isAddressValid.isTrue).obs;
       case 1:
-        return isImageValid;
+        return (isNameValid.isTrue && isDescriptionValid.isTrue).obs;
       case 2:
-        return isGateValid;
+        return isImageValid;
       case 3:
-        return isTagsValid;
+        return isGateValid;
       case 4:
+        return isTagsValid;
+      case 5:
         return isPriceValid;
       default:
         return false.obs;
@@ -298,19 +302,6 @@ class ParkingEditController extends GetxController {
     return true.obs;
   }
 
-  void fillAddressFromLandlord() {
-    final landlordAddress = landlord.address;
-
-    postalCodeController.value = landlordAddress.postalCode;
-    streetController.value = landlordAddress.street;
-    numberController.value = landlordAddress.number;
-    countyController.value = landlordAddress.county;
-    cityController.value = landlordAddress.city;
-    stateController.value = landlordAddress.state;
-    countryController.value = landlordAddress.country;
-    complementController.value = landlordAddress.complement ?? '';
-  }
-
   Future<void> pickImages(ImageSource source) async {
     if (source == ImageSource.camera) {
       await _pickImageFromCamera();
@@ -367,8 +358,7 @@ class ParkingEditController extends GetxController {
 
   void fetchAddressDetails() async {
     if (postalCodeController.value.isNotEmpty) {
-      final addressDetails =
-          await _addressService.getAddressDetails(postalCodeController.value);
+      final addressDetails = await addressController.getAddressDetails();
       if (addressDetails != null) {
         streetController.value = addressDetails['logradouro'] ?? '';
         countyController.value = addressDetails['bairro'] ?? '';
@@ -379,17 +369,17 @@ class ParkingEditController extends GetxController {
     }
   }
 
-  Address getAddressFromFields() {
-    return Address(
-      postalCode: postalCodeController.value,
-      street: streetController.value,
-      number: numberController.value,
-      county: numberController.value,
-      city: cityController.value,
-      state: stateController.value,
-      country: countryController.value,
-    );
-  }
+  // Address getAddressFromFields() {
+  //   return Address(
+  //     postalCode: postalCodeController.value,
+  //     street: streetController.value,
+  //     number: numberController.value,
+  //     county: numberController.value,
+  //     city: cityController.value,
+  //     state: stateController.value,
+  //     country: countryController.value,
+  //   );
+  // }
 
   void updateCompatibleCarTypes() {
     compatibleCarTypes.value = _garageService.getCompatibleCarTypes(
@@ -419,8 +409,7 @@ class ParkingEditController extends GetxController {
   Future<SaveResult> save() async {
     loading(true);
 
-    final address = getAddressFromFields();
-    final location = await _addressService.getCoordinatesFromAddress(address);
+    final location = await addressController.getCoordinatesFromAddress();
 
     if (location == null) {
       addressError.value = 'Coordenadas não encontradas. Tente novamente.';
@@ -431,8 +420,8 @@ class ParkingEditController extends GetxController {
     if (selectedImagesBlurhash.isEmpty) return SaveResult.failed;
 
     final isAutomatic = isAutomaticController.value;
-
-    final newParking = Parking(
+    parking = Parking(
+      id: _repository.generateId(),
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
       name: nameController.value,
@@ -451,7 +440,7 @@ class ParkingEditController extends GetxController {
       type: parkingType.value!.name,
       // operatingHours: OperatingHours(daysAndHours: selectedOperatingHours),
       location: location,
-      address: getAddressFromFields(),
+      address: addressController.address,
       gateHeight: gateHeight.value,
       gateWidth: gateWidth.value,
       garageDepth: garageDepth.value,
@@ -466,18 +455,16 @@ class ParkingEditController extends GetxController {
     // final List<File> selectedImageFiles =
     //     selectedGalleryImages.map((xFile) => File(xFile.path)).toList();
 
-    if (currentParking.value != null) {
-      newParking.id = currentParking.value!.id;
-    }
-    final result = await _repository.save(newParking, docId: newParking.id);
+    final result = await _repository.save(parking, docId: parking.id);
 
-    if (result == SaveResult.success) {
-      return SaveResult.success;
-    }
-
-    print('##################################################### 5');
     loading(false);
-    return SaveResult.failed;
+
+    return result;
+  }
+
+  Future<SaveResult> updateParking() async {
+    print('NEW NAME PARKING KKKKKK ${parking.name} sahdusahdusahdu');
+    return await _repository.update(parking);
   }
 
   Future<String?> _getImageUrls(XFile file) async {

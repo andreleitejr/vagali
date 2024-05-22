@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BaseModel {
-  String? id;
+  String id;
   final DateTime createdAt;
   final DateTime updatedAt;
 
   BaseModel({
-    this.id,
+    required this.id,
     required this.createdAt,
     required this.updatedAt,
   });

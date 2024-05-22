@@ -20,7 +20,7 @@ class CashOutController extends GetxController {
   }
 
   void _listenToCashOutStream() {
-    _repository.streamAll(userId: user.id!).listen((dataList) {
+    _repository.streamAll(userId: user.id).listen((dataList) {
       cashOuts(dataList);
     });
   }
@@ -29,9 +29,10 @@ class CashOutController extends GetxController {
     loading(true);
 
     final cashOut = CashOut(
+      id: _repository.generateId(),
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
-      userId: user.id!,
+      userId: user.id,
       amount: amount,
       status: CashOutStatus.pending,
     );

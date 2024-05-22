@@ -6,10 +6,10 @@ import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/price_input.dart';
 
-class StepFiveWidget extends StatelessWidget {
+class ParkingEditPrice extends StatelessWidget {
   final ParkingEditController controller;
 
-  StepFiveWidget({super.key, required this.controller});
+  ParkingEditPrice({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {

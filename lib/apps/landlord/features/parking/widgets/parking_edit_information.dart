@@ -4,10 +4,10 @@ import 'package:vagali/apps/landlord/features/parking/controllers/parking_edit_c
 import 'package:vagali/features/address/widgets/address_card.dart';
 import 'package:vagali/widgets/input.dart';
 
-class StepOneWidget extends StatelessWidget {
+class ParkingEditInformation extends StatelessWidget {
   final ParkingEditController controller;
 
-  StepOneWidget({Key? key, required this.controller}) : super(key: key);
+  ParkingEditInformation({Key? key, required this.controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class StepOneWidget extends StatelessWidget {
           children: [
             Obx(
               () => Input(
-                initialValue: controller.nameController.value,
+                initialValue: controller.parking.name,
                 onChanged: controller.nameController,
                 hintText: 'Nome da Vaga',
                 required: true,
@@ -29,7 +29,7 @@ class StepOneWidget extends StatelessWidget {
             const SizedBox(height: 16),
             Obx(
               () => Input(
-                initialValue: controller.descriptionController.value,
+                initialValue: controller.parking.description,
                 onChanged: controller.descriptionController,
                 hintText: 'Descrição da Vaga',
                 required: true,
@@ -39,7 +39,7 @@ class StepOneWidget extends StatelessWidget {
             ),
             const SizedBox(height: 16.0),
             AddressCard(
-              address: controller.landlord.address,
+              address: controller.parking.address,
               isReservationActive: true,
             ),
           ],

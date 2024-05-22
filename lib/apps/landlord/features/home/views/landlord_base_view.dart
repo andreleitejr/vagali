@@ -52,29 +52,29 @@ class _LandlordBaseViewState extends State<LandlordBaseView>
     ];
     return Scaffold(
       body: Obx(() => _pages[controller.selectedIndex.value]),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        type: BottomNavigationBarType.fixed,
-        selectedFontSize: 0,
-        selectedLabelStyle: ThemeTypography.regular9.apply(
-          color: ThemeColors.primary,
-        ),
-        unselectedLabelStyle: ThemeTypography.regular9.apply(
-          color: ThemeColors.grey4,
-        ),
-        items: _buildBottomNavBarItems(),
-        currentIndex: controller.selectedIndex.value,
-        unselectedItemColor: ThemeColors.grey3,
-        selectedItemColor: ThemeColors.primary,
-        onTap: controller.selectedIndex,
-      ),
+      bottomNavigationBar: Obx(() => BottomNavigationBar(
+            backgroundColor: Colors.white,
+            type: BottomNavigationBarType.fixed,
+            selectedFontSize: 0,
+            selectedLabelStyle: ThemeTypography.regular9.apply(
+              color: ThemeColors.primary,
+            ),
+            unselectedLabelStyle: ThemeTypography.regular9.apply(
+              color: ThemeColors.grey4,
+            ),
+            items: _buildBottomNavBarItems(),
+            currentIndex: controller.selectedIndex.value,
+            unselectedItemColor: ThemeColors.grey3,
+            selectedItemColor: ThemeColors.primary,
+            onTap: controller.selectedIndex,
+          )),
     );
   }
 
   List<BottomNavigationBarItem> _buildBottomNavBarItems() {
     return [
       _buildNavBarItem(Coolicons.house, 'Home'),
-      _buildNavBarItem(Coolicons.creditCard, 'Dashboard'),
+      _buildNavBarItem(Coolicons.creditCard, 'Painel'),
       _buildNavBarItem(Coolicons.calendar, 'Reservas'),
       _buildNavBarItemWithAvatar(),
     ];
@@ -130,6 +130,12 @@ class _LandlordBaseViewState extends State<LandlordBaseView>
 
   @override
   void goToParkingEditPage() {
-    Get.to(() => ParkingEditView());
+    Get.to(
+      () => ParkingEditView(
+        onConcluded: () => Get.to(
+          () => LandlordBaseView(),
+        ),
+      ),
+    );
   }
 }

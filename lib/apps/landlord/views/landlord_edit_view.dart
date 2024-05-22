@@ -73,7 +73,11 @@ class _LandlordEditViewState extends State<LandlordEditView> {
   void _navigateToEditView() {
     FocusScope.of(context).unfocus();
 
-    Get.to(() => const ParkingEditView());
+    Get.to(
+      () => ParkingEditView(
+        onConcluded: () => Get.back(),
+      ),
+    );
   }
 
   @override

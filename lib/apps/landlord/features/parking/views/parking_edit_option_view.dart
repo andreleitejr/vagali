@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 import 'package:vagali/apps/landlord/features/parking/controllers/parking_edit_controller.dart';
 import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/apps/landlord/features/parking/views/parking_partial_edit_view.dart';
-import 'package:vagali/apps/landlord/features/parking/widgets/parking_edit_step_five.dart';
-import 'package:vagali/apps/landlord/features/parking/widgets/parking_edit_step_four.dart';
-import 'package:vagali/apps/landlord/features/parking/widgets/parking_edit_step_one.dart';
-import 'package:vagali/apps/landlord/features/parking/widgets/parking_edit_step_three.dart';
-import 'package:vagali/apps/landlord/features/parking/widgets/parking_edit_step_two.dart';
+import 'package:vagali/apps/landlord/features/parking/widgets/parking_edit_price.dart';
+import 'package:vagali/apps/landlord/features/parking/widgets/parking_edit_tags.dart';
+import 'package:vagali/apps/landlord/features/parking/widgets/parking_edit_information.dart';
+import 'package:vagali/apps/landlord/features/parking/widgets/parking_edit_gate.dart';
+import 'package:vagali/apps/landlord/features/parking/widgets/parking_edit_images.dart';
 import 'package:vagali/features/config/widgets/config_list_tile.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/theme/theme_colors.dart';
@@ -28,7 +28,7 @@ class _ParkingEditOptionViewState extends State<ParkingEditOptionView> {
 
   @override
   void initState() {
-    controller = Get.put(ParkingEditController(parking: widget.parking));
+    controller = Get.put(ParkingEditController(widget.parking));
     super.initState();
   }
 
@@ -44,11 +44,11 @@ class _ParkingEditOptionViewState extends State<ParkingEditOptionView> {
               () => Obx(
                 () => ParkingPartialEditWidget(
                   title: 'Detalhes',
-                  body: StepOneWidget(controller: controller),
+                  body: ParkingEditInformation(controller: controller),
                   onSave: () async {
                     if (controller.isNameValid.isTrue ||
                         controller.isDescriptionValid.isTrue) {
-                      final result = await controller.save();
+                      final result = await controller.updateParking();
                       if (result == SaveResult.success) {
                         Get.back();
                       } else {
@@ -68,7 +68,7 @@ class _ParkingEditOptionViewState extends State<ParkingEditOptionView> {
             onTap: () => Get.to(
               () => ParkingPartialEditWidget(
                 title: 'Fotos',
-                body: StepTwoWidget(controller: controller),
+                body: ParkingEditImages(controller: controller),
                 onSave: () async {
                   if (controller.isImageValid.isTrue) {
                     final result = await controller.save();
@@ -89,7 +89,7 @@ class _ParkingEditOptionViewState extends State<ParkingEditOptionView> {
             onTap: () => Get.to(
               () => ParkingPartialEditWidget(
                 title: 'Portão',
-                body: StepThreeWidget(controller: controller),
+                body: ParkingEditGate(controller: controller),
                 onSave: () async {
                   if (controller.isGateValid.isTrue) {
                     final result = await controller.save();
@@ -110,7 +110,7 @@ class _ParkingEditOptionViewState extends State<ParkingEditOptionView> {
             onTap: () => Get.to(
               () => ParkingPartialEditWidget(
                 title: 'Tags',
-                body: StepFourWidget(controller: controller),
+                body: ParkingEditTags(controller: controller),
                 onSave: () async {
                   if (controller.isTagsValid.isTrue) {
                     final result = await controller.save();
@@ -131,7 +131,7 @@ class _ParkingEditOptionViewState extends State<ParkingEditOptionView> {
             onTap: () => Get.to(
               () => ParkingPartialEditWidget(
                 title: 'Preços',
-                body: StepFiveWidget(controller: controller),
+                body: ParkingEditPrice(controller: controller),
                 onSave: () async {
                   if (controller.isPriceValid.isTrue) {
                     final result = await controller.save();

@@ -1,9 +1,11 @@
-
 import 'package:vagali/apps/tenant/features/vehicle/models/vehicle_type.dart';
 
 class GarageService {
   List<VehicleType> getCompatibleCarTypes(
-      double height, double width, double depth) {
+    double heightInCentimeters,
+    double widthInCentimeters,
+    double depthInCentimeters,
+  ) {
     final carTypes = <VehicleType>[];
 
     final motorcycle = vehicleTypes
@@ -24,32 +26,41 @@ class GarageService {
     final van = vehicleTypes
         .firstWhere((vehicle) => vehicle.type == VehicleTypeEnum.van);
 
-    // final truck = vehicleTypes
-    //     .firstWhere((vehicle) => vehicle.type == VehicleTypeEnum.truck);
-
-    if (height >= 7 && width >= 6 && depth >= 14) {
+    if (heightInCentimeters >= 600 &&
+        widthInCentimeters >= 400 &&
+        depthInCentimeters >= 1200) {
       carTypes.addAll(vehicleTypes);
-    } else if (height >= 5 && width >= 4 && depth >= 6) {
+    } else if (heightInCentimeters >= 400 &&
+        widthInCentimeters >= 400 &&
+        depthInCentimeters >= 600) {
       carTypes.add(van);
       carTypes.add(pickup);
       carTypes.add(suv);
       carTypes.add(sedan);
       carTypes.add(hatch);
       carTypes.add(motorcycle);
-    } else if (height >= 3 && width >= 3 && depth >= 5) {
+    } else if (heightInCentimeters >= 300 &&
+        widthInCentimeters >= 300 &&
+        depthInCentimeters >= 500) {
       carTypes.add(pickup);
       carTypes.add(suv);
       carTypes.add(sedan);
       carTypes.add(hatch);
       carTypes.add(motorcycle);
-    } else if (height >= 2 && width >= 2 && depth >= 4) {
+    } else if (heightInCentimeters >= 200 &&
+        widthInCentimeters >= 200 &&
+        depthInCentimeters >= 400) {
       carTypes.add(sedan);
       carTypes.add(hatch);
       carTypes.add(motorcycle);
-    } else if (height >= 2 && width >= 2 && depth >= 3) {
+    } else if (heightInCentimeters >= 200 &&
+        widthInCentimeters >= 200 &&
+        depthInCentimeters >= 300) {
       carTypes.add(hatch);
       carTypes.add(motorcycle);
-    } else if (height >= 2 && width >= 1 && depth >= 2) {
+    } else if (heightInCentimeters >= 200 &&
+        widthInCentimeters >= 100 &&
+        depthInCentimeters >= 200) {
       carTypes.add(motorcycle);
     }
 

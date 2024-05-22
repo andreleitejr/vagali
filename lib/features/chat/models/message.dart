@@ -4,26 +4,21 @@ import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/models/base_model.dart';
 
 class Message extends BaseModel {
-  // final String reservationId;
   final String from;
   final String to;
   final String message;
 
   Message({
-    required DateTime createdAt,
-    required DateTime updatedAt,
-    // required this.reservationId,
+    required super.id,
+    required super.createdAt,
+    required super.updatedAt,
     required this.from,
     required this.to,
     required this.message,
-  }) : super(
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-        );
+  });
 
   Message.fromDocument(DocumentSnapshot document)
-      : /*reservationId = document['reservationId'],*/
-        from = document['from'],
+      : from = document['from'],
         to = document['to'],
         message = document['message'],
         super.fromDocument(document);
@@ -31,7 +26,6 @@ class Message extends BaseModel {
   @override
   Map<String, dynamic> toMap() {
     return {
-      // 'reservationId': reservationId,
       'from': from,
       'to': to,
       'message': message,

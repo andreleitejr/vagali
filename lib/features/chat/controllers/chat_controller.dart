@@ -29,6 +29,7 @@ class ChatController extends GetxController {
   Future<void> sendMessage() async {
     if (messageController.value.isNotEmpty) {
       final newMessage = Message(
+        id: _repository.generateId(),
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
         to: user is Landlord ? reservation.tenantId : reservation.landlordId,

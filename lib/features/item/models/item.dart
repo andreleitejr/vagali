@@ -17,7 +17,9 @@ class Item extends BaseModel {
   final String userId;
 
   Item({
-    super.id,
+    required super.id,
+    required super.createdAt,
+    required super.updatedAt,
     this.title,
     this.description,
     required this.image,
@@ -25,8 +27,6 @@ class Item extends BaseModel {
     required this.type,
     required this.material,
     required this.dimensions,
-    required super.createdAt,
-    required super.updatedAt,
     required this.userId,
   });
 

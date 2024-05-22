@@ -18,6 +18,11 @@ class FirestoreRepository<T extends BaseModel> {
     required this.fromDocument,
   });
 
+  String generateId() {
+    final ref = firestore.collection(collectionName).doc();
+    return ref.id;
+  }
+
   Future<SaveResult> save(T data, {String? docId}) async {
     try {
       await firestore.collection(collectionName).doc(docId).set(data.toMap());
@@ -91,11 +96,11 @@ class FirestoreRepository<T extends BaseModel> {
     }
   }
 
-  Future<SaveResult> update(String documentId, T document) async {
+  Future<SaveResult> update(T document) async {
     try {
       await firestore
           .collection(collectionName)
-          .doc(documentId)
+          .doc(document.id)
           .update(document.toMap());
 
       return SaveResult.success;

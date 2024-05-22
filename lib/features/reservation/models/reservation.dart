@@ -43,8 +43,9 @@ class Reservation extends BaseModel {
   Item? item;
 
   Reservation({
-    required DateTime createdAt,
-    required DateTime updatedAt,
+    required super.id,
+    required super.createdAt,
+    required super. updatedAt,
     required this.parkingId,
     required this.tenantId,
     required this.itemId,
@@ -56,10 +57,7 @@ class Reservation extends BaseModel {
     required this.locationHistory,
     required this.status,
     required this.paymentMethod,
-  }) : super(
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-        );
+  });
 
   Reservation.fromDocument(DocumentSnapshot document)
       : parkingId = document['parkingId'],

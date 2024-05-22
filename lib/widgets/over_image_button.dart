@@ -12,8 +12,8 @@ class OverImageButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 42,
-        width: 42,
+        height: 32,
+        width: 32,
         decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.75),
           borderRadius: BorderRadius.circular(48),
@@ -21,7 +21,7 @@ class OverImageButton extends StatelessWidget {
         child: Coolicon(
           icon: icon,
           color: Colors.black.withOpacity(0.78),
-
+          padding: const EdgeInsets.all(6),
         ),
       ),
     );

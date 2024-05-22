@@ -20,7 +20,7 @@ class ItemEditController extends GetxController {
   ItemEditController(this.selectedItemType);
 
   final ItemType selectedItemType;
-  final ItemRepository repository = Get.find();
+  final ItemRepository _repository = Get.find();
   final _imageService = ImageService();
   final loading = false.obs;
   final selectedVehicleType = Rx<VehicleType?>(null);
@@ -101,7 +101,7 @@ class ItemEditController extends GetxController {
   Future<String?> _getImageUrl() async {
     if (imageFileController.value != null) {
       final imageUrl =
-      await _imageService.uploadImage(imageFileController.value!, 'items');
+          await _imageService.uploadImage(imageFileController.value!, 'items');
 
       if (imageUrl == null) {
         imageError.value = 'Falha ao carregar a imagem';
@@ -127,7 +127,8 @@ class ItemEditController extends GetxController {
     final registrationState = registrationStateController.value;
 
     final vehicle = Vehicle(
-      userId: tenant.id!,
+      id: _repository.generateId(),
+      userId: tenant.id,
       image: imageBlurhash.value!,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
@@ -143,7 +144,7 @@ class ItemEditController extends GetxController {
       material: 'Outros',
     );
 
-    final id = await await repository.saveAndGetId(vehicle);
+    final id = await await _repository.saveAndGetId(vehicle);
 
     if (id != null) {
       vehicle.id = id;
@@ -162,7 +163,8 @@ class ItemEditController extends GetxController {
     if (imageBlurhash.value == null) return null;
 
     final stock = Stock(
-      userId: tenant.id!,
+      id: _repository.generateId(),
+      userId: tenant.id,
       image: imageBlurhash.value!,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
@@ -175,7 +177,7 @@ class ItemEditController extends GetxController {
       description: description.value,
     );
 
-    final id = await await repository.saveAndGetId(stock);
+    final id = await await _repository.saveAndGetId(stock);
 
     if (id != null) {
       stock.id = id;
@@ -194,7 +196,8 @@ class ItemEditController extends GetxController {
     if (imageBlurhash.value == null) return null;
 
     final item = Item(
-      userId: tenant.id!,
+      id: _repository.generateId(),
+      userId: tenant.id,
       image: imageBlurhash.value!,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
@@ -206,7 +209,7 @@ class ItemEditController extends GetxController {
       type: selectedItemType.type,
     );
 
-    final id = await await repository.saveAndGetId(item);
+    final id = await await _repository.saveAndGetId(item);
 
     if (id != null) {
       item.id = id;

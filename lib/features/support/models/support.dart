@@ -16,17 +16,15 @@ class Support extends BaseModel {
   final bool isWhatsApp;
 
   Support({
-    required DateTime createdAt,
-    required DateTime updatedAt,
+    required super.id,
+    required super.createdAt,
+    required super.updatedAt,
     required this.subject,
     required this.description,
     this.status = SupportStatus.open,
     required this.phone,
     this.isWhatsApp = true,
-  }) : super(
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-        );
+  });
 
   Support.fromDocument(DocumentSnapshot document)
       : subject = document['subject'],

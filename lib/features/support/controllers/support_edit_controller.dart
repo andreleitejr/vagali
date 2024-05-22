@@ -64,6 +64,7 @@ class SupportEditController extends GetxController {
     loading(true);
 
     final support = Support(
+      id: _repository.generateId(),
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
       description: description.value,

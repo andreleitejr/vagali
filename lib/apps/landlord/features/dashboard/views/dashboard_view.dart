@@ -38,7 +38,7 @@ class _DashboardViewState extends State<DashboardView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopNavigationBar(
-        title: 'Dashboard',
+        title: 'Meu Painel',
         actions: [
           Coolicon(
             padding: const EdgeInsets.symmetric(horizontal: 16),

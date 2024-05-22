@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:vagali/features/address/models/address.dart';
 import 'package:vagali/services/address_service.dart';
@@ -29,9 +30,7 @@ class AddressEditController extends GetxController {
   final countryController = ''.obs;
   final complementController = ''.obs;
 
-  void fillFormWithUserData() {
-    final address = currentAddress.value!;
-
+  void fillFormWithUserData(Address address) {
     postalCodeController.value = address.postalCode;
     streetController.value = address.street;
     numberController.value = address.number;
@@ -39,6 +38,16 @@ class AddressEditController extends GetxController {
     stateController.value = address.state;
     countryController.value = address.country;
     complementController.value = address.complement ?? '';
+  }
+
+  Future<GeoPoint?> getCoordinatesFromAddress() async {
+    return await _addressService.getCoordinatesFromAddress(
+      address,
+    );
+  }
+
+  Future<Map<String, dynamic>?> getAddressDetails() async {
+    return await _addressService.getAddressDetails(postalCodeController.value);
   }
 
   Future<void> fetchAddressDetails() async {

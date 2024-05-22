@@ -156,16 +156,17 @@ class ReservationEditController extends GetxController {
     final total = totalCost.value;
 
     reservation.value = Reservation(
+      id: _reservationRepository.generateId(),
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
-      parkingId: parking.id!,
-      tenantId: tenant.id!,
+      parkingId: parking.id,
+      tenantId: tenant.id,
       startDate: startDate.value!,
       endDate: endDate.value!,
       totalCost: total,
       landlordId: parking.userId,
       reservationMessage: reservationMessage,
-      itemId: item.value!.id!,
+      itemId: item.value!.id,
       locationHistory: [
         LocationHistory(
           latitude: 0,

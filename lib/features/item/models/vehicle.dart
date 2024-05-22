@@ -12,7 +12,7 @@ class Vehicle extends Item {
   final String registrationState;
 
   Vehicle({
-    super.id,
+    required super.id,
     required this.vehicleType,
     required this.licensePlate,
     required this.year,
