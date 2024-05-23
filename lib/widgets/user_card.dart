@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:vagali/apps/tenant/models/tenant.dart';
+import 'package:vagali/features/tenant/models/tenant.dart';
 import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/widgets/custom_icon.dart';
 
 import 'avatar.dart';
 
@@ -42,11 +42,12 @@ class UserCard extends StatelessWidget {
               onTap: () => _makePhoneCall(),
               child: Container(
                 decoration: BoxDecoration(
-                    color: ThemeColors.grey1,
-                    borderRadius: BorderRadius.circular(50)),
-                child: Coolicon(
+                  color: ThemeColors.grey1,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: CustomIcon(
                   padding: const EdgeInsets.all(8),
-                  icon: Coolicons.phoneOutline,
+                  icon: ThemeIcons.phoneOutline,
                   width: 18,
                 ),
               ),

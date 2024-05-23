@@ -6,7 +6,7 @@ import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/utils/extensions.dart';
-import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/widgets/custom_icon.dart';
 import 'package:vagali/widgets/input.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
@@ -104,8 +104,8 @@ class _ChatViewState extends State<ChatView> {
                   decoration: BoxDecoration(
                       color: ThemeColors.primary,
                       borderRadius: BorderRadius.circular(100)),
-                  child: Coolicon(
-                    icon: Coolicons.chatDots,
+                  child: CustomIcon(
+                    icon: ThemeIcons.chatDots,
                     color: Colors.white,
                     onTap: (){
                       controller.sendMessage();

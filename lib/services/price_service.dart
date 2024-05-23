@@ -1,5 +1,5 @@
 
-import 'package:vagali/apps/landlord/features/parking/models/price.dart';
+import 'package:vagali/features/parking/models/price.dart';
 
 class PriceService {
   static const _hourBasePrice = 5;
@@ -18,10 +18,13 @@ class PriceService {
     );
   }
 
-  static double calculatePrice(DateTime startDateTime, DateTime endDateTime) {
-    final double pricePerHour = _hourBasePrice.toDouble();
+  static double calculatePrice(
+    DateTime startDateTime,
+    DateTime endDateTime,
+  ) {
+    final pricePerHour = _hourBasePrice.toDouble();
 
-    final int durationInHours = endDateTime.difference(startDateTime).inHours;
+    final durationInHours = endDateTime.difference(startDateTime).inHours;
 
     if (durationInHours <= 0) {
       return 0.0;
@@ -36,7 +39,7 @@ class PriceService {
 
       return _twelveHoursBasePrice.toDouble() + (overtime * pricePerHour);
     } else if (durationInHours < 24 * 30) {
-      final int days = (durationInHours / 24).ceil();
+      final days = (durationInHours / 24).ceil();
       return _twentyFourHoursBasePrice.toDouble() * days;
     } else {
       return _monthBasePrice.toDouble();

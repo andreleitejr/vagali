@@ -8,7 +8,7 @@ import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/utils/extensions.dart';
-import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/widgets/custom_icon.dart';
 import 'package:vagali/widgets/empty_list.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
@@ -79,11 +79,11 @@ class _CalendarViewState extends State<CalendarView> {
             headerStyle: HeaderStyle(
               leftChevronMargin: EdgeInsets.zero,
               rightChevronMargin: EdgeInsets.zero,
-              leftChevronIcon: Coolicon(
-                icon: Coolicons.chevronLeft,
+              leftChevronIcon: CustomIcon(
+                icon: ThemeIcons.chevronLeft,
               ),
-              rightChevronIcon: Coolicon(
-                icon: Coolicons.chevronRight,
+              rightChevronIcon: CustomIcon(
+                icon: ThemeIcons.chevronRight,
               ),
             ),
             daysOfWeekStyle: DaysOfWeekStyle(

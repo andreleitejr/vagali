@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/features/item/models/item.dart';
 import 'package:vagali/features/item/models/vehicle.dart';
 import 'package:vagali/features/item/repositories/item_repository.dart';
+import 'package:vagali/features/parking/models/parking.dart';
 import 'package:vagali/features/payment/models/payment_method.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/features/reservation/repositories/reservation_repository.dart';

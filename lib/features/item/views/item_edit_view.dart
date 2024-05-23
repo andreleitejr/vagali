@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:vagali/apps/tenant/features/vehicle/widgets/vehicle_edit_widget.dart';
 import 'package:vagali/features/item/controllers/item_edit_controller.dart';
 import 'package:vagali/features/item/models/item.dart';
 import 'package:vagali/features/item/widgets/stock_edit_widget.dart';
+import 'package:vagali/features/vehicle/widgets/vehicle_edit_widget.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/widgets/flat_button.dart';

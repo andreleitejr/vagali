@@ -6,7 +6,7 @@ import 'package:vagali/features/legal/terms_and_conditions.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/widgets/custom_icon.dart';
 import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/logo.dart';
 import 'package:vagali/widgets/phone_input.dart';
@@ -102,8 +102,8 @@ class LoginView extends StatelessWidget {
                       snackBar(
                         'Erro de autenticação',
                         controller.inputError,
-                        icon: Coolicon(
-                          icon: Coolicons.squareWarning,
+                        icon: CustomIcon(
+                          icon: ThemeIcons.squareWarning,
                           color: Colors.white,
                         ),
                       );

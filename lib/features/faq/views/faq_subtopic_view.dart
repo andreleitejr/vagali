@@ -4,7 +4,7 @@ import 'package:vagali/features/faq/controllers/faq_controller.dart';
 import 'package:vagali/features/faq/models/faq_topic.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/widgets/custom_icon.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
 class FaqSubtopicView extends StatelessWidget {
@@ -26,8 +26,8 @@ class FaqSubtopicView extends StatelessWidget {
               topic.subtopics[index].title,
               style: ThemeTypography.medium14,
             ),
-            trailing: Coolicon(
-              icon: Coolicons.chevronDown,
+            trailing: CustomIcon(
+              icon: ThemeIcons.chevronDown,
             ),
             children: [
               Padding(

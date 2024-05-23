@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
-import 'package:vagali/apps/landlord/models/landlord.dart';
-import 'package:vagali/apps/tenant/models/tenant.dart';
 import 'package:vagali/features/item/models/item.dart';
+import 'package:vagali/features/landlord/models/landlord.dart';
+import 'package:vagali/features/parking/models/parking.dart';
 import 'package:vagali/features/payment/models/payment_method.dart';
+import 'package:vagali/features/tenant/models/tenant.dart';
 import 'package:vagali/models/base_model.dart';
 import 'package:vagali/models/location_history.dart';
 import 'package:vagali/utils/extensions.dart';

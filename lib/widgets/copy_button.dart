@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/widgets/custom_icon.dart';
 import 'package:vagali/widgets/snackbar.dart';
 
 class CopyButton extends StatelessWidget {
@@ -69,8 +69,8 @@ class CopyButton extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 24),
-            Coolicon(
-              icon: Coolicons.files,
+            CustomIcon(
+              icon: ThemeIcons.files,
               color: ThemeColors.primary,
             ),
           ],

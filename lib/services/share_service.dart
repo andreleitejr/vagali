@@ -1,5 +1,5 @@
 import 'package:share/share.dart';
-import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
+import 'package:vagali/features/parking/models/parking.dart';
 
 class ShareService {
   Future<void> shareParking(Parking parking) async {

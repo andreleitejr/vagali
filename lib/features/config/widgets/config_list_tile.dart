@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/widgets/custom_icon.dart';
 
 class ConfigListTile extends StatelessWidget {
   final String title;
@@ -20,8 +20,8 @@ class ConfigListTile extends StatelessWidget {
         title,
         style: ThemeTypography.medium14,
       ),
-      trailing: Coolicon(
-        icon: Coolicons.chevronRight,
+      trailing: CustomIcon(
+        icon: ThemeIcons.chevronRight,
       ),
       onTap: onTap,
     );

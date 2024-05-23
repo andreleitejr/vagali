@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/widgets/custom_icon.dart';
 
 class OverImageButton extends StatelessWidget {
   final String icon;
@@ -18,7 +18,7 @@ class OverImageButton extends StatelessWidget {
           color: Colors.white.withOpacity(0.75),
           borderRadius: BorderRadius.circular(48),
         ),
-        child: Coolicon(
+        child: CustomIcon(
           icon: icon,
           color: Colors.black.withOpacity(0.78),
           padding: const EdgeInsets.all(6),

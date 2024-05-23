@@ -6,7 +6,7 @@ import 'package:vagali/features/address/models/address.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/widgets/custom_icon.dart';
 
 // ignore: must_be_immutable
 class AddressCard extends StatelessWidget {
@@ -41,16 +41,16 @@ class AddressCard extends StatelessWidget {
               ),
             ),
             if (editModeOn)
-              const Coolicon(
-                icon: Coolicons.noteEdit,
+              const CustomIcon(
+                icon: ThemeIcons.noteEdit,
               ),
           ],
         ),
         const SizedBox(height: 8),
         Row(
           children: [
-            Coolicon(
-              icon: Coolicons.mapPin,
+            CustomIcon(
+              icon: ThemeIcons.mapPin,
               width: 14,
               color: ThemeColors.grey4,
             ),

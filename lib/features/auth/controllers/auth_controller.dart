@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
-import 'package:vagali/apps/landlord/features/parking/repositories/parking_repository.dart';
-import 'package:vagali/apps/landlord/repositories/landlord_repository.dart';
-import 'package:vagali/apps/tenant/repositories/tenant_repository.dart';
+import 'package:vagali/features/landlord/repositories/landlord_repository.dart';
+import 'package:vagali/features/parking/repositories/parking_repository.dart';
 
 // Features
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/auth/views/auth_view.dart';
 import 'package:vagali/features/item/repositories/item_repository.dart';
+import 'package:vagali/features/tenant/repositories/tenant_repository.dart';
 import 'package:vagali/models/flavor_config.dart';
 import 'package:vagali/utils/extensions.dart';
 

@@ -12,7 +12,7 @@ import 'package:vagali/features/user/models/user.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/widgets/custom_icon.dart';
 import 'package:vagali/widgets/date_period.dart';
 import 'package:vagali/widgets/reservation_status_indicator.dart';
 import 'package:vagali/widgets/title_with_icon.dart';

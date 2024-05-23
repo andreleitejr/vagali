@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
 import 'package:vagali/features/address/widgets/address_card.dart';
 import 'package:vagali/features/item/models/item.dart';
 import 'package:vagali/features/item/models/vehicle.dart';
-import 'package:vagali/features/item/views/item_list_view.dart';
 import 'package:vagali/features/item/views/item_type_list_view.dart';
 import 'package:vagali/features/item/widgets/item_list_item.dart';
+import 'package:vagali/features/parking/models/parking.dart';
 import 'package:vagali/features/payment/models/payment_method.dart';
 import 'package:vagali/features/payment/views/payment_method_selection_view.dart';
 import 'package:vagali/features/payment/views/payment_pix_view.dart';
@@ -16,7 +15,6 @@ import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/widgets/coolicon.dart';
 import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/input.dart';
 import 'package:vagali/widgets/title_with_icon.dart';
@@ -204,7 +202,7 @@ class _ReservationEditViewState extends State<ReservationEditView> {
                   const SizedBox(height: 16),
                   TitleWithIcon(
                     title: 'Mensagem (opcional)',
-                    icon: Coolicons.chatDots,
+                    icon: ThemeIcons.chatDots,
                   ),
                   const SizedBox(height: 12),
                   Input(

@@ -26,7 +26,7 @@ class ItemInfoWidget extends StatelessWidget {
         children: [
           TitleWithIcon(
             title: 'O que vou guardar',
-            icon: Coolicons.car,
+            icon: ThemeIcons.car,
           ),
           const SizedBox(height: 16),
           Row(

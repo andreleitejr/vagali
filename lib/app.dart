@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:vagali/apps/landlord/features/home/views/landlord_base_view.dart';
-import 'package:vagali/apps/tenant/features/home/views/base_view.dart';
+import 'package:vagali/features/home/views/landlord_base_view.dart';
+import 'package:vagali/features/home/views/base_view.dart';
 import 'package:vagali/features/auth/views/auth_view.dart';
 import 'package:vagali/models/flavor_config.dart';
 import 'package:vagali/theme/theme_colors.dart';

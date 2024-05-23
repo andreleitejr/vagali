@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
-import 'package:vagali/apps/tenant/features/home/views/base_view.dart';
+import 'package:vagali/features/home/views/base_view.dart';
 import 'package:vagali/features/payment/controllers/payment_controller.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 import 'package:vagali/utils/extensions.dart';
-import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/widgets/custom_icon.dart';
 import 'package:vagali/widgets/copy_button.dart';
 import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/input.dart';
@@ -135,10 +135,10 @@ class _PaymentPixViewState extends State<PaymentPixView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Coolicon(
+                      CustomIcon(
                         icon: controller.isApproved.isTrue
-                            ? Coolicons.circleCheckOutline
-                            : Coolicons.clock,
+                            ? ThemeIcons.circleCheckOutline
+                            : ThemeIcons.clock,
                         color: Colors.white,
                         width: 20,
                       ),

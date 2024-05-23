@@ -67,7 +67,7 @@ class ItemType extends SelectableItem {
     required this.type,
     this.name,
     this.description,
-    this.image = Coolicons.house,
+    this.image = ThemeIcons.house,
   });
 
   Map<String, dynamic> toMap() {

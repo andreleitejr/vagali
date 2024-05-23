@@ -1,20 +1,18 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:vagali/apps/landlord/features/parking/models/parking.dart';
-import 'package:vagali/apps/landlord/features/parking/repositories/parking_repository.dart';
-import 'package:vagali/apps/landlord/models/landlord.dart';
-import 'package:vagali/apps/landlord/repositories/landlord_repository.dart';
+import 'package:vagali/features/landlord/models/landlord.dart';
+import 'package:vagali/features/landlord/repositories/landlord_repository.dart';
+import 'package:vagali/features/parking/models/parking.dart';
+import 'package:vagali/features/parking/repositories/parking_repository.dart';
 import 'package:vagali/services/location_service.dart';
 import 'package:vagali/services/search_service.dart';
 import 'package:vagali/theme/images.dart';
-import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
 
 class MapController extends GetxController {
@@ -124,7 +122,7 @@ class MapController extends GetxController {
         targetWidth: width);
     final frameInfo = await codec.getNextFrame();
     final byteData =
-        await frameInfo.image.toByteData(format: ImageByteFormat.png);
+        await frameInfo.image.toByteData(format: ImageByteFormat.png,);
     return byteData!.buffer.asUint8List();
   }
 

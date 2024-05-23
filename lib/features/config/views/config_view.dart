@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:vagali/apps/landlord/views/landlord_personal_info_view.dart';
-import 'package:vagali/apps/tenant/views/tenant_personal_info_view.dart';
+import 'package:vagali/features/landlord/views/landlord_personal_info_view.dart';
+import 'package:vagali/features/tenant/views/tenant_personal_info_view.dart';
 import 'package:vagali/features/address/views/address_edit_view.dart';
 import 'package:vagali/features/auth/repositories/auth_repository.dart';
 import 'package:vagali/features/auth/views/auth_view.dart';
@@ -14,7 +14,7 @@ import 'package:vagali/models/flavor_config.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/widgets/custom_icon.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 
 class ConfigController extends GetxController {
@@ -87,8 +87,8 @@ class ConfigView extends StatelessWidget {
                 color: ThemeColors.red,
               ),
             ),
-            trailing: Coolicon(
-              icon: Coolicons.logOut,
+            trailing: CustomIcon(
+              icon: ThemeIcons.logOut,
             ),
             onTap: () async {
               await controller.signOut();

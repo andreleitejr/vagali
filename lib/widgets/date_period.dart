@@ -36,7 +36,7 @@ class DatePeriod extends StatelessWidget {
         if (showTitle) ...[
           TitleWithIcon(
             title: 'Data de Agendamento',
-            icon: Coolicons.clock,
+            icon: ThemeIcons.clock,
           ),
           const SizedBox(height: 4),
         ],

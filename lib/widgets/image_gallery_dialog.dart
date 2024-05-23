@@ -3,7 +3,7 @@ import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:get/get.dart';
 import 'package:vagali/models/image_blurhash.dart';
 import 'package:vagali/theme/coolicons.dart';
-import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/widgets/custom_icon.dart';
 
 class ImageGalleryDialog extends StatelessWidget {
   final List<ImageBlurHash> images;
@@ -24,9 +24,9 @@ class ImageGalleryDialog extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(16),
-                child: Coolicon(
+                child: CustomIcon(
                   onTap: () => Get.back(),
-                  icon: Coolicons.close,
+                  icon: ThemeIcons.close,
                   color: Colors.white,
 
                 ),

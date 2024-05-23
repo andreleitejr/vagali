@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:vagali/apps/landlord/features/parking/views/parking_details_view.dart';
-import 'package:vagali/apps/tenant/features/payment/views/payment_view.dart';
 import 'package:vagali/features/chat/views/chat_view.dart';
+import 'package:vagali/features/parking/views/parking_details_view.dart';
 import 'package:vagali/features/payment/views/payment_method_selection_view.dart';
 import 'package:vagali/features/reservation/controllers/reservation_list_controller.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';
@@ -67,7 +66,7 @@ class ReservationStatusIndicator extends StatelessWidget {
         Expanded(
           child: TitleWithIcon(
             title: "Status da Reserva",
-            icon: Coolicons.circleCheckOutline,
+            icon: ThemeIcons.circleCheckOutline,
           ),
         ),
         Row(

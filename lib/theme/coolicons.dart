@@ -1,4 +1,4 @@
-class Coolicons {
+class ThemeIcons {
   static const bell = 'images/icons/bell.png';
   static const building = 'images/icons/building.png';
   static const building2 = 'images/icons/building_02.png';

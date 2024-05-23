@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vagali/apps/landlord/repositories/landlord_repository.dart';
-import 'package:vagali/apps/tenant/models/tenant.dart';
-import 'package:vagali/apps/tenant/repositories/tenant_repository.dart';
 import 'package:vagali/features/auth/views/auth_view.dart';
 import 'package:vagali/features/config/widgets/config_list_tile.dart';
+import 'package:vagali/features/landlord/repositories/landlord_repository.dart';
+import 'package:vagali/features/tenant/models/tenant.dart';
+import 'package:vagali/features/tenant/repositories/tenant_repository.dart';
 import 'package:vagali/features/user/models/user.dart';
-import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/widgets/coolicon.dart';
-import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/input.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
 import 'package:vagali/widgets/warning_dialog.dart';
@@ -52,9 +49,9 @@ class UserDeleteController extends GetxController {
 
   Future<void> delete() async {
     if (user is Tenant) {
-      await _tenantRepository.delete(user.id!);
+      await _tenantRepository.delete(user.id);
     } else {
-      await _landlordRepository.delete(user.id!);
+      await _landlordRepository.delete(user.id);
     }
   }
 }

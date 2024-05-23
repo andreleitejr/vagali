@@ -2,12 +2,12 @@
 
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:vagali/apps/tenant/features/vehicle/models/vehicle_type.dart';
 import 'package:vagali/features/item/models/item.dart';
 import 'package:vagali/features/item/models/stock.dart';
 import 'package:vagali/features/item/models/vehicle.dart';
 import 'package:vagali/features/item/repositories/item_repository.dart';
 import 'package:vagali/features/user/models/user.dart';
+import 'package:vagali/features/vehicle/models/vehicle_type.dart';
 import 'package:vagali/models/dimension.dart';
 import 'package:vagali/models/image_blurhash.dart';
 import 'package:vagali/services/image_service.dart';

@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:vagali/apps/landlord/models/landlord.dart';
+import 'package:vagali/features/landlord/models/landlord.dart';
 import 'package:vagali/features/chat/models/message.dart';
 import 'package:vagali/features/chat/repositories/chat_repository.dart';
 import 'package:vagali/features/reservation/models/reservation.dart';

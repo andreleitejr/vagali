@@ -5,7 +5,7 @@ import 'package:vagali/repositories/firestore_repository.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/widgets/custom_icon.dart';
 import 'package:vagali/widgets/flat_button.dart';
 import 'package:vagali/widgets/input.dart';
 import 'package:vagali/widgets/snackbar.dart';
@@ -114,8 +114,8 @@ class SupportEditView extends StatelessWidget {
     snackBar(
       title,
       message,
-      icon: Coolicon(
-        icon: Coolicons.squareWarning,
+      icon: CustomIcon(
+        icon: ThemeIcons.squareWarning,
         color: Colors.white,
       ),
     );

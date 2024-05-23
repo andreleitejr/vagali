@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
 import 'package:vagali/theme/theme_typography.dart';
-import 'package:vagali/widgets/coolicon.dart';
+import 'package:vagali/widgets/custom_icon.dart';
 
 class SearchInput extends StatefulWidget {
   final String searchText;
@@ -45,8 +45,8 @@ class _SearchInputState extends State<SearchInput> {
         hintStyle: ThemeTypography.regular14.apply(color: ThemeColors.grey4),
         prefixIcon: const Padding(
           padding: EdgeInsets.only(left: 8),
-          child: Coolicon(
-            icon: Coolicons.search,
+          child: CustomIcon(
+            icon: ThemeIcons.search,
             color: ThemeColors.grey4,
             height: 20,
           ),
