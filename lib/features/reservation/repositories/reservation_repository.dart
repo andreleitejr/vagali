@@ -143,24 +143,24 @@ class ReservationRepository extends FirestoreRepository<Reservation> {
     }
   }
 
-  Stream<List<Reservation>> streamAllReservationsForLandlord() {
-    try {
-      final User landlord = Get.find();
-
-      final collection = firestore.collection(collectionName);
-
-      final query = collection.where('landlordId', isEqualTo: landlord.id);
-
-      final stream = query.snapshots().map((querySnapshot) =>
-          querySnapshot.docs.map((doc) => fromDocument(doc)).toList());
-
-      return stream;
-    } catch (error) {
-      debugPrint(
-          'Error streaming data from $collectionName in Firestore: $error');
-      return Stream.value([]);
-    }
-  }
+  // Stream<List<Reservation>> streamAllReservationsForLandlord() {
+  //   try {
+  //     final User landlord = Get.find();
+  //
+  //     final collection = firestore.collection(collectionName);
+  //
+  //     final query = collection.where('landlordId', isEqualTo: landlord.id);
+  //
+  //     final stream = query.snapshots().map((querySnapshot) =>
+  //         querySnapshot.docs.map((doc) => fromDocument(doc)).toList());
+  //
+  //     return stream;
+  //   } catch (error) {
+  //     debugPrint(
+  //         'Error streaming data from $collectionName in Firestore: $error');
+  //     return Stream.value([]);
+  //   }
+  // }
 
   /// MODIFICAR
   Future<List<Reservation>> fetchReservationsForUser(String userId) async {

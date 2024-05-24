@@ -10,15 +10,17 @@ import 'package:vagali/widgets/custom_icon.dart';
 
 // ignore: must_be_immutable
 class AddressCard extends StatelessWidget {
-  final bool editModeOn;
   final Address address;
   final bool isReservationActive;
+  final VoidCallback? onEditPressed;
+  final bool editModeOn;
   late AddressCardController addressController;
 
   AddressCard({
     super.key,
     required this.address,
     this.editModeOn = false,
+    this.onEditPressed,
     this.isReservationActive = false,
   }) {
     addressController = Get.put(AddressCardController(address));
@@ -41,7 +43,8 @@ class AddressCard extends StatelessWidget {
               ),
             ),
             if (editModeOn)
-              const CustomIcon(
+              CustomIcon(
+                onTap: onEditPressed,
                 icon: ThemeIcons.noteEdit,
               ),
           ],

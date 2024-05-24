@@ -22,7 +22,7 @@ class ChatController extends GetxController {
   void streamMessages() {
     _repository.streamAll().listen((dataList) {
       messages.assignAll(dataList);
-      messages.sort((b, a) => a.createdAt.compareTo(b.createdAt));
+      messages.sort((b, a) => a.createdAt!.compareTo(b.createdAt!));
     });
   }
 

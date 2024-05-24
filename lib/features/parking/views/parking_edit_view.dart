@@ -108,8 +108,6 @@ class _ParkingEditViewState extends State<ParkingEditView> {
             });
           },
           children: [
-            // Etapa 1: Endereço
-            ParkingEditAddress(controller: _controller),
 
             // Etapa 2: Nome e Descrição
             ParkingEditInformation(controller: _controller),

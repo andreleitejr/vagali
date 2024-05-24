@@ -11,19 +11,14 @@ class ParkingListController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    await fetchUserParkings();
+    streamParking();
     super.onInit();
   }
 
-  Future<void> fetchUserParkings() async {
-    try {
-      final userParkings = await _repository.getAll(userId: user.id);
-      // await fetchLandlordsForParkings(allParkings);
-      userParkings.sort((b, a) => a.createdAt.compareTo(b.createdAt));
-      parkings.assignAll(userParkings);
-      // updateFilteredParkings();
-    } catch (error) {
-      debugPrint('Error fetching nearby parkings: $error');
-    }
+  void streamParking() {
+    _repository.streamAll(userId: user.id).listen((dataList) {
+      parkings.assignAll(dataList);
+      parkings.sort((b, a) => a.createdAt.compareTo(b.createdAt));
+    });
   }
 }

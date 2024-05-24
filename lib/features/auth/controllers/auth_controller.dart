@@ -30,7 +30,6 @@ class AuthController extends GetxController {
   final isCountdownFinished = false.obs;
 
   final authStatus = AuthStatus.uninitialized.obs;
-  final error = ''.obs;
   final userType = ''.obs;
   final loading = false.obs;
   final showErrors = RxBool(false);
@@ -52,9 +51,9 @@ class AuthController extends GetxController {
   Future<void> checkCurrentUser() async {
     final isAuthenticated = await _authRepository.isUserAuthenticated();
 
+    /// TEMPO DA ANIMACAO
     await Future.delayed(const Duration(milliseconds: 4700));
 
-    /// TEMPO DA ANIMACAO
     if (isAuthenticated) {
       await _checkAndRedirect();
     } else {
@@ -65,6 +64,9 @@ class AuthController extends GetxController {
 
   Future<void> _checkAndRedirect() async {
     final isRegisteredInDatabase = await _checkUserInDatabase();
+    print(
+        '########################### IS REGISTERED IN DATA BASE $isRegisteredInDatabase');
+
     if (isRegisteredInDatabase) {
       navigator.home();
     } else {
@@ -77,6 +79,7 @@ class AuthController extends GetxController {
       final user = Get.find<FlavorConfig>().flavor == Flavor.tenant
           ? await _tenantRepository.get(_authRepository.authUser!.uid)
           : await _landlordRepository.get(_authRepository.authUser!.uid);
+      print('########################### USER IS NULL ${user == null}');
 
       if (user != null) {
         Get.put(user, permanent: true);
@@ -94,8 +97,7 @@ class AuthController extends GetxController {
       navigator.verification();
       startCountdown();
     } catch (e) {
-      debugPrint('Verification code: $error');
-      error(e.toString());
+      navigator.error('Erro de envio', e.toString());
     }
   }
 
@@ -128,8 +130,7 @@ class AuthController extends GetxController {
         navigator.register();
       }
     } catch (e) {
-      error(e.toString());
-      authStatus.value = AuthStatus.error;
+      navigator.error('Erro de verificação', e.toString());
     }
   }
 

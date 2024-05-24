@@ -10,9 +10,13 @@ import 'package:vagali/features/parking/widgets/parking_edit_information.dart';
 import 'package:vagali/features/parking/widgets/parking_edit_price.dart';
 import 'package:vagali/features/parking/widgets/parking_edit_tags.dart';
 import 'package:vagali/repositories/firestore_repository.dart';
+import 'package:vagali/theme/coolicons.dart';
 import 'package:vagali/theme/theme_colors.dart';
+import 'package:vagali/theme/theme_typography.dart';
+import 'package:vagali/widgets/custom_icon.dart';
 import 'package:vagali/widgets/snackbar.dart';
 import 'package:vagali/widgets/top_bavigation_bar.dart';
+import 'package:vagali/widgets/warning_dialog.dart';
 
 class ParkingEditOptionView extends StatefulWidget {
   final Parking parking;
@@ -39,47 +43,39 @@ class _ParkingEditOptionViewState extends State<ParkingEditOptionView> {
       body: Column(
         children: [
           ConfigListTile(
-            title: 'Detalhes',
-            onTap: () => Get.to(
-              () => Obx(
-                () => ParkingPartialEditWidget(
-                  title: 'Detalhes',
-                  body: ParkingEditInformation(controller: controller),
-                  onSave: () async {
-                    if (controller.isNameValid.isTrue ||
-                        controller.isDescriptionValid.isTrue) {
-                      final result = await controller.updateParking();
-                      if (result == SaveResult.success) {
-                        Get.back();
-                      } else {
-                        snackBar('Erro', controller.nameError.value);
-                      }
-                    }
-                  },
-                  isValid: controller.isNameValid.value ||
-                      controller.isDescriptionValid.value,
-                ),
-              ),
-            ),
-          ),
+              title: 'Detalhes',
+              onTap: () async {
+                Get.back();
+                Get.to(
+                  () => Obx(
+                    () => ParkingPartialEditWidget(
+                      title: 'Detalhes',
+                      body: ParkingEditInformation(controller: controller),
+                      onSave: () async {
+                        if (controller.isNameValid.isTrue ||
+                            controller.isDescriptionValid.isTrue) {
+                          _update();
+                        }
+                      },
+                      isValid: controller.isNameValid.value ||
+                          controller.isDescriptionValid.value,
+                    ),
+                  ),
+                );
+              }),
           divider(),
           ConfigListTile(
             title: 'Fotos',
             onTap: () => Get.to(
-              () => ParkingPartialEditWidget(
-                title: 'Fotos',
-                body: ParkingEditImages(controller: controller),
-                onSave: () async {
-                  if (controller.isImageValid.isTrue) {
-                    final result = await controller.save();
-                    if (result == SaveResult.success) {
-                      Get.back();
-                    } else {
-                      snackBar('Erro', controller.imageError.value);
-                    }
-                  }
-                },
-                isValid: controller.isImageValid.value,
+              () => Obx(
+                () => ParkingPartialEditWidget(
+                  title: 'Fotos',
+                  body: ParkingEditImages(controller: controller),
+                  onSave: () async {
+                    if (controller.isImageValid.isTrue) _update();
+                  },
+                  isValid: controller.isImageValid.value,
+                ),
               ),
             ),
           ),
@@ -91,14 +87,7 @@ class _ParkingEditOptionViewState extends State<ParkingEditOptionView> {
                 title: 'Portão',
                 body: ParkingEditGate(controller: controller),
                 onSave: () async {
-                  if (controller.isGateValid.isTrue) {
-                    final result = await controller.save();
-                    if (result == SaveResult.success) {
-                      Get.back();
-                    } else {
-                      snackBar('Erro', controller.nameError.value);
-                    }
-                  }
+                  if (controller.isGateValid.isTrue) _update();
                 },
                 isValid: controller.isGateValid.value,
               ),
@@ -112,14 +101,7 @@ class _ParkingEditOptionViewState extends State<ParkingEditOptionView> {
                 title: 'Tags',
                 body: ParkingEditTags(controller: controller),
                 onSave: () async {
-                  if (controller.isTagsValid.isTrue) {
-                    final result = await controller.save();
-                    if (result == SaveResult.success) {
-                      Get.back();
-                    } else {
-                      snackBar('Erro', controller.nameError.value);
-                    }
-                  }
+                  if (controller.isTagsValid.isTrue) _update();
                 },
                 isValid: controller.isTagsValid.value,
               ),
@@ -133,20 +115,39 @@ class _ParkingEditOptionViewState extends State<ParkingEditOptionView> {
                 title: 'Preços',
                 body: ParkingEditPrice(controller: controller),
                 onSave: () async {
-                  if (controller.isPriceValid.isTrue) {
-                    final result = await controller.save();
-                    if (result == SaveResult.success) {
-                      Get.back();
-                    } else {
-                      snackBar('Erro', controller.nameError.value);
-                    }
-                  }
+                  if (controller.isPriceValid.isTrue) _update();
                 },
                 isValid: controller.isPriceValid.value,
               ),
             ),
           ),
           divider(),
+          Expanded(child: Container()),
+          TextButton(
+            onPressed: () => showWarningDialog(context,
+                title: 'Deletar a vaga',
+                description: 'Tem certeza que gostaria de deletar a vaga?',
+                onConfirm: () async {
+              await controller.delete();
+              Get.back();
+            }),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomIcon(
+                  icon: ThemeIcons.trashEmpty,
+                  color: ThemeColors.red,
+                ),
+                Text(
+                  'Excluir vaga',
+                  style: ThemeTypography.medium14.apply(
+                    color: ThemeColors.red,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
         ],
       ),
     );
@@ -156,4 +157,13 @@ class _ParkingEditOptionViewState extends State<ParkingEditOptionView> {
         color: ThemeColors.grey2,
         thickness: 1,
       );
+
+  Future<void> _update() async {
+    final result = await controller.updateParking();
+    if (result == SaveResult.success) {
+      Get.back();
+    } else {
+      snackBar('Erro', controller.nameError.value);
+    }
+  }
 }

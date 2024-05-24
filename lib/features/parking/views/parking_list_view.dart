@@ -22,11 +22,11 @@ class ParkingListView extends StatelessWidget {
         title: 'Minhas vagas',
         actions: [
           TextButton(
-            onPressed: () async {
-              await Get.to(
+            onPressed: ()  {
+               Get.to(
                 () => ParkingEditView(onConcluded: () => Get.back()),
               );
-              controller.fetchUserParkings();
+              // controller.fetchUserParkings();
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 12),
@@ -62,7 +62,9 @@ class ParkingListView extends StatelessWidget {
 
   Widget parkingListItem(Parking parking) {
     return GestureDetector(
-      onTap: () => Get.to(() => ParkingEditOptionView(parking: parking)),
+      onTap: (){
+        Get.to(() => ParkingEditOptionView(parking: parking));
+      },
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: const BoxDecoration(

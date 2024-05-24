@@ -56,7 +56,7 @@ class Input extends StatelessWidget {
           inputFormatters: inputFormatters,
           maxLines: maxLines,
           style: ThemeTypography.medium14.apply(
-            color: enabled ? ThemeColors.primary : ThemeColors.grey3,
+            color: enabled ? ThemeColors.primary : ThemeColors.grey4,
           ),
           decoration: InputDecoration(
             contentPadding:

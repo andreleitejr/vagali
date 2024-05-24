@@ -32,8 +32,8 @@ class ParkingEditGate extends StatelessWidget {
               ),
               Obx(
                 () => SwitchButton(
-                  value: controller.isAutomaticController.value,
-                  onChanged: controller.isAutomaticController,
+                  value: controller.isAutomaticGate.value,
+                  onChanged: controller.isAutomaticGate,
                 ),
               ),
             ],

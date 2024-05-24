@@ -201,18 +201,18 @@ class LandlordEditController extends GetxController {
       phone: Get.find<String>(tag: 'phoneNumber'),
       gender: genders.firstWhere((g) => g.name == genderController.text).value,
       birthday: birthday.value!,
-      address: addressController.address,
+      address: addressController.address.value,
       // type: UserType.landlord,
     );
 
     final result =
         await _landlordRepository.save(Landlord.fromUser(user), docId: user.id);
 
+    loading(false);
     if (result == SaveResult.success) {
       Get.put<User>(user);
       return SaveResult.success;
     }
-    loading(false);
     return SaveResult.failed;
   }
 

@@ -72,7 +72,7 @@ class _ChatViewState extends State<ChatView> {
                           margin: EdgeInsets.symmetric(horizontal: 8),
                           // padding: EdgeInsets.all(12),
                           child: Text(
-                            message.createdAt.toTimeString(),
+                            message.createdAt!.toTimeString(),
                             style: ThemeTypography.regular14.apply(
                               color: ThemeColors.grey3,
                             ),

@@ -27,7 +27,7 @@ class ParkingPartialEditWidget extends StatelessWidget {
           TextButton(
             onPressed: onSave,
             child: Text(
-              'Avancar',
+              'Salvar',
               style: ThemeTypography.medium14.apply(
                 color: isValid
                     ? ThemeColors.primary

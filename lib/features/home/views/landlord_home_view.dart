@@ -60,7 +60,7 @@ class LandlordHomeView extends StatelessWidget {
                 const SizedBox(height: 16),
                 if (controller.allReservations.isNotEmpty)
                   TitleWithAction(
-                    title: 'Minhas reservas',
+                    title: 'Histórico de reservas',
                     icon: ThemeIcons.calendar,
                     actionText: '',
                     onActionPressed: () {},

@@ -20,6 +20,8 @@ abstract class AuthNavigator {
   void home();
 
   void locationDenied();
+
+  void error(String title, String message);
 }
 
 class AuthView extends StatefulWidget {
@@ -72,11 +74,15 @@ class _AuthViewState extends State<AuthView> implements AuthNavigator {
   @override
   void home() {
     Get.offAllNamed('/home');
-
   }
 
   @override
   void locationDenied() {
     Get.to(() => const LocationDeniedView());
+  }
+
+  @override
+  void error(String title, String message) {
+    Get.snackbar(title, message);
   }
 }

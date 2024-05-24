@@ -40,9 +40,9 @@ class AddressEditController extends GetxController {
     complementController.value = address.complement ?? '';
   }
 
-  Future<GeoPoint?> getCoordinatesFromAddress() async {
+  Future<GeoPoint?> getCoordinatesFromAddress({Address? optionalAddress}) async {
     return await _addressService.getCoordinatesFromAddress(
-      address,
+      optionalAddress ?? address.value,
     );
   }
 
@@ -110,7 +110,7 @@ class AddressEditController extends GetxController {
           isStateValid.isTrue)
       .obs;
 
-  Address get address => Address(
+  Rx<Address> get address => Address(
         postalCode: postalCodeController.value,
         street: streetController.value,
         number: numberController.value,
@@ -119,5 +119,5 @@ class AddressEditController extends GetxController {
         state: stateController.value,
         country: countryController.value,
         complement: complementController.value,
-      );
+      ).obs;
 }

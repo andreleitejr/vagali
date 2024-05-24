@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vagali/features/home/views/landlord_base_view.dart';
 import 'package:vagali/features/landlord/controllers/landlord_edit_controller.dart';
 import 'package:vagali/features/landlord/widgets/landlord_address_widget.dart';
 import 'package:vagali/features/landlord/widgets/landlord_personal_info_widget.dart';
@@ -36,7 +37,6 @@ class _LandlordEditViewState extends State<LandlordEditView> {
 
     if (isValidStep) {
       if (_currentPage < 1) {
-        if (_currentPage == 0) {}
         _controller.showErrors(false);
         _navigateToNextPage();
       } else {
@@ -61,6 +61,7 @@ class _LandlordEditViewState extends State<LandlordEditView> {
     if (_controller.isValid()) {
       // await _controller.uploadImage();
       final result = await _controller.save();
+      Future.delayed(const Duration(seconds: 1));
       if (result == SaveResult.success) {
         _navigateToEditView();
       }
@@ -75,7 +76,7 @@ class _LandlordEditViewState extends State<LandlordEditView> {
 
     Get.to(
       () => ParkingEditView(
-        onConcluded: () => Get.back(),
+        onConcluded: () => Get.to(() => LandlordBaseView()),
       ),
     );
   }

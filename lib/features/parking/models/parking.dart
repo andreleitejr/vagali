@@ -83,7 +83,9 @@ class Parking extends BaseModel {
         price = Price.fromMap(document['price']),
         isAvailable = document['isAvailable'],
         tags = (document['tags'] as List<dynamic>)
-            .map((tagName) => ParkingTag(tag: tagName))
+            .map(
+              (tagName) => parkingTags.firstWhere((tag) => tag.tag == tagName),
+            )
             .toList(),
         description = document['description'],
         images = (document['images'] as List<dynamic>)
@@ -102,29 +104,51 @@ class Parking extends BaseModel {
         reservationType = document['reservationType'],
         super.fromDocument(document);
 
-  Parking copyWith() {
+  Parking copyWith({
+    String? id,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? name,
+    Price? price,
+    bool? isAvailable,
+    List<ParkingTag>? tags,
+    String? description,
+    List<ImageBlurHash>? images,
+    User? owner,
+    String? userId,
+    String? type,
+    String? reservationType,
+    GeoPoint? location,
+    Address? address,
+    num? gateHeight,
+    num? gateWidth,
+    num? garageDepth,
+    bool? isAutomatic,
+    List<Rating>? ratings,
+    bool? isOpen,
+    double? distance,
+  }) {
     return Parking(
-      id: id,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
-      name: name,
-      price: price,
-      isAvailable: isAvailable,
-      tags: tags,
-      description: description,
-      images: images,
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      name: name ?? this.name,
+      price: price ?? this.price,
+      isAvailable: isAvailable ?? this.isAvailable,
+      tags: tags ?? this.tags,
+      description: description ?? this.description,
+      images: images ?? this.images,
       owner: owner ?? this.owner,
-      userId: userId,
-      type: type,
-      reservationType: reservationType,
-      location: location,
-      address: address,
-      gateHeight: gateHeight,
-      gateWidth: gateWidth,
-      garageDepth: garageDepth,
-      isAutomatic: isAutomatic,
-      // ratings: ratings,
-      isOpen: isOpen,
-    );
+      userId: userId ?? this.userId,
+      type: type ?? this.type,
+      reservationType: reservationType ?? this.reservationType,
+      location: location ?? this.location,
+      address: address ?? this.address,
+      gateHeight: gateHeight ?? this.gateHeight,
+      gateWidth: gateWidth ?? this.gateWidth,
+      garageDepth: garageDepth ?? this.garageDepth,
+      isAutomatic: isAutomatic ?? this.isAutomatic,
+      isOpen: isOpen ?? this.isOpen,
+    )..ratings = ratings ?? this.ratings;
   }
 }
