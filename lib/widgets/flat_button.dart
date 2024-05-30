@@ -38,7 +38,7 @@ class FlatButton extends StatelessWidget {
               const SizedBox(width: 4),
               Text(
                 actionText,
-                style: ThemeTypography.semiBold16.apply(color: Colors.white),
+                style: ThemeTypography.semiBold14.apply(color: Colors.white),
               ),
             ],
           )),

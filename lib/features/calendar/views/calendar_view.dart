@@ -110,7 +110,7 @@ class _CalendarViewState extends State<CalendarView> {
               headerTitleBuilder: (context, day) {
                 return Text(
                   day.monthName,
-                  style: ThemeTypography.semiBold16,
+                  style: ThemeTypography.semiBold14,
                 );
               },
               defaultBuilder: (context, date, events) {

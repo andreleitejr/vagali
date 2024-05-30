@@ -90,7 +90,7 @@ class _ParkingEditViewState extends State<ParkingEditView> {
                 onPressed: () => _validateAndNavigateNext(),
                 child: Text(
                   _currentPage == 5 ? 'Salvar' : 'Avancar',
-                  style: ThemeTypography.semiBold16.apply(
+                  style: ThemeTypography.semiBold14.apply(
                     color: _controller.validateCurrentStep(_currentPage).isTrue
                         ? ThemeColors.primary
                         : ThemeColors.grey3,

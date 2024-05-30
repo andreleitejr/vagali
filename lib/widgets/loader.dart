@@ -52,7 +52,7 @@ class _LoaderState extends State<Loader> {
               padding: const EdgeInsets.only(top: 100),
               child: Text(
                 widget.message!,
-                style: ThemeTypography.semiBold16.apply(
+                style: ThemeTypography.semiBold14.apply(
                   color: ThemeColors.primary,
                 ),
               ),

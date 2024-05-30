@@ -79,7 +79,6 @@ class AuthController extends GetxController {
       final user = Get.find<FlavorConfig>().flavor == Flavor.tenant
           ? await _tenantRepository.get(_authRepository.authUser!.uid)
           : await _landlordRepository.get(_authRepository.authUser!.uid);
-      print('########################### USER IS NULL ${user == null}');
 
       if (user != null) {
         Get.put(user, permanent: true);

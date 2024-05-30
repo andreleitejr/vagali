@@ -11,6 +11,7 @@ class DashboardController extends GetxController {
 
   final List<Reservation> reservations;
 
+  final concludedReservations = <Reservation>[].obs;
   final doneReservations = <Reservation>[].obs;
   final openReservations = <Reservation>[].obs;
   final cashOuts = <CashOut>[].obs;
@@ -18,7 +19,7 @@ class DashboardController extends GetxController {
   double get balance {
     double totalBalance = 0;
 
-    for (final reservation in doneReservations) {
+    for (final reservation in concludedReservations) {
       totalBalance += reservation.totalCost;
     }
 
@@ -85,6 +86,9 @@ class DashboardController extends GetxController {
   void onInit() {
     doneReservations.value =
         reservations.where((reservation) => reservation.isDone).toList();
+
+    concludedReservations.value =
+        reservations.where((reservation) => reservation.isConcluded).toList();
 
     openReservations.value =
         reservations.where((reservation) => reservation.isOpen).toList();

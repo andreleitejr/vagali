@@ -62,7 +62,7 @@ class ParkingDetailsView extends StatelessWidget {
           ListTile(
             title: Text(
               parking.name,
-              style: ThemeTypography.semiBold16,
+              style: ThemeTypography.semiBold14,
             ),
           ),
           TagList(tags: parking.tags),
@@ -85,7 +85,7 @@ class ParkingDetailsView extends StatelessWidget {
             contentPadding: const EdgeInsets.all(16),
             title: const Text(
               'Descrição',
-              style: ThemeTypography.semiBold16,
+              style: ThemeTypography.semiBold14,
             ),
             subtitle: Padding(
               padding: const EdgeInsets.only(top: 8),

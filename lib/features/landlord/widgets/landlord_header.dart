@@ -45,7 +45,7 @@ class LandlordHeader extends StatelessWidget {
             child: Text(
               'Meu perfil',
               textAlign: TextAlign.center,
-              style: ThemeTypography.semiBold16.apply(
+              style: ThemeTypography.semiBold14.apply(
                 color: Colors.white,
               ),
             ),

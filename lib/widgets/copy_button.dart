@@ -51,7 +51,7 @@ class CopyButton extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: ThemeTypography.semiBold16,
+                    style: ThemeTypography.semiBold14,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

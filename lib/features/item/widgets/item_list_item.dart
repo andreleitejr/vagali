@@ -52,7 +52,7 @@ class ItemListItem extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: ThemeTypography.semiBold16,
+                      style: ThemeTypography.semiBold14,
                     ),
                     const SizedBox(height: 4),
                     Row(
@@ -125,7 +125,7 @@ class ItemListItem extends StatelessWidget {
                               .firstWhereOrNull((i) => i.type == item.type)
                               ?.name ??
                           '',
-                      style: ThemeTypography.semiBold16,
+                      style: ThemeTypography.semiBold14,
                     ),
                     const SizedBox(height: 4),
                     Row(

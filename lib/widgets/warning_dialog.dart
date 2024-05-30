@@ -21,7 +21,7 @@ class WarningDialog extends StatelessWidget {
       actionsAlignment: MainAxisAlignment.spaceAround,
       title: Text(
         title,
-        style: ThemeTypography.semiBold16.apply(
+        style: ThemeTypography.semiBold14.apply(
           color: ThemeColors.primary,
         ),
       ),

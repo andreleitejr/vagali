@@ -19,7 +19,7 @@ class TermsAndConditions extends StatelessWidget {
             RichText(
               text: TextSpan(
                 text: '1. Introdução\n',
-                style: ThemeTypography.semiBold16.apply(color: Colors.black),
+                style: ThemeTypography.semiBold14.apply(color: Colors.black),
                 children: [
                   textSpan(
                     text:

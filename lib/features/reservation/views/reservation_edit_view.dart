@@ -158,7 +158,7 @@ class _ReservationEditViewState extends State<ReservationEditView> {
                           Expanded(
                             child: Text(
                               'Método de pagamento',
-                              style: ThemeTypography.semiBold16,
+                              style: ThemeTypography.semiBold14,
                             ),
                           ),
                           Icon(
@@ -309,7 +309,7 @@ class _ReservationEditViewState extends State<ReservationEditView> {
                 children: [
                   Text(
                     'O que gostaria de guardar?',
-                    style: ThemeTypography.semiBold16,
+                    style: ThemeTypography.semiBold14,
                   ),
                   const SizedBox(height: 8),
                   Text(

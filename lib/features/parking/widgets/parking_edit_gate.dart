@@ -27,7 +27,7 @@ class ParkingEditGate extends StatelessWidget {
               Expanded(
                 child: Text(
                   'O seu portão é automático?',
-                  style: ThemeTypography.semiBold16,
+                  style: ThemeTypography.semiBold14,
                 ),
               ),
               Obx(
@@ -84,7 +84,7 @@ class ParkingEditGate extends StatelessWidget {
           const SizedBox(height: 16),
           const Text(
             'Veículos compativeis:',
-            style: ThemeTypography.semiBold16,
+            style: ThemeTypography.semiBold14,
           ),
           Obx(
             () => Expanded(
@@ -111,7 +111,7 @@ class ParkingEditGate extends StatelessWidget {
                         const SizedBox(height: 8),
                         Text(
                           controller.compatibleCarTypes[index].title,
-                          style: ThemeTypography.semiBold16,
+                          style: ThemeTypography.semiBold14,
                         ),
                       ],
                     ),

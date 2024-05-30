@@ -58,7 +58,7 @@ class ItemTypeListView extends StatelessWidget {
                     leading: Image.asset(itemType.image),
                     title: Text(
                       itemType.name!,
-                      style: ThemeTypography.semiBold16,
+                      style: ThemeTypography.semiBold14,
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

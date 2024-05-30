@@ -63,7 +63,7 @@ class LastReservationWidget extends StatelessWidget {
                       children: [
                         Text(
                           reservation.parking!.name,
-                          style: ThemeTypography.semiBold16,
+                          style: ThemeTypography.semiBold14,
                         ),
                       ],
                     ),

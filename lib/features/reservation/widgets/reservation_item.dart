@@ -30,7 +30,8 @@ class ReservationDoneItem extends StatelessWidget {
             alignment: Alignment.center,
             padding: const EdgeInsets.all(2),
             decoration: BoxDecoration(
-                color: ThemeColors.grey1, borderRadius: BorderRadius.circular(8)),
+                color: ThemeColors.grey1,
+                borderRadius: BorderRadius.circular(8)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -91,7 +92,9 @@ class ReservationItem extends StatelessWidget {
         alignment: Alignment.center,
         padding: const EdgeInsets.all(2),
         decoration: BoxDecoration(
-            color: ThemeColors.grey1, borderRadius: BorderRadius.circular(8)),
+          color: ThemeColors.grey1,
+          borderRadius: BorderRadius.circular(8),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -103,25 +106,38 @@ class ReservationItem extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-                "${reservation.tenant?.firstName}'"
-                " ${reservation.tenant?.lastName}",
-                style: ThemeTypography.medium14),
+              "${reservation.tenant?.firstName}'"
+              " ${reservation.tenant?.lastName}",
+              style: ThemeTypography.semiBold14,
+            ),
           ),
           Text(
             isMonetary
                 ? '${!reservation.isCanceled ? '+' : '-'}'
                     '${UtilBrasilFields.obterReal(reservation.totalCost)}'
                 : reservation.status.title,
-            style: ThemeTypography.semiBold14.apply(
+            style: ThemeTypography.semiBold12.apply(
               color: reservation.status.color,
             ),
           ),
         ],
       ),
-      subtitle: Text(
-        "${reservation.startDate.toCompleteDateTimeString()}"
-        " até ${reservation.endDate.toCompleteDateTimeString()}",
-        style: ThemeTypography.regular10,
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "${reservation.startDate.toFormattedString()}"
+            " até ${reservation.endDate.toFormattedString()}",
+            style: ThemeTypography.regular10,
+          ),
+          const SizedBox(height: 2),
+          Text(
+            "Status da Reserva: ${reservation.status.title}",
+            style: ThemeTypography.medium10.apply(
+              color: reservation.status.color,
+            ),
+          ),
+        ],
       ),
     );
   }

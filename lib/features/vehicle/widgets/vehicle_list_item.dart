@@ -44,7 +44,7 @@ class VehicleListItem extends StatelessWidget {
                   children: [
                     Text(
                       vehicle.model,
-                      style: ThemeTypography.semiBold16,
+                      style: ThemeTypography.semiBold14,
                     ),
                     const SizedBox(height: 4),
                     Row(

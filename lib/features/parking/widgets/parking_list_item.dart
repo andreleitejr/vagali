@@ -101,7 +101,7 @@ class ParkingListItem extends StatelessWidget {
                     children: [
                       Text(
                         'A partir de R\$${parking.price.hour?.toStringAsFixed(0)}',
-                        style: ThemeTypography.semiBold16,
+                        style: ThemeTypography.semiBold14,
                       ),
                       const SizedBox(width: 4),
                       Text('por hora', style: ThemeTypography.regular16),

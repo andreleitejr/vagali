@@ -32,7 +32,7 @@ class GradientSlider extends StatelessWidget {
             Expanded(
               child: Text(
                 label,
-                style: ThemeTypography.semiBold16,
+                style: ThemeTypography.semiBold14,
               ),
             ),
             Text(

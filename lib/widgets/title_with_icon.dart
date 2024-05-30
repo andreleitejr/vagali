@@ -21,7 +21,7 @@ class TitleWithIcon extends StatelessWidget {
         const SizedBox(width: 4),
         Text(
           title,
-          style: ThemeTypography.semiBold16,
+          style: ThemeTypography.semiBold14,
         ),
       ],
     );

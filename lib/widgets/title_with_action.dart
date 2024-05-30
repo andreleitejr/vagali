@@ -28,13 +28,14 @@ class TitleWithAction extends StatelessWidget {
               icon: icon,
             ),
           ),
-          TextButton(
-            onPressed: onActionPressed,
-            child: Text(
-              actionText,
-              style: ThemeTypography.medium14,
+          if (actionText.isNotEmpty)
+            TextButton(
+              onPressed: onActionPressed,
+              child: Text(
+                actionText,
+                style: ThemeTypography.medium14,
+              ),
             ),
-          )
         ],
       ),
     );

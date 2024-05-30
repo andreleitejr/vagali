@@ -32,7 +32,7 @@
 //               ),
 //               Text(
 //                 'Celular confirmado',
-//                 style: ThemeTypography.semiBold16.apply(
+//                 style: ThemeTypography.semiBold14.apply(
 //                   color: ThemeColors.primary,
 //                 ),
 //               ),

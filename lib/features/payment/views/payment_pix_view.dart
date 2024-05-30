@@ -81,7 +81,7 @@ class _PaymentPixViewState extends State<PaymentPixView> {
                     children: [
                       Text(
                         'Status do pagamento',
-                        style: ThemeTypography.semiBold16,
+                        style: ThemeTypography.semiBold14,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -147,7 +147,7 @@ class _PaymentPixViewState extends State<PaymentPixView> {
                         controller.isApproved.isTrue
                             ? 'Ir para reserva'
                             : awaitingPaymentMessage(),
-                        style: ThemeTypography.semiBold16
+                        style: ThemeTypography.semiBold14
                             .apply(color: Colors.white),
                       ),
                     ],
@@ -276,7 +276,7 @@ class _PaymentCreditCardViewState extends State<PaymentCreditCardView> {
                         const SizedBox(height: 16),
                         Text(
                           controller.maskedCardNumber.value,
-                          style: ThemeTypography.semiBold16.apply(
+                          style: ThemeTypography.semiBold14.apply(
                             color: Colors.white,
                           ),
                         ),
@@ -534,7 +534,7 @@ class _PaymentCreditCardViewState extends State<PaymentCreditCardView> {
 //                         const SizedBox(height: 16),
 //                         Text(
 //                           controller.maskedCardNumber.value,
-//                           style: ThemeTypography.semiBold16.apply(
+//                           style: ThemeTypography.semiBold14.apply(
 //                             color: Colors.white,
 //                           ),
 //                         ),

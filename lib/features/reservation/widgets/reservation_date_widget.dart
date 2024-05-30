@@ -99,7 +99,7 @@ class _ReservationWidgetState extends State<ReservationDateWidget> {
               children: [
                 Text(
                   title,
-                  style: ThemeTypography.semiBold16,
+                  style: ThemeTypography.semiBold14,
                 ),
                 const SizedBox(height: 8),
                 Text(

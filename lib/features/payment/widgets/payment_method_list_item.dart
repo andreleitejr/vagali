@@ -17,7 +17,7 @@ class PaymentMethodListItem extends StatelessWidget {
       leading: Image.asset(paymentMethod.image),
       title: Text(
         paymentMethod.name!,
-        style: ThemeTypography.semiBold16,
+        style: ThemeTypography.semiBold14,
       ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

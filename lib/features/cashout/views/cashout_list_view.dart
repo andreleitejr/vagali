@@ -45,7 +45,7 @@ class CashOutListView extends StatelessWidget {
       title: RichText(
         text: TextSpan(
           text: 'Valor: ',
-          style: ThemeTypography.semiBold16.apply(color: Colors.black),
+          style: ThemeTypography.semiBold14.apply(color: Colors.black),
           children: [
             TextSpan(
               text: '${UtilBrasilFields.obterReal(cashOut.amount)}',

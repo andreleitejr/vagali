@@ -25,18 +25,7 @@ class LandlordHomeView extends StatelessWidget {
       body: Obx(
         () {
           if (controller.loading.value) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Carregando reservas',
-                  style: ThemeTypography.semiBold14
-                      .apply(color: ThemeColors.primary),
-                ),
-                const SizedBox(height: 16),
-                Loader(),
-              ],
-            );
+            return Loader();
           }
 
           if (controller.scheduledReservations.isEmpty &&
@@ -48,19 +37,23 @@ class LandlordHomeView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 16),
+                const SizedBox(height: 24),
                 Obx(() {
                   if (controller.hasOpenReservation) {
-                    return ConfirmationWidget(
-                      controller: controller,
+                    return Column(
+                      children: [
+                        ConfirmationWidget(
+                          controller: controller,
+                        ),
+                        const SizedBox(height: 16),
+                      ],
                     );
                   }
                   return Container();
                 }),
-                const SizedBox(height: 16),
                 if (controller.allReservations.isNotEmpty)
                   TitleWithAction(
-                    title: 'Histórico de reservas',
+                    title: 'Meu histórico de reservas',
                     icon: ThemeIcons.calendar,
                     actionText: '',
                     onActionPressed: () {},

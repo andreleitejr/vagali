@@ -54,7 +54,7 @@ class RoundedGradientButton extends StatelessWidget {
               )
             : Text(
                 actionText,
-                style: ThemeTypography.semiBold16.apply(color: Colors.white),
+                style: ThemeTypography.semiBold14.apply(color: Colors.white),
               ),
       ),
     );

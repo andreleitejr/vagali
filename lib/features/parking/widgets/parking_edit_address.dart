@@ -23,7 +23,7 @@ class ParkingEditAddress extends StatelessWidget {
               onPressed: () => Get.back(),
               child: Text(
                 'Salvar',
-                style: ThemeTypography.semiBold16.apply(
+                style: ThemeTypography.semiBold14.apply(
                   color: controller.addressController.isAddressValid.isTrue
                       ? ThemeColors.primary
                       : ThemeColors.grey3,

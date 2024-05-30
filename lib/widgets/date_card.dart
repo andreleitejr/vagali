@@ -14,15 +14,16 @@ class DateCard extends StatelessWidget {
       children: [
         Text(
           date.monthAbbreviation,
-          style: ThemeTypography.regular12.apply(
+          style: ThemeTypography.semiBold12.apply(
             color: ThemeColors.primary,
           ),
         ),
-        SizedBox(height: 4),
         Text(
           date.day.toString(),
-          style: ThemeTypography.semiBold22.apply(
-            color: ThemeColors.grey4,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            fontFamily: 'Poppins',
           ),
         )
       ],

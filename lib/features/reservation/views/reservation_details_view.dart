@@ -57,7 +57,7 @@ class ReservationDetailsView extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             reservation.parking!.name,
-            style: ThemeTypography.semiBold16,
+            style: ThemeTypography.semiBold14,
           ),
           const SizedBox(height: 8),
           DatePeriod(
@@ -125,7 +125,7 @@ class ReservationView extends StatelessWidget {
                 //     Expanded(
                 //       child: Text(
                 //         'Placa: ${reservation.item!.licensePlate}',
-                //         style: ThemeTypography.semiBold16,
+                //         style: ThemeTypography.semiBold14,
                 //       ),
                 //     ),
                 //     // const Coolicon(
@@ -135,7 +135,7 @@ class ReservationView extends StatelessWidget {
                 //     // const SizedBox(width: 4),
                 //     // const Text(
                 //     //   '4.7',
-                //     //   style: ThemeTypography.semiBold16,
+                //     //   style: ThemeTypography.semiBold14,
                 //     // ),
                 //     // const SizedBox(width: 8),
                 //   ],
